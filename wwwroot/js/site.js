@@ -46,9 +46,9 @@ function addToCart(PK_iProductID) {
     xhr.send(null);
 }
 
-// load số lượng sản phẩm giỏ hàng
+// lấy số lượng sản phẩm giỏ hàng
 function getCartInfo() {
-    var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest(); 
     xhr.open('post', '/Cart/Index', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
