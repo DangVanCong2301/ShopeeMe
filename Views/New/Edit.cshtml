@@ -1,0 +1,27 @@
+@{
+    Layout = "_NewLayout";
+}
+
+@model IEnumerable<Category>
+    <h1>Chỉnh sửa thể loại</h1>
+@foreach (var category in Model) {
+    <div>
+        <label for="">Mã thể loại</label>
+        <input type="text" class="category-id"  value="@category.PK_iCategoryID" placeholder="Tên thể loại">
+    </div>
+    <div>
+        <label for="">Tên thể loại</label>
+        <input type="text" class="category-name"  value="@category.sCategoryName" placeholder="Tên thể loại">
+    </div>
+    <div>
+        <label for="">Ảnh</label>
+        <input type="text" class="category-img" value="@category.sCategoryImage" placeholder="Ảnh thể loại">
+    </div>
+    <div>
+        <label for="">Chi tiết</label>
+        <input type="text" class="category-desc" value="@category.sCategoryDescription" placeholder="Chi tiết thể loại">
+    </div>
+    <button type="submit" onclick="update()">Sửa</button>
+}
+
+<script src="~/js/admin.js"></script>
