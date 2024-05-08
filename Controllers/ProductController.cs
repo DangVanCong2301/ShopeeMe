@@ -20,15 +20,21 @@ public class ProductController : Controller {
     }
 
     [Route("index/{categoryID}")]
-    public IActionResult Index(int categoryID) {
+    public IActionResult Index(int categoryID, int currentPage = 1) {
         IEnumerable<Product> products;
         var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(userID)).ToList();
-        if (users[0].FK_iRoleID == 2) {
+        if (users.Count() == 0) {
+            products = _productResponsitory.getProductsByCategoryID(categoryID).ToList();
+        } else if (users[0].FK_iRoleID == 2) {
             products = _productResponsitory.getProductsByCategoryIDIfRoleAdmin(categoryID).ToList();
         } else {
             products = _productResponsitory.getProductsByCategoryID(categoryID).ToList();
         }
+        int totalRecord = products.Count();
+        int pageSize = 12;
+        int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
+        products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)).ToList();
         IEnumerable<Category> categories = _homeresponsitory.getCategories().ToList();
         // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
@@ -36,7 +42,10 @@ public class ProductController : Controller {
             Products = products,
             Categories = categories,
             CartDetails = cartDetails,
-            CurrentCategoryID = categoryID
+            CurrentCategoryID = categoryID,
+            TotalPage = totalPage,
+            PageSize = pageSize,
+            CurrentPage = currentPage
         };
         return View(model);
     }
