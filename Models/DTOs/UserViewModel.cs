@@ -1,11 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using Project.Models;
 
 public class UserViewModel
 {
-    [Required(ErrorMessage = "Tên không được trống!")]
-    public string sName { get; set; }
-    [Required(ErrorMessage = "Email không được trống!")]
-    public string sEmail { get; set; }
-    [Required(ErrorMessage = "Mật khẩu không được trống")]
-    public string sPassword { get; set; }
+    public int UserID { get; set; }
+    public IEnumerable<User> Users { get; set; }
 }

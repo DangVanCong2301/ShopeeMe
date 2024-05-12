@@ -23,6 +23,7 @@ public class ProductController : Controller {
     public IActionResult Index(int categoryID, int currentPage = 1) {
         IEnumerable<Product> products;
         var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        System.Console.WriteLine("UserID: " + userID);
         List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(userID)).ToList();
         if (users.Count() == 0) {
             products = _productResponsitory.getProductsByCategoryID(categoryID).ToList();

@@ -3,6 +3,10 @@
     ViewData["Title"] = "Hồ sơ của tôi";
 }
 
+@model ProductViewModel
+
+@* Nếu ta khai báo cho nhưng model đơn lẻ thì có IEnumerable *@
+
 <link rel="stylesheet" href="~/css/profile.css">
 
 <div class="app__container">
@@ -11,11 +15,13 @@
             <div class="col l-2 m-0 c-0">
                 <div class="profile__left">
                     <div class="profile__left-header">
-                        <img src="~/img/profile_avatar.jpg" alt="" class="profile__left-avatar">
-                        <div class="profile__left-account">
-                            <div class="profile__left-account-name">vancong23012002</div>
-                            <div class="profile__left-account-edit"><i class="uil uil-pen"></i>Chỉnh sửa</div>
-                        </div>
+                        @foreach (var user in Model.Users) {
+                            <img src="~/img/no_user.jpg" alt="" class="profile__left-avatar">
+                            <div class="profile__left-account">
+                                <div class="profile__left-account-name">@user.sUserName</div>
+                                <div class="profile__left-account-edit"><i class="uil uil-pen"></i>Chỉnh sửa</div>
+                            </div>
+                        }
                     </div>
                     <div class="profile__left-body">
                         <ul class="profile__left-list">
@@ -40,56 +46,72 @@
                         <div class="profile__subtitle">Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
                     </div>
                     <div class="profile__avatar">
-                        <img height="100" src="~/img/profile_avatar.jpg" alt="" class="profile__avatar-img">
-                        <input type="button" class="profile__avatar-upload" value="Chọn ảnh">
+                        @foreach (var user in Model.Users) {
+                            @if (@user.sImageProfile == "") {
+                                <img height="100" src="~/img/no_user.jpg" alt="" class="profile__avatar-img">
+                            } else {
+                                <img height="100" src="~/img/@user.sImageProfile" alt="" class="profile__avatar-img">
+                            }
+                        }
+                        <input type="button" onclick="picImage(this)" class="profile__avatar-upload" value="Chọn ảnh">
                         <div class="profile__avatar-sub">Dung lượng file tối đa 1MB <br> Định dạng: .JPG, .PNG</div>
                     </div>
                     <form action="" class="profile__info">
                         <table class="profile__table">
-                            <tr class="">
-                                <td>Tên đăng nhập</td>
-                                <td>
-                                    <input type="text" value="congdang23012002">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Tên</td>
-                                <td>
-                                    <input type="text" value="Công Đặng">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td>
-                                    <input type="text" value="dangvancong2301@gmail.com">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Giới tính</td>
-                                <td class="">
-                                    <div class="profile__table-box">
-                                        <span>
-                                            <input type="radio" name="gender" id="">
-                                        </span>
-                                        <label for="">Nam</label>
-                                        <span>
-                                            <input type="radio" name="gender" id="">
-                                        </span>
-                                        <label for="">Nữ</label>
-                                        <span>
-                                            <input type="radio" name="gender" id="">
-                                        </span>
-                                        <label for="">Khác</label>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Ngày sinh</td>
-                                <td><input type="date" name="" id=""></td>
-                            </tr>
+                            @foreach (var user in Model.Users) {
+                                <tr class="">
+                                    <td>Tên đăng nhập</td>
+                                    <td>
+                                        <input type="text" value="@user.sUserName" class="profile__input-username">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Tên</td>
+                                    <td>
+                                        <input type="text" value="@user.sFullName" class="profile__input-fullname">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>
+                                        <input type="text" value="@user.sEmail" class="profile__input-email">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Giới tính</td>
+                                    <td class="">
+                                        <div class="profile__table-box">
+                                            <span>
+                                                @if (@user.iGender == 1) {
+                                                    <input type="radio" name="gender" value="1" checked id="">
+                                                } else {
+                                                    <input type="radio" name="gender" value="1" id="">
+                                                }
+                                            </span>
+                                            <label for="">Nam</label>
+                                            <span>
+                                                @if (@user.iGender == 0) {
+                                                    <input type="radio" name="gender" value="0" checked id="">
+                                                } else {
+                                                    <input type="radio" name="gender" value="0" id="">
+                                                }
+                                            </span>
+                                            <label for="">Nữ</label>
+                                            <span>
+                                                <input type="radio" name="gender" value="2" id="">
+                                            </span>
+                                            <label for="">Khác</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ngày sinh</td>
+                                    <td><input type="date" name="" value="@user.dDateBirth.ToString("yyyy-MM-dd")" id="" class="profile__input-birth"></td>
+                                </tr>
+                            }
                             <tr>
                                 <td></td>
-                                <td><button class="btn btn--primary">Cập nhật</button></td>
+                                <td><button type="button" onclick="updateProfile()" class="btn btn--primary">Cập nhật</button></td>
                             </tr>
                         </table>
                     </form>
@@ -98,3 +120,4 @@
         </div>
     </div>
 </div>
+<script src="~/js/profile.js"></script>
