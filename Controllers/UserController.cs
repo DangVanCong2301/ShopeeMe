@@ -38,7 +38,7 @@ public class UserController : Controller {
         if (userLogin[0] == null) {
             TempData["msg"] = "Tài khoản hoặc mật khẩu không chính xác!";
         }
-        string nameUser = userLogin[0].sName;
+        string nameUser = userLogin[0].sFullName;
         int value = userLogin[0].PK_iUserID;
         // Tạo Cookies
         CookieOptions options = new CookieOptions {
@@ -77,15 +77,32 @@ public class UserController : Controller {
     }
 
     [Route("/user/profile")]
+    [HttpGet]
     public IActionResult Profile() {
-        var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)).ToList();
+        // Lấy Cookies trên trình duyệt
+        var userID = Request.Cookies["UserID"];
+        if (userID != null)
+        {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        }
+        // Phải Refresh lại trang chủ thì mới lấy được sessionUserID
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        System.Console.WriteLine("sessionUserID: " + sessionUserID);
+        IEnumerable<User> users = _userResponsitory.getUserInfoByID(Convert.ToInt32(sessionUserID));
         ProductViewModel model = new ProductViewModel
         {
-            CartDetails = cartDetails,
-            UserID = Convert.ToInt32(userID)
+            UserID = Convert.ToInt32(sessionUserID),
+            Users = users
         };
         return View(model);
+    }
+
+    [HttpPost] 
+    public IActionResult Profile(string userName = "", string fullName = "", string email = "", int gender = 0, string birth = "", string avatar = "") {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        _userResponsitory.updateUserInfoByID(Convert.ToInt32(sessionUserID), userName, fullName, email, gender, birth, avatar);
+        string msg = "Cập nhật thành công";
+        return Ok(new {msg});
     }
 
     public IActionResult Logout() {

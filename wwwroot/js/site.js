@@ -14,6 +14,8 @@ function getData() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
 
+            console.log(data);
+
             let htmlCartDetail = "";
 
             htmlCartDetail += data.cartDetails.map(obj => `

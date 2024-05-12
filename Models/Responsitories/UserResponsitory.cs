@@ -48,6 +48,12 @@ public class UserResponsitory : IUserResponsitory
         return Convert.ToBase64String(result);
     }
 
+    public IEnumerable<User> getUserInfoByID(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        return _context.Users.FromSqlRaw("EXEC sp_GetUserInfoByID @PK_iUserID", userIDParam);
+    }
+
     public IEnumerable<User> login(string email, string password)
     {
         SqlParameter emailParam = new SqlParameter("@sEmail", email);
@@ -64,7 +70,32 @@ public class UserResponsitory : IUserResponsitory
         SqlParameter addressParam = new SqlParameter("@sAddress", user.sAddress);
         SqlParameter createTimeParam = new SqlParameter("@dCreateTime", DateTime.Now);
         SqlParameter passwordParam = new SqlParameter("@sPassword", user.sPassword);
-        _context.Database.ExecuteSqlRaw("EXEC sp_InsertUser @FK_iRoleID, @sName, @sEmail, @sAddress, @dCreateTime, @sPassword", roleIdParam, nameParam, emailParam, addressParam, createTimeParam, passwordParam);
+        _context.Database.ExecuteSqlRaw(
+            "EXEC sp_InsertUser @FK_iRoleID, @sName, @sEmail, @sAddress, @dCreateTime, @sPassword", 
+            roleIdParam, nameParam, emailParam, addressParam, createTimeParam, passwordParam
+        );
+        return true;
+    }
+
+    public bool updateUserInfoByID(int userID, string userName = "", string fullName = "", string email = "", int gender = 0, string birth = "", string avatar = "")
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        SqlParameter userNameParam = new SqlParameter("@sUserName", userName);
+        SqlParameter fullNameParam = new SqlParameter("@sFullName", fullName);
+        SqlParameter emailParam = new SqlParameter("@sEmail", email);
+        SqlParameter genderParam = new SqlParameter("@iGender", gender);
+        SqlParameter birthParam = new SqlParameter("@DateBirth", birth);
+        SqlParameter avatarParam = new SqlParameter("@sImageProfile", avatar);
+        _context.Database.ExecuteSqlRaw(
+            "sp_UpdateProfile @PK_iUserID, @sUserName, @sFullName, @sEmail, @iGender, @DateBirth, @sImageProfile", 
+            userIDParam, 
+            userNameParam,
+            fullNameParam,
+            emailParam,
+            genderParam,
+            birthParam,
+            avatarParam
+        );
         return true;
     }
 }
