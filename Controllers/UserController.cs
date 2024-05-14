@@ -21,7 +21,7 @@ public class UserController : Controller {
     }
 
     public IActionResult Login() {
-        string password = "12345678";
+        string password = "10";
         string encrypted = _userResponsitory.encrypt(password);
         string decryted = _userResponsitory.decrypt(encrypted);
         System.Console.WriteLine("Mat khau ma hoa: " + encrypted);
@@ -74,6 +74,18 @@ public class UserController : Controller {
     public IActionResult Forgot(string email) {
         TempData["result"] = "Mật khẩu của bạn là: 12345678";
         return RedirectToAction("Forgot");
+    }
+
+    [Route("/user/change")]
+    public IActionResult Change() {
+        return View();
+    }
+
+    [Route("/user/change")]
+    [HttpPost]
+    public IActionResult Change(string password) {
+        TempData["result"] = "Đổi mật khẩu thành công";
+        return RedirectToAction("Change");
     }
 
     [Route("/user/profile")]
