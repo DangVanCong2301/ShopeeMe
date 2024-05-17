@@ -134,15 +134,43 @@ function getData() {
             <li class="category-item-home">
                 <a href="/product/index/${obj.pK_iCategoryID}" class="category-item-link">
                     <div class="category-item__img" style="background-image: url(/img/category/${obj.sCategoryImage});">
+                        <div class="category-item__img-loading">
+                            <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
+                        </div>
                     </div>
-                    <div class="category-item__name">${obj.sCategoryName}</div>
+                    <div class="category-item__sub">
+                        <div class="category-item__name">${obj.sCategoryName}</div>
+                            <div class="category-item__name-loading">
+                                <div class="category-item__name-loading-line"></div>
+                                <div class="category-item__name-loading-line"></div>
+                            </div>
+                    </div>
                 </a>
             </li>
             `).join('');
 
             document.querySelector(".category-list").innerHTML = htmlCategory;
+
+            loadingCategoryItems();
         }
     }
     xhr.send(null);
 }
 getData();
+
+
+function loadingCategoryItems() {
+    // Lấy luôn thẻ khi api được gọi về
+    const loadingCategoryName = document.querySelectorAll(".category-item__name-loading");
+    const loadingCategoryImage = document.querySelectorAll(".category-item__img-loading");
+
+    setTimeout(() => {
+        for (let i = 0; i < loadingCategoryImage.length; i++) {
+            console.log(loadingCategoryImage[i]);
+            loadingCategoryImage[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingCategoryName.length; i++) {
+            loadingCategoryName[i].style.display = 'none';
+        }
+    }, 1000);
+}
