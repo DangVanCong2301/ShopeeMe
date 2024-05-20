@@ -20,6 +20,7 @@ builder.Services.AddTransient<ICartReponsitory, CartResponsitory>();
 builder.Services.AddTransient<IProductResponsitory, ProductResponsitory>();
 builder.Services.AddTransient<IUserResponsitory, UserResponsitory>();
 builder.Services.AddTransient<ICategoryResponsitory, CategoryResponsitory>();
+builder.Services.AddTransient<IOrderResponsitory, OrderResponsitory>();
 
 var app = builder.Build();
 

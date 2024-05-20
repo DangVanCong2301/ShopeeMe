@@ -8,42 +8,108 @@ function getCartInfo() {
             console.log(data);
             let html = "";
             html += data.cartDetails.map((obj, index) => `
-            <tr id="product__${obj.pK_iProductID}">
-                <td data-label="Chọn">
-                    <input type="checkbox" class="cart__checkout-input" name="" id="" />
-                </td>
-                <td data-label="Tên sản phẩm">
-                    <p class="cart__product-name">${obj.sProductName}</p>
-                </td>
-                <td data-label="Ảnh"><img src="/img/${obj.sImageUrl}" /></td>
-                <td data-label="Đơn giá">${money(obj.dUnitPrice)} đ</td>
-                <td data-label="Số lượng">
-                    <div class="cart__count-btns">
-                        <button type="button" class="cart__btn-add"
-                            onclick="tru(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">-</button>
-                        <input name="qnt" type="text" id="qnt" value="${obj.iQuantity}"
-                            class="cart__count-input" />
-                        <button type="button" class="cart__btn-sub"
-                            onclick="cong(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">+</button>
+            <div class="cart__body" id="product__${obj.pK_iProductID}">
+                <div class="cart__body-header">
+                    <div class="cart__input">
+                        <input type="checkbox" class="cart__checkout-input" name="" id="">
                     </div>
-                </td>
-                <td data-label="Thành tiền" id="money">${money(obj.dMoney)} đ</td>
-                <td>
-                    <div class='btn-tools'>
-                        <a class='btn-tool btn-tool__del'
-                            href='javascript:deleteProduct(${obj.pK_iProductID})' title='Xoá sản phẩm'><i
-                                class='uil uil-trash'></i></a>
+                    <span>F4 Shop Mall</span>
+                    <div class="cart__body-header-text">LenovoThinkplus.vn</div>
+                    <a href="#" class="cart__body-header-chat">
+                        <i class="uil uil-chat cart__body-header-chat-icon"></i>
+                    </a>
+                </div>
+                <div class="cart__body-product">
+                    <div class="cart__input">
+                        <input type="checkbox" class="cart__checkout-input" name="" id="">
                     </div>
-                </td>
-            </tr>
+                    <div class="cart__body-product-info">
+                        <div class="cart__body-product-img" style="background-image: url(./img/${obj.sImageUrl});">
+                            
+                        </div>
+                        <div class="cart__body-prduct-desc">
+                            <div class="cart__body-product-name">
+                                ${obj.sProductName}
+                                <div class="cart__body-product-name-progress">
+                                    <div class="cart__body-product-name-progress-line"></div>
+                                    <div class="cart__body-product-name-progress-line"></div>
+                                </div>
+                            </div>
+                            <img src="./img/voucher.png" class="cart__body-product-voucher" alt="">
+                        </div>
+                    </div>
+                    <div class="cart__body-product-type">Phân loại hàng: Bạc</div>
+                    <div class="cart__body-product-cost">
+                        <div class="cart__body-product-cost-old">189.000 đ</div>
+                        <div class="cart__body-product-cost-new">${money(obj.dUnitPrice)} đ</div>
+                    </div>
+                    <div class="cart__body-product-quantity">
+                        <div class="cart__count-btns">
+                            <button type="button" class="cart__btn-add" onclick="tru(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">-</button>
+                            <input name="qnt" type="text" id="qnt" value="1" class="cart__count-input" />
+                            <button type="button" class="cart__btn-sub" onclick="cong(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">+</button>
+                        </div>
+                    </div>
+                    <div class="cart__body-product-money">121.000 đ</div>
+                    <div class="cart__body-product-operation">
+                        <div class='btn-tools'>
+                            <a class='btn-tool btn-tool__del' href='javascript:deleteProduct(${obj.pK_iProductID})' title='Xoá sản phẩm'><i class='uil uil-trash'></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart__body-discount">
+                    <i class="uil uil-store cart__body-discount-icon"></i>
+                    <div class="cart__body-discount-sub">Mua thêm 91.000đ để được mức giảm 3kđ</div>
+                    <a href="#" class="cart__body-discount-link">Thêm mã giảm giá của Shop</a>
+                </div>
+                <div class="cart__body-transport">
+                    <img src="./img/free_ship.png" alt="" class="cart__body-transport-img">
+                    <div class="cart__body-transport-sub">Giảm 300.000đ phí vận chuyển đơn tối thiểu 0đ</div>
+                    <a href="#" class="cart__body-transport-more">Tìm hiểu thêm</a>
+                </div>
+                <div class="cart__body-loading">
+                    <div class="cart__body-header-loading">
+                        <div class="cart__body-header-input-loading"></div>
+                        <div class="cart__body-header-sub-loading"></div>
+                    </div>
+                    <div class="cart__body-product-loading">
+                        <div class="cart__body-header-input-loading"></div>
+                        <div class="cart__body-product-info-loading">
+                            <div class="cart__body-product-img-loading">
+                                <i class="uil uil-shopping-bag cart__body-product-img-icon-loading"></i>
+                            </div>
+                            <div class="cart__body-product-desc-loading">
+                                <div class="cart__body-product-desc-line-loading"></div>
+                                <div class="cart__body-product-desc-line-loading"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart__body-discount-loading">
+                        <div class="cart__body-discount-line-loading"></div>
+                    </div>
+                    <div class="cart__body-transport-loading">
+                        <div class="cart__body-transport-line-loading"></div>
+                    </div>
+                </div>              
+            </div>
             `).join('');
-            document.querySelector(".table__total-count").innerText = `Có ${data.cartCount} sản phẩm trong giỏ hàng của bạn`;
-            document.getElementById("table__body").innerHTML = html;
+            document.querySelector(".cart__product-list").innerHTML = html;
+            loadingCartItems();
         }
     }
     xhr.send(null);
 }
 getCartInfo();
+
+function loadingCartItems() {
+    const loadingCartItem = document.querySelectorAll(".cart__body-loading");
+
+    setTimeout(() => {
+        for (let i = 0; i < loadingCartItem.length; i++) {
+            loadingCartItem[i].style.display = 'none';
+        }
+    }, 1000);
+}
 
 // Tăng số lượng sản phẩm trong giỏ hàng
 function cong(event, productID, unitPrice) {
@@ -148,18 +214,58 @@ function deleteProduct(productID) {
 }
 
 // Checkout
-function checkout() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Order/Checkout', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            data = JSON.parse(xhr.responseText);
-            data.map(obj => {
-                document.querySelector(".table__total-price").innerText = `${money(obj.dTotalMoney)} đ`;
-            });
+function checkAllProduct(input) {
+    const checkProduct = document.querySelectorAll(".cart__checkout-input"); // Các thẻ input render ra sau
+
+    if (input.checked) {
+        for (let i = 0; i < checkProduct.length; i++) {
+            checkProduct[i].checked = true; // Nguồn: https://stackoverflow.com/questions/8206565/check-uncheck-checkbox-with-javascript
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', '/Order/Checkout', true);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    console.log(data);
+                    data.totalMoney.map(obj => {
+                        document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán (${data.cartCount} sản phẩm):
+                <span>${money(obj.dTotalMoney)} đ</span>`;
+                    });
+                }
+            };
+            xhr.send(null);
         }
-    };
-    xhr.send(null);
+    } else {
+        for (let i = 0; i < checkProduct.length; i++) {
+            checkProduct[i].checked = false; // Nguồn: https://stackoverflow.com/questions/8206565/check-uncheck-checkbox-with-javascript
+            document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán 0 sản phẩm):
+                <span>0 đ</span>`;
+        }
+    }
+}
+
+function deleteAllProduct() {
+    let html = "";
+    html += `
+    <div class="modal">
+        <div class="modal__overlay">
+        
+        </div>
+        <div class="modal__body">
+            <!--Form message -->
+            <div class="auth-form">
+                <div class="auth-form__container">
+                    <p class="auth-form__msg">Bạn muốn bỏ 3 sản phẩm?</p>
+                    <div class="auth-form__controls">
+                        <button onclick="exitModal()" class="btn btn--primary">HUỶ</button>
+                        <button class="btn">ĐỒNG Ý</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+    document.querySelector(".cart__message").innerHTML = html;
+    document.querySelector(".modal").classList.add("open");
 }
 
 // Tách lấy chữ số
