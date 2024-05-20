@@ -169,6 +169,7 @@ function loadingCategoryItems() {
             console.log(loadingCategoryImage[i]);
             loadingCategoryImage[i].style.display = 'none';
         }
+        
         for (let i = 0; i < loadingCategoryName.length; i++) {
             loadingCategoryName[i].style.display = 'none';
         }
