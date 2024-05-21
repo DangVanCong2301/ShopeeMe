@@ -237,6 +237,24 @@ html {
     color: var(--primary-color);
 }
 
+/* Loading Spinner */
+.spinner {
+    width: 66px;
+    height: 66px;
+    border: 6px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spinner .7s linear infinite;
+}
+
+@keyframes spinner {
+    from {
+
+    } to {
+        transform: rotate(360deg);
+    }
+}
+
 /* Rate */
 .rate {
     display: grid;

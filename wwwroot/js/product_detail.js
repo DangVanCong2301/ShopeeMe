@@ -60,10 +60,10 @@ function addToCart(productID, price) {
                     </li>
                     `).join('');
                     document.querySelector(".header__cart-notice").innerText = data.model.cartCount;
-                    document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
+                    //document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
                 }
-
                 toast({title: "Thông báo", msg: `${data.msg}`, type: "success", duration: 5000});
+
             }
         }
         xhr.send(formData);
