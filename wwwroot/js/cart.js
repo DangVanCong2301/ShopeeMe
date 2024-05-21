@@ -6,6 +6,78 @@ function getCartInfo() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
             console.log(data);
+            if (data.cartCount == 0) {
+                let noCartHtml = `
+                <div class="cart__no">
+                    <div style="background-image: url(/img/no-cart.png);" class="cart__no-img"></div>
+                    <div class="cart__no-sub">Giỏ hàng của bạn còn trống</div>
+                    <a href="/" class="btn btn--primary">Mua ngay</a>
+                </div>
+                `;
+                document.querySelector(".cart").innerHTML = noCartHtml;
+            } else {
+                let haveCartHtml = "";
+                haveCartHtml += `
+                <div class="cart__have">
+                    <div class="cart__instruct">
+                        <img src="/img/free_ship.png" alt="" class="cart__instruct-img">
+                        <div class="cart__instruct-text">Nhấn vào mục Mã giảm giá ở cuối trang để hưởng miễn phí vận chuyển
+                            bạn nhé!</div>
+                    </div>
+                    <div class="cart__header">
+                        <div class="cart__input">
+                            <input type="checkbox" class="cart__checkout-input" name="" id="">
+                        </div>
+                        <div class="cart__header-sub">Sản phẩm</div>
+                        <div class="cart__header-type"></div>
+                        <div class="cart__header-cost">Đơn giá</div>
+                        <div class="cart__header-quantity">Số lượng</div>
+                        <div class="cart__header-money">Số tiền</div>
+                        <div class="cart__header-operation">Thao tác</div>
+                    </div>
+                    <div class="cart__product-list">
+
+                    </div>
+                    <div class="cart__purchase">
+                        <div class="cart__purchase-voucher">
+                            <div class="cart__purchase-voucher-title">
+                                <i class="uil uil-store cart__body-discount-icon"></i>
+                                <div class="cart__purchase-voucher-sub">F4 Shop Voucher</div>
+                            </div>
+                            <a href="#" class="cart__purchase-voucher-link">Chọn hoặc nhập mã</a>
+                        </div>
+                        <div class="cart__purchase-payment">
+                            <div class="cart__input">
+                                <input type="checkbox" class="cart__checkout-input-all" onchange="checkAllProduct(this)"
+                                    name="" id="">
+                            </div>
+                            <div class="cart__purchase-payment-desc">
+                                <div class="cart__purchase-payment-left">
+                                    <div class="cart__purchase-footer-select">Chọn tất cả (${data.cartCount})</div>
+                                    <a href="javascript:deleteAllProductModal()"
+                                        class="cart__purchase-footer-delele">Xoá</a>
+                                </div>
+                                <div class="cart__purchase-payment-right">
+                                    <div class="cart__purchase-payment-total-sub">Tổng thanh toán (0 sản phẩm):
+                                        <span>0 đ</span>
+                                    </div>
+                                    <button type="button" class="btn btn--primary">Mua hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart__like">
+                        <div class="cart__like-title">Có thể bạn cũng thích</div>
+                        <div class="home-product">
+                            <div class="row sm-gutter cart__like-product-list">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+                document.querySelector(".cart").innerHTML = haveCartHtml;
+            }
             let html = "";
             html += data.cartDetails.map((obj, index) => `
             <div class="cart__body" id="product__${obj.pK_iProductID}">
@@ -46,11 +118,11 @@ function getCartInfo() {
                     <div class="cart__body-product-quantity">
                         <div class="cart__count-btns">
                             <button type="button" class="cart__btn-add" onclick="tru(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">-</button>
-                            <input name="qnt" type="text" id="qnt" value="1" class="cart__count-input" />
+                            <input name="qnt" type="text" id="qnt" value="${obj.iQuantity}" class="cart__count-input" />
                             <button type="button" class="cart__btn-sub" onclick="cong(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">+</button>
                         </div>
                     </div>
-                    <div class="cart__body-product-money">121.000 đ</div>
+                    <div class="cart__body-product-money">${money(obj.dMoney)} đ</div>
                     <div class="cart__body-product-operation">
                         <div class='btn-tools'>
                             <a class='btn-tool btn-tool__del' href='javascript:deleteProduct(${obj.pK_iProductID})' title='Xoá sản phẩm'><i class='uil uil-trash'></i></a>
@@ -131,8 +203,8 @@ function cong(event, productID, unitPrice) {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
                 const trParent = parentElement.parentNode.parentNode;
-                // console.log(money.money);
-                trParent.querySelector("#money").innerText = `${money(data.money)} đ`;
+                //console.log(trParent);
+                trParent.querySelector(".cart__body-product-money").innerText = `${money(data.money)} đ`;
             }
         }
         xhr.send(formData);
@@ -156,7 +228,7 @@ function tru(event, productID, unitPrice) {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
                 const trParent = parentElement.parentNode.parentNode;
-                trParent.querySelector("#money").innerText = `${money(data.money)} đ`;
+                trParent.querySelector(".cart__body-product-money").innerText = `${money(data.money)} đ`;
             }
         };
         xhr.send(formData);
@@ -243,29 +315,68 @@ function checkAllProduct(input) {
     }
 }
 
-function deleteAllProduct() {
-    let html = "";
-    html += `
-    <div class="modal">
-        <div class="modal__overlay">
-        
-        </div>
-        <div class="modal__body">
-            <!--Form message -->
-            <div class="auth-form">
-                <div class="auth-form__container">
-                    <p class="auth-form__msg">Bạn muốn bỏ 3 sản phẩm?</p>
-                    <div class="auth-form__controls">
-                        <button onclick="exitModal()" class="btn btn--primary">HUỶ</button>
-                        <button class="btn">ĐỒNG Ý</button>
+function deleteAllProductModal() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/Cart/GetCartInfo', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+            let html = "";
+            html += `
+            <div class="modal">
+                <div class="modal__overlay">
+                
+                </div>
+                <div class="modal__body">
+                    <!--Form message -->
+                    <div class="auth-form">
+                        <div class="auth-form__container">
+                            <p class="auth-form__msg">Bạn muốn bỏ ${data.cartCount} sản phẩm?</p>
+                            <div class="auth-form__controls">
+                                <button onclick="exitModal()" class="btn btn--primary">HUỶ</button>
+                                <button onclick="deleteAllProduct()" class="btn">ĐỒNG Ý</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    `;
-    document.querySelector(".cart__message").innerHTML = html;
-    document.querySelector(".modal").classList.add("open");
+            `;
+            document.querySelector(".cart__message").innerHTML = html;
+            document.querySelector(".modal").classList.add("open");
+        }
+    };
+    xhr.send(null);
+}
+
+function deleteAllProduct() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/Cart/DeleteAllProduct', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+            document.querySelector('.modal').classList.remove('open');
+            document.querySelector(".cart__delete-loading .modal").style.display = 'flex';
+            setTimeout(() => {
+                document.querySelector(".cart__delete-loading .modal").style.display = 'none';
+                setTimeout(() => {
+                    let noCartHtml = "";
+                    noCartHtml +=  `
+                    <div class="cart__no">
+                        <div style="background-image: url(/img/no-cart.png);" class="cart__no-img"></div>
+                        <div class="cart__no-sub">Giỏ hàng của bạn còn trống</div>
+                        <a href="/" class="btn btn--primary">Mua ngay</a>
+                    </div>
+                    `;
+                    document.querySelector(".cart").innerHTML = noCartHtml;
+                    toast({ title: "Thông báo", msg: `${data.message}`, type: "success", duration: 5000 });
+                    document.querySelector("cart__have").style.display = 'none';
+                }, 1000);
+            }, 2000);
+        }
+    };
+    xhr.send(null);
 }
 
 // Tách lấy chữ số

@@ -43,7 +43,7 @@ function getData() {
             `).join('');
 
             document.querySelector(".header__cart-notice").innerText = data.cartCount;
-            document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
+            //document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
         }
     }
     xhr.send(null);

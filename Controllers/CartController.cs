@@ -113,4 +113,19 @@ public class CartController : Controller {
         };
         return Ok(model);
     }
+
+    [HttpPost]
+    public IActionResult DeleteAllProduct() {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        List<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList(); // Phải sử dụng list thì mới lấy ra được các id
+        foreach (var item in cartDetails) {
+            _cartResponsitory.deleteProductInCart(item.PK_iProductID, Convert.ToInt32(sessionUserID));
+        }
+        
+        CartViewModel model = new CartViewModel {
+            CartCount = cartDetails.Count(),
+            Message = "Xoá thành công"
+        };
+        return Ok(model);
+    }
 }
