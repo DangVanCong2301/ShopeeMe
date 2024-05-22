@@ -61,7 +61,7 @@ function getCartInfo() {
                                     <div class="cart__purchase-payment-total-sub">Tổng thanh toán (0 sản phẩm):
                                         <span>0 đ</span>
                                     </div>
-                                    <button type="button" class="btn btn--primary">Mua hàng</button>
+                                    <a href="/checkout" class="btn btn--primary">Mua hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +93,7 @@ function getCartInfo() {
                 </div>
                 <div class="cart__body-product">
                     <div class="cart__input">
-                        <input type="checkbox" class="cart__checkout-input" name="" id="">
+                        <input type="checkbox" class="cart__checkout-input" onchange="addToCheckout(${obj.pK_iProductID})" name="" id="">
                     </div>
                     <div class="cart__body-product-info">
                         <div class="cart__body-product-img" style="background-image: url(./img/${obj.sImageUrl});">
@@ -377,6 +377,21 @@ function deleteAllProduct() {
         }
     };
     xhr.send(null);
+}
+
+function addToCheckout(productID) {
+    // console.log(productID);
+    var formData = new FormData();
+    formData.append('productID', productID);
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/checkout/add-to-checkout', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+        }
+    };
+    xhr.send(formData);
 }
 
 // Tách lấy chữ số
