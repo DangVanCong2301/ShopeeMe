@@ -1,4 +1,4 @@
-public class CheckoutViewModel {
+public class Checkout {
     public int PK_iProductID { get; set; }
     public string sImageUrl { get; set; }
     public string sProductName { get; set; }

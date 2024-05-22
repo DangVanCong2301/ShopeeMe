@@ -13,7 +13,7 @@ public class CheckoutController : Controller {
         _productResponsitory = productResponsitory;
     }
 
-    List<CheckoutViewModel> checkouts => HttpContext.Session.Get<List<CheckoutViewModel>>("cart_key") ?? new List<CheckoutViewModel>();
+    List<Checkout> checkouts => HttpContext.Session.Get<List<Checkout>>("cart_key") ?? new List<Checkout>();
 
     [HttpGet]
     [Route("/checkout")]
@@ -25,7 +25,7 @@ public class CheckoutController : Controller {
         ProductViewModel model = new ProductViewModel {
             CartDetails = carts,
             CartCount = cartCount,
-            CheckoutViewModels = checkouts
+            Checkouts = checkouts
         };
         return Json(model); 
     }
@@ -40,7 +40,7 @@ public class CheckoutController : Controller {
             if (product == null) {
                 System.Console.WriteLine($"Không tìm thấy hàng hoá có mã {productID}");
             }
-            item = new CheckoutViewModel {
+            item = new Checkout {
                 PK_iProductID = product[0].PK_iProductID,
                 sProductName = product[0].sProductName,
                 sImageUrl = product[0].sImageUrl
@@ -48,7 +48,6 @@ public class CheckoutController : Controller {
             cartsCheckout.Add(item);
         }
         HttpContext.Session.Set("cart_key", cartsCheckout);
-        List<CheckoutViewModel> checkout = HttpContext.Session.Get<List<CheckoutViewModel>>("cart_key") ?? new List<CheckoutViewModel>();
         return Ok(checkouts);
     }
 }
