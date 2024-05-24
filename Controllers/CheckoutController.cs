@@ -27,12 +27,18 @@ public class CheckoutController : Controller {
             CartCount = cartCount,
             Checkouts = checkouts
         };
-        return Json(model); 
+        return View(model); 
+    }
+
+    [HttpPost]
+    [Route("/checkout/get-data")]
+    public IActionResult GetData() {
+        return Ok(checkouts);
     }
 
     [HttpPost]
     [Route("/checkout/add-to-checkout")]
-    public IActionResult AddToCheckout(int productID) {
+    public IActionResult AddToCheckout(int productID, int quantity) {
         var cartsCheckout = checkouts;
         var item = cartsCheckout.SingleOrDefault(p => p.PK_iProductID == productID);
         if (item == null) {
@@ -43,7 +49,10 @@ public class CheckoutController : Controller {
             item = new Checkout {
                 PK_iProductID = product[0].PK_iProductID,
                 sProductName = product[0].sProductName,
-                sImageUrl = product[0].sImageUrl
+                sImageUrl = product[0].sImageUrl,
+                dUnitPrice = product[0].dPrice, // https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
+                iQuantity = quantity,
+                dMoney = product[0].dPrice * quantity
             };
             cartsCheckout.Add(item);
         }

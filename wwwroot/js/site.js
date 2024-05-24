@@ -2,10 +2,6 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-// Lây dữ liệu
-window.onload = () => {
-    getData();
-};
 
 function getData() {
     var xhr = new XMLHttpRequest();
@@ -18,36 +14,39 @@ function getData() {
 
             let htmlCartDetail = "";
 
-            htmlCartDetail += data.cartDetails.map(obj => `
-            <li class="header__cart-item">
-                <div class="header__cart-item-img">
-                    <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
-                </div>
-                <div class="header__cart-item-info">
-                    <div class="header__cart-item-head">
-                        <h5 class="header__cart-item-name">${obj.sProductName}</h5>
-                        <div class="header__cart-item-price-wrap">
-                            <span class="header__cart-item-price">${obj.dUnitPrice} đ</span>
-                            <span class="header__cart-item-multifly">X</span>
-                            <span class="header__cart-item-qnt">${obj.iQuantity}</span>
+            if (data.cartDetails != []) {
+                htmlCartDetail += data.cartDetails.map(obj => `
+                <li class="header__cart-item">
+                    <div class="header__cart-item-img">
+                        <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
+                    </div>
+                    <div class="header__cart-item-info">
+                        <div class="header__cart-item-head">
+                            <h5 class="header__cart-item-name">${obj.sProductName}</h5>
+                            <div class="header__cart-item-price-wrap">
+                                <span class="header__cart-item-price">${obj.dUnitPrice} đ</span>
+                                <span class="header__cart-item-multifly">X</span>
+                                <span class="header__cart-item-qnt">${obj.iQuantity}</span>
+                            </div>
+                        </div>
+                        <div class="header__cart-item-body">
+                            <span class="header__cart-item-description">
+                                Phân loại hàng:Bạc
+                            </span>
+                            <span class="header__cart-item-remove">Xoá</span>
                         </div>
                     </div>
-                    <div class="header__cart-item-body">
-                        <span class="header__cart-item-description">
-                            Phân loại hàng:Bạc
-                        </span>
-                        <span class="header__cart-item-remove">Xoá</span>
-                    </div>
-                </div>
-            </li>
-            `).join('');
+                </li>
+                `).join('');
+            }
 
             document.querySelector(".header__cart-notice").innerText = data.cartCount;
-            //document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
+            document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
         }
     }
     xhr.send(null);
 }
+getData();
 
 // Tìm kiếm danh mục
 function searchProducts(input) {

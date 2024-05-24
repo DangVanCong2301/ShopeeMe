@@ -89,9 +89,9 @@
             </div>
         </div>
         <div class="category">
-            <div class="category-header">
-                <div class="category-header__title">Danh mục</div>
-                <div class="category-header__arrow">
+            <div class="category__header">
+                <div class="category__header-title">Danh mục</div>
+                <div class="category__header-arrow">
                     <i class="fa-solid fa-arrow-left"></i>
                     <i class="fa-solid fa-arrow-right"></i>
                 </div>
@@ -132,7 +132,7 @@
                                             <div class="home-product-item__price-old-loading"></div>
                                         </span>
                                         <span class="home-product-item__price-current">
-                                            @product.dPrice đ
+                                            @product.dPrice.ToString("#,0##") đ
                                             <div class="home-product-item__price-current-loading"></div>
                                         </span>
                                     </div>

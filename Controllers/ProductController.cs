@@ -46,7 +46,8 @@ public class ProductController : Controller {
             CurrentCategoryID = categoryID,
             TotalPage = totalPage,
             PageSize = pageSize,
-            CurrentPage = currentPage
+            CurrentPage = currentPage,
+            CartCount = cartDetails.Count()
         };
         return View(model);
     }
@@ -62,7 +63,8 @@ public class ProductController : Controller {
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)).ToList();
         ProductViewModel model = new ProductViewModel {
             Products = product,
-            CartDetails = cartDetails
+            CartDetails = cartDetails,
+            CartCount = cartDetails.Count()
         };
         return View(model);
     }
