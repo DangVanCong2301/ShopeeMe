@@ -93,7 +93,7 @@ function getCartInfo() {
                 </div>
                 <div class="cart__body-product">
                     <div class="cart__input">
-                        <input type="checkbox" class="cart__checkout-input" onchange="addToCheckout(${obj.pK_iProductID})" name="" id="">
+                        <input type="checkbox" class="cart__checkout-input" onchange="addToCheckout(${obj.pK_iProductID}, event)" name="" id="">
                     </div>
                     <div class="cart__body-product-info">
                         <div class="cart__body-product-img" style="background-image: url(./img/${obj.sImageUrl});">
@@ -300,7 +300,7 @@ function checkAllProduct(input) {
                     console.log(data);
                     data.totalMoney.map(obj => {
                         document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán (${data.cartCount} sản phẩm):
-                <span>${money(obj.dTotalMoney)} đ</span>`;
+                        <span>${money(obj.dTotalMoney)} đ</span>`;
                     });
                 }
             };
@@ -309,7 +309,7 @@ function checkAllProduct(input) {
     } else {
         for (let i = 0; i < checkProduct.length; i++) {
             checkProduct[i].checked = false; // Nguồn: https://stackoverflow.com/questions/8206565/check-uncheck-checkbox-with-javascript
-            document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán 0 sản phẩm):
+            document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán (0 sản phẩm):
                 <span>0 đ</span>`;
         }
     }
@@ -379,10 +379,14 @@ function deleteAllProduct() {
     xhr.send(null);
 }
 
-function addToCheckout(productID) {
-    // console.log(productID);
+function addToCheckout(productID, event) {
+    const parentElement = event.target.parentNode;
+    const cartBody = parentElement.parentNode;
+    var quantity = cartBody.querySelector("#qnt").value;
+    // console.log(quantity);
     var formData = new FormData();
     formData.append('productID', productID);
+    formData.append('quantity', quantity);
     var xhr = new XMLHttpRequest();
     xhr.open('post', '/checkout/add-to-checkout', true);
     xhr.onreadystatechange = () => {

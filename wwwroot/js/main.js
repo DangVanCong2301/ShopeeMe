@@ -133,17 +133,17 @@ function getData() {
             htmlCategory += data.categories.map(obj => `
             <li class="category-item-home">
                 <a href="/product/index/${obj.pK_iCategoryID}" class="category-item-link">
-                    <div class="category-item__img" style="background-image: url(/img/category/${obj.sCategoryImage});">
+                    <div class="category-item__img" style="background-image: url(/img/${obj.sCategoryImage});">
                         <div class="category-item__img-loading">
                             <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
                         </div>
                     </div>
                     <div class="category-item__sub">
                         <div class="category-item__name">${obj.sCategoryName}</div>
-                            <div class="category-item__name-loading">
-                                <div class="category-item__name-loading-line"></div>
-                                <div class="category-item__name-loading-line"></div>
-                            </div>
+                        <div class="category-item__name-loading">
+                            <div class="category-item__name-loading-line"></div>
+                            <div class="category-item__name-loading-line"></div>
+                        </div>
                     </div>
                 </a>
             </li>
