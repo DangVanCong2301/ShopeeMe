@@ -1,4 +1,5 @@
-# Sàn giao dịch thương mại (Shopee Clone) ASP.NET MVC Core  7.0 
+# Sàn giao dịch thương mại (Shopee Clone)
+# Công nghệ: ASP.NET MVC Core  7.0
 - Luồng sử lý dữ liệu cơ bản: User->Routeing->Controller<->Model->View->User
 
 ## Thành phần chính
