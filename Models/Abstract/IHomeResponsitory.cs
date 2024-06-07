@@ -5,6 +5,7 @@ using System.Collections;
 /// Ngoài ra, interface sẽ giúp đồng bộ và thống nhất trong việc phát triển hệ thống trao đổi thông tin.
 /// </summary>
 public interface IHomeResponsitory {
+    IEnumerable<Store> getStores();
     IEnumerable<Product> getProducts();
     IEnumerable<Category> getCategories();
     IEnumerable<Product> displayProductsPagination(int pageSize, int pageNumber);

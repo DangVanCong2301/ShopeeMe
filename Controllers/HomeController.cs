@@ -56,6 +56,7 @@ namespace Project.Controllers
             int pageSize = 12;
             int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
             products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
+            IEnumerable<Store> stores = _homeResponsitory.getStores();
             IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
             IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
             IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
@@ -69,6 +70,7 @@ namespace Project.Controllers
             int cartCount = carts.Count();
             System.Console.WriteLine("Role ID: " + Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("RoleID")));
             ProductViewModel model = new ProductViewModel {
+                Stores = stores,
                 Products = products,
                 Categories = categories,
                 CartDetails = cartDetails,

@@ -28,4 +28,9 @@ public class HomeResponsitory : IHomeResponsitory
         SqlParameter keywordParam = new SqlParameter("@sKeyword", keyword);
         return _context.Categories.FromSqlRaw("EXEC sp_SearchCategoryByKeyword @sKeyword", keywordParam);
     }
+
+    public IEnumerable<Store> getStores()
+    {
+        return _context.Stores.FromSqlRaw("sp_SelelteStores");
+    }
 }
