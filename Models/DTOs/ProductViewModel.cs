@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Project.Models;
 
 public class ProductViewModel {
+    public IEnumerable<Store> Stores { get; set; }
     public IEnumerable<Product> Products {get; set;}
     public IEnumerable<Category> Categories {get; set;}
     public IEnumerable<CartDetail> CartDetails { get; set; }

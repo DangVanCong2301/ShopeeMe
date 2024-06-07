@@ -175,3 +175,4 @@ function loadingCategoryItems() {
         }
     }, 1000);
 }
+
