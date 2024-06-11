@@ -35,8 +35,9 @@ public class UserController : Controller {
             return View(user);
         }
         List<User> userLogin = _userResponsitory.login(user.sEmail, user.sPassword).ToList();
-        if (userLogin[0] == null) {
+        if (userLogin.Count() == 0) {
             TempData["msg"] = "Tài khoản hoặc mật khẩu không chính xác!";
+            return RedirectToAction("Login");
         }
         string nameUser = userLogin[0].sFullName;
         int value = userLogin[0].PK_iUserID;
@@ -118,7 +119,10 @@ public class UserController : Controller {
     }
 
     public IActionResult Logout() {
-        _accessor?.HttpContext?.Session.SetString("UserName", "");
+        CookieOptions options = new CookieOptions {
+            Expires = DateTime.Now.AddDays(-1)
+        };
+        Response.Cookies.Append("UserID", "0", options);
         _accessor?.HttpContext?.Session.SetInt32("UserID", 0);
         return RedirectToAction("Index", "Home");
     }

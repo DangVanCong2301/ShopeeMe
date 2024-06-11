@@ -176,3 +176,9 @@ function loadingCategoryItems() {
     }, 1000);
 }
 
+// Toggle active voucher 
+setInterval(() => {
+    document.querySelectorAll(".banner__voucher-day").forEach(e => {
+        e.classList.toggle("active");
+    });
+}, 1000);
