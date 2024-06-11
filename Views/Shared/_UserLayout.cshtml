@@ -8,23 +8,35 @@
     <link rel="stylesheet" href="~/css/base.css">
     <link rel="stylesheet" href="~/css/grid.css">
     <link rel="stylesheet" href="~/css/user.css">
-    <link rel="stylesheet" href="~/css/responsives.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!--=============== ICONSCOUT ===============-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/solid.css" />
 </head>
 <body>
     <div class="app">
         <header class="header">
             <div class="grid wide">
-                <div class="header__text">
+                <div class="header__mobile hide-on-destop">
+                    <div class="header__mobile-arrow">
+                        <i class="uil uil-arrow-left header__mobile-arrow-icon"></i>
+                    </div>
+                    <div class="header__mobile-title">Đăng nhập</div>
+                    <div class="header__mobile-question">
+                        <i class="uil uil-question-circle header__mobile-question"></i>
+                    </div>
+                </div>
+                <div class="header__text hide-on-mobile">
                     <div class=" header__text-logo ">
-                        <a href="/" class=" header_logo-link ">F4 SHOP</a>
+                        <a href="/" class=" header_logo-link ">Shopee</a>
                     </div>
                     <h2 class="header__text-name">@ViewData["Title"]</h2>
                 </div>
             </div>
         </header>
         <div class="container">
-            @RenderBody();
+            @RenderBody()
         </div>
         <footer class="footer">
             <div class="grid wide footer__content">
