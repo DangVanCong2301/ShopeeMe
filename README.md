@@ -1,4 +1,4 @@
-# Sàn giao dịch thương mại (Shopee Clone)
+# Sàn giao dịch thương mại (Shopee) - Đồ án tốt nghiệp
 # Công nghệ: ASP.NET Core MVC  7.0
 - Luồng sử lý dữ liệu cơ bản: User->Routeing->Controller<->Model->View->User
 
