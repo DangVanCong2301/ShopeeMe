@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/solid.css" />
 </head>
 @inject IHttpContextAccessor accesser
-@model ProductViewModel
+@model ShopeeViewModel
 <body>
     <div class="app">
-        <header class="header">
+        <header class="header hide-on-table">
             <div class="grid wide">
                 <nav class="header__navbar hide-on-mobile-table">
                     <ul class="header__navbar-list">
@@ -110,7 +110,9 @@
                                 </a> Trợ giúp
                             </a>
                         </li>
-                        <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate js-enter-form"><a class="header__navbar-item-link" href="/user/register">Đăng ký</a></li>
+                        <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">
+                            <a class="header__navbar-item-link" href="/user/register">Đăng ký</a>
+                        </li>
                         @if (@accesser?.HttpContext?.Session.GetInt32("UserID") == 0)
                         {
                             <li class="header__navbar-item header__navbar-item--strong" ><a class="header__navbar-item-link" href="/user/login">Đăng nhập</a></li>
@@ -375,7 +377,7 @@
                         </ul>
                     </div>
                     <div class="col l-2-4 c-12 m-4">
-                        <h3 class="footer__heading">Vào cửa hàng F4 SHOP</h3>
+                        <h3 class="footer__heading">Vào cửa hàng Shopee</h3>
                         <div class="footer__download">
                             <img src="~/img/qr_code.png" alt="" class="footer__download-qr">
                             <div class="footer__download-apps">
@@ -391,7 +393,7 @@
                 </div>
                 <div class="footer__bottom">
                     <div class="grid wide">
-                        <p class="footer__text">2022 - Bản quyền thuộc về công ty F4 Shop</p>
+                        <p class="footer__text">2022 - Bản quyền thuộc về công ty Shopee</p>
                     </div>
                 </div>
             </div>
