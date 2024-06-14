@@ -7,7 +7,7 @@
 
     .header {
         position: fixed;
-        z-index: 10;
+        z-index: 1;
         top: 0;
         right: 0;
         left: 0;
@@ -69,6 +69,17 @@
     .header__cart {
         width: 80px;
         text-align: right;
+    }
+
+    .home__table {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        line-height: 24px;
+        padding: 0 24px;
     }
 }
 
@@ -696,24 +707,5 @@
 
     .footer__download-app-link {
         padding: 6px 8px;
-    }
-}
-
-@media screen and (min-width: 992px) {
-    
-    .comment__add {
-        grid-template-areas: "avatar input button";
-        grid-template-columns: min-content auto min-content;
-        gap: 1rem;
-    }
-
-    .rate {
-        grid-template-columns: max-content max-content;
-        column-gap: 2rem;
-        justify-content: center;
-    }
-
-    .rate__me {
-        margin: 0 auto;
     }
 }

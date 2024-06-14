@@ -3,19 +3,17 @@ using Project.Models;
 
 [Route("/product")]
 public class ProductController : Controller {
-    private readonly DatabaseContext _context;
     private readonly IProductResponsitory _productResponsitory;
     private readonly IHttpContextAccessor _accessor;
     private readonly ICartReponsitory _cartResponsitory;
-    private readonly IHomeResponsitory _homeresponsitory;
+    private readonly IHomeResponsitory _homeResponsitory;
     private readonly IUserResponsitory _userResponsitory;
-    public ProductController(DatabaseContext context, IProductResponsitory productResponsitory, ICartReponsitory cartReponsitoty, IHttpContextAccessor accessor, IHomeResponsitory homeResponsitory, IUserResponsitory userResponsitory)
+    public ProductController(IProductResponsitory productResponsitory, ICartReponsitory cartReponsitoty, IHttpContextAccessor accessor, IHomeResponsitory homeResponsitory, IUserResponsitory userResponsitory)
     {
-        _context = context;
         _productResponsitory = productResponsitory;
         _cartResponsitory = cartReponsitoty;
         _accessor = accessor;
-        _homeresponsitory = homeResponsitory;
+        _homeResponsitory = homeResponsitory;
         _userResponsitory = userResponsitory;
     }
 
@@ -37,9 +35,9 @@ public class ProductController : Controller {
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
         products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)).ToList();
-        IEnumerable<Category> categories = _homeresponsitory.getCategories().ToList();
+        IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
         // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
-        ProductViewModel model = new ProductViewModel {
+        ShopeeViewModel model = new ShopeeViewModel {
             Products = products,
             Categories = categories,
             CartDetails = cartDetails,
@@ -59,9 +57,11 @@ public class ProductController : Controller {
     public IActionResult Detail(int id)
     {
         var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        IEnumerable<Store> stores = _homeResponsitory.getStores();
         IEnumerable<Product> product = _productResponsitory.getProductByID(id);
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)).ToList();
-        ProductViewModel model = new ProductViewModel {
+        ShopeeViewModel model = new ShopeeViewModel {
+            Stores = stores,
             Products = product,
             CartDetails = cartDetails,
             CartCount = cartDetails.Count()
@@ -79,7 +79,7 @@ public class ProductController : Controller {
             products = _productResponsitory.getProductsByCategoryIDAndSortReduce(categoryID); // Gọi đúng phương thức sắp xếp giảm dần nhé
         }
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID));
-        IEnumerable<Category> categories = _homeresponsitory.getCategories();
+        IEnumerable<Category> categories = _homeResponsitory.getCategories();
         ProductViewModel model = new ProductViewModel {
             Products = products,
             CartDetails = cartDetails,

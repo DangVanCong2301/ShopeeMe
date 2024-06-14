@@ -1,9 +1,13 @@
-@model ProductViewModel
+@model ShopeeViewModel
 @{
     ViewData["Title"] = "Chi tiết";
 }
 <link rel="stylesheet" href="~/css/product_detail.css">
-<div class="app__container">
+<div class="home__table hide-on-mobile hide-on-destop">
+    Sản phẩm chưa được tối ưu trên máy tính bảng, vui lòng sử dụng điện thoại và laptop
+    để có trả nghiệm tốt hơn!
+</div>
+<div class="app__container hide-on-table">
     <div class="detail">
         <!-- card left -->
         <div class="detail__left">
@@ -26,7 +30,7 @@
                         @product.sProductDescription
                     </p>
                 </div>
-                <div class="detail__btns">
+                <div class="detail__btns hide-on-mobile">
                     <div class="detail__btn-count">
                         <button type="button" class="detail__btn-count-btn" onclick="reduceProduct(event)">-</button>
                         <input type="text" name="quantity" id="qnt" value="0" class="detail__btn-count-input" />
@@ -36,6 +40,52 @@
                         <i class="fas fa-shopping-cart detail__cart-icon"></i>
                     </button>
                     <button type="button" class="btn btn--primary detail__btn-buy-now">Mua ngay</button>
+                </div>
+                <div class="detail__mobile-btns">
+                    <div class="detail__mobile-btn-add" onclick="showBottomSheet()"> Thêm vào giỏ
+                        <i class="fas fa-shopping-cart detail__cart-icon"></i>
+                    </div>
+                    <div class="detail__mobile-btn-buy-now">Mua ngay</div>
+                </div>
+                <div class="detail__mobile-bottom-sheet-modal">
+                    <div class="detail__mobile-bottom-sheet-overlay"></div>
+                    <div class="detail__mobile-bottom-sheet">
+                        <div class="detail__mobile-bottom-sheet-info">
+                            <div class="detail__mobile-bottom-sheet-info-img"
+                                style="background-image: url(/img/tai_nghe_eport.jpg);"></div>
+                            <div class="detail__mobile-bottom-sheet-info-desc">
+                                <div class="detail__mobile-bottom-sheet-info-price">114.000đ - 225.000đ</div>
+                                <div class="detail__mobile-bottom-sheet-info-warehouse">Kho: 12345</div>
+                            </div>
+                        </div>
+                        <div class="detail__mobile-bottom-sheet-close" onclick="closeBottomSheet()">
+                            <i class="uil uil-times detail__mobile-bottom-sheet-close-icon"></i>
+                        </div>
+                        <div class="detail__mobile-bottom-sheet-type">
+                            <div class="detail__mobile-bottom-sheet-type-title">Loại</div>
+                            <div class="detail__mobile-bottom-sheet-type-list">
+                                <div class="detail__mobile-bottom-sheet-type-item active">
+                                    <div class="detail__mobile-bottom-sheet-type-item-img"
+                                        style="background-image: url(/img/tai_nghe_eport.jpg);"></div>
+                                    <div class="detail__mobile-bottom-sheet-type-item-name">Socany 3 cấp độ</div>
+                                </div>
+                                <div class="detail__mobile-bottom-sheet-type-item">
+                                    <div class="detail__mobile-bottom-sheet-type-item-img"
+                                        style="background-image: url(/img/tai_nghe_eport.jpg);"></div>
+                                    <div class="detail__mobile-bottom-sheet-type-item-name">Socany 3 cấp độ</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail__mobile-bottom-sheet-quantity">
+                            <div class="detail__mobile-bottom-sheet-quantity-title">Số lượng</div>
+                            <div class="detail__mobile-bottom-sheet-quantity-btns">
+                                <div class="detail__mobile-bottom-sheet-quantity-btn-plus">+</div>
+                                <input type="text" class="detail__mobile-bottom-sheet-quantity-input" value="1">
+                                <div class="detail__mobile-bottom-sheet-quantity-btn-less">-</div>
+                            </div>
+                        </div>
+                        <div class="detail__mobile-bottom-sheet-add-to-cart">Thêm vào giỏ hàng</div>
+                    </div>
                 </div>
             } 
             <div class="detail__social">

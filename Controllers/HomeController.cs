@@ -50,6 +50,9 @@ namespace Project.Controllers
                 _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
             }
             var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+            if (sessionUserID == null) {
+                _accessor?.HttpContext?.Session.SetInt32("UserID", 0);
+            }
             System.Console.WriteLine("sessionUserID: " + sessionUserID);
             IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
             int totalRecord = products.Count();
@@ -69,7 +72,7 @@ namespace Project.Controllers
             }
             int cartCount = carts.Count();
             System.Console.WriteLine("Role ID: " + Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("RoleID")));
-            ProductViewModel model = new ProductViewModel {
+            ShopeeViewModel model = new ShopeeViewModel {
                 Stores = stores,
                 Products = products,
                 Categories = categories,
