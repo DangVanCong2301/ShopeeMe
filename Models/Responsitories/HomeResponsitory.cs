@@ -33,4 +33,10 @@ public class HomeResponsitory : IHomeResponsitory
     {
         return _context.Stores.FromSqlRaw("sp_SelelteStores");
     }
+
+    public IEnumerable<Favorite> getFavorites(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        return _context.Favorites.FromSqlRaw("sp_SelectProductFavorites @FK_iUserID", userIDParam);
+    }
 }

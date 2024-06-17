@@ -10,4 +10,5 @@ public interface IHomeResponsitory {
     IEnumerable<Category> getCategories();
     IEnumerable<Product> displayProductsPagination(int pageSize, int pageNumber);
     IEnumerable<Category> searchProductsByKeyword(string keyword);
+    IEnumerable<Favorite> getFavorites(int userID);
 }

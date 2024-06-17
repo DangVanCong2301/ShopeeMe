@@ -12,6 +12,7 @@ namespace Project.Models
         public DbSet<Store> Stores { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetail> CartDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -32,6 +33,10 @@ namespace Project.Models
 
             modelBuilder.Entity<Product>(entity => {
                 entity.HasKey(e => e.PK_iProductID);
+            });
+
+            modelBuilder.Entity<Favorite>(entity => {
+                entity.HasKey(e => e.PK_iFavoriteID);
             });
 
             modelBuilder.Entity<User>(entity => {

@@ -23,7 +23,6 @@
                     <p class="detail__price-old"><span>500.000 đ</span></p>
                     <p class="detail__price-new"><span>@product.dPrice.ToString("#,##0.00") đ</span></p>
                 </div>
-
                 <div class="detail__text">
                     <h2 class="detail__text-title">về mặt hàng này: </h2>
                     <p class="detail__text-desc">
@@ -88,23 +87,37 @@
                     </div>
                 </div>
             } 
-            <div class="detail__social">
-                <p class="detail__social-title">Chia sẻ: </p>
-                <a class="detail__social-link" href="#">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a class="detail__social-link" href="#">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="detail__social-link" href="#">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="detail__social-link" href="#">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a class="detail__social-link" href="#">
-                    <i class="fab fa-pinterest"></i>
-                </a>
+            <div class="detail__number">
+                <div class="detail__social">
+                    <p class="detail__social-title">Chia sẻ: </p>
+                    <a class="detail__social-link" href="#">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a class="detail__social-link" href="#">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a class="detail__social-link" href="#">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a class="detail__social-link" href="#">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a class="detail__social-link" href="#">
+                        <i class="fab fa-pinterest"></i>
+                    </a>
+                </div>
+                @foreach (var favorite in Model.Favorites)
+                {
+                    @if (@favorite.FK_iProductID == Model.CurrentProductID)
+                    {
+                        <div class="detail__favorite" title="Bỏ yêu thích">
+                            <i class="fas fa-heart detail__favorite-icon"></i>
+                        </div>
+                    }
+                    @* <div class="detail__favorite" title="Yêu thích">
+                        <i class="uil uil-heart-alt detail__favorite-icon"></i>
+                    </div> *@
+                }
             </div>
         </div>
     </div>

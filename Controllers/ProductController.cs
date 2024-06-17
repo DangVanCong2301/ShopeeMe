@@ -56,15 +56,18 @@ public class ProductController : Controller {
     [Route("detail/{id?}")]
     public IActionResult Detail(int id)
     {
-        var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         IEnumerable<Store> stores = _homeResponsitory.getStores();
         IEnumerable<Product> product = _productResponsitory.getProductByID(id);
-        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)).ToList();
+        IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(Convert.ToInt32(sessionUserID));
+        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
         ShopeeViewModel model = new ShopeeViewModel {
             Stores = stores,
             Products = product,
+            Favorites = favorites,
             CartDetails = cartDetails,
-            CartCount = cartDetails.Count()
+            CartCount = cartDetails.Count(),
+            CurrentProductID = id
         };
         return View(model);
     }
