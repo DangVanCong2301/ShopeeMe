@@ -55,6 +55,7 @@ namespace Project.Controllers
             }
             System.Console.WriteLine("sessionUserID: " + sessionUserID);
             IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
+            IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(Convert.ToInt32(sessionUserID));
             int totalRecord = products.Count();
             int pageSize = 12;
             int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
@@ -75,6 +76,7 @@ namespace Project.Controllers
             ShopeeViewModel model = new ShopeeViewModel {
                 Stores = stores,
                 Products = products,
+                Favorites = favorites,
                 Categories = categories,
                 CartDetails = cartDetails,
                 TotalPage = totalPage,

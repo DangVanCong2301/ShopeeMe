@@ -1787,7 +1787,8 @@
     padding: 2px;
 }
 
-i.home-product-item__like-icon-fill {
+i.home-product-item__like-icon-fill,
+i.home-product-item__like-icon-empty {
     display: none;
     color: #f63d30;
 }

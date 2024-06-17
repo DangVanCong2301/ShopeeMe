@@ -180,36 +180,47 @@
                         </a>
                     </div>
 
-                    <div class="header__search">
-                        <div class="header__search-input-wrap">
-                            <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
-                            <input type="text" class="header__search-input" onkeyup="searchProducts(this)" placeholder="Tìm kiếm Shopee">
+                    @if (ViewData["Title"] == "Chi tiết") {
+                        <div class="header__mobile-back">
+                            <a href="javascript:backHistory()" class="header__mobile-back-link">
+                                <i class="uil uil-arrow-left header__mobile-back-icon"></i>
+                            </a>
+                        </div>
+                        <div class="header__mobile-product-name">Sạc dự phòng E893</div>
+                    }
 
-                            <!--Search history-->
-                            <div class="header__search-history">
-                                <ul class="header__search-history-list">
-                                    
+                    @if (ViewData["Title"] == "Trang chủ") {
+                        <div class="header__search">
+                            <div class="header__search-input-wrap">
+                                <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
+                                <input type="text" class="header__search-input" onkeyup="searchProducts(this)" placeholder="Tìm kiếm Shopee">
+
+                                <!--Search history-->
+                                <div class="header__search-history">
+                                    <ul class="header__search-history-list">
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="header__search-select hide-on-mobile">
+                                <span class="header__search-select-label">Trong shop</span>
+                                <i class="header__search-select-icon fa-solid fa-chevron-down"></i>
+                                <ul class="header__search-option">
+                                    <li class="header__search-option-item header__search-option-item--active">
+                                        <span>Trong shop</span>
+                                        <i class="fa-solid fa-check"></i>
+                                    </li>
+                                    <li class="header__search-option-item header__search-option-item--active">
+                                        <span>Ngoài shop</span>
+                                        <i class="fa-solid fa-check"></i>
+                                    </li>
                                 </ul>
                             </div>
+                            <button class="header__search-btn hide-on-mobile">
+                                <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
+                            </button>
                         </div>
-                        <div class="header__search-select hide-on-mobile">
-                            <span class="header__search-select-label">Trong shop</span>
-                            <i class="header__search-select-icon fa-solid fa-chevron-down"></i>
-                            <ul class="header__search-option">
-                                <li class="header__search-option-item header__search-option-item--active">
-                                    <span>Trong shop</span>
-                                    <i class="fa-solid fa-check"></i>
-                                </li>
-                                <li class="header__search-option-item header__search-option-item--active">
-                                    <span>Ngoài shop</span>
-                                    <i class="fa-solid fa-check"></i>
-                                </li>
-                            </ul>
-                        </div>
-                        <button class="header__search-btn hide-on-mobile">
-                            <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </div>
+                    }
                     <!--Cart layout-->
                     <div class="header__cart">
                         <a href="/cart" class="header__cart-wrap">
@@ -246,63 +257,95 @@
                         </a>
                     </div>
 
-                    <!-- User  -->
-                    <div class="header__mobile-user">
-                        @if (@accesser?.HttpContext?.Session.GetInt32("UserID") == 0) {
-                            <div class="header__mobile-user-symbol">
-                                <a href="/user/login" class="header__mobile-user-link">
-                                    <i class="uil uil-user header__mobile-user-icon"></i>
-                                </a>
-                            </div>
-                        } else {
-                            @if (Model.RoleID == 2) {
-                                <div class="header__mobile-user-avatar">
-                                    <div class="header__mobile-user-avatar-img"
-                                        style="background-image: url(/img/profile_avatar.jpg);"></div>
-                                    <div class="header__mobile-user-avatar-menu">
-                                        <ul class="header__navbar-user-menu">
-                                            <li class="header__navbar-user-item">
-                                                <a href="#">Tài khoản của tôi</a>
-                                            </li>
-                                            <li class="header__navbar-user-item">
-                                                <a href="#">Địa chỉ của tôi</a>
-                                            </li>
-                                            <li class="header__navbar-user-item">
-                                                <a href="#">Đơn mua</a>
-                                            </li>
-                                            <li class="header__navbar-user-item">
-                                                <a href="#">Quản trị</a>
-                                            </li>
-                                            <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                <a href="/User/Logout">Đăng xuất</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            } else {
-                                <div class="header__mobile-user-avatar">
-                                    <div class="header__mobile-user-avatar-img"
-                                        style="background-image: url(/img/profile_avatar.jpg);"></div>
-                                    <div class="header__mobile-user-avatar-menu">
-                                        <ul class="header__navbar-user-menu">
-                                            <li class="header__navbar-user-item">
-                                                <a href="">Tài khoản của tôi</a>
-                                            </li>
-                                            <li class="header__navbar-user-item">
-                                                <a href="">Địa chỉ của tôi</a>
-                                            </li>
-                                            <li class="header__navbar-user-item">
-                                                <a href="">Đơn mua</a>
-                                            </li>
-                                            <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                <a href="/User/Logout">Đăng xuất</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                    @if (ViewData["Title"] == "Trang chủ") {
+                        <!-- User  -->
+                        <div class="header__mobile-user">
+                            @if (@accesser?.HttpContext?.Session.GetInt32("UserID") == 0)
+                            {
+                                <div class="header__mobile-user-symbol">
+                                    <a href="/user/login" class="header__mobile-user-link">
+                                        <i class="uil uil-user header__mobile-user-icon"></i>
+                                    </a>
                                 </div>
                             }
-                        } 
-                    </div>
+                            else
+                            {
+                                @if (Model.RoleID == 2)
+                                {
+                                    <div class="header__mobile-user-avatar">
+                                        <div class="header__mobile-user-avatar-img"
+                                            style="background-image: url(/img/profile_avatar.jpg);"></div>
+                                        <div class="header__mobile-user-avatar-menu">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Quản trị</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="header__mobile-user-avatar">
+                                        <div class="header__mobile-user-avatar-img"
+                                            style="background-image: url(/img/profile_avatar.jpg);"></div>
+                                        <div class="header__mobile-user-avatar-menu">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+
+                    @if (ViewData["Title"] == "Chi tiết") {
+                        <div class="header__mobile-more">
+                            <a href="javascript:openModalOrderMe()" class="header__mobile-more-link">
+                                <i class="uil uil-ellipsis-h header__mobile-more-icon"></i>
+                            </a>
+                        </div>
+                        <div class="header__mobile-more-modal hide-on-destop">
+                            <div class="header__mobile-more-modal-container">
+                                <a href="#" class="header__mobile-more-modal-order-me">
+                                    <i class="uil uil-clipboard-alt header__mobile-more-modal-order-me-icon"></i>
+                                    <span>Đơn hàng của tôi</span>
+                                </a>
+                                <a href="/" class="header__mobile-more-modal-order-me">
+                                    <i class="uil uil-shopping-bag header__mobile-more-modal-order-me-icon"></i>
+                                    <span>Trở về trang chủ</span>
+                                </a>
+                                <a href="#" class="header__mobile-more-modal-order-me">
+                                    <i class="uil uil-question-circle header__mobile-more-modal-order-me-icon"></i>
+                                    <span>Bạn cần trợ giúp</span>
+                                </a>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </header>
