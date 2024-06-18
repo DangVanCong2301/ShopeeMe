@@ -119,6 +119,10 @@
         padding-top: 0;
     }
 
+    .app__container {
+        margin-top: calc(20px + var(--header-height));
+    }
+
     .banner {
         margin-top: 0;
     }
