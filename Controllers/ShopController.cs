@@ -17,8 +17,8 @@ public class ShopController : Controller
         }
 
     [HttpGet]
-    [Route("/shop")]
-    public IActionResult Index(int currentPage = 1) {
+    [Route("/shop/{shopID?}")]
+    public IActionResult Index(int currentPage = 1, int shopID = 1) {
         // Lấy Cookies trên trình duyệt
         var userID = Request.Cookies["UserID"];
         if (userID != null)
@@ -32,6 +32,7 @@ public class ShopController : Controller
         int pageSize = 12;
         int totalPage = (int)Math.Ceiling(totalRecord / (double)pageSize);
         products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
+        IEnumerable<Store> stores = _homeResponsitory.getStores();
         IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
         IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
@@ -47,9 +48,10 @@ public class ShopController : Controller
         }
         int cartCount = carts.Count();
         System.Console.WriteLine("Role ID: " + Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("RoleID")));
-        ProductViewModel model = new ProductViewModel
+        ShopeeViewModel model = new ShopeeViewModel
         {
             Products = products,
+            Stores = stores,
             Categories = categories,
             CartDetails = cartDetails,
             TotalPage = totalPage,

@@ -189,38 +189,37 @@
                         <div class="header__mobile-product-name">Sạc dự phòng E893</div>
                     }
 
-                    @if (ViewData["Title"] == "Trang chủ") {
-                        <div class="header__search">
-                            <div class="header__search-input-wrap">
-                                <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
-                                <input type="text" class="header__search-input" onkeyup="searchProducts(this)" placeholder="Tìm kiếm Shopee">
+                    <div class="header__search">
+                        <div class="header__search-input-wrap">
+                            <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
+                            <input type="text" class="header__search-input" onkeyup="searchProducts(this)"
+                                placeholder="Tìm kiếm Shopee">
 
-                                <!--Search history-->
-                                <div class="header__search-history">
-                                    <ul class="header__search-history-list">
-                                        
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="header__search-select hide-on-mobile">
-                                <span class="header__search-select-label">Trong shop</span>
-                                <i class="header__search-select-icon fa-solid fa-chevron-down"></i>
-                                <ul class="header__search-option">
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span>Trong shop</span>
-                                        <i class="fa-solid fa-check"></i>
-                                    </li>
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span>Ngoài shop</span>
-                                        <i class="fa-solid fa-check"></i>
-                                    </li>
+                            <!--Search history-->
+                            <div class="header__search-history">
+                                <ul class="header__search-history-list">
+
                                 </ul>
                             </div>
-                            <button class="header__search-btn hide-on-mobile">
-                                <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
-                            </button>
                         </div>
-                    }
+                        <div class="header__search-select hide-on-mobile">
+                            <span class="header__search-select-label">Trong shop</span>
+                            <i class="header__search-select-icon fa-solid fa-chevron-down"></i>
+                            <ul class="header__search-option">
+                                <li class="header__search-option-item header__search-option-item--active">
+                                    <span>Trong shop</span>
+                                    <i class="fa-solid fa-check"></i>
+                                </li>
+                                <li class="header__search-option-item header__search-option-item--active">
+                                    <span>Ngoài shop</span>
+                                    <i class="fa-solid fa-check"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="header__search-btn hide-on-mobile">
+                            <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
                     <!--Cart layout-->
                     <div class="header__cart">
                         <a href="/cart" class="header__cart-wrap">
@@ -349,6 +348,10 @@
                 </div>
             </div>
         </header>
+        <div class="home__table hide-on-mobile hide-on-destop">
+            Sản phẩm chưa được tối ưu trên máy tính bảng, vui lòng sử dụng điện thoại và laptop 
+            để có trả nghiệm tốt hơn!
+        </div>
         @RenderBody()
         <footer class="footer">
             <div class="grid wide footer__content">
