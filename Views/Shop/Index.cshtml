@@ -1,46 +1,48 @@
 @model ShopeeViewModel
 
 @{
-    ViewData["Title"] = "Viet Mark";
+    ViewData["Title"] = "Shop";
 }
 
 <link rel="stylesheet" href="~/css/shop.css">
 <div class="app__container hide-on-table">
     <div class="shop__mobile hide-on-destop">
-        <div class="shop__mobile-info">
-            <div class="shop__mobile-info-avatar">
-                <div class="shop__mobile-info-avatar-img"
-                    style="background-image: url(./assets/img/am_sieu_toc_1.jpg);"></div>
-                <div class="shop__mobile-info-avatar-favorite">
-                    <span>Yêu thích</span>
-                </div>
-            </div>
-            <div class="shop__mobile-info-shop">
-                <div class="shop__mobile-info-shop-name">
-                    <span>Viet Mark</span>
-                    <i class="uil uil-angle-right-b shop__mobile-info-shop-name-arrow"></i>
-                </div>
-                <div class="shop__mobile-info-shop-statistical">
-                    <div class="shop__mobile-info-shop-statistical-rate">
-                        <i class="uis uis-star shop__mobile-info-shop-statistical-rate-icon"></i>
-                        <span>4.6 (26,6k đánh giá)</span>
-                    </div>
-                    <div class="shop__mobile-info-shop-statistical-monitor">
-                        2,4k người theo dõi
+        @foreach (var shop in Model.Stores)
+        {
+            <div class="shop__mobile-info" style="background-image: url(/img/@shop.sImageBackground);">
+                <div class="shop__mobile-info-avatar">
+                    <div class="shop__mobile-info-avatar-img" style="background-image: url(/img/@shop.sImageAvatar);"></div>
+                    <div class="shop__mobile-info-avatar-favorite">
+                        <span>Yêu thích</span>
                     </div>
                 </div>
-            </div>
-            <div class="shop__mobile-info-btns">
-                <div class="shop__mobile-info-btn-monitor">
-                    <i class="uil uil-plus shop__mobile-info-btn-monitor-icon"></i>
-                    <span>Theo dõi</span>
+                <div class="shop__mobile-info-shop">
+                    <div class="shop__mobile-info-shop-name">
+                        <span>@shop.sStoreName</span>
+                        <i class="uil uil-angle-right-b shop__mobile-info-shop-name-arrow"></i>
+                    </div>
+                    <div class="shop__mobile-info-shop-statistical">
+                        <div class="shop__mobile-info-shop-statistical-rate">
+                            <i class="uis uis-star shop__mobile-info-shop-statistical-rate-icon"></i>
+                            <span>4.6 (26,6k đánh giá)</span>
+                        </div>
+                        <div class="shop__mobile-info-shop-statistical-monitor">
+                            2,4k người theo dõi
+                        </div>
+                    </div>
                 </div>
-                <div class="shop__mobile-info-btn-chat">
-                    <i class="uil uil-chat shop__mobile-info-btn-chat-icon"></i>
-                    <span>Chat</span>
+                <div class="shop__mobile-info-btns">
+                    <div class="shop__mobile-info-btn-monitor">
+                        <i class="uil uil-plus shop__mobile-info-btn-monitor-icon"></i>
+                        <span>Theo dõi</span>
+                    </div>
+                    <div class="shop__mobile-info-btn-chat">
+                        <i class="uil uil-chat shop__mobile-info-btn-chat-icon"></i>
+                        <span>Chat</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
         <div class="shop__mobile-header">
             <div class="shop__mobile-title-list">
                 <div class="shop__mobile-title-item">
@@ -74,77 +76,12 @@
         </div>
         <div class="shop__mobile-shop hide-on-mobile">
             <div class="shop__mobile-description">
-                <div class="shop__mobile-description-paragraph">
-                    <p>Viet Mark Shop</p>
-                    <p>Chuyên bán đồ da dụng tiện ích</p>
-                    <p>Các vật dụng phục vụ cho nhu cầu gia đình của bạn như:
-                        ấm siêu tốc, máy say sinh tố,...
-                    </p>
-                </div>
-                <div class="shop__mobile-description-paragraph">
-                    <p>Chú ý: Shop có tham gia đầy đủ các chương trình Free Ship
-                        khi thanh toán quý khách vui lòng sưu tầm mã để hưởng quyền lợi cao nhất
-                    </p>
-                </div>
-                <div class="shop__mobile-description-paragraph">
-                    <p>Hàng cam kết CHẤT LƯỢNG - UY TÍN hàng đầu</p>
-                    <p>Chúng tôi bán với giá thấp nhất - Tất cả các sản phẩm đều được bảo hành</p>
-                </div>
+                
             </div>
             <div class="shop__mobile-shop-selling">
                 <div class="shop__mobile-shop-selling-title">Sản phẩm bán chạy</div>
                 <div class="shop__mobile-shop-selling-list">
-                    <div class="shop__mobile-shop-selling-item">
-                        <a href="#" class="shop__mobile-shop-selling-link">
-                            <div class="shop__mobile-shop-selling-link-img"
-                                style="background-image: url(./assets/img/am_sieu_toc_1.jpg);">
-                                <div class="shop__mobile-shop-selling-link-img-top top-1">
-                                    <div class="shop__mobile-shop-selling-link-img-top-text">TOP</div>
-                                    <div class="shop__mobile-shop-selling-link-img-top-numb">1</div>
-                                </div>
-                            </div>
-                            <div class="shop__mobile-shop-selling-link-desc">
-                                <div class="shop__mobile-shop-selling-link-desc-name">
-                                    Bút Laze Trình Chiếu PowerPoint Kèm Remote Điều Khiển Không Dây Cho Laptop RF 2.4GHz
-                                </div>
-                                <div class="shop__mobile-shop-selling-link-desc-price">121.000đ</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="shop__mobile-shop-selling-item">
-                        <a href="#" class="shop__mobile-shop-selling-link">
-                            <div class="shop__mobile-shop-selling-link-img"
-                                style="background-image: url(./assets/img/am_sieu_toc_1.jpg);">
-                                <div class="shop__mobile-shop-selling-link-img-top top-2">
-                                    <div class="shop__mobile-shop-selling-link-img-top-text">TOP</div>
-                                    <div class="shop__mobile-shop-selling-link-img-top-numb">2</div>
-                                </div>
-                            </div>
-                            <div class="shop__mobile-shop-selling-link-desc">
-                                <div class="shop__mobile-shop-selling-link-desc-name">
-                                    Bút Laze Trình Chiếu PowerPoint Kèm Remote Điều Khiển Không Dây Cho Laptop RF 2.4GHz
-                                </div>
-                                <div class="shop__mobile-shop-selling-link-desc-price">121.000đ</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="shop__mobile-shop-selling-item">
-                        <a href="#" class="shop__mobile-shop-selling-link">
-                            <div class="shop__mobile-shop-selling-link-img"
-                                style="background-image: url(./assets/img/am_sieu_toc_1.jpg);">
-                                <div class="shop__mobile-shop-selling-link-img-top top-3">
-                                    <div class="shop__mobile-shop-selling-link-img-top-text">TOP</div>
-                                    <div class="shop__mobile-shop-selling-link-img-top-numb">3</div>
-                                </div>
-                            </div>
-                            <div class="shop__mobile-shop-selling-link-desc">
-                                <div class="shop__mobile-shop-selling-link-desc-name">
-                                    Bút Laze Trình Chiếu PowerPoint Kèm Remote Điều Khiển Không Dây Cho Laptop RF 2.4GHz
-                                </div>
-                                <div class="shop__mobile-shop-selling-link-desc-price">121.000đ</div>
-                            </div>
-                        </a>
-                    </div>
+                    
                 </div>
                 <div class="shop__mobile-shop-view-more">
                     <a href="#" class="shop__mobile-shop-view-more-link">

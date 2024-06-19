@@ -4,4 +4,6 @@ public class Store
     public string sStoreName { get; set; }
     public string sImageAvatar { get; set; }
     public string sImageLogo { get; set; }
+    public string sImageBackground { get; set; }
+    public string sDesc { get; set; }
 }

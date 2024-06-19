@@ -76,7 +76,39 @@ function addShopMobileShop(i) {
     document.querySelector(".shop__mobile-shop").classList.remove("hide-on-mobile");
     document.querySelector(".shop__mobile-product").classList.add("hide-on-mobile");
     document.querySelector(".shop__mobile-category").classList.add("hide-on-mobile");
-    document.querySelector(".header__sort-bar").classList.add("hide-on-mobile") 
+    document.querySelector(".header__sort-bar").classList.add("hide-on-mobile");
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/shop/get-data', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+            document.querySelector(".shop__mobile-description").innerHTML = data.stores[0].sDesc;
+            let html = "";
+            html += data.topSellingProducts.map((obj, index) => `
+            <div class="shop__mobile-shop-selling-item">
+               <a href="#" class="shop__mobile-shop-selling-link">
+                    <div class="shop__mobile-shop-selling-link-img"
+                        style="background-image: url(/img/${obj.sImageUrl});">
+                        <div class="shop__mobile-shop-selling-link-img-top top-${index + 1}">
+                            <div class="shop__mobile-shop-selling-link-img-top-text">TOP</div>
+                            <div class="shop__mobile-shop-selling-link-img-top-numb">${index + 1}</div>
+                        </div>
+                    </div>         
+                    <div class="shop__mobile-shop-selling-link-desc">
+                        <div class="shop__mobile-shop-selling-link-desc-name">
+                            ${obj.sProductName}
+                        </div>
+                        <div class="shop__mobile-shop-selling-link-desc-price">${obj.dPrice}đ</div>
+                    </div>
+                </a>         
+            </div>
+            `).join('');
+            document.querySelector(".shop__mobile-shop-selling-list").innerHTML = html;
+        }
+    };
+    xhr.send(null);
 }
 
 function addShopMobileProduct(i) {
