@@ -218,7 +218,7 @@
                 <div class="store__mobile-list">
                     @foreach (var store in Model.Stores) {
                         <div class="store__mobile-item">
-                            <a href="/shop" class="store__mobile-item-link">
+                            <a href="/shop/@store.PK_iStoreID" class="store__mobile-item-link">
                                 <div class="store__mobile-item-img"
                                     style="background-image: url(/img/@store.sImageAvatar);">
                                     <div class="store__mobile-item-img-blur-bottom">
@@ -256,7 +256,7 @@
                 <div class="row sm-gutter">
                     @foreach (var store in Model.Stores) {
                         <div class="col l-2 c-6 m-4">
-                            <a href="/shop" class="store__item">
+                            <a href="/shop/@store.PK_iStoreID" class="store__item">
                                 <div class="store__item-img" style="background-image: url(/img/@store.sImageAvatar);">
                                     <div class="store__item-img-blur-bottom">
                                     </div>
