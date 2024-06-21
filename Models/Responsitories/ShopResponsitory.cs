@@ -16,9 +16,21 @@ public class ShopResponsitory : IShopResponsitory
         return _context.Stores.FromSqlRaw("EXEC sp_GetShopByID @PK_iShopID", shopIDParam);
     }
 
-    public IEnumerable<Product> getTopSellingProductsShop(int shopID)
+    public IEnumerable<Product> getTop10GoodPriceProductsShop(int shopID)
     {
         SqlParameter shopIDParam = new SqlParameter("@PK_iShopID", shopID);
-        return _context.Products.FromSqlRaw("EXEC sp_GetTopSellingProductsShop @PK_iShopID", shopIDParam);
+        return _context.Products.FromSqlRaw("EXEC sp_GetTop10GoodPriceProductsShop @PK_iShopID", shopIDParam);
+    }
+
+    public IEnumerable<Product> getTop10SellingProductsShop(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@PK_iShopID", shopID);
+        return _context.Products.FromSqlRaw("EXEC sp_GetTop10SellingProductsShop @PK_iShopID", shopIDParam);
+    }
+
+    public IEnumerable<Product> getTop3SellingProductsShop(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@PK_iShopID", shopID);
+        return _context.Products.FromSqlRaw("EXEC sp_GetTop3SellingProductsShop @PK_iShopID", shopIDParam);
     }
 }
