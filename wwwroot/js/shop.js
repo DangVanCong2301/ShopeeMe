@@ -85,10 +85,11 @@ function addShopMobileShop(i) {
             const data = JSON.parse(xhr.responseText);
             console.log(data);
             document.querySelector(".shop__mobile-description").innerHTML = data.stores[0].sDesc;
-            let html = "";
-            html += data.topSellingProducts.map((obj, index) => `
+
+            let htmlTop3Selling = "";
+            htmlTop3Selling += data.top3SellingProducts.map((obj, index) => `
             <div class="shop__mobile-shop-selling-item">
-               <a href="#" class="shop__mobile-shop-selling-link">
+               <a href="/product/detail/${obj.pK_iProductID}" class="shop__mobile-shop-selling-link">
                     <div class="shop__mobile-shop-selling-link-img"
                         style="background-image: url(/img/${obj.sImageUrl});">
                         <div class="shop__mobile-shop-selling-link-img-top top-${index + 1}">
@@ -100,12 +101,56 @@ function addShopMobileShop(i) {
                         <div class="shop__mobile-shop-selling-link-desc-name">
                             ${obj.sProductName}
                         </div>
-                        <div class="shop__mobile-shop-selling-link-desc-price">${obj.dPrice}đ</div>
+                        <div class="shop__mobile-shop-selling-link-desc-price">${money(obj.dPrice)}đ</div>
                     </div>
                 </a>         
             </div>
             `).join('');
-            document.querySelector(".shop__mobile-shop-selling-list").innerHTML = html;
+            document.querySelector(".shop__mobile-shop-selling-list").innerHTML = htmlTop3Selling;
+
+            let htmlTop10Selling = "";
+            htmlTop10Selling += data.top10SellingProducts.map((obj, index) => `
+            <div class="shop__mobile-shop-selling-item">
+               <a href="/product/detail/${obj.pK_iProductID}" class="shop__mobile-shop-selling-link">
+                    <div class="shop__mobile-shop-selling-link-img"
+                        style="background-image: url(/img/${obj.sImageUrl});">
+                        <div class="shop__mobile-shop-selling-link-img-top top-${index + 1}">
+                            <div class="shop__mobile-shop-selling-link-img-top-text">TOP</div>
+                            <div class="shop__mobile-shop-selling-link-img-top-numb">${index + 1}</div>
+                        </div>
+                    </div>         
+                    <div class="shop__mobile-shop-selling-link-desc">
+                        <div class="shop__mobile-shop-selling-link-desc-name">
+                            ${obj.sProductName}
+                        </div>
+                        <div class="shop__mobile-shop-selling-link-desc-price">${money(obj.dPrice)}đ</div>
+                    </div>
+                </a>         
+            </div>
+            `).join('');
+            document.querySelector(".shop__mobile-shop-view-more-modal-body-product-selling").innerHTML = htmlTop10Selling;
+
+            let htmlTop10GoodPrice = "";
+            htmlTop10GoodPrice += data.top10GoodPriceProducts.map((obj, index) => `
+            <div class="shop__mobile-shop-selling-item">
+               <a href="/product/detail/${obj.pK_iProductID}" class="shop__mobile-shop-selling-link">
+                    <div class="shop__mobile-shop-selling-link-img"
+                        style="background-image: url(/img/${obj.sImageUrl});">
+                        <div class="shop__mobile-shop-selling-link-img-top top-${index + 1}">
+                            <div class="shop__mobile-shop-selling-link-img-top-text">TOP</div>
+                            <div class="shop__mobile-shop-selling-link-img-top-numb">${index + 1}</div>
+                        </div>
+                    </div>         
+                    <div class="shop__mobile-shop-selling-link-desc">
+                        <div class="shop__mobile-shop-selling-link-desc-name">
+                            ${obj.sProductName}
+                        </div>
+                        <div class="shop__mobile-shop-selling-link-desc-price">${money(obj.dPrice)}đ</div>
+                    </div>
+                </a>         
+            </div>
+            `).join('');
+            document.querySelector(".shop__mobile-shop-view-more-modal-body-product-good-price").innerHTML = htmlTop10GoodPrice;
         }
     };
     xhr.send(null);
@@ -154,3 +199,30 @@ window.addEventListener('scroll', () => {
         document.querySelector(".shop__mobile-header").classList.remove("scroll");
     }
 });
+
+// View More Modal
+function openViewMoreModal() {
+    document.querySelector(".shop__mobile-shop-view-more-modal").classList.add("open");
+}
+
+function closeViewMoreModal() {
+    document.querySelector(".shop__mobile-shop-view-more-modal").classList.remove("open");
+}
+
+// View More Body Options
+const viewModalBodyTitle = document.querySelectorAll(".shop__mobile-shop-view-more-modal-body-title");
+for (let i = 0; i < viewModalBodyTitle.length; i++) {
+    viewModalBodyTitle[i].addEventListener('click', () => {
+        if (i == 0) {
+            viewModalBodyTitle[0].classList.add("active");
+            viewModalBodyTitle[1].classList.remove("active");
+            document.querySelector(".shop__mobile-shop-view-more-modal-body-product-selling").classList.remove("hide-on-mobile");
+            document.querySelector(".shop__mobile-shop-view-more-modal-body-product-good-price").classList.add("hide-on-mobile");
+        } else if (i == 1) {
+            viewModalBodyTitle[0].classList.remove("active");
+            viewModalBodyTitle[1].classList.add("active");
+            document.querySelector(".shop__mobile-shop-view-more-modal-body-product-selling").classList.add("hide-on-mobile");
+            document.querySelector(".shop__mobile-shop-view-more-modal-body-product-good-price").classList.remove("hide-on-mobile");
+        }
+    });
+}
