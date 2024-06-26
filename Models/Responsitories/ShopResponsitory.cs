@@ -10,6 +10,19 @@ public class ShopResponsitory : IShopResponsitory
     {
         _context = context;
     }
+
+    public IEnumerable<Category> getCategoriesByShopID(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@PK_iShopID", shopID);
+        return _context.Categories.FromSqlRaw("EXEC sp_GetCategoriesByShopID @PK_iShopID", shopIDParam);
+    }
+
+    public IEnumerable<Product> getProductsByShopID(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@PK_iShopID", shopID);
+        return _context.Products.FromSqlRaw("EXEC sp_GetProductsByShopID @PK_iShopID", shopIDParam);
+    }
+
     public IEnumerable<Store> getShopByID(int shopID)
     {
         SqlParameter shopIDParam = new SqlParameter("@PK_iShopID", shopID);
