@@ -9,6 +9,12 @@ public class CategoryResponsitory : ICategoryResponsitory
     {
         _context = context;
     }
+
+    public IEnumerable<Category> getCategories()
+    {
+        return _context.Categories.FromSqlRaw("EXEC sp_SelectCategories");
+    }
+
     public bool inserCategory(Category category)
     {
         SqlParameter categoryNameParam = new SqlParameter("@sCategoryName", category.sCategoryName);

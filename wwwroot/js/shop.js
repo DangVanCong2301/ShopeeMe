@@ -86,6 +86,49 @@ function addShopMobileShop(i) {
             console.log(data);
             document.querySelector(".shop__mobile-description").innerHTML = data.stores[0].sDesc;
 
+            let htmlCategories = "";
+            for (let i = 0; i < data.categories.length; i++) {
+                htmlCategories += " <div class='shop__mobile-shop-category-item'>";
+                htmlCategories += "     <div class='shop__mobile-shop-category-item-header'>";
+                htmlCategories += "         <div class='shop__mobile-shop-category-item-name'>" + data.categories[i].sCategoryName + "</div>";
+                htmlCategories += "         <a href='#' class='shop__mobile-shop-category-item-view-more'>";
+                htmlCategories += "             <span>Xem tất cả</span>";
+                htmlCategories += "             <i class='uil uil-angle-right-b shop__mobile-shop-category-item-view-more-icon'></i>";
+                htmlCategories += "         </a>";
+                htmlCategories += "     </div>";
+                htmlCategories += "     <div class='shop__mobile-shop-category-product'>";
+                htmlCategories += "         <div class='shop__mobile-shop-category-product-list'>";
+                const categoryID = data.categories[i].pK_iCategoryID;
+                for (let j = 0; j < data.categories.length; j++) {
+                    if (data.products[j].fK_iCategoryID === categoryID) {
+                        //console.log(data.products[j]);
+                        htmlCategories += "             <a href='#' class='shop__mobile-shop-category-product-item'>";
+                        htmlCategories += "                 <div class='shop__mobile-shop-category-product-item-img' style='background-image: url(/img/" + data.products[i].sImageUrl + ");'></div>";
+                        htmlCategories += "                 <div class='shop__mobile-shop-category-product-item-name'>" + data.products[i].sProductName + "</div>";
+                        htmlCategories += "                 <div class='shop__mobile-shop-category-product-item-price'>" + data.products[i].dPrice + "đ</div>";
+                        htmlCategories += "                 <div class='shop__mobile-shop-category-product-item-statistical'>";
+                        htmlCategories += "                     <div class='shop__mobile-shop-category-product-item-stars'>";
+                        htmlCategories += "                         <i class='uis uis-star shop__mobile-shop-category-product-item-star'></i>";
+                        htmlCategories += "                         <i class='uis uis-star shop__mobile-shop-category-product-item-star'></i>";
+                        htmlCategories += "                         <i class='uis uis-star shop__mobile-shop-category-product-item-star'></i>";
+                        htmlCategories += "                         <i class='uis uis-star shop__mobile-shop-category-product-item-star'></i>";
+                        htmlCategories += "                         <i class='uis uis-star shop__mobile-shop-category-product-item-star'></i>";
+                        htmlCategories += "                     </div>";
+                        htmlCategories += "                     <div class='shop__mobile-shop-category-product-item-sold'>Đã bán 120</div>";
+                        htmlCategories += "                 </div>";
+                        htmlCategories += "                 <div class='shop__mobile-shop-category-product-item-favourite'>";
+                        htmlCategories += "                     <i class='fas fa-check shop__mobile-shop-category-product-item-favourite-icon'></i>";
+                        htmlCategories += "                     <span>Yêu thích</span>";
+                        htmlCategories += "                 </div>";
+                        htmlCategories += "             </a>"; 
+                    }
+                }
+                htmlCategories += "         </div>";
+                htmlCategories += "     </div>";
+                htmlCategories += " </div>";
+            }
+            document.querySelector(".shop__mobile-shop-category-list").innerHTML = htmlCategories;
+
             let htmlTop3Selling = "";
             htmlTop3Selling += data.top3SellingProducts.map((obj, index) => `
             <div class="shop__mobile-shop-selling-item">

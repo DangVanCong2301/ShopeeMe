@@ -72,11 +72,15 @@ public class ShopController : Controller
     public IActionResult GetData() {
         var sessionCurrentShopID = _accessor?.HttpContext?.Session.GetInt32("CurrentShopID");
         var shop = _shopResponsitory.getShopByID(Convert.ToInt32(sessionCurrentShopID));
+        IEnumerable<Category> categories = _shopResponsitory.getCategoriesByShopID(Convert.ToInt32(sessionCurrentShopID));
+        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top3SellingProducts = _shopResponsitory.getTop3SellingProductsShop(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top10SellingProduct = _shopResponsitory.getTop10SellingProductsShop(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top10GoodPriceProduct = _shopResponsitory.getTop10GoodPriceProductsShop(Convert.ToInt32(sessionCurrentShopID));
         ShopViewModel model = new ShopViewModel {
             Stores = shop,
+            Categories = categories,
+            Products = products,
             Top3SellingProducts = top3SellingProducts,
             Top10SellingProducts = top10SellingProduct,
             Top10GoodPriceProducts = top10GoodPriceProduct
