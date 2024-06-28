@@ -11,6 +11,12 @@ public class ShopResponsitory : IShopResponsitory
         _context = context;
     }
 
+    public IEnumerable<Product> getTop10SuggestProductsShop(int shopID)
+    {
+        SqlParameter shopIDPram = new SqlParameter("@PK_iShopID", shopID);
+        return _context.Products.FromSqlRaw("EXEC sp_GetTop10SuggestProductsByShopID @PK_iShopID", shopIDPram);
+    }
+
     public IEnumerable<Category> getCategoriesByShopID(int shopID)
     {
         SqlParameter shopIDParam = new SqlParameter("@PK_iShopID", shopID);

@@ -75,15 +75,17 @@ public class ShopController : Controller
         IEnumerable<Category> categories = _shopResponsitory.getCategoriesByShopID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top3SellingProducts = _shopResponsitory.getTop3SellingProductsShop(Convert.ToInt32(sessionCurrentShopID));
-        IEnumerable<Product> top10SellingProduct = _shopResponsitory.getTop10SellingProductsShop(Convert.ToInt32(sessionCurrentShopID));
-        IEnumerable<Product> top10GoodPriceProduct = _shopResponsitory.getTop10GoodPriceProductsShop(Convert.ToInt32(sessionCurrentShopID));
+        IEnumerable<Product> top10SellingProducts = _shopResponsitory.getTop10SellingProductsShop(Convert.ToInt32(sessionCurrentShopID));
+        IEnumerable<Product> top10GoodPriceProducts = _shopResponsitory.getTop10GoodPriceProductsShop(Convert.ToInt32(sessionCurrentShopID));
+        IEnumerable<Product> top10SuggestProducts = _shopResponsitory.getTop10SuggestProductsShop(Convert.ToInt32(sessionCurrentShopID));
         ShopViewModel model = new ShopViewModel {
             Stores = shop,
             Categories = categories,
             Products = products,
             Top3SellingProducts = top3SellingProducts,
-            Top10SellingProducts = top10SellingProduct,
-            Top10GoodPriceProducts = top10GoodPriceProduct
+            Top10SellingProducts = top10SellingProducts,
+            Top10GoodPriceProducts = top10GoodPriceProducts,
+            Top10SuggestProducts = top10SuggestProducts
         };
         return Ok(model);
     }
