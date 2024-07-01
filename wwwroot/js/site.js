@@ -12,9 +12,10 @@ function getData() {
 
             console.log(data);
 
+            
             let htmlCartDetail = "";
-
-            if (data.cartDetails != []) {
+            if (data.cartDetails.lenght == 0) {
+                console.log('b');
                 htmlCartDetail += data.cartDetails.map(obj => `
                 <li class="header__cart-item">
                     <div class="header__cart-item-img">
@@ -38,10 +39,9 @@ function getData() {
                     </div>
                 </li>
                 `).join('');
+                document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
             }
-
             document.querySelector(".header__cart-notice").innerText = data.cartCount;
-            document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
         }
     }
     xhr.send(null);
