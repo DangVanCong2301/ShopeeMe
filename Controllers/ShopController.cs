@@ -69,7 +69,7 @@ public class ShopController : Controller
 
     [HttpPost]
     [Route("/shop/get-data")]
-    public IActionResult GetData() {
+    public IActionResult GetData(int currentPage = 1) {
         var sessionCurrentShopID = _accessor?.HttpContext?.Session.GetInt32("CurrentShopID");
         var shop = _shopResponsitory.getShopByID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Category> categories = _shopResponsitory.getCategoriesByShopID(Convert.ToInt32(sessionCurrentShopID));
@@ -78,6 +78,10 @@ public class ShopController : Controller
         IEnumerable<Product> top10SellingProducts = _shopResponsitory.getTop10SellingProductsShop(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top10GoodPriceProducts = _shopResponsitory.getTop10GoodPriceProductsShop(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top10SuggestProducts = _shopResponsitory.getTop10SuggestProductsShop(Convert.ToInt32(sessionCurrentShopID));
+        int totalRecord = products.Count();
+        int pageSize = 12;
+        int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
+        products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         ShopViewModel model = new ShopViewModel {
             Stores = shop,
             Categories = categories,
@@ -85,7 +89,10 @@ public class ShopController : Controller
             Top3SellingProducts = top3SellingProducts,
             Top10SellingProducts = top10SellingProducts,
             Top10GoodPriceProducts = top10GoodPriceProducts,
-            Top10SuggestProducts = top10SuggestProducts
+            Top10SuggestProducts = top10SuggestProducts,
+            TotalPage = totalPage,
+            PageSize = pageSize,
+            CurrentPage = currentPage
         };
         return Ok(model);
     }

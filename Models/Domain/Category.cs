@@ -7,4 +7,5 @@ public class Category {
     public string sCategoryImage { get; set; }
     [Required(ErrorMessage = "Không được trống trường!")]
     public string sCategoryDescription { get; set; }
+    public int iProductCount { get; set; }
 }
