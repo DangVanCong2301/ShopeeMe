@@ -56,6 +56,7 @@ public class ProductController : Controller {
     [Route("detail/{id?}")]
     public IActionResult Detail(int id)
     {
+        _accessor?.HttpContext?.Session.SetInt32("CurrentProductID", id);
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         IEnumerable<Store> stores = _homeResponsitory.getStores();
         IEnumerable<Product> product = _productResponsitory.getProductByID(id);
@@ -70,6 +71,17 @@ public class ProductController : Controller {
             CurrentProductID = id
         };
         return View(model);
+    }
+
+    [HttpPost]
+    [Route("/product/get-data-detail")]
+    public IActionResult GetDetail() {
+        var sessionCurrentProductID = _accessor?.HttpContext?.Session.GetInt32("CurrentProductID");
+        var product = _productResponsitory.getProductByID(Convert.ToInt32(sessionCurrentProductID));
+        ProductViewModel model = new ProductViewModel {
+            Products = product
+        };
+        return Ok(model);
     }
 
     [Route("sort/{categoryID?}/{sortType?}")]

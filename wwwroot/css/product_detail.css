@@ -330,6 +330,12 @@
     .header__mobile-product-name {
         flex: 1;
         font-size: 20px;
+        line-height: 26px;
+        height: 26px;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         opacity: 0;
     }
 

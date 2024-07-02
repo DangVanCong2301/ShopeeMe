@@ -1,3 +1,16 @@
+function getData() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/product/get-data-detail', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            document.querySelector(".header__mobile-product-name").innerText = data.products[0].sProductName;
+        }
+    };
+    xhr.send(null);
+}
+getData();
+
 // Tăng số lượng sản phẩm trong chi tiết sản phẩm
 function increaseProduct(event) {
     const parentElement = event.target.parentNode;
@@ -99,7 +112,63 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Back History
-function backHistory() {
-    window.history.back();
+// Show/Hide Detail Header
+window.addEventListener('scroll', () => {
+    const y = this.pageYOffset;
+    if (y > 80) {
+        this.document.querySelector(".header__mobile-back").classList.add("scroll-detail");
+        this.document.querySelector(".header__mobile-product-name").classList.add("scroll-detail");
+        this.document.querySelector(".header__cart-wrap").classList.add("scroll-detail");
+        this.document.querySelector(".header__mobile-more").classList.add("scroll-detail");
+        this.document.querySelector(".header__mobile-back-icon").classList.add("scroll-detail");
+        this.document.querySelector(".header__cart-icon").classList.add("scroll-detail");
+        this.document.querySelector(".header__mobile-more-icon").classList.add("scroll-detail");
+    } else {
+        this.document.querySelector(".header__mobile-back").classList.remove("scroll-detail");
+        this.document.querySelector(".header__mobile-product-name").classList.remove("scroll-detail");
+        this.document.querySelector(".header__cart-wrap").classList.remove("scroll-detail");
+        this.document.querySelector(".header__mobile-more").classList.remove("scroll-detail");
+        this.document.querySelector(".header__mobile-back-icon").classList.remove("scroll-detail");
+        this.document.querySelector(".header__cart-icon").classList.remove("scroll-detail");
+        this.document.querySelector(".header__mobile-more-icon").classList.remove("scroll-detail");
+    }
+});
+
+// Comment Add
+function showCommentAddBtn() {
+    document.querySelector(".comment__add-btns").classList.add("show");
+}
+
+function hideCommentAddBtn() {
+    document.querySelector(".comment__add-btns").classList.remove("show");
+}
+
+function changeCommentAddBtn(input) {
+    if (input.value != "") {
+        document.querySelector(".comment__add-btn-reply").classList.add("active");
+    } else {
+        document.querySelector(".comment__add-btn-reply").classList.remove("active");
+    }
+}
+
+// Reply Input
+function showReplyInput() {
+    document.querySelector(".comment__feetback").classList.add("show");
+}
+
+function hideReplyInput() {
+    document.querySelector(".comment__feetback").classList.remove("show");
+}
+
+function changeReplyBtn(input) {
+    if (input.value != "") {
+        document.querySelector(".comment__feetback-btn-reply").classList.add("active");
+    } else {
+        document.querySelector(".comment__feetback-btn-reply").classList.remove("active");
+    }
+}
+
+function showReplyDesc() {
+    document.querySelector(".comment__replies").classList.toggle("show");
+    document.querySelector(".comment__reply-quantity-icon").classList.toggle("rotate");
 }
