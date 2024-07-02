@@ -180,6 +180,14 @@
                         </a>
                     </div>
 
+                    @if (ViewData["Title"] == "Shop") {
+                        <div class="header__mobile-back">
+                            <a href="javascript:backHistory()" class="header__mobile-back-link">
+                                <i class="uil uil-arrow-left header__mobile-back-icon"></i>
+                            </a>
+                        </div>
+                    }
+
                     @if (ViewData["Title"] == "Chi tiết") {
                         <div class="header__mobile-back">
                             <a href="javascript:backHistory()" class="header__mobile-back-link">
@@ -377,6 +385,22 @@
                                 <a href="#" class="header__mobile-more-modal-order-me">
                                     <i class="uil uil-question-circle header__mobile-more-modal-order-me-icon"></i>
                                     <span>Bạn cần trợ giúp</span>
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+                    @if (ViewData["Title"] == "Shop") {
+                        <div class="header__mobile-more hide-on-destop">
+                            <a href="javascript:openModalOrderMe()" class="header__mobile-more-link">
+                                <i class="uil uil-ellipsis-h header__mobile-more-icon"></i>
+                            </a>
+                        </div>
+                        <div class="header__mobile-more-modal hide-on-destop">
+                            <div class="header__mobile-more-modal-container">
+                                <a href="#" class="header__mobile-more-modal-order-me">
+                                    <i class="uil uil-clipboard-alt header__mobile-more-modal-order-me-icon"></i>
+                                    <span>Đơn hàng của tôi</span>
                                 </a>
                             </div>
                         </div>

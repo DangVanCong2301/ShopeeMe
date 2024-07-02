@@ -158,16 +158,6 @@ function displayChat() {
     document.querySelector(".chat__btn").style.display = "none";
 }
 
-window.addEventListener('scroll', () => {
-    const y = this.pageYOffset;
-    if (y > 1100) {
-        //console.log(y);
-        document.querySelector(".success-header").classList.add("scroll");
-    } else {
-        document.querySelector(".success-header").classList.remove("scroll");
-    }
-});
-
 function showChatWindowMobile() {
     document.querySelector(".chat__header-menu-bar").classList.toggle("active");
     document.querySelector(".chat__mobile-window").classList.toggle("show");
@@ -194,4 +184,9 @@ function money(number) {
         result = `${millions}.${hundred_thousand}${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
     }
     return result;
+}
+
+// Back History
+function backHistory() {
+    window.history.back();
 }

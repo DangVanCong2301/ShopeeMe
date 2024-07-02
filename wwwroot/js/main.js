@@ -182,3 +182,14 @@ setInterval(() => {
         e.classList.toggle("active");
     });
 }, 1000);
+
+// Fix Suggest Bar
+window.addEventListener('scroll', () => {
+    const y = this.pageYOffset;
+    if (y > 1100) {
+        //console.log(y);
+        document.querySelector(".success-header").classList.add("scroll");
+    } else {
+        document.querySelector(".success-header").classList.remove("scroll");
+    }
+});
