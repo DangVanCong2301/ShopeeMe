@@ -32,7 +32,7 @@
 Chi tiết tại: https://docs.google.com/document/d/1OA526wTnw-2Jn4faBllxIqHbD78u58EU/edit?usp=drive_link&ouid=102969611045986692309&rtpof=true&sd=true
 ## Kết quả thực hiện
 ### Trang chủ
-![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/0a5c5d59-3f51-43f7-bb47-2b222c0a2932)
+![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/f76fecd0-c289-464e-a798-cb0b5d3d7796)
 ### Trang sản phẩm
 ![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/9126d19c-cc46-49c9-87cf-ac0b98ab04c6)
 ### Chi tiết sản phẩm
