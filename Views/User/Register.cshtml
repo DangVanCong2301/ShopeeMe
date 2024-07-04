@@ -6,71 +6,75 @@
 <!--Register form-->
 <div class="app__container">
     <div class="auth">
-        <div class="auth__content">
-            <div class="auth__logo">
-
-            </div>
-            <div class="auth-form">
-                <form action="/User/Register" method="post" class="auth-form__container">
-                    <div class="auth-form__header">
-                        <h3 class="auth-form__heading">Đăng ký</h3>
-                        @* <span class="auth-form__switch-btn"><i class="fa-solid fa-xmark auth-form__close"></i></span> *@
-                    </div>
-                    <div class="auth-form__form">
-                        <div class="auth-form__group">
-                            <input type="text" asp-for="sName" class="auth-form__input" placeholder="Tên của bạn" />
-                            <span asp-validation-for="sName" class="auth-msg auth-msg__err"></span>
-                        </div>
-                        <div class="auth-form__group">
-                            <input type="text" asp-for="sEmail" class="auth-form__input" placeholder="Email của bạn" />
-                            <span asp-validation-for="sEmail" class="auth-msg auth-msg__err"></span>
-                        </div>
-                        <div class="auth-form__group">
-                            <input type="text" asp-for="sAddress" class="auth-form__input" placeholder="Địa chỉ của bạn" />
-                            <span asp-validation-for="sAddress" class="auth-msg auth-msg__err"></span>
-                        </div>
-                        <div class="auth-form__group">
-                            <input type="password" asp-for="sPassword"  class="auth-form__input" placeholder="Mật khẩu của bạn" />
-                            <span asp-validation-for="sPassword" class="auth-msg auth-msg__err"></span>
-                        </div>
-                        <div class="auth-form__group">
-                            @* Không được đặt kiểu name="" bằng một giá trị gì đó khi ta đang dùng Model -> nó sẽ không nhận đc giá trị *@
-                            <input type="password" asp-for="sPasswordConfirm" class="auth-form__input" placeholder="Nhập lại mật khẩu" />
-                            <span asp-validation-for="sPasswordConfirm" class="auth-msg auth-msg__err"></span>
-                        </div>
-                    </div>
-                    <div class="auth-form__aside">
-                        <div class="auth-form__help">
-                            <a href="" class="auth-form__help-link auth-form__help-link">Quên mật khẩu</a>
-                            <span class="auth-form__help-separate"></span>
-                            <a href="" class="auth-form__help-link">Cần trợ giúp</a>
-                        </div>
-                    </div>
-                    <div class="auth-form__result">
-                        @if (TempData["msg"] != null) {
-                            @TempData["msg"]
-                        }
-                    </div>
-                    <div class="auth-form__controls">
-                        <button class="btn auth-form__controls-back btn--normal js-login-form-close">TRỞ LẠI</button>
-                        <button type="submit" class="btn btn--primary">ĐĂNG KÝ</button>
-                    </div>
-                </form>
-                <div class="auth-form__socials">
-                    <a href="" class="auth-form__socials--facebook btn btn--size-s btn--size-color btn--with-icon">
-                        <i class="auth-form__socials-icon fab fa-facebook-square"></i>
-                        <span class="auth-form__socials-title">
-                            Kết nối với Facebook
-                        </span>
-                    </a>
-                    <a href="" class="auth-form__socials--google btn btn--size-s btn--with-icon">
-                        <i class="auth-form__socials-icon fab fa-google"></i>
-                        <span class="auth-form__socials-title">
-                            Kết nối với Facebook
-                        </span>
-                    </a>
+        <div class="auth__content grid wide">
+            <div class="auth__left">
+                <div class="auth__left-img">
+                    <img src="~/img/shopee_logo_white.png" class="auth__content-logo" alt="">
                 </div>
-
+                <div class="auth__left-sub">Nền tảng thương mại trưc tuyến</div>
+            </div>
+            <div class="auth__right">
+                <div class="auth-form">
+                    <form action="/User/Register" method="post" class="auth-form__container">
+                        <div class="auth-form__header">
+                            <h3 class="auth-form__heading">Đăng ký</h3>
+                            @* <span class="auth-form__switch-btn"><i class="fa-solid fa-xmark auth-form__close"></i></span> *@
+                        </div>
+                        <div class="auth-form__form">
+                            <div class="auth-form__group">
+                                <input type="text" asp-for="sName" class="auth-form__input" placeholder="Tên của bạn" />
+                                <span asp-validation-for="sName" class="auth-msg auth-msg__err"></span>
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="text" asp-for="sEmail" class="auth-form__input" placeholder="Email của bạn" />
+                                <span asp-validation-for="sEmail" class="auth-msg auth-msg__err"></span>
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="text" asp-for="sAddress" class="auth-form__input" placeholder="Địa chỉ của bạn" />
+                                <span asp-validation-for="sAddress" class="auth-msg auth-msg__err"></span>
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="password" asp-for="sPassword"  class="auth-form__input" placeholder="Mật khẩu của bạn" />
+                                <span asp-validation-for="sPassword" class="auth-msg auth-msg__err"></span>
+                            </div>
+                            <div class="auth-form__group">
+                                @* Không được đặt kiểu name="" bằng một giá trị gì đó khi ta đang dùng Model -> nó sẽ không nhận đc giá trị *@
+                                <input type="password" asp-for="sPasswordConfirm" class="auth-form__input" placeholder="Nhập lại mật khẩu" />
+                                <span asp-validation-for="sPasswordConfirm" class="auth-msg auth-msg__err"></span>
+                            </div>
+                        </div>
+                        <div class="auth-form__aside">
+                            <div class="auth-form__help">
+                                <a href="" class="auth-form__help-link auth-form__help-link">Quên mật khẩu</a>
+                                <span class="auth-form__help-separate"></span>
+                                <a href="" class="auth-form__help-link">Cần trợ giúp</a>
+                            </div>
+                        </div>
+                        <div class="auth-form__result">
+                            @if (TempData["msg"] != null) {
+                                @TempData["msg"]
+                            }
+                        </div>
+                        <div class="auth-form__controls">
+                            <button class="btn auth-form__controls-back btn--normal js-login-form-close">TRỞ LẠI</button>
+                            <button type="submit" class="btn btn--primary">ĐĂNG KÝ</button>
+                        </div>
+                    </form>
+                    <div class="auth-form__socials">
+                        <a href="" class="auth-form__socials--facebook btn btn--size-s btn--size-color btn--with-icon">
+                            <i class="auth-form__socials-icon fab fa-facebook-square"></i>
+                            <span class="auth-form__socials-title">
+                                Facebook
+                            </span>
+                        </a>
+                        <a href="" class="auth-form__socials--google btn btn--size-s btn--with-icon">
+                            <i class="auth-form__socials-icon fab fa-google"></i>
+                            <span class="auth-form__socials-title">
+                                Google
+                            </span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -78,24 +82,3 @@
 <div class="list__user">
 
 </div>
-<script>
-    function getDataUser() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('post', '/User/GetUser', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            const data = JSON.parse(xhr.responseText);
-            console.table(data);
-            let html = "";
-            html += data.map((obj, index) => `
-            <h4>
-                ${obj.sAddress}
-            </h4>
-            `).join('');
-            document.querySelector('.list__user').innerHTML = html;
-        }
-    }
-    xhr.send(null);
-}
-getDataUser();
-</script>
