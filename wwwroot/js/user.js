@@ -11,3 +11,23 @@ function showHiddenPass() {
         iconEye.classList.remove("uil-eye");
     }
 }
+
+function getDataUser() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/User/GetUser', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.table(data);
+            let html = "";
+            html += data.map((obj, index) => `
+            <h4>
+                ${obj.sAddress}
+            </h4>
+            `).join('');
+            document.querySelector('.list__user').innerHTML = html;
+        }
+    }
+    xhr.send(null);
+}
+//getDataUser();
