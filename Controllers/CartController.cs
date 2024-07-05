@@ -7,23 +7,37 @@ using Project.Models;
 public class CartController : Controller {
     private readonly IHttpContextAccessor _accessor;
     private readonly DatabaseContext _context;
+    private readonly IHomeResponsitory _homeResponsitory;
     private readonly ICartReponsitory _cartResponsitory;
     private readonly IUserResponsitory _userResponsitory;
-    public CartController(IHttpContextAccessor accessor, DatabaseContext context, ICartReponsitory cartReponsitoty, IUserResponsitory userResponsitory)
+    public CartController(IHttpContextAccessor accessor, DatabaseContext context, ICartReponsitory cartReponsitoty, IUserResponsitory userResponsitory, IHomeResponsitory homeResponsitory)
     {
         _accessor = accessor;
         _context = context;
+        _homeResponsitory = homeResponsitory;
         _cartResponsitory = cartReponsitoty;
         _userResponsitory = userResponsitory;
     }
 
     [Route("cart")]
     public IActionResult Index() {
-        var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");  
-        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)); 
+        // Lấy Cookies trên trình duyệt
+        var userID = Request.Cookies["UserID"];
+        if (userID != null)
+        {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        }
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        System.Console.WriteLine("UserID: " + userID);
+        if (sessionUserID == 0) {
+            return Redirect("/user/login");
+        }
+        IEnumerable<Store> stores = _homeResponsitory.getStores();
+        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)); 
         // Lấy số lượng giỏ hàng
         int cartCount = carts.Count();
-        ProductViewModel model = new ProductViewModel {
+        ShopeeViewModel model = new ShopeeViewModel {
+            Stores = stores,
             CartDetails = carts,
             CartCount = cartCount
         };

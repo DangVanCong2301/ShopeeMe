@@ -19,3 +19,9 @@
     transition: all .3s;
     z-index: 10;
 }
+
+@media screen and (max-width: 739px) {
+    .hide-on-home {
+        display: none;
+    }
+}

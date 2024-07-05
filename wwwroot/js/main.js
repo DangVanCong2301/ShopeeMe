@@ -166,7 +166,6 @@ function loadingCategoryItems() {
 
     setTimeout(() => {
         for (let i = 0; i < loadingCategoryImage.length; i++) {
-            console.log(loadingCategoryImage[i]);
             loadingCategoryImage[i].style.display = 'none';
         }
         

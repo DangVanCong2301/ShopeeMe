@@ -14,33 +14,58 @@ function getData() {
 
             
             let htmlCartDetail = "";
-            if (data.cartDetails.lenght == 0) {
+            if (data.cartCount == 0 || data.userID == 0) {
                 console.log('b');
-                htmlCartDetail += data.cartDetails.map(obj => `
-                <li class="header__cart-item">
-                    <div class="header__cart-item-img">
-                        <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
+                htmlCartDetail += 
+                `
+                    <div class="header__cart-list header__cart-list--no-cart">
+                        <img src="/img/no-cart.png" alt="" class="header__cart-no-cart-img">
+                        <span class="header__cart-list-no-cart-msg">
+                            Chưa có sản phẩm
+                        </span>
                     </div>
-                    <div class="header__cart-item-info">
-                        <div class="header__cart-item-head">
-                            <h5 class="header__cart-item-name">${obj.sProductName}</h5>
-                            <div class="header__cart-item-price-wrap">
-                                <span class="header__cart-item-price">${obj.dUnitPrice} đ</span>
-                                <span class="header__cart-item-multifly">X</span>
-                                <span class="header__cart-item-qnt">${obj.iQuantity}</span>
+                `;
+            } else {
+                console.log('a');
+                htmlCartDetail += 
+                `
+                <div class="header__cart-list">
+                    <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
+                    <ul class="header__cart-list-item">
+                `;
+                htmlCartDetail += data.cartDetails.map(obj => `
+                    <li class="header__cart-item">
+                        <div class="header__cart-item-img">
+                            <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
+                        </div>
+                        <div class="header__cart-item-info">
+                            <div class="header__cart-item-head">
+                                <h5 class="header__cart-item-name">${obj.sProductName}</h5>
+                                <div class="header__cart-item-price-wrap">
+                                    <span class="header__cart-item-price">${obj.dUnitPrice} đ</span>
+                                    <span class="header__cart-item-multifly">X</span>
+                                    <span class="header__cart-item-qnt">${obj.iQuantity}</span>
+                                </div>
+                            </div>
+                            <div class="header__cart-item-body">
+                                <span class="header__cart-item-description">
+                                    Phân loại hàng:Bạc
+                                </span>
+                                <span class="header__cart-item-remove">Xoá</span>
                             </div>
                         </div>
-                        <div class="header__cart-item-body">
-                            <span class="header__cart-item-description">
-                                Phân loại hàng:Bạc
-                            </span>
-                            <span class="header__cart-item-remove">Xoá</span>
-                        </div>
-                    </div>
-                </li>
+                    </li>
                 `).join('');
-                document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
+                htmlCartDetail += 
+                `
+                    </ul>
+                    <div class="header__cart-btn">
+                        <div class="header__cart-btn-sub">Xem giỏ hàng</div>
+                    </div>
+                </div>
+                `;
             }
+            document.querySelector(".header__cart-container").innerHTML = htmlCartDetail;
             document.querySelector(".header__cart-notice").innerText = data.cartCount;
         }
     }
