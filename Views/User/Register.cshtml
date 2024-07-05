@@ -1,40 +1,140 @@
-@model User
-
 @{
-    ViewData["Title"] = "Register Page";
+    Layout = "_UserLayout";
+    ViewData["Title"] = "Đăng ký";
 }
-<div class="row">
-    <div class="col border border-2 rounded p-4">
-        <form asp-action="Register" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label asp-for="sName" class="form-label">Tên của bạn:</label>
-                <input type="text" asp-for="sName" id="" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Ảnh:</label>
-                <input type="file" name="file" id="" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label asp-for="sEmail" class="form-label">Email:</label>
-                <input type="text" asp-for="sEmail" id="" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label asp-for="sPassword" class="form-label">Mật khẩu:</label>
-                <input type="text" asp-for="sPassword" id="" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Nhập lại khẩu:</label>
-                <input type="text" name="" id="" class="form-control">
-            </div>
-            <div class="mb-3">
-                @if (ViewData["msg"] != null) {
-                    @ViewData["msg"]
-                }
-            </div>
-            <input type="submit" value="Đăng ký" class="btn btn-primary">
-        </form>
+@model RegistrastionModel
+<!--Register form-->
+<div class="auth__mobile hide-on-destop hide-on-table">
+    <div class="auth__mobile-logo">
+        <img src="~/img/shopee_logo.png" class="auth__mobile-logo-img" alt="">
     </div>
-    <div class="col">
-
+    <div class="auth__mobile-form">
+        <div class="auth__mobile-form-div">
+            <i class="uil uil-user auth__mobile-form-icon"></i>
+            <input type="text" class="auth__mobile-form-input" placeholder="Email/Số điện thoại/Tên đăng nhập">
+        </div>
+        <div class="auth__mobile-form-div">
+            <i class="uil uil-lock-alt auth__mobile-form-icon"></i>
+            <div class="auth__mobile-form-password-regis">
+                <input type="text" class="auth__mobile-form-input" placeholder="Mật khẩu">
+                <i class="uil uil-eye-slash auth__mobile-form-password-show-icon"></i>
+            </div>
+        </div>
+        <div class="auth__mobile-form-div">
+            <i class="uil uil-lock-alt auth__mobile-form-icon"></i>
+            <div class="auth__mobile-form-password-regis">
+                <input type="text" class="auth__mobile-form-input" placeholder="Nhập lại mật khẩu">
+                <i class="uil uil-eye-slash auth__mobile-form-password-show-icon"></i>
+            </div>
+        </div>
+        <div class="auth__mobile-form-btn">Đăng nhập</div>
+        <div class="auth__mobile-form-link">
+            <a href="#" class="auth__mobile-form-link-register">Đăng ký</a>
+            <a href="#" class="auth__mobile-form-link-sms">Đăng nhập bằng SMS</a>
+        </div>
+    </div>
+    <div class="auth__mobile-or">
+        <div class="auth__mobile-or-title">
+            <span></span>
+            <div class="auth__mobile-or-title-text">HOẶC</div>
+            <span></span>
+        </div>
+    </div>
+    <div class="auth__mobile-bottom-btns">
+        <a href="#" class="auth__mobile-bottom-btn">
+            <i class="uil uil-facebook auth__mobile-bottom-btn-icon auth__mobile-bottom-btn-facebook-icon"></i>
+            <div class="auth__mobile-bottom-btn-facebook">
+            </div>
+            Đăng nhập với Facebook
+        </a>
+        <a href="#" class="auth__mobile-bottom-btn">
+            <i class="uil uil-google auth__mobile-bottom-btn-icon auth__mobile-bottom-btn-google-icon"></i>
+            Đăng nhập với Google
+        </a>
+        <a href="#" class="auth__mobile-bottom-btn">
+            <i class="uil uil-apple auth__mobile-bottom-btn-icon auth__mobile-bottom-btn-apple-icon"></i>
+            Đăng nhập với Apple
+        </a>
+    </div>
+    <div class="auth__mobile-agree">
+        <div class="auth__mobile-agree-text">Bằng việc đăng ký, bạn đã đồng ý với Shopee về</div>
+        <a href="#" class="auth__mobile-agree-link">Quy chế hoạt động</a> & <a href="#"
+            class="auth__mobile-agree-link">Chính sách bảo mật</a>
     </div>
 </div>
+<div class="app__container">
+    <div class="auth hide-on-mobile hide-on-table">
+        <div class="auth__content grid wide">
+            <div class="auth__left">
+                <div class="auth__left-img">
+                    <img src="~/img/shopee_logo_white.png" class="auth__content-logo" alt="">
+                </div>
+                <div class="auth__left-sub">Nền tảng thương mại trưc tuyến</div>
+            </div>
+            <div class="auth__right">
+                <div class="auth-form">
+                    <form action="/User/Register" method="post" class="auth-form__container">
+                        <div class="auth-form__header">
+                            <h3 class="auth-form__heading">Đăng ký</h3>
+                            @* <span class="auth-form__switch-btn"><i class="fa-solid fa-xmark auth-form__close"></i></span> *@
+                        </div>
+                        <div class="auth-form__form">
+                            <div class="auth-form__group">
+                                <input type="text" asp-for="sName" class="auth-form__input" placeholder="Tên của bạn" />
+                                <span asp-validation-for="sName" class="auth-msg auth-msg__err"></span>
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="text" asp-for="sEmail" class="auth-form__input" placeholder="Email của bạn" />
+                                <span asp-validation-for="sEmail" class="auth-msg auth-msg__err"></span>
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="text" asp-for="sAddress" class="auth-form__input" placeholder="Địa chỉ của bạn" />
+                                <span asp-validation-for="sAddress" class="auth-msg auth-msg__err"></span>
+                            </div>
+                            <div class="auth-form__group">
+                                <input type="password" asp-for="sPassword"  class="auth-form__input" placeholder="Mật khẩu của bạn" />
+                                <span asp-validation-for="sPassword" class="auth-msg auth-msg__err"></span>
+                            </div>
+                            <div class="auth-form__group">
+                                @* Không được đặt kiểu name="" bằng một giá trị gì đó khi ta đang dùng Model -> nó sẽ không nhận đc giá trị *@
+                                <input type="password" asp-for="sPasswordConfirm" class="auth-form__input" placeholder="Nhập lại mật khẩu" />
+                                <span asp-validation-for="sPasswordConfirm" class="auth-msg auth-msg__err"></span>
+                            </div>
+                        </div>
+                        <div class="auth-form__aside">
+                            <div class="auth-form__help">
+                                <a href="" class="auth-form__help-link auth-form__help-link">Quên mật khẩu</a>
+                                <span class="auth-form__help-separate"></span>
+                                <a href="" class="auth-form__help-link">Cần trợ giúp</a>
+                            </div>
+                        </div>
+                        <div class="auth-form__result">
+                            @if (TempData["msg"] != null) {
+                                @TempData["msg"]
+                            }
+                        </div>
+                        <div class="auth-form__controls">
+                            <button class="btn auth-form__controls-back btn--normal js-login-form-close">TRỞ LẠI</button>
+                            <button type="submit" class="btn btn--primary">ĐĂNG KÝ</button>
+                        </div>
+                    </form>
+                    <div class="auth-form__socials">
+                        <a href="" class="auth-form__socials--facebook btn btn--size-s btn--size-color btn--with-icon">
+                            <i class="auth-form__socials-icon fab fa-facebook-square"></i>
+                            <span class="auth-form__socials-title">
+                                Facebook
+                            </span>
+                        </a>
+                        <a href="" class="auth-form__socials--google btn btn--size-s btn--with-icon">
+                            <i class="auth-form__socials-icon fab fa-google"></i>
+                            <span class="auth-form__socials-title">
+                                Google
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/user.js"></script>

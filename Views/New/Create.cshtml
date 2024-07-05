@@ -1,0 +1,24 @@
+@{
+    Layout = "_NewLayout";
+}
+@model Category
+<h1>Thêm thể loại</h1>
+<form action="/New/Create" method="post">
+    <div>
+        <label for="">Tên thể loại</label>
+        <input type="text" asp-for="sCategoryName" placeholder="Tên thể loại">
+        <span asp-validation-for="sCategoryName"></span>
+    </div>
+    <div>
+        <label for="">Ảnh</label>
+        <input type="text" asp-for="sCategoryImage" placeholder="Ảnh thể loại">
+        <span asp-validation-for="sCategoryImage"></span>
+    </div>
+    <div>
+        <label for="">Chi tiết</label>
+        <input type="text" asp-for="sCategoryDescription" placeholder="Chi tiết thể loại">
+        <span asp-validation-for="sCategoryDescription"></span>
+    </div>
+    <button type="submit">Thêm</button>
+
+</form>

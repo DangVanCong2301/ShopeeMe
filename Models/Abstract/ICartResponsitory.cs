@@ -1,3 +1,9 @@
-public interface ICartReponsitoty {
-    
+public interface ICartReponsitory {
+    IEnumerable<CartDetail> getCartInfo(int userID);
+    IEnumerable<Cart> checkCartIDExist();
+    bool insertCart();
+    bool insertCartDetail(int userID, int productID, int cartID, int quantity, double unitPrice);
+    bool changeQuantity(int userID, int productID, int quantity, double money);
+    IEnumerable<CartDetail> checkProduct(int userID, int productID);
+    bool deleteProductInCart(int productID, int userID);
 }

@@ -1,0 +1,42 @@
+@{
+    Layout = "_NewLayout";
+}
+
+@model IEnumerable<Category>
+<link rel="stylesheet" href="~/css/grid.css">
+<link rel="stylesheet" href="~/css/cart.css">
+<div class="app__container">
+    <div class="grid wide">
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã thể loại</th>
+                    <th>Tên thể loại</th>
+                    <th>Chi tiết</th>
+                    <th>Công cụ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td class="">@category.PK_iCategoryID</td>
+                        <td class="">@category.sCategoryName</td>
+                        <td class="">@category.sCategoryDescription</td>
+                        <td>
+                            <a href="/category/detail/@category.PK_iCategoryID">Chi tiết</a>
+                            <a href="/category/delete/@category.PK_iCategoryID">Xoá</a>
+                            <a href="/category/edit/@category.PK_iCategoryID">Sửa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row">
+
+        </div>
+
+    </div>
+
+</div>
+<script src="~/js/admin.js"></script>

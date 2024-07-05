@@ -2,155 +2,210 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-const editModal = document.querySelector(".edit__modal");
 
-
-function openEditModal(orderID) {
-    editModal.classList.add("active-modal");
-    // console.log(orderID);
-    // var formData = new FormData();
-    // formData.append("orderID", orderID);
-    // var xhr = new XMLHttpRequest();
-    // xhr.open('post', '/Home/EditOrder', true);
-    // xhr.onreadystatechange = () => {
-    //     if (xhr.readyState == 4 && xhr.status == 200) {
-    //         const data = JSON.parse(xhr.responseText);
-    //         data.map(obj => 
-    //             document.querySelector(".input-order-id").value = obj.pK_iOrderID
-    //             );
-    //     }
-    // }
-    // xhr.send(formData);
-}
-
-document.querySelector(".edit__modal-close").addEventListener("click", () => {
-    editModal.classList.remove("active-modal");
-});
-
-window.onclick = (event) => {
-    if (event.target == editModal) {
-        editModal.classList.remove("active-modal");
-    }
-}
-
-//AddToCart
-function addToCart(PK_iProductID) {
+function getData() {
     var xhr = new XMLHttpRequest();
-    xhr.open('get', '/Cart/AddToCart/' + PK_iProductID + '', true);
+    xhr.open('post', '/Home/GetData', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            const obj = JSON.parse(xhr.responseText);
-            alert(obj.msg);
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            
+            let htmlCartDetail = "";
+            if (data.cartCount == 0 || data.userID == 0) {
+                console.log('b');
+                htmlCartDetail += 
+                `
+                    <div class="header__cart-list header__cart-list--no-cart">
+                        <img src="/img/no-cart.png" alt="" class="header__cart-no-cart-img">
+                        <span class="header__cart-list-no-cart-msg">
+                            Chưa có sản phẩm
+                        </span>
+                    </div>
+                `;
+            } else {
+                console.log('a');
+                htmlCartDetail += 
+                `
+                <div class="header__cart-list">
+                    <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
+                    <ul class="header__cart-list-item">
+                `;
+                htmlCartDetail += data.cartDetails.map(obj => `
+                    <li class="header__cart-item">
+                        <div class="header__cart-item-img">
+                            <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
+                        </div>
+                        <div class="header__cart-item-info">
+                            <div class="header__cart-item-head">
+                                <h5 class="header__cart-item-name">${obj.sProductName}</h5>
+                                <div class="header__cart-item-price-wrap">
+                                    <span class="header__cart-item-price">${obj.dUnitPrice} đ</span>
+                                    <span class="header__cart-item-multifly">X</span>
+                                    <span class="header__cart-item-qnt">${obj.iQuantity}</span>
+                                </div>
+                            </div>
+                            <div class="header__cart-item-body">
+                                <span class="header__cart-item-description">
+                                    Phân loại hàng:Bạc
+                                </span>
+                                <span class="header__cart-item-remove">Xoá</span>
+                            </div>
+                        </div>
+                    </li>
+                `).join('');
+                htmlCartDetail += 
+                `
+                    </ul>
+                    <div class="header__cart-btn">
+                        <div class="header__cart-btn-sub">Xem giỏ hàng</div>
+                    </div>
+                </div>
+                `;
+            }
+            document.querySelector(".header__cart-container").innerHTML = htmlCartDetail;
+            document.querySelector(".header__cart-notice").innerText = data.cartCount;
         }
     }
     xhr.send(null);
 }
 
-// lấy số lượng sản phẩm giỏ hàng
+// load số lượng sản phẩm giỏ hàng
 function getCartInfo() {
-    var xhr = new XMLHttpRequest(); 
+    var xhr = new XMLHttpRequest();
     xhr.open('post', '/Cart/Index', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
-            getCartCount(data);
-        }
-    }
-    xhr.send(null);
-}
-
-function getCartCount(data) {
-    let html = "";
-    console.log(data);
-    console.log(document.querySelector(".navbar__cart-notice").innerText);
-    for (let i = 0; i < data.length; i++) {
-        document.querySelector(".navbar__cart-notice").innerText = data[0].cartCount
-    }
-}
-
-// Tăng, giảm số lượng sản phẩm
-function cong(event, productID, unitPrice) {
-    // console.log(productID);
-    const parentElement = event.target.parentNode;
-    // console.log(parentElement);
-    var cong = parentElement.querySelector("#qnt").value;
-    var input = parentElement.querySelector("#qnt");
-    if (parseInt(cong) < 100) { // Nếu sau này ta convert biến này sang int, double thì không dùn constance cho biến qnt
-        input.value = parseInt(cong) + 1;
-        console.log(input.value);
-        var formData = new FormData(); // Gửi dữ liệu dạng formData
-        formData.append('quantity', input.value);
-        formData.append('productID', productID);
-        formData.append('unitPrice', unitPrice)
-        var xhr = new XMLHttpRequest();
-        xhr.open('post', '/Cart/Quantity', true);
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                const money = JSON.parse(xhr.responseText);
-                const trParent = parentElement.parentNode.parentNode;
-                // console.log(money.money);
-                trParent.querySelector("#money").innerText = money.money;
-            }
-        }
-        xhr.send(formData);
-    }
-}
-
-function tru(event, productID, unitPrice) {
-    const parentElement = event.target.parentNode;
-    var tru = parentElement.querySelector("#qnt").value;
-    var input = parentElement.querySelector("#qnt");
-    if (parseInt(tru) > 1) {
-        input.value = parseInt(tru) - 1;
-        var formData = new FormData();
-        formData.append('quantity', input.value);
-        formData.append('productID', productID);
-        formData.append('unitPrice', unitPrice);
-        var xhr = new XMLHttpRequest();
-        xhr.open('post', '/Cart/Quantity', true);
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                const money = JSON.parse(xhr.responseText);
-                const trParent = parentElement.parentNode.parentNode;
-                trParent.querySelector("#money").innerText = money.money;
-            }
-        };
-        xhr.send(formData);
-    } else if ((parseInt(tru) == 0)) {
-        if (confirm("Bạn muốn xoá sản phẩm này khỏi giỏ hàng")) {
-
-        }
-    }
-}
-
-function deleteProduct(productID) {
-    if (confirm("Bạn có chắc muốn xoá sản phẩm này khỏi giỏ hàng?")) {
-        var formData = new FormData();
-        formData.append('productID', productID);
-        var xhr = new XMLHttpRequest();
-        xhr.open('post', '/Cart/DeleteProduct', true);
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                const msg = JSON.parse(xhr.responseText);
-                alert(`${msg.msg}`);
-                document.getElementById("product__" + productID).style.display = 'none';
-            } 
-        };
-        xhr.send(formData);
-    }
-}
-
-// Checkout
-function checkout() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Order/Checkout', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            data = JSON.parse(xhr.responseText);
-            data.map(obj => {
-                document.querySelector(".money").innerText = obj.dTotalMoney;
-            });
-        }
+            let html = "";
+            html +=     "<ul class='header__search-history-list'>";
+            html += data.map(obj => `
+                            <li class="header__search-history-item">
+                                <a href="/Product/Index?categoryID=${obj.pK_iCategoryID}">${obj.sCategoryName}</a>
+                            </li>`).join('');
+            html +=     "</ul>";
+            document.querySelector('.header__search-history').innerHTML = html;
+        } 
     };
-    xhr.send(null);
+    xhr.send(formData);
+}
+const searchHistory = document.querySelector('.header__search-history');
+window.onclick = (event) => {
+    if (event.target == searchHistory) {
+        searchHistory.style.display = 'none';
+    }
+}
+
+// Toast
+function toast({ title = "", msg = "", type = "", duration = 3000}) {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement("div");
+        const autoRemoveId = setTimeout(() => {
+            main.removeChild(toast);
+        }, duration + 1000);
+
+        toast.onclick = (e) => {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemoveId);
+            }
+        };
+
+        const icons = {
+            success: 'uil uil-check-circle',
+            error: 'uil uil-exclamation-triangle'
+        };
+
+        icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+        toast.innerHTML = `
+            <div class="toast__icon">
+                <i class="${icon}"></i>
+            </div>
+            <div class="toast__body">
+                <h3 class="toast__title">${title}</h3>
+                <p class="toast__msg">${msg}</p>
+            </div>
+            <div class="toast__close">
+                <i class="uil uil-times"></i>
+            </div>
+        `;
+        main.appendChild(toast);
+    }
+}
+
+// Chat JS
+
+function hideChatWindow() {
+    document.querySelector(".chat").classList.toggle("hide-chat-window");
+    document.querySelector(".chat__body-right").classList.toggle("hide-chat-window");
+    document.querySelector(".chat__header-btn-arrow").classList.toggle("transform");
+}
+
+function hideSearchSub() {
+    document.querySelector(".chat__body-search-sub").style.display = 'none';
+}
+
+function displaySearchSub() {
+    document.querySelector(".chat__body-search-sub").style.display = 'flex';
+}
+
+function displaySubList() {
+    document.querySelector(".chat__body-search-sub-list").classList.toggle('active'); 
+}
+
+document.querySelectorAll(".chat__body-shop-name-sub-control").forEach(e => {
+    e.addEventListener('click', () => {
+        e.classList.toggle('active');
+        e.querySelector(".chat__body-shop-name-sub-control-circle").classList.toggle('active');
+    });
+});
+
+function hideChat() {
+    document.querySelector(".chat").style.display = 'none';
+    document.querySelector(".chat__btn").style.display = "flex";
+}
+
+function displayChat() {
+    document.querySelector(".chat").style.display = 'block';
+    document.querySelector(".chat__btn").style.display = "none";
+}
+
+function showChatWindowMobile() {
+    document.querySelector(".chat__header-menu-bar").classList.toggle("active");
+    document.querySelector(".chat__mobile-window").classList.toggle("show");
+}
+
+// Tách lấy chữ số
+// Nguồn: http://vncoding.net/2015/10/30/tach-cac-chu-so-thuoc-hang-tram-hang-chuc-hang-don-vi/
+function money(number) {
+    let result = ``; // Nếu là chuỗi thì trán đặt biến là const
+    // Vì Const là một hằng số, vì vậy khi khai báo biến const thì bạn phải gán giá trị cho nó luôn, 
+    // sau này cũng không thể thay đổi giá trị cho biến.
+    // Nguồn: https://freetuts.net/bien-va-khai-bao-bien-trong-javascript-265.html
+    // Ví dụ số 9899999
+    let millions = Math.floor(number / 1000000); // Chia cho 1000000 và làm tròn số ta được 9
+    let hundred_thousand = Math.floor((number % 1000000) / 100000); // Chia lấy phần dư ta được 899999 và tiếp tục chia cho 100000 và làm tròn ta được 8
+    let tens_of_thousands = Math.floor((number % 1000000 % 100000) / 10000); // Tương tự lấy phần dư của hàng trục nghìn rồi chia cho 10000 ta được 9
+    let thousand = Math.floor((number % 1000000 % 100000 % 10000) / 1000); // Lấy phần dư hàng nghìn rồi chia cho 1000
+    let hundreds = Math.floor((number % 1000000 % 100000 % 10000 % 1000) / 100); // Lấy phần dư hàng trăm chia cho 100
+    let tens = Math.floor((number % 1000000 % 100000 % 10000 % 1000 % 100) / 10); // Lấy phần dư của hàng chục chia cho 10
+    let unit = Math.floor(number % 1000000 % 100000 % 10000 % 1000 % 100 % 10); // Lấy phần dư hàng đơn vị
+    if (millions == 0) {
+        result = `${hundred_thousand}${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
+    } else {
+        result = `${millions}.${hundred_thousand}${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
+    }
+    return result;
+}
+
+// Back History
+function backHistory() {
+    window.history.back();
 }

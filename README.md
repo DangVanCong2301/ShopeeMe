@@ -1,4 +1,5 @@
-# Web bán hàng sử dụng ASP.NET 6 MVC
+# Sàn giao dịch thương mại (Shopee) - Đồ án tốt nghiệp
+# Công nghệ: ASP.NET Core MVC  7.0
 - Luồng sử lý dữ liệu cơ bản: User->Routeing->Controller<->Model->View->User
 
 ## Thành phần chính
@@ -20,22 +21,37 @@
 - Nơi tương tác với các dữ liệu của thực thể
 - Được sử dụng để lấy dữ liệu và tương tác với dữ liệu của table (create, read, update, delete)
 
+### Viết thủ tục lưu trong CSDL
+  - Thủ tục được viết trên Server và khi truy vấn ta chỉ cần gọi thủ tục đó
+### Quy tắc đặt tên trong CSDL
+ - Tên Database: db_ (Ví dụ: db_F4_Shop)
+ - Tên bảng: tbl_ (Ví dụ tbl_Categories)
+ - Tên thủ tục: sp_ (Ví dụL sp_GetCategories)
+ - ...
+## Công việc của từng Dev
+Chi tiết tại: https://docs.google.com/document/d/1OA526wTnw-2Jn4faBllxIqHbD78u58EU/edit?usp=drive_link&ouid=102969611045986692309&rtpof=true&sd=true
+## Kết quả thực hiện
+### Trang chủ
+![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/f76fecd0-c289-464e-a798-cb0b5d3d7796)
+### Trang sản phẩm
+![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/9126d19c-cc46-49c9-87cf-ac0b98ab04c6)
+### Chi tiết sản phẩm
+![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/ee883b67-b0f9-4eef-a330-3cfb9afd57df)
+### Bình luận, đánh giá sản phẩm
+![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/92aafd63-a34e-4092-a23b-f2e344673e9f)
+### Giỏ hàng
+![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/a8e018a9-86e4-4cbd-aca2-29a3d112b676)
+### Quản lý thông tin tài khoản
+![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/bef0bda4-ea4b-46eb-af38-e77e64aee75f)
+### Đặt hàng
+![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/30261bcb-5b7f-48aa-aa36-315cda07caae)
 
-# RULESET
- ## Push code và tạo merge request
-   - Check-out branch development rồi tạo branch có tên feature/tên_task nếu là chức năng, fix/tên_bug nếu là lỗi 
-         VD: feature/Loc_create_layout_main
-   - Mỗi lần push code lên project cần tạo 1 pull request và set reviewer cho owner project
-   - Xem thêm về Git-Flow: Doc folder GIT FLOW
- ## Viết Script SQL trong folder SQL:
-   - Mỗi một thay đổi trong SQL viết vào 1 file sql riêng có template:
-      - 20240212_create_table.sql
-   - Các TH viết file SQL mới:
-     - Create, ALter, Delete,...
-
-# GIT Flow
-![git-flow-feature-branch](https://github.com/nicejjss/ProjectASP/assets/77496505/30101575-985d-4851-a043-7d11bc08ab0f)
 
 
 
-# DOC: https://drive.google.com/drive/folders/1p1jBQ0WXVluZbx92vvBFwGFO9kM5cXkz?usp=drive_link
+
+
+
+
+
+

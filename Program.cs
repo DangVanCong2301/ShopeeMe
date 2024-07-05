@@ -10,10 +10,18 @@ builder.Services.AddDbContext<DatabaseContext>(option => option.UseSqlServer(bui
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSession(opts => {
     opts.IdleTimeout = TimeSpan.FromMinutes(120);
+    opts.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 builder.Services.AddDistributedMemoryCache();
 
+// Regis Transient
 builder.Services.AddTransient<IHomeResponsitory, HomeResponsitory>();
+builder.Services.AddTransient<IShopResponsitory, ShopResponsitory>();
+builder.Services.AddTransient<ICartReponsitory, CartResponsitory>();
+builder.Services.AddTransient<IProductResponsitory, ProductResponsitory>();
+builder.Services.AddTransient<IUserResponsitory, UserResponsitory>();
+builder.Services.AddTransient<ICategoryResponsitory, CategoryResponsitory>();
+builder.Services.AddTransient<IOrderResponsitory, OrderResponsitory>();
 
 var app = builder.Build();
 
