@@ -20,6 +20,8 @@ public class UserController : Controller {
         _cartResponsitory = cartReponsitory;
     }
 
+    [Route("/user/login")]
+    [HttpGet("/user/login")]
     public IActionResult Login() {
         string password = "10";
         string encrypted = _userResponsitory.encrypt(password);
@@ -30,6 +32,7 @@ public class UserController : Controller {
     }
 
     [HttpPost]
+    [Route("/user/login")]
     public IActionResult Login(LoginModel user) {
         if (!ModelState.IsValid) {
             return View(user);
@@ -37,7 +40,7 @@ public class UserController : Controller {
         List<User> userLogin = _userResponsitory.login(user.sEmail, user.sPassword).ToList();
         if (userLogin.Count() == 0) {
             TempData["msg"] = "Tài khoản hoặc mật khẩu không chính xác!";
-            return RedirectToAction("Login");
+            return Redirect("/user/login");
         }
         string nameUser = userLogin[0].sFullName;
         int value = userLogin[0].PK_iUserID;
@@ -62,7 +65,7 @@ public class UserController : Controller {
         // _accessor?.HttpContext?.Session.SetInt32("CartCount", cartCount);
 
         // return Json(user);
-        return RedirectToAction("Index", "Home");
+        return Redirect("/");
     }
 
     [Route("/user/forgot")]
@@ -124,7 +127,7 @@ public class UserController : Controller {
         };
         Response.Cookies.Append("UserID", "0", options);
         _accessor?.HttpContext?.Session.SetInt32("UserID", 0);
-        return RedirectToAction("Index", "Home");
+        return Redirect("/");
     }
 
     [Route("/user/register")]

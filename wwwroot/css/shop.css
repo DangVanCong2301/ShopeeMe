@@ -1,5 +1,9 @@
 /* CSS Mobile */
 @media screen and (max-width: 739px) {
+    .hide-on-shop {
+        display: none;
+    }
+
     :root {
         --normal-font-size: 14px;
     }
@@ -260,11 +264,6 @@
         justify-content: center;
     }
 
-    .shop__mobile-shop-selling-link-img-top.top-4 .shop__mobile-shop-selling-link-img-top-numb,
-    .shop__mobile-shop-selling-link-img-top.top-5 .shop__mobile-shop-selling-link-img-top-numb {
-        margin-top: 6px;
-    }
-
     .shop__mobile-shop-selling-link-img-top.top-4 .shop__mobile-shop-selling-link-img-top-text,
     .shop__mobile-shop-selling-link-img-top.top-5 .shop__mobile-shop-selling-link-img-top-text {
         display: none;
@@ -276,6 +275,11 @@
     .shop__mobile-shop-selling-link-img-top.top-9,
     .shop__mobile-shop-selling-link-img-top.top-10 {
         display: none;
+    }
+
+    .shop__mobile-shop-selling-link-img-top.top-4 .shop__mobile-shop-selling-link-img-top-numb,
+    .shop__mobile-shop-selling-link-img-top.top-5 .shop__mobile-shop-selling-link-img-top-numb {
+        margin-top: 6px;
     }
 
     .shop__mobile-shop-selling-link-img-top::after {
@@ -447,7 +451,7 @@
 
     .shop__mobile-shop-category-product-item {
         position: relative;
-        max-width: 160px; /* Chiều rộng tối thiểu */
+        max-width: 160px; /*Chiều rộng tối thiểu */
         border-radius: 2px;
         box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, .1);
         transition: transform linear .1s;
@@ -459,6 +463,7 @@
 
     .shop__mobile-shop-category-product-item:hover {
         transform: translateY(-1px);
+        /* box-shadow: 1px 1px 20px 1px rgba(0, 0, 0, .05); */
     }
 
     .shop__mobile-shop-category-product-item-img {
@@ -466,7 +471,7 @@
         height: 160px;
         background-position: center;
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: cover;
     }
 
     .shop__mobile-shop-category-product-item-name {
@@ -619,13 +624,25 @@
     position: relative;
     margin-right: 30px;
     /* background-image: linear-gradient(0, #da027f ,#e352a7); */
-    background-image: url(../img/CanhDep1.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     padding: 10px 16px;
     border-radius: 4px;
     color: var(--white-color);
+    overflow: hidden;
+}
+
+.shop__header-store::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #000;
+    opacity: .3;
+    z-index: 1;
 }
 
 .shop__header-store-info {
@@ -643,6 +660,8 @@
     background-size: contain;
     border-radius: 50%;
     border: 4px solid #877c6f;
+    z-index: 2;
+    background-color: var(--white-color);
 }
 
 .shop__header-store-info-img span {
@@ -653,6 +672,10 @@
     padding: 1px 4px;
     border-radius: 2px;
     background-color: var(--primary-color);
+}
+
+.shop__header-store-info-desc {
+    z-index: 2;
 }
 
 .shop__header-store-info-name {
@@ -676,6 +699,7 @@
     border: 1px solid var(--white-color);
     text-align: center;
     border-radius: 2px;
+    z-index: 2;
 }
 
 .shop__header-store-btn-icon {

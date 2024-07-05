@@ -2,15 +2,7 @@ const shopMobileTitle = document.querySelectorAll(".shop__mobile-title-item");
 
 // Auto Run Slider
 let index = 0;
-const sliderShopNumber = document.querySelectorAll(".shop__info-slider-item");
-const dots = document.querySelector(".shop__info-slider-dot");
 
-for (let i = 0; i < sliderShopNumber.length; i++) {
-    const span = document.createElement("span");
-    span.id = i;
-    dots.appendChild(span);
-}
-document.getElementById("0").classList.add("slider-shop-cirle-fill");
 const dot = document.querySelectorAll(".shop__info-slider-dot span");
 // Dot click
 for (let i = 0; i < dot.length; i++) {
@@ -23,15 +15,18 @@ for (let i = 0; i < dot.length; i++) {
 }
 
 function sliderShopAuto() {
-    index = index + 1;
-    if (index > sliderShopNumber.length - 1) {
-        index = 0;
-    }
-    document.querySelector(".shop__info-slider-list").style.right = index * 100 + "%"; 
-    document.querySelector(".slider-shop-cirle-fill").classList.remove("slider-shop-cirle-fill");
-    document.getElementById(index).classList.add("slider-shop-cirle-fill");
+    const sliderShopNumber = document.querySelectorAll(".shop__info-slider-item");
+    setInterval(() => {
+        index = index + 1;
+        if (index > sliderShopNumber.length - 1) {
+            index = 0;
+        }
+        document.querySelector(".shop__info-slider-list").style.right = index * 100 + "%"; 
+        document.querySelector(".slider-shop-cirle-fill").classList.remove("slider-shop-cirle-fill");
+        document.getElementById(index).classList.add("slider-shop-cirle-fill");
+    }, 3000);
 }
-setInterval(sliderShopAuto, 3000);
+//setInterval(sliderShopAuto, 3000);
 
 // Next/Prev Slider Shop
 const btnNextSliderShop = document.querySelector(".shop__info-slider-arrow-next");
@@ -67,6 +62,8 @@ function getData() {
 
             getShopInfo(data);
 
+            getSlidersShop(data);
+
             getShopTab(data);
 
             getProducts(data);
@@ -81,8 +78,8 @@ function getData() {
 getData();
 
 function getShopInfo(data) {
-    let htmlShop = "";
-    htmlShop += `
+    let htmlShopMobile = "";
+    htmlShopMobile += `
             <div class="shop__mobile-info" style="background-image: url(/img/${data.stores[0].sImageBackground});">
                 <div class="shop__mobile-info-avatar">
                     <div class="shop__mobile-info-avatar-img" style="background-image: url(/img/${data.stores[0].sImageAvatar});"></div>
@@ -117,7 +114,64 @@ function getShopInfo(data) {
                 </div>
             </div>
     `;
-    document.querySelector(".shop__mobile-detail").innerHTML = htmlShop;
+    document.querySelector(".shop__mobile-detail").innerHTML = htmlShopMobile;
+
+    let htmlShopDestopDesc = data.stores[0].sDesc;
+    document.querySelector(".shop__info-desc").innerHTML = htmlShopDestopDesc;
+
+    let htmlShopDestop = "";
+    htmlShopDestop += 
+    `
+                        <div class="shop__header-store" style="background-image: url(/img/${data.stores[0].sImageBackground});">
+                            <div class="shop__header-store-info">
+                                <div class="shop__header-store-info-img"
+                                    style="background-image: url(/img/${data.stores[0].sImageAvatar});">
+                                    <span>Yêu thích</span>
+                                </div>
+                                <div class="shop__header-store-info-desc">
+                                    <div class="shop__header-store-info-name">${data.stores[0].sStoreName}</div>
+                                    <div class="shop__header-store-info-online">Online 19 phút trước</div>
+                                </div>
+                            </div>
+                            <div class="shop__header-store-btns">
+                                <div class="shop__header-store-btn">
+                                    <i class="uil uil-plus shop__header-store-btn-icon"></i>
+                                    <span>Theo dõi</span>
+                                </div>
+                                <div class="shop__header-store-btn">
+                                    <i class="uil uil-chat shop__header-store-btn-icon"></i>
+                                    <span>Chat</span>
+                                </div>
+                            </div>
+                        </div>
+    `;
+    document.querySelector(".shop__header-detail").innerHTML = htmlShopDestop;
+}
+
+function getSlidersShop(data) {
+    let htmlSlidersShop = "";
+    htmlSlidersShop += data.slidersShop.map((obj, index) => 
+    `
+        <div class="shop__info-slider-item" style="background-image: url(/img/${obj.sImageSlider});">
+
+        </div>             
+    `
+    ).join('');
+    document.querySelector(".shop__info-slider-list").innerHTML = htmlSlidersShop;
+    addDotsSlider();
+    sliderShopAuto();
+}
+
+function addDotsSlider() {
+    const sliderShopNumber = document.querySelectorAll(".shop__info-slider-item");
+    const dots = document.querySelector(".shop__info-slider-dot");
+
+    for (let i = 0; i < sliderShopNumber.length; i++) {
+        const span = document.createElement("span");
+        span.id = i;
+        dots.appendChild(span);
+    }
+    document.getElementById("0").classList.add("slider-shop-cirle-fill");
 }
 
 function getShopTab(data) {
@@ -497,7 +551,9 @@ function getPagination(data) {
                     </li>
                 `;
     }
-    document.querySelector(".pagination").innerHTML = htmlPagination;
+    document.querySelectorAll(".pagination").forEach(e => {
+        e.innerHTML = htmlPagination;
+    });
 }
 
 function pageNumber(currentPage) {

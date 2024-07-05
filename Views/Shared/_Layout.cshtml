@@ -180,123 +180,61 @@
                         </a>
                     </div>
 
-                    @if (ViewData["Title"] == "Shop") {
-                        <div class="header__mobile-back">
-                            <a href="javascript:backHistory()" class="header__mobile-back-link">
-                                <i class="uil uil-arrow-left header__mobile-back-icon"></i>
-                            </a>
-                        </div>
-                    }
+                    <div class="header__mobile-back hide-on-home">
+                        <a href="javascript:backHistory()" class="header__mobile-back-link">
+                            <i class="uil uil-arrow-left header__mobile-back-icon"></i>
+                        </a>
+                    </div>
 
+                    <div class="header__mobile-title hide-on-destop hide-on-home hide-on-product-detail hide-on-shop">
+                        Giỏ hàng
+                    </div>
+
+                    <div class="header__mobile-fix hide-on-destop hide-on-home hide-on-product-detail hide-on-shop" onclick="changeBottomCheckout(this)">Sửa</div>
                     @if (ViewData["Title"] == "Chi tiết") {
-                        <div class="header__mobile-back">
-                            <a href="javascript:backHistory()" class="header__mobile-back-link">
-                                <i class="uil uil-arrow-left header__mobile-back-icon"></i>
-                            </a>
-                        </div>
                         <div class="header__mobile-product-name">Sạc dự phòng E893</div>
                     }
 
-                    @if (ViewData["Title"] == "Trang chủ") {
-                        <div class="header__search">
-                            <div class="header__search-input-wrap">
-                                <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
-                                <input type="text" class="header__search-input" onkeyup="searchProducts(this)"
-                                    placeholder="Tìm kiếm Shopee">
+                    <div class="header__search hide-on-cart hide-on-product-detail">
+                        <div class="header__search-input-wrap">
+                            <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
+                            <input type="text" class="header__search-input" onkeyup="searchProducts(this)"
+                                placeholder="Tìm kiếm Shopee">
 
-                                <!--Search history-->
-                                <div class="header__search-history">
-                                    <ul class="header__search-history-list">
+                            <!--Search history-->
+                            <div class="header__search-history">
+                                <ul class="header__search-history-list">
 
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="header__search-select hide-on-mobile">
-                                <span class="header__search-select-label">Trong shop</span>
-                                <i class="header__search-select-icon fa-solid fa-chevron-down"></i>
-                                <ul class="header__search-option">
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span>Trong shop</span>
-                                        <i class="fa-solid fa-check"></i>
-                                    </li>
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span>Ngoài shop</span>
-                                        <i class="fa-solid fa-check"></i>
-                                    </li>
                                 </ul>
                             </div>
-                            <button class="header__search-btn hide-on-mobile">
-                                <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
-                            </button>
                         </div>
-                    }
-
-                    @if (ViewData["Title"] == "Shop") {
-                        <div class="header__search">
-                            <div class="header__search-input-wrap">
-                                <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
-                                <input type="text" class="header__search-input" onkeyup="searchProducts(this)"
-                                    placeholder="Tìm kiếm Shopee">
-
-                                <!--Search history-->
-                                <div class="header__search-history">
-                                    <ul class="header__search-history-list">
-
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="header__search-select hide-on-mobile">
-                                <span class="header__search-select-label">Trong shop</span>
-                                <i class="header__search-select-icon fa-solid fa-chevron-down"></i>
-                                <ul class="header__search-option">
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span>Trong shop</span>
-                                        <i class="fa-solid fa-check"></i>
-                                    </li>
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span>Ngoài shop</span>
-                                        <i class="fa-solid fa-check"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button class="header__search-btn hide-on-mobile">
-                                <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
-                            </button>
+                        <div class="header__search-select hide-on-mobile">
+                            <span class="header__search-select-label">Trong shop</span>
+                            <i class="header__search-select-icon fa-solid fa-chevron-down"></i>
+                            <ul class="header__search-option">
+                                <li class="header__search-option-item header__search-option-item--active">
+                                    <span>Trong shop</span>
+                                    <i class="fa-solid fa-check"></i>
+                                </li>
+                                <li class="header__search-option-item header__search-option-item--active">
+                                    <span>Ngoài shop</span>
+                                    <i class="fa-solid fa-check"></i>
+                                </li>
+                            </ul>
                         </div>
-                    }
+                        <button class="header__search-btn hide-on-mobile">
+                            <i class="header__search-btn-icon fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
                     <!--Cart layout-->
-                    <div class="header__cart">
+                    <div class="header__cart hide-on-cart">
                         <a href="/cart" class="header__cart-wrap">
                             <i class="header__cart-icon fa-solid fa-cart-shopping"></i>
                             <span class="header__cart-notice">0</span>
                             <!--No cart: header__cart-list--no-cart-->
-                            @if (@accesser?.HttpContext?.Session.GetInt32("UserID") == null) {
-                                <div class="header__cart-list header__cart-list--no-cart">
-                                    <img src="~/img/no-cart.png" alt="" class="header__cart-no-cart-img">
-                                    <span class="header__cart-list-no-cart-msg">
-                                        Chưa có sản phẩm
-                                    </span>
-                                </div> 
-                            } else {
-                                @if (Model.CartCount == 0) {
-                                    <div class="header__cart-list header__cart-list--no-cart">
-                                        <img src="~/img/no-cart.png" alt="" class="header__cart-no-cart-img">
-                                        <span class="header__cart-list-no-cart-msg">
-                                            Chưa có sản phẩm
-                                        </span>
-                                    </div>
-                                } else {
-                                    <div class="header__cart-list">
-                                        <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
-                                        <ul class="header__cart-list-item">
-                                            
-                                        </ul>
-                                        <div class="header__cart-btn">
-                                            <botton class="header__cart-btn-sub">Xem giỏ hàng</botton>
-                                        </div>
-                                    </div>
-                                }
-                            }
+                            <div class="header__cart-container">
+                                
+                            </div>
                         </a>
                     </div>
 

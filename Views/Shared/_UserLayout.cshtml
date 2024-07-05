@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - F4 SHOP</title>
-    @* <link rel="stylesheet" href="~/css/styles.css"> *@
+    <title>@ViewData["Title"] - Shopee</title>
+    <link rel="sortcut icon" href="~/img/shopee_logo.png">
     <link rel="stylesheet" href="~/css/base.css">
     <link rel="stylesheet" href="~/css/grid.css">
     <link rel="stylesheet" href="~/css/user.css">
@@ -19,10 +19,10 @@
         <header class="header">
             <div class="grid wide">
                 <div class="header__mobile hide-on-destop">
-                    <div class="header__mobile-arrow">
+                    <div class="header__mobile-arrow" onclick="backHistory()">
                         <i class="uil uil-arrow-left header__mobile-arrow-icon"></i>
                     </div>
-                    <div class="header__mobile-title">Đăng nhập</div>
+                    <div class="header__mobile-title">@ViewData["Title"]</div>
                     <div class="header__mobile-question">
                         <i class="uil uil-question-circle header__mobile-question"></i>
                     </div>

@@ -1,3 +1,7 @@
+function backHistory() {
+    window.history.back();
+}
+
 function showHiddenPass() {
     const input = document.querySelector(".auth__mobile-form-input-password"),
     iconEye = document.querySelector(".auth__mobile-form-password-show-icon");

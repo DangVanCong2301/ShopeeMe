@@ -72,6 +72,7 @@ public class ShopController : Controller
     public IActionResult GetData(int currentPage = 1) {
         var sessionCurrentShopID = _accessor?.HttpContext?.Session.GetInt32("CurrentShopID");
         var shop = _shopResponsitory.getShopByID(Convert.ToInt32(sessionCurrentShopID));
+        IEnumerable<SliderShop> slidersShop = _shopResponsitory.getSlidersShopByShopID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Category> categories = _shopResponsitory.getCategoriesByShopID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top3SellingProducts = _shopResponsitory.getTop3SellingProductsShop(Convert.ToInt32(sessionCurrentShopID));
@@ -79,11 +80,12 @@ public class ShopController : Controller
         IEnumerable<Product> top10GoodPriceProducts = _shopResponsitory.getTop10GoodPriceProductsShop(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top10SuggestProducts = _shopResponsitory.getTop10SuggestProductsShop(Convert.ToInt32(sessionCurrentShopID));
         int totalRecord = products.Count();
-        int pageSize = 12;
+        int pageSize = 10;
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
         products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         ShopViewModel model = new ShopViewModel {
             Stores = shop,
+            SlidersShop = slidersShop,
             Categories = categories,
             Products = products,
             Top3SellingProducts = top3SellingProducts,

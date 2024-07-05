@@ -1,5 +1,6 @@
 public interface IShopResponsitory
 {
+    IEnumerable<SliderShop> getSlidersShopByShopID(int shopID);
     IEnumerable<Category> getCategoriesByShopID(int shopID);
     IEnumerable<Product> getProductsByShopID(int shopID);
     IEnumerable<Store> getShopByID(int shopID);

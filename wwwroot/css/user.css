@@ -247,6 +247,10 @@ header {
         font-size: var(--normal-font-size);
     }
 
+    .header__mobile-arrow {
+        cursor: pointer;
+    }
+
     .header__mobile-arrow-icon {
         font-size: 2.4rem;
         color: var(--primary-color);
