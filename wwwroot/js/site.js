@@ -71,11 +71,17 @@ function getData() {
     }
     xhr.send(null);
 }
+getData();
 
-// load số lượng sản phẩm giỏ hàng
-function getCartInfo() {
+// Tìm kiếm danh mục
+function searchProducts(input) {
+    document.querySelector('.header__search-history').style.display = 'block';
+    var formData = new FormData();
+    if (input.value != "") {
+        formData.append("keyword", input.value);
+    }
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Cart/Index', true);
+    xhr.open('post', '/Home/Search', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -197,8 +203,10 @@ function money(number) {
     let hundreds = Math.floor((number % 1000000 % 100000 % 10000 % 1000) / 100); // Lấy phần dư hàng trăm chia cho 100
     let tens = Math.floor((number % 1000000 % 100000 % 10000 % 1000 % 100) / 10); // Lấy phần dư của hàng chục chia cho 10
     let unit = Math.floor(number % 1000000 % 100000 % 10000 % 1000 % 100 % 10); // Lấy phần dư hàng đơn vị
-    if (millions == 0) {
+    if (millions == 0 && hundred_thousand != 0) {
         result = `${hundred_thousand}${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
+    } else if (millions == 0 && hundred_thousand == 0) {
+        result = `${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
     } else {
         result = `${millions}.${hundred_thousand}${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
     }

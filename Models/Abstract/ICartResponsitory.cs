@@ -6,4 +6,5 @@ public interface ICartReponsitory {
     bool changeQuantity(int userID, int productID, int quantity, double money);
     IEnumerable<CartDetail> checkProduct(int userID, int productID);
     bool deleteProductInCart(int productID, int userID);
+    IEnumerable<Product> get12ProductsAndSortAsc();
 }

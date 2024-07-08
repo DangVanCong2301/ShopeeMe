@@ -10,6 +10,8 @@ function getCartInfo() {
             getCartItemsDestop(data);
 
             getCartItemsMobile(data);
+
+            getProductsLike(data);
             
         }
     }
@@ -237,10 +239,10 @@ function getCartItemsMobile(data) {
                                             <div class="cart__mobile-item-product-price-new">${money(obj.dMoney)}đ</div>
                                         </div>
                                         <div class="cart__mobile-item-product-quantity">
-                                            <div class="cart__mobile-item-product-quantity-btn-plus">+</div>
+                                            <div class="cart__mobile-item-product-quantity-btn-plus" onclick="plusMobile(event)">+</div>
                                             <input type="text" class="cart__mobile-item-product-quantity-input"
                                                 value="1">
-                                            <div class="cart__mobile-item-product-quantity-btn-less">-</div>
+                                            <div class="cart__mobile-item-product-quantity-btn-less" onclick="lessMobile(event)">-</div>
                                         </div>
                                     </div>
                                 </div>
@@ -257,6 +259,7 @@ function getCartItemsMobile(data) {
                             <i class="uil uil-angle-right-b cart__mobile-voucher-icon-arrow"></i>
                         </div>
                         <div class="cart__mobile-voucher-bottom-sheet">
+                            <div class="cart__mobile-voucher-bottom-sheet-overlay"></div>
                             <div class="cart__mobile-voucher-bottom-sheet-container">
                                 <div class="cart__mobile-voucher-bottom-sheet-header">
                                     <span>Hàng Tốt Giá Rẻ Shop Voucher</span>
@@ -295,6 +298,7 @@ function getCartItemsMobile(data) {
                             <div class="cart__mobile-free-ship-sub">Giảm 300.000đ phí vận chuyển đơn tối thiểu 0đ</div>
                         </div>
                         <div class="cart__mobile-transport-bottom-sheet">
+                            <div class="cart__mobile-transport-bottom-sheet-overlay"></div>
                             <div class="cart__mobile-transport-bottom-sheet-container">
                                 <div class="cart__mobile-transport-bottom-sheet-header">Khuyến mãi vận chuyển - Hàng tốt
                                     giá rẻ Shop</div>
@@ -384,6 +388,137 @@ function getCartItemsMobile(data) {
                     </div>
     `).join('');
     document.querySelector(".cart__mobile-list").innerHTML = htmlCartItems;
+    const headerFix = document.querySelectorAll(".cart__mobile-item-header-fix");
+    headerFix.forEach(e => {
+        e.addEventListener('click', () => {
+            const cartItem = e.parentNode.parentNode;
+            if (e.innerText == "Sửa") {
+                cartItem.querySelector(".cart__mobile-item-body-container").classList.toggle("move");
+                e.innerText = "Hoàn thành";
+            } else {
+                cartItem.querySelector(".cart__mobile-item-body-container").classList.toggle("move");
+                e.innerText = "Sửa";
+            }
+        });
+    });
+}
+
+function getProductsLike(data) {
+    let html = "";
+    for (let i = 0; i < data.get12ProductsAndSortAsc.length; i++) {
+        html += `
+        <div class="col l-2 c-6 m-4">
+            <a class="home-product-item" href="/product/detail/${data.get12ProductsAndSortAsc[i].pK_iProductID}">
+                <div class="home-product-item__img" style="background-image: url(/img/${data.get12ProductsAndSortAsc[i].sImageUrl})">
+                    <div class="home-product-item__img-loading">
+                        <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
+                    </div>
+                </div>
+                <h4 class="home-product-item__name">
+                    ${data.get12ProductsAndSortAsc[i].sProductName}
+                    <div class="home-product-item__name-loading">
+                        <div class="home-product-item__name-loading-line"></div>
+                        <div class="home-product-item__name-loading-line"></div>
+                    </div>
+                </h4>
+                <div class="home-product-item__price">
+                    <span class="home-product-item__price-old">
+                        1.200 000đ
+                        <div class="home-product-item__price-old-loading"></div>
+                    </span>
+                    <span class="home-product-item__price-current">
+                        ${money(data.get12ProductsAndSortAsc[i].dPrice)} đ
+                        <div class="home-product-item__price-current-loading"></div>
+                    </span>
+                </div>
+                <div class="home-product-item__action">
+                    <span class="home-product-item__like home-product-item__like--liked">
+                        <i class="home-product-item__like-icon-empty far fa-heart"></i>
+                        <i class="home-product-item__like-icon-fill fas fa-heart"></i>
+                        <div class="home-product-item__like-loading"></div>
+                    </span>
+                    <div class="home-product-item__rating">
+                        <i class="home-product-item__star--gold fas fa-star"></i>
+                        <i class="home-product-item__star--gold fas fa-star"></i>
+                        <i class="home-product-item__star--gold fas fa-star"></i>
+                        <i class="home-product-item__star--gold fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <div class="home-product-item__rating-loading"></div>
+                    </div>
+                    <span class="home-product-item__sold"> 
+                        88 Đã bán
+                        <div class="home-product-item__sold-loading"></div>
+                    </span>
+                </div>
+                <div class="home-product-item__origin">
+                    <span class="home-product-item__brand">
+                        ${data.get12ProductsAndSortAsc[i].sStoreName}
+                        <div class="home-product-item__brand-loading"></div>
+                    </span>
+                    <span class="home-product-item__origin-name">
+                        Hà Nội
+                        <div class="home-product-item__origin-name-loading"></div>
+                    </span>
+                </div>
+                <div class="home-product-item__favourite">
+                    <i class="fas fa-check"></i>
+                    <span>Yêu thích</span>
+                </div>
+                <div class="home-product-item__sale-off">
+                    <span class="home-product-item__sale-off-percent">53%</span>
+                    <span class="home-product-item__sale-off-label">GIẢM</span>
+                </div>
+            </a>
+        </div>
+        `;
+    }
+    document.querySelectorAll(".cart__like-product-list").forEach(e => {
+        e.innerHTML = html;
+    });
+    loading12Products();
+}
+
+function loading12Products() {
+    // Load Progress
+    const loadingProductImage = document.querySelectorAll(".home-product-item__img-loading");
+    const loadingProductName = document.querySelectorAll(".home-product-item__name-loading");
+    const loadingProductPriceOld = document.querySelectorAll(".home-product-item__price-old-loading");
+    const loadingProductPriceCurrent = document.querySelectorAll(".home-product-item__price-current-loading");
+    const loadingProductLike = document.querySelectorAll(".home-product-item__like-loading");
+    const loadingProductRate = document.querySelectorAll(".home-product-item__rating-loading");
+    const loadingProductSold = document.querySelectorAll(".home-product-item__sold-loading");
+    const loadingProductBrand = document.querySelectorAll(".home-product-item__brand-loading");
+    const loadingProductOrigin = document.querySelectorAll(".home-product-item__origin-name-loading");
+
+    setTimeout(() => {
+        for (let i = 0; i < loadingProductImage.length; i++) {
+            loadingProductImage[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductName.length; i++) {
+            loadingProductName[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductPriceOld.length; i++) {
+            loadingProductPriceOld[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductPriceCurrent.length; i++) {
+            loadingProductPriceCurrent[i].style.display = 'none';
+        } 
+        for (let i = 0; i < loadingProductLike.length; i++) {
+            loadingProductLike[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductRate.length; i++) {
+            loadingProductRate[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductSold.length; i++) {
+            loadingProductSold[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductBrand.length; i++) {
+            loadingProductBrand[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductOrigin.length; i++) {
+            loadingProductOrigin[i].style.display = 'none';
+        }
+    }, 1000);
 }
 
 // Tăng số lượng sản phẩm trong giỏ hàng
@@ -616,11 +751,127 @@ function money(number) {
     let hundreds = Math.floor((number % 1000000 % 100000 % 10000 % 1000) / 100); // Lấy phần dư hàng trăm chia cho 100
     let tens = Math.floor((number % 1000000 % 100000 % 10000 % 1000 % 100) / 10); // Lấy phần dư của hàng chục chia cho 10
     let unit = Math.floor(number % 1000000 % 100000 % 10000 % 1000 % 100 % 10); // Lấy phần dư hàng đơn vị
-    if (millions == 0) {
+    if (millions == 0 && hundred_thousand != 0) {
         result = `${hundred_thousand}${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
+    } else if (millions == 0 && hundred_thousand == 0) {
+        result = `${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
     } else {
         result = `${millions}.${hundred_thousand}${tens_of_thousands}${thousand}.${hundreds}${tens}${unit}`;
     }
     return result;
 }
-console.log(money(9800999));
+console.log(money(56000));
+
+// JS Mobile
+function changeBottomCheckout(input) {
+    if (input.innerText == "Sửa") {
+        document.querySelector(".cart__mobile-checkout-voucher").classList.add("hide");
+        document.querySelector(".cart__mobile-checkout-money-text").classList.add("hide");
+        document.querySelector(".cart__mobile-checkout-money-btn").classList.add("hide");
+        document.querySelector(".cart__mobile-checkout-money-btn-delete").classList.add("show");
+        input.innerText = "Hoàn thành";
+    } else {
+        document.querySelector(".cart__mobile-checkout-voucher").classList.remove("hide");
+        document.querySelector(".cart__mobile-checkout-money-text").classList.remove("hide");
+        document.querySelector(".cart__mobile-checkout-money-btn").classList.remove("hide");
+        document.querySelector(".cart__mobile-checkout-money-btn-delete").classList.remove("show");
+        input.innerText = "Sửa";
+    }
+}
+
+function plusMobile(event) {
+    const parentElement = event.target.parentNode;
+    var plus = parentElement.querySelector(".cart__mobile-item-product-quantity-input").value;
+    var input = parentElement.querySelector(".cart__mobile-item-product-quantity-input");
+    if (parseInt(plus) < 10) {
+        input.value = parseInt(plus) + 1;
+    } else {
+        document.querySelector(".modal").classList.add("open");
+        let html = "";
+        html += `
+            <div class="confirm">
+                <div class="confirm__msg">Số lượng mặt hàng trong kho không đủ!</div>
+                <div class="confirm__btn-back">
+                    <div class="btn btn--primary" onclick="exitModal()">Trở lại</div>
+                </div>
+            </div>
+        `;
+        document.querySelector(".modal__body").innerHTML = html;
+    }
+}
+
+function lessMobile(event) {
+    const parentElement = event.target.parentNode;
+    var less = parentElement.querySelector(".cart__mobile-item-product-quantity-input").value;
+    var input = parentElement.querySelector(".cart__mobile-item-product-quantity-input");
+    if (parseInt(less) > 1) {
+        input.value = parseInt(less) - 1;
+    } else {
+        openDeleteModal()
+    }
+}
+
+function openDeleteModal() {
+    document.querySelector(".modal").classList.add("open");
+    let html = "";
+    html += `
+    <div class="cart__delete">
+        <div class="cart__delete-msg">Bạn có chắc muốn xoá sản phẩm?</div>
+        <div class="cart__delete-btns">
+            <div class="cart__delete-btn-no" onclick="exitModal()">Không</div>
+            <div class="cart__delete-btn-agree">Đồng ý</div>
+        </div>
+    </div>
+    `;
+    document.querySelector(".modal__body").innerHTML = html;
+}
+
+window.addEventListener('click', (e) => {
+    if (e.target == document.querySelector(".modal__overlay")) {
+        document.querySelector(".modal").classList.remove("open");
+    }
+});
+
+function showBottomSheetVoucher() {
+    document.querySelector(".cart__mobile-voucher-bottom-sheet-overlay").classList.add("show");
+    document.querySelector(".cart__mobile-voucher-bottom-sheet-container").classList.add("show");
+}
+
+function hideBottomSheetVoucher() {
+    document.querySelector(".cart__mobile-voucher-bottom-sheet-overlay").classList.remove("show");
+    document.querySelector(".cart__mobile-voucher-bottom-sheet-container").classList.remove("show");
+}
+
+window.addEventListener('click', (e) => {
+    if (e.target == document.querySelector(".cart__mobile-voucher-bottom-sheet-overlay")) {
+        document.querySelector(".cart__mobile-voucher-bottom-sheet-overlay").classList.remove("show");
+        document.querySelector(".cart__mobile-voucher-bottom-sheet-container").classList.remove("show");
+    }
+});
+
+function showBottomSheetTransport() {
+    document.querySelector(".cart__mobile-transport-bottom-sheet-overlay").classList.add("show");
+    document.querySelector(".cart__mobile-transport-bottom-sheet-container").classList.add("show");
+}
+
+window.addEventListener('click', (e) => {
+    if (e.target == document.querySelector(".cart__mobile-transport-bottom-sheet-overlay")) {
+        document.querySelector(".cart__mobile-transport-bottom-sheet-overlay").classList.remove("show");
+        document.querySelector(".cart__mobile-transport-bottom-sheet-container").classList.remove("show");
+    }
+});
+
+function openDeleteAllModal() {
+    document.querySelector(".modal").classList.add("open");
+    let html = "";
+    html += `
+    <div class="cart__delete">
+        <div class="cart__delete-msg">Bạn có chắc muốn 2 xoá sản phẩm?</div>
+        <div class="cart__delete-btns">
+            <div class="cart__delete-btn-no" onclick="exitModal()">Không</div>
+            <div class="cart__delete-btn-agree">Đồng ý</div>
+        </div>
+    </div>
+    `;
+    document.querySelector(".modal__body").innerHTML = html;
+}

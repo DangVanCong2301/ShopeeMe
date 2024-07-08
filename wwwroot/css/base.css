@@ -89,6 +89,22 @@ input, textarea, button {
     }
 }
 
+/* Confirm */
+.confirm {
+    color: var(--text-color);
+    width: 100%;
+    border-radius: 4px;
+    font-size: var(--normal-font-size);
+    background-color: var(--white-color);
+    padding: 16px 20px;
+}
+
+.confirm__btn-back {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
 /* Button Styles*/
 .btn {
     min-width: 142px;
@@ -1520,4 +1536,17 @@ input, textarea, button {
     font-size: 1.2rem;
     color: #737373;
     text-align: center;
+}
+
+::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
 }

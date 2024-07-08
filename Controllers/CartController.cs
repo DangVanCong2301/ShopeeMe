@@ -47,10 +47,12 @@ public class CartController : Controller {
     [HttpPost]
     public IActionResult GetCartInfo() {
         var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");  
-        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(userID));  
+        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)); 
+        IEnumerable<Product> get12ProductsAndSortAsc = _cartResponsitory.get12ProductsAndSortAsc(); 
         int cartCount = carts.Count();
-        ProductViewModel model = new ProductViewModel {
+        CartViewModel model = new CartViewModel {
             CartDetails = carts,
+            Get12ProductsAndSortAsc = get12ProductsAndSortAsc,
             CartCount = cartCount
         };
         return Json(model);  

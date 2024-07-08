@@ -1,4 +1,4 @@
-# Sàn giao dịch thương mại (Shopee) - Đồ án tốt nghiệp
+# Sàn giao dịch thương mại (Shopee Clone)
 # Công nghệ: ASP.NET Core MVC  7.0
 - Luồng sử lý dữ liệu cơ bản: User->Routeing->Controller<->Model->View->User
 
@@ -32,11 +32,11 @@
 Chi tiết tại: https://docs.google.com/document/d/1OA526wTnw-2Jn4faBllxIqHbD78u58EU/edit?usp=drive_link&ouid=102969611045986692309&rtpof=true&sd=true
 ## Kết quả thực hiện
 ### Trang chủ
-![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/f76fecd0-c289-464e-a798-cb0b5d3d7796)
+![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/0a5c5d59-3f51-43f7-bb47-2b222c0a2932)
 ### Trang sản phẩm
 ![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/9126d19c-cc46-49c9-87cf-ac0b98ab04c6)
 ### Chi tiết sản phẩm
-![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/ee883b67-b0f9-4eef-a330-3cfb9afd57df)
+![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/1dc1ab47-6c82-4cf9-96b6-4e30309d8e08)
 ### Bình luận, đánh giá sản phẩm
 ![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/92aafd63-a34e-4092-a23b-f2e344673e9f)
 ### Giỏ hàng

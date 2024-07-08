@@ -64,4 +64,9 @@ public class CartResponsitory : ICartReponsitory
         _context.Database.ExecuteSqlRaw("sp_UpdateProductQuantity @PK_iUserID, @PK_iProductID, @iQuantity, @dMoney", userIDParam, productIDParam, quantityParam, moneyParam);
         return true;
     }
+
+    public IEnumerable<Product> get12ProductsAndSortAsc()
+    {
+        return _context.Products.FromSqlRaw("EXEC sp_Get12ProductsAndSortIncre");
+    }
 }

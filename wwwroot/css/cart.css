@@ -979,12 +979,14 @@
         border-left: 1px solid var(--border-color);
         border-top-left-radius: 2px;
         border-bottom-left-radius: 2px;
+        cursor: pointer;
     }
 
     .cart__mobile-item-product-quantity-btn-less {
         border-right: 1px solid var(--border-color);
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
+        cursor: pointer;
     }
 
     .cart__mobile-item-product-quantity-input {
