@@ -469,22 +469,7 @@
             </div>
             <div class="chat__body-shop">
                 <ul class="chat__shop-list">
-                    @foreach (var shop in Model.Stores)
-                    {
-                        @* chat__shop-item active *@
-                        <li class="chat__shop-item">
-                            <div class="chat__shop-item-img" style="background-image: url(/img/@shop.sImageLogo);"></div>
-                            <div class="chat__shop-item-info">
-                                <div class="chat__shop-item-info-top">
-                                    <div class="chat__shop-item-title">@shop.sStoreName</div>
-                                    <div class="chat__shop-item-time">Thứ 5</div>
-                                </div>
-                                <div class="chat__shop-item-info-bottom">
-                                    Nhắc nhở đánh giá đơn hàng
-                                </div>
-                            </div>
-                        </li>
-                    }
+                    
                 </ul>
             </div>
         </div>
@@ -528,22 +513,7 @@
                 </div>
                 <div class="chat__body-shop">
                     <ul class="chat__shop-list">
-                        @foreach (var shop in Model.Stores) {
-                            @* chat__shop-item active *@
-                            <li class="chat__shop-item">
-                                <div class="chat__shop-item-img"
-                                    style="background-image: url(./img/@shop.sImageLogo);"></div>
-                                <div class="chat__shop-item-info">
-                                    <div class="chat__shop-item-info-top">
-                                        <div class="chat__shop-item-title">@shop.sStoreName</div>
-                                        <div class="chat__shop-item-time">Thứ 5</div>
-                                    </div>
-                                    <div class="chat__shop-item-info-bottom">
-                                        Nhắc nhở đánh giá đơn hàng
-                                    </div>
-                                </div>
-                            </li>
-                        } 
+                        
                     </ul>
                 </div>
             </div>
@@ -554,7 +524,7 @@
                     <div class="chat__body-shop-name-sub">
                         <div class="chat__body-shop-name-sub-header">
                             <div class="chat__body-shop-name-sub-header-img"
-                                style="background-image: url(./assets/img/vietmark_logo.png);"></div>
+                                style="background-image: url(/img/vietmark/vietmark_logo.png);"></div>
                             <div class="chat__body-shop-name-sub-header-title">Viet Mark</div>
                         </div>
                         <ul class="chat__body-shop-name-sub-list">

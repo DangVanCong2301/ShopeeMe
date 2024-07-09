@@ -3,21 +3,30 @@
 
 // Write your JavaScript code.
 
-function getData() {
+function getDataSite() {
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Home/GetData', true);
+    xhr.open('post', '/home/get-data', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
 
             console.log(data);
 
-            
-            let htmlCartDetail = "";
-            if (data.cartCount == 0 || data.userID == 0) {
-                console.log('b');
-                htmlCartDetail += 
-                `
+            getCartsItem(data);
+
+            getShopsItem(data);
+        }
+    }
+    xhr.send(null);
+}
+getDataSite();
+
+function getCartsItem(data) {
+    let htmlCartDetail = "";
+    if (data.cartCount == 0 || data.userID == 0) {
+        console.log('b');
+        htmlCartDetail +=
+            `
                     <div class="header__cart-list header__cart-list--no-cart">
                         <img src="/img/no-cart.png" alt="" class="header__cart-no-cart-img">
                         <span class="header__cart-list-no-cart-msg">
@@ -25,15 +34,15 @@ function getData() {
                         </span>
                     </div>
                 `;
-            } else {
-                console.log('a');
-                htmlCartDetail += 
-                `
+    } else {
+        console.log('a');
+        htmlCartDetail +=
+            `
                 <div class="header__cart-list">
                     <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
                     <ul class="header__cart-list-item">
                 `;
-                htmlCartDetail += data.cartDetails.map(obj => `
+        htmlCartDetail += data.cartDetails.map(obj => `
                     <li class="header__cart-item">
                         <div class="header__cart-item-img">
                             <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
@@ -56,22 +65,39 @@ function getData() {
                         </div>
                     </li>
                 `).join('');
-                htmlCartDetail += 
-                `
+        htmlCartDetail +=
+            `
                     </ul>
                     <div class="header__cart-btn">
                         <div class="header__cart-btn-sub">Xem giỏ hàng</div>
                     </div>
                 </div>
                 `;
-            }
-            document.querySelector(".header__cart-container").innerHTML = htmlCartDetail;
-            document.querySelector(".header__cart-notice").innerText = data.cartCount;
-        }
     }
-    xhr.send(null);
+    document.querySelector(".header__cart-container").innerHTML = htmlCartDetail;
+    document.querySelector(".header__cart-notice").innerText = data.cartCount;
 }
-getData();
+
+function getShopsItem(data) {
+    let htmlShopsItem = "";
+    htmlShopsItem += data.stores.map(obj => `
+                        <li class="chat__shop-item">
+                            <div class="chat__shop-item-img" style="background-image: url(/img/${obj.sImageLogo});"></div>
+                            <div class="chat__shop-item-info">
+                                <div class="chat__shop-item-info-top">
+                                    <div class="chat__shop-item-title">${obj.sStoreName}</div>
+                                    <div class="chat__shop-item-time">Thứ 5</div>
+                                </div>
+                                <div class="chat__shop-item-info-bottom">
+                                    Nhắc nhở đánh giá đơn hàng
+                                </div>
+                            </div>
+                        </li>
+    `).join('');
+    document.querySelectorAll(".chat__shop-list").forEach(e => {
+        e.innerHTML = htmlShopsItem;
+    });
+}
 
 // Tìm kiếm danh mục
 function searchProducts(input) {

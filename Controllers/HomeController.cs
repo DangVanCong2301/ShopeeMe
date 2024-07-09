@@ -90,26 +90,30 @@ namespace Project.Controllers
         }
 
         [HttpPost]
+        [Route("/home/get-data")]
         public IActionResult GetData(int currentPage = 1) {
-            // Lấy giá trị Cookies đã lưu trên trình duyệt
-            var userID = Request.Cookies["UserID"];
+            var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
             IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
             int totalRecord = products.Count();
             int pageSize = 12;
             int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
             products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
+            IEnumerable<Store> stores = _homeResponsitory.getStores();
             IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
-            IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)).ToList();
-            IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(userID));
+            IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(Convert.ToInt32(sessionUserID));
+            IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
+            IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
             int cartCount = carts.Count();
-            ProductViewModel model = new ProductViewModel {
+            ShopeeViewModel model = new ShopeeViewModel {
+                Stores = stores,
                 Products = products,
                 Categories = categories,
+                Favorites = favorites,
                 CartDetails = cartDetails,
                 TotalPage = totalPage,
                 PageSize = pageSize,
                 CurrentPage = currentPage,
-                UserID = Convert.ToInt32(userID),
+                UserID = Convert.ToInt32(sessionUserID),
                 CartCount = cartCount
             };
             return Ok(model);

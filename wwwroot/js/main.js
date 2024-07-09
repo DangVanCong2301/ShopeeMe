@@ -79,85 +79,168 @@ btnLeftTwo.addEventListener('click', () => {
 });
 
 // Lấy thông tin
-function getData() {
+function getDataHome() {
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Home/GetData', true);
+    xhr.open('post', '/home/get-data', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
             console.log(data);
+
+            getStores(data);
+
+            getCategories(data);
+
+            getProducts(data);
             
-            let htmlCategory = "";
-            let htmlProduct = "";
-
-            htmlProduct += data.products.map(obj => `
-            <div class="col l-2 c-6 m-4">
-                <a class="home-product-item" href="/product/detail/${obj.pK_iProductID}">
-                    <div class="home-product-item__img"
-                        style="background-image: url(/img/${obj.sImageUrl});"></div>
-                    <h4 class="home-product-item__name">${obj.sProductName}</h4>
-                    <div class="home-product-item__price">
-                        <span class="home-product-item__price-old">1.200 000đ</span>
-                        <span class="home-product-item__price-current">${obj.dPrice} đ</span>
-                    </div>
-                    <div class="home-product-item__action">
-                        <span class="home-product-item__like home-product-item__like--liked">
-                            <i class="home-product-item__like-icon-empty far fa-heart"></i>
-                            <i class="home-product-item__like-icon-fill fas fa-heart"></i>
-                        </span>
-                        <div class="home-product-item__rating">
-                            <i class="home-product-item__star--gold fas fa-star"></i>
-                            <i class="home-product-item__star--gold fas fa-star"></i>
-                            <i class="home-product-item__star--gold fas fa-star"></i>
-                            <i class="home-product-item__star--gold fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="home-product-item__sold"> 88 Đã bán</span>
-                    </div>
-                    <div class="home-product-item__origin">
-                        <span class="home-product-item__brand">Who</span>
-                        <span class="home-product-item__origin-name">Nhật Bản</span>
-                    </div>
-                    <div class="home-product-item__favourite">
-                        <i class="fas fa-check"></i>
-                        <span>Yêu thích</span>
-                    </div>
-                    <div class="home-product-item__sale-off">
-                        <span class="home-product-item__sale-off-percent">53%</span>
-                        <span class="home-product-item__sale-off-label">GIẢM</span>
-                    </div>
-                </a>
-            </div>
-            `).join('');
-
-            htmlCategory += data.categories.map(obj => `
-            <li class="category-item-home">
-                <a href="/product/index/${obj.pK_iCategoryID}" class="category-item-link">
-                    <div class="category-item__img" style="background-image: url(/img/${obj.sCategoryImage});">
-                        <div class="category-item__img-loading">
-                            <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
-                        </div>
-                    </div>
-                    <div class="category-item__sub">
-                        <div class="category-item__name">${obj.sCategoryName}</div>
-                        <div class="category-item__name-loading">
-                            <div class="category-item__name-loading-line"></div>
-                            <div class="category-item__name-loading-line"></div>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            `).join('');
-
-            document.querySelector(".category-list").innerHTML = htmlCategory;
-
-            loadingCategoryItems();
         }
     }
     xhr.send(null);
 }
-getData();
+getDataHome();
 
+function getStores(data) {
+    let htmlStores = "";
+    htmlStores += data.stores.map((obj, index) => 
+    `
+                        <div class="col l-2 c-6 m-4">
+                            <a href="/shop/${obj.pK_iStoreID}" class="store__item" id="store-item-${index}">
+                                <div class="store__item-img" style="background-image: url(/img/${obj.sImageAvatar});">
+                                    <div class="store__item-img-blur-bottom">
+                                    </div>
+                                    <div class="home-product-item__img-loading">
+                                        <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="store__item-mall">
+                                    <div class="store__item-mall-img"
+                                        style="background-image: url(/img/${obj.sImageLogo});">
+                                        <div class="home-product-item__img-loading">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="store__item-info">
+                                    <div class="store__item-title">
+                                        ${obj.sStoreName}
+                                    </div>
+                                    <div class="store__item-subtitle">
+                                        ${obj.sStoreName}
+                                    </div>
+                                    <div class="store__item-info-loading">
+                                        <div class="category-item__name-loading-line"></div>
+                                        <div class="category-item__name-loading-line"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+    `).join('');
+    document.querySelector(".home-store__list").innerHTML = htmlStores;
+
+    let htmlStoresMobile = "";
+    htmlStoresMobile += data.stores.map((obj, index) => 
+    `
+                        <div class="store__mobile-item" id="store-mobile-item-${index}">
+                            <a href="/shop/${obj.pK_iStoreID}" class="store__mobile-item-link">
+                                <div class="store__mobile-item-img"
+                                    style="background-image: url(/img/${obj.sImageAvatar});">
+                                    <div class="store__mobile-item-img-blur-bottom">
+                                    </div>
+                                    <div class="home-product-item__img-loading">
+                                        <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="store__mobile-item-mall">
+                                    <div class="store__mobile-item-mall-img"
+                                        style="background-image: url(/img/${obj.sImageLogo});">
+                                        <div class="home-product-item__img-loading">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="store__mobile-item-info">
+                                    <div class="store__mobile-item-title">
+                                        ${obj.sStoreName}
+                                    </div>
+                                    <div class="store__mobile-item-subtitle">
+                                        ${obj.sStoreName}
+                                    </div>
+                                    <div class="store__item-info-loading">
+                                        <div class="category-item__name-loading-line"></div>
+                                        <div class="category-item__name-loading-line"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+    `).join('');
+    document.querySelector(".store__mobile-list").innerHTML = htmlStoresMobile;
+    loadingStores();
+}
+
+function loadingStores() {
+    const loadingStoreName = document.querySelectorAll(".store__item-info-loading");
+    const loadingProductImage = document.querySelectorAll(".home-product-item__img-loading");
+    setTimeout(() => {
+        for (let i = 0; i < loadingStoreName.length; i++) {
+            loadingStoreName[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductImage.length; i++) {
+            loadingProductImage[i].style.display = 'none';
+        }
+    }, 1000);
+}
+
+function getCategories(data) {
+    let htmlCategory = "";
+    htmlCategory += data.categories.map(obj => `
+        <li class="category-item-home">
+            <a href="/product/index/${obj.pK_iCategoryID}" class="category-item-link">
+                <div class="category-item__img" style="background-image: url(/img/${obj.sCategoryImage});">
+                    <div class="category-item__img-loading">
+                        <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
+                    </div>
+                </div>
+                <div class="category-item__sub">
+                    <div class="category-item__name">${obj.sCategoryName}</div>
+                    <div class="category-item__name-loading">
+                        <div class="category-item__name-loading-line"></div>
+                        <div class="category-item__name-loading-line"></div>
+                    </div>
+                </div>
+            </a>
+        </li>
+        `).join('');
+
+    document.querySelector(".category-list").innerHTML = htmlCategory;
+
+    let htmlCategoiesMobile = "";
+    htmlCategoiesMobile += data.categories.map((obj, index) => 
+    `
+                        <div class="category__mobile-item" id="category-mobile-item-${index}">
+                            <a href="/product/index/${obj.pK_iCategoryID}" class="category__mobile-item-link">
+                                <div class="category__mobile-item-img"
+                                    style="background-image: url(/img/${obj.sCategoryImage});">
+                                    <div class="store__item-img-blur-bottom">
+                                    </div>
+                                    <div class="category-item__img-loading">
+                                        <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="category__mobile-item-sub">
+                                    <div class="category__mobile-item-name">${obj.sCategoryName}</div>
+                                    <div class="category-item__name-loading">
+                                        <div class="category-item__name-loading-line"></div>
+                                        <div class="category-item__name-loading-line"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+    `
+    ).join('');
+    document.querySelector(".category__mobile-list").innerHTML = htmlCategoiesMobile;
+
+    loadingCategoryItems();
+}
 
 function loadingCategoryItems() {
     // Lấy luôn thẻ khi api được gọi về
@@ -171,6 +254,120 @@ function loadingCategoryItems() {
         
         for (let i = 0; i < loadingCategoryName.length; i++) {
             loadingCategoryName[i].style.display = 'none';
+        }
+    }, 1000);
+}
+
+function getProducts(data) {
+    let htmlProduct = "";
+    htmlProduct += data.products.map(obj => `
+                            <div class="col l-2 c-6 m-4">
+                                <a class="home-product-item" href="/product/detail/${obj.pK_iProductID}">
+                                    <div class="home-product-item__img" style="background-image: url(/img/${obj.sImageUrl});">
+                                        <div class="home-product-item__img-loading">
+                                            <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
+                                        </div>
+                                    </div>
+                                    <h4 class="home-product-item__name">
+                                        ${obj.sProductName}
+                                        <div class="home-product-item__name-loading">
+                                            <div class="home-product-item__name-loading-line"></div>
+                                            <div class="home-product-item__name-loading-line"></div>
+                                        </div>
+                                    </h4>
+                                    <div class="home-product-item__price">
+                                        <span class="home-product-item__price-old">
+                                            1.200 000đ
+                                            <div class="home-product-item__price-old-loading"></div>
+                                        </span>
+                                        <span class="home-product-item__price-current">
+                                            ${money(obj.dPrice)} đ
+                                            <div class="home-product-item__price-current-loading"></div>
+                                        </span>
+                                    </div>
+                                    <div class="home-product-item__action">
+                                        <span class="home-product-item__like home-product-item__like--liked">
+                                            <i class="home-product-item__like-icon-empty far fa-heart"></i>
+                                            <i class="home-product-item__like-icon-fill fas fa-heart"></i>
+                                            <div class="home-product-item__like-loading"></div>
+                                        </span>
+                                        <div class="home-product-item__rating">
+                                            <i class="home-product-item__star--gold fas fa-star"></i>
+                                            <i class="home-product-item__star--gold fas fa-star"></i>
+                                            <i class="home-product-item__star--gold fas fa-star"></i>
+                                            <i class="home-product-item__star--gold fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <div class="home-product-item__rating-loading"></div>
+                                        </div>
+                                        <span class="home-product-item__sold"> 
+                                            88 Đã bán
+                                            <div class="home-product-item__sold-loading"></div>
+                                        </span>
+                                    </div>
+                                    <div class="home-product-item__origin">
+                                        <span class="home-product-item__brand">
+                                            ${obj.sStoreName}
+                                            <div class="home-product-item__brand-loading"></div>
+                                        </span>
+                                        <span class="home-product-item__origin-name">
+                                            Hà Nội
+                                            <div class="home-product-item__origin-name-loading"></div>
+                                        </span>
+                                    </div>
+                                    <div class="home-product-item__favourite">
+                                        <i class="fas fa-check"></i>
+                                        <span>Yêu thích</span>
+                                    </div>
+                                    <div class="home-product-item__sale-off">
+                                        <span class="home-product-item__sale-off-percent">53%</span>
+                                        <span class="home-product-item__sale-off-label">GIẢM</span>
+                                    </div>
+                                </a>
+                            </div>
+    `).join('');
+    document.querySelector(".product__container").innerHTML = htmlProduct;
+
+    loadingProducts();
+}
+
+function loadingProducts() {
+    const loadingProductImage = document.querySelectorAll(".home-product-item__img-loading");
+    const loadingProductName = document.querySelectorAll(".home-product-item__name-loading");
+    const loadingProductPriceOld = document.querySelectorAll(".home-product-item__price-old-loading");
+    const loadingProductPriceCurrent = document.querySelectorAll(".home-product-item__price-current-loading");
+    const loadingProductLike = document.querySelectorAll(".home-product-item__like-loading");
+    const loadingProductRate = document.querySelectorAll(".home-product-item__rating-loading");
+    const loadingProductSold = document.querySelectorAll(".home-product-item__sold-loading");
+    const loadingProductBrand = document.querySelectorAll(".home-product-item__brand-loading");
+    const loadingProductOrigin = document.querySelectorAll(".home-product-item__origin-name-loading");
+
+    setTimeout(() => {
+        for (let i = 0; i < loadingProductImage.length; i++) {
+            loadingProductImage[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductName.length; i++) {
+            loadingProductName[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductPriceOld.length; i++) {
+            loadingProductPriceOld[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductPriceCurrent.length; i++) {
+            loadingProductPriceCurrent[i].style.display = 'none';
+        } 
+        for (let i = 0; i < loadingProductLike.length; i++) {
+            loadingProductLike[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductRate.length; i++) {
+            loadingProductRate[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductSold.length; i++) {
+            loadingProductSold[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductBrand.length; i++) {
+            loadingProductBrand[i].style.display = 'none';
+        }
+        for (let i = 0; i < loadingProductOrigin.length; i++) {
+            loadingProductOrigin[i].style.display = 'none';
         }
     }, 1000);
 }
