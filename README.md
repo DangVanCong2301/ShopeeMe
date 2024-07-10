@@ -34,7 +34,8 @@ Chi tiết tại: https://docs.google.com/document/d/1OA526wTnw-2Jn4faBllxIqHbD7
 ### Trang chủ
 ![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/699968b6-b840-4492-b95f-4a4906111570)
 ### Trang sản phẩm
-![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/9126d19c-cc46-49c9-87cf-ac0b98ab04c6)
+![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/910aaa41-4def-4061-a89e-c098ff4b78dd)
+![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/99323383-235a-4952-b122-2c5690a38866)
 ### Chi tiết sản phẩm
 ![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/5e6b66ea-711c-476b-84fa-6718f7cbd220)
 ### Bình luận, đánh giá sản phẩm
