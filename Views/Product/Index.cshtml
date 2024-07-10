@@ -1,33 +1,32 @@
-@model ProductViewModel
+@model ShopeeViewModel
 @inject IHttpContextAccessor accesser
 
 @{
     ViewData["Title"] = "Sản phẩm";
 }
-
+<link rel="stylesheet" href="~/css/product.css">
 <div class="app__container">
     <div class="grid wide">
+        <div class="product__slider">
+            <div class="product__slider-list">
+                <a href="#" class="product__slider-item"
+                    style="background-image: url(/img/category/slider/product_slider_2.jpg);">
+
+                </a>
+                <a href="#" class="product__slider-item"
+                    style="background-image: url(/img/category/slider/product_slider_1.jpg);">
+
+                </a>
+                <a href="#" class="product__slider-item"
+                    style="background-image: url(/img/category/slider/product_slider_3.jpg);">
+
+                </a>
+            </div>
+            <div class="product__slider-dots">
+
+            </div>
+        </div>
         <div class="row sm-gutter app__content">
-            <div class="category__overlay"></div>
-            <nav class="category__mobile">
-                <div class="category__mobile-close">
-                    <i class="fa-solid fa-xmark"></i>
-                </div>
-                <h3 class="category__mobile-heading">
-                    Danh mục
-                </h3>
-                <ul class="category-mobile-list">
-                    <li class="category-mobile-item category-mobile-item--active">
-                        <a href="#" class="category-mobile__link">Tai nghe Bluetooth</a>
-                    </li>
-                    <li class="category-mobile-item">
-                        <a href="#" class="category-mobile__link">Sạc dự phòng</a>
-                    </li>
-                    <li class="category-mobile-item">
-                        <a href="#" class="category-mobile__link">Loa</a>
-                    </li>
-                </ul>
-            </nav>
             <div class="col l-2 m-0 c-0">
 
                 <nav class="product-category">

@@ -259,73 +259,145 @@ function loadingCategoryItems() {
 }
 
 function getProducts(data) {
-    let htmlProduct = "";
-    htmlProduct += data.products.map(obj => `
+    let htmlProducts = "";
+    for (let i = 0; i < data.products.length; i++) {
+        if (data.products[i].dPerDiscount == 1) {
+            htmlProducts += 
+            `
                             <div class="col l-2 c-6 m-4">
-                                <a class="home-product-item" href="/product/detail/${obj.pK_iProductID}">
-                                    <div class="home-product-item__img" style="background-image: url(/img/${obj.sImageUrl});">
-                                        <div class="home-product-item__img-loading">
-                                            <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
+                                <div class="home-item">
+                                    <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
+                                        <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl});">
+                                            <div class="home-product-item__img-loading">
+                                                <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <h4 class="home-product-item__name">
-                                        ${obj.sProductName}
-                                        <div class="home-product-item__name-loading">
-                                            <div class="home-product-item__name-loading-line"></div>
-                                            <div class="home-product-item__name-loading-line"></div>
+                                        <h4 class="home-product-item__name">
+                                            ${data.products[i].sProductName}
+                                            <div class="home-product-item__name-loading">
+                                                <div class="home-product-item__name-loading-line"></div>
+                                                <div class="home-product-item__name-loading-line"></div>
+                                            </div>
+                                        </h4>
+                                        <div class="home-product-item__price">
+                                            <span class="home-product-item__price-current">
+                                                ${money(data.products[i].dPrice)} đ
+                                                <div class="home-product-item__price-current-loading"></div>
+                                            </span>
                                         </div>
-                                    </h4>
-                                    <div class="home-product-item__price">
-                                        <span class="home-product-item__price-old">
-                                            1.200 000đ
-                                            <div class="home-product-item__price-old-loading"></div>
-                                        </span>
-                                        <span class="home-product-item__price-current">
-                                            ${money(obj.dPrice)} đ
-                                            <div class="home-product-item__price-current-loading"></div>
-                                        </span>
-                                    </div>
-                                    <div class="home-product-item__action">
-                                        <span class="home-product-item__like home-product-item__like--liked">
-                                            <i class="home-product-item__like-icon-empty far fa-heart"></i>
-                                            <i class="home-product-item__like-icon-fill fas fa-heart"></i>
-                                            <div class="home-product-item__like-loading"></div>
-                                        </span>
-                                        <div class="home-product-item__rating">
-                                            <i class="home-product-item__star--gold fas fa-star"></i>
-                                            <i class="home-product-item__star--gold fas fa-star"></i>
-                                            <i class="home-product-item__star--gold fas fa-star"></i>
-                                            <i class="home-product-item__star--gold fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <div class="home-product-item__rating-loading"></div>
+                                        <div class="home-product-item__action">
+                                            <span class="home-product-item__like home-product-item__like--liked">
+                                                <i class="home-product-item__like-icon-empty far fa-heart"></i>
+                                                <i class="home-product-item__like-icon-fill fas fa-heart"></i>
+                                                <div class="home-product-item__like-loading"></div>
+                                            </span>
+                                            <div class="home-product-item__rating">
+                                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <div class="home-product-item__rating-loading"></div>
+                                            </div>
+                                            <span class="home-product-item__sold"> 
+                                                88 Đã bán
+                                                <div class="home-product-item__sold-loading"></div>
+                                            </span>
                                         </div>
-                                        <span class="home-product-item__sold"> 
-                                            88 Đã bán
-                                            <div class="home-product-item__sold-loading"></div>
-                                        </span>
+                                        <div class="home-product-item__origin">
+                                            <span class="home-product-item__brand">
+                                                ${data.products[i].sStoreName}
+                                                <div class="home-product-item__brand-loading"></div>
+                                            </span>
+                                            <span class="home-product-item__origin-name">
+                                                Hà Nội
+                                                <div class="home-product-item__origin-name-loading"></div>
+                                            </span>
+                                        </div>
+                                        <div class="home-product-item__favourite">
+                                            <i class="fas fa-check"></i>
+                                            <span>Yêu thích</span>
+                                        </div>
+                                    </a>
+                                    <div class="home-product-item__find-similar">
                                     </div>
-                                    <div class="home-product-item__origin">
-                                        <span class="home-product-item__brand">
-                                            ${obj.sStoreName}
-                                            <div class="home-product-item__brand-loading"></div>
-                                        </span>
-                                        <span class="home-product-item__origin-name">
-                                            Hà Nội
-                                            <div class="home-product-item__origin-name-loading"></div>
-                                        </span>
-                                    </div>
-                                    <div class="home-product-item__favourite">
-                                        <i class="fas fa-check"></i>
-                                        <span>Yêu thích</span>
-                                    </div>
-                                    <div class="home-product-item__sale-off">
-                                        <span class="home-product-item__sale-off-percent">53%</span>
-                                        <span class="home-product-item__sale-off-label">GIẢM</span>
-                                    </div>
-                                </a>
+                                    <a href="#" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
+                                </div>
                             </div>
-    `).join('');
-    document.querySelector(".product__container").innerHTML = htmlProduct;
+            `;
+        } else {
+            htmlProducts += 
+            `
+                            <div class="col l-2 c-6 m-4">
+                                <div class="home-item">
+                                    <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
+                                        <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl});">
+                                            <div class="home-product-item__img-loading">
+                                                <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
+                                            </div>
+                                        </div>
+                                        <h4 class="home-product-item__name">
+                                            ${data.products[i].sProductName}
+                                            <div class="home-product-item__name-loading">
+                                                <div class="home-product-item__name-loading-line"></div>
+                                                <div class="home-product-item__name-loading-line"></div>
+                                            </div>
+                                        </h4>
+                                        <div class="home-product-item__price">
+                                            <span class="home-product-item__price-old">
+                                                ${money(data.products[i].dPrice)} đ
+                                                <div class="home-product-item__price-old-loading"></div>
+                                            </span>
+                                            <span class="home-product-item__price-current">
+                                                ${money((data.products[i].dPrice * (1 - data.products[i].dPerDiscount)))} đ
+                                                <div class="home-product-item__price-current-loading"></div>
+                                            </span>
+                                        </div>
+                                        <div class="home-product-item__action">
+                                            <span class="home-product-item__like home-product-item__like--liked">
+                                                <i class="home-product-item__like-icon-empty far fa-heart"></i>
+                                                <i class="home-product-item__like-icon-fill fas fa-heart"></i>
+                                                <div class="home-product-item__like-loading"></div>
+                                            </span>
+                                            <div class="home-product-item__rating">
+                                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <div class="home-product-item__rating-loading"></div>
+                                            </div>
+                                            <span class="home-product-item__sold"> 
+                                                88 Đã bán
+                                                <div class="home-product-item__sold-loading"></div>
+                                            </span>
+                                        </div>
+                                        <div class="home-product-item__origin">
+                                            <span class="home-product-item__brand">
+                                                ${data.products[i].sStoreName}
+                                                <div class="home-product-item__brand-loading"></div>
+                                            </span>
+                                            <span class="home-product-item__origin-name">
+                                                Hà Nội
+                                                <div class="home-product-item__origin-name-loading"></div>
+                                            </span>
+                                        </div>
+                                        <div class="home-product-item__favourite">
+                                            <i class="fas fa-check"></i>
+                                            <span>Yêu thích</span>
+                                        </div>
+                                        <div class="home-product-item__sale-off">
+                                            <span class="home-product-item__sale-off-percent">${Math.floor(data.products[i].dPerDiscount * 100)}%</span>
+                                            <span class="home-product-item__sale-off-label">GIẢM</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
+                                </div>
+                            </div>
+            `;
+        }
+    }
+    document.querySelector(".product__container").innerHTML = htmlProducts;
 
     loadingProducts();
 }
@@ -384,8 +456,8 @@ window.addEventListener('scroll', () => {
     const y = this.pageYOffset;
     if (y > 1100) {
         //console.log(y);
-        document.querySelector(".success-header").classList.add("scroll");
+        document.querySelector(".suggest__header").classList.add("scroll");
     } else {
-        document.querySelector(".success-header").classList.remove("scroll");
+        document.querySelector(".suggest__header").classList.remove("scroll");
     }
 });

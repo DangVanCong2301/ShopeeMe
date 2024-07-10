@@ -6,6 +6,7 @@ public class Product {
     public string sProductName { get; set; }
     public string sStoreName { get; set; }
     public string sCategoryName { get; set; }
+    public double dPerDiscount { get; set; }
     public string sImageUrl { get; set; }
     public double dPrice { get; set; }
     public int iQuantity { get; set; }
