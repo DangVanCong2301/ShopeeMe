@@ -1,7 +1,7 @@
-# Sàn giao dịch thương mại (Shopee Clone)
+# Sàn giao dịch (Đồ án tốt nghiệp)
 # Công nghệ: ASP.NET Core MVC  7.0
-- Luồng sử lý dữ liệu cơ bản: User->Routeing->Controller<->Model->View->User
-
+- Luồng sử lý dữ liệu cơ bản: 
+![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/380752c3-aafb-47ed-a503-971c3e655532)
 ## Thành phần chính
 ### Routing
 - Dựa vào các request Để gọi các Controller
@@ -28,8 +28,6 @@
  - Tên bảng: tbl_ (Ví dụ tbl_Categories)
  - Tên thủ tục: sp_ (Ví dụL sp_GetCategories)
  - ...
-## Công việc của từng Dev
-Chi tiết tại: https://docs.google.com/document/d/1OA526wTnw-2Jn4faBllxIqHbD78u58EU/edit?usp=drive_link&ouid=102969611045986692309&rtpof=true&sd=true
 ## Kết quả thực hiện
 ### Trang chủ
 ![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/699968b6-b840-4492-b95f-4a4906111570)
