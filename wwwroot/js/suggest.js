@@ -1,262 +1,19 @@
-let index = 0;
-var rolar = true;
-const sliderNumber = document.querySelectorAll(".banner-left-content__top-link");
-const balls = document.querySelector(".banner-left-content__bottom-pagination");
-
-for (let i = 0; i < sliderNumber.length; i++) {
-    const div = document.createElement("div");
-    div.id = i;
-    balls.appendChild(div);
-}
-document.getElementById("0").classList.add("banner-circle-fill")
-
-var pos = document.querySelectorAll(".banner-left-content__bottom-pagination div")
-
-for (let i = 0; i < pos.length; i++) {
-    pos[i].addEventListener('click', () => {
-        index = pos[i].id;
-        document.querySelector(".banner-left-content__top").style.right = index * 100 + "%";
-        document.querySelector(".banner-circle-fill").classList.remove("banner-circle-fill");
-        document.getElementById(index).classList.add("banner-circle-fill");
-    });
-}
-
-function sliderAuto() {
-    index = index + 1;
-    if (index > sliderNumber.length - 1) {
-        index = 0;
-    }
-    document.querySelector(".banner-left-content__top").style.right = index * 100 + "%";
-    document.querySelector(".banner-circle-fill").classList.remove("banner-circle-fill");
-    document.getElementById(index).classList.add("banner-circle-fill");
-}
-
-setInterval(sliderAuto, 3000)
-
-// Next/Prev Banner
-const btnNextBanner = document.querySelector(".banner-left-content__top-btn-icon-next");
-const btnPrevBanner = document.querySelector(".banner-left-content__top-btn-icon-prev");
-
-btnNextBanner.addEventListener('click', () => {
-    index = index + 1;
-    if (index > sliderNumber.length - 1) {
-        index = 0;
-    }
-    document.querySelector(".banner-left-content__top").style.right = index * 100 + "%";
-    document.querySelector(".banner-circle-fill").classList.remove("banner-circle-fill");
-    document.getElementById(index).classList.add("banner-circle-fill");
-});
-
-btnPrevBanner.addEventListener('click', () => {
-    index = index - 1;
-    if (index <= 0) {
-        index = sliderNumber.length - 1;
-        document.querySelector(".banner-left-content__top").style.right = index * 100 + "%";
-        document.querySelector(".banner-circle-fill").classList.remove("banner-circle-fill");
-        document.getElementById(index).classList.add("banner-circle-fill");
-    }
-});
-
-// Slider Category
-const btnRightTwo = document.querySelector(".fa-arrow-right");
-const btnLeftTwo = document.querySelector(".fa-arrow-left");
-const categoryNumberTwo = document.querySelectorAll(".category-content-list");
-
-btnRightTwo.addEventListener('click', () => {
-    index = index + 1;
-    if (index > categoryNumberTwo.length - 1) {
-        index = 0;
-    }
-    document.querySelector(".category-content").style.right = index * 100 + "%";
-});
-
-btnLeftTwo.addEventListener('click', () => {
-    index = index + 1;
-    if (index > categoryNumberTwo.length - 1) {
-        index = 0;
-    }
-    document.querySelector(".category-content").style.right = index * 100 + "%";
-});
-
-// Lấy dữ liệu (API)
-function getDataHome() {
+function getAPISuggest() {
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/home/get-data', true);
+    xhr.open('post', '/home/suggest', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
             console.log(data);
 
-            getStores(data);
-
-            getCategories(data);
-
             getProducts(data);
-            
+
+            getPagination(data);
         }
-    }
+    };
     xhr.send(null);
 }
-getDataHome();
-
-function getStores(data) {
-    let htmlStores = "";
-    htmlStores += data.stores.map((obj, index) => 
-    `
-                        <div class="col l-2 c-6 m-4">
-                            <a href="/shop/${obj.pK_iStoreID}" class="store__item" id="store-item-${index}">
-                                <div class="store__item-img" style="background-image: url(/img/${obj.sImageAvatar});">
-                                    <div class="store__item-img-blur-bottom">
-                                    </div>
-                                    <div class="home-product-item__img-loading">
-                                        <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
-                                    </div>
-                                </div>
-                                <div class="store__item-mall">
-                                    <div class="store__item-mall-img"
-                                        style="background-image: url(/img/${obj.sImageLogo});">
-                                        <div class="home-product-item__img-loading">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="store__item-info">
-                                    <div class="store__item-title">
-                                        ${obj.sStoreName}
-                                    </div>
-                                    <div class="store__item-subtitle">
-                                        ${obj.sStoreName}
-                                    </div>
-                                    <div class="store__item-info-loading">
-                                        <div class="category-item__name-loading-line"></div>
-                                        <div class="category-item__name-loading-line"></div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-    `).join('');
-    document.querySelector(".home-store__list").innerHTML = htmlStores;
-
-    let htmlStoresMobile = "";
-    htmlStoresMobile += data.stores.map((obj, index) => 
-    `
-                        <div class="store__mobile-item" id="store-mobile-item-${index}">
-                            <a href="/shop/${obj.pK_iStoreID}" class="store__mobile-item-link">
-                                <div class="store__mobile-item-img"
-                                    style="background-image: url(/img/${obj.sImageAvatar});">
-                                    <div class="store__mobile-item-img-blur-bottom">
-                                    </div>
-                                    <div class="home-product-item__img-loading">
-                                        <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
-                                    </div>
-                                </div>
-                                <div class="store__mobile-item-mall">
-                                    <div class="store__mobile-item-mall-img"
-                                        style="background-image: url(/img/${obj.sImageLogo});">
-                                        <div class="home-product-item__img-loading">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="store__mobile-item-info">
-                                    <div class="store__mobile-item-title">
-                                        ${obj.sStoreName}
-                                    </div>
-                                    <div class="store__mobile-item-subtitle">
-                                        ${obj.sStoreName}
-                                    </div>
-                                    <div class="store__item-info-loading">
-                                        <div class="category-item__name-loading-line"></div>
-                                        <div class="category-item__name-loading-line"></div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-    `).join('');
-    document.querySelector(".store__mobile-list").innerHTML = htmlStoresMobile;
-    loadingStores();
-}
-
-function loadingStores() {
-    const loadingStoreName = document.querySelectorAll(".store__item-info-loading");
-    const loadingProductImage = document.querySelectorAll(".home-product-item__img-loading");
-    setTimeout(() => {
-        for (let i = 0; i < loadingStoreName.length; i++) {
-            loadingStoreName[i].style.display = 'none';
-        }
-        for (let i = 0; i < loadingProductImage.length; i++) {
-            loadingProductImage[i].style.display = 'none';
-        }
-    }, 1000);
-}
-
-function getCategories(data) {
-    let htmlCategory = "";
-    htmlCategory += data.categories.map(obj => `
-        <li class="category-item-home">
-            <a href="/product/index/${obj.pK_iCategoryID}" class="category-item-link">
-                <div class="category-item__img" style="background-image: url(/img/${obj.sCategoryImage});">
-                    <div class="category-item__img-loading">
-                        <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
-                    </div>
-                </div>
-                <div class="category-item__sub">
-                    <div class="category-item__name">${obj.sCategoryName}</div>
-                    <div class="category-item__name-loading">
-                        <div class="category-item__name-loading-line"></div>
-                        <div class="category-item__name-loading-line"></div>
-                    </div>
-                </div>
-            </a>
-        </li>
-        `).join('');
-
-    document.querySelector(".category-list").innerHTML = htmlCategory;
-
-    let htmlCategoiesMobile = "";
-    htmlCategoiesMobile += data.categories.map((obj, index) => 
-    `
-                        <div class="category__mobile-item" id="category-mobile-item-${index}">
-                            <a href="/product/index/${obj.pK_iCategoryID}" class="category__mobile-item-link">
-                                <div class="category__mobile-item-img"
-                                    style="background-image: url(/img/${obj.sCategoryImage});">
-                                    <div class="store__item-img-blur-bottom">
-                                    </div>
-                                    <div class="category-item__img-loading">
-                                        <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
-                                    </div>
-                                </div>
-                                <div class="category__mobile-item-sub">
-                                    <div class="category__mobile-item-name">${obj.sCategoryName}</div>
-                                    <div class="category-item__name-loading">
-                                        <div class="category-item__name-loading-line"></div>
-                                        <div class="category-item__name-loading-line"></div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-    `
-    ).join('');
-    document.querySelector(".category__mobile-list").innerHTML = htmlCategoiesMobile;
-
-    loadingCategoryItems();
-}
-
-function loadingCategoryItems() {
-    // Lấy luôn thẻ khi api được gọi về
-    const loadingCategoryName = document.querySelectorAll(".category-item__name-loading");
-    const loadingCategoryImage = document.querySelectorAll(".category-item__img-loading");
-
-    setTimeout(() => {
-        for (let i = 0; i < loadingCategoryImage.length; i++) {
-            loadingCategoryImage[i].style.display = 'none';
-        }
-        
-        for (let i = 0; i < loadingCategoryName.length; i++) {
-            loadingCategoryName[i].style.display = 'none';
-        }
-    }, 1000);
-}
+getAPISuggest();
 
 function getProducts(data) {
     let htmlProducts = "";
@@ -397,7 +154,7 @@ function getProducts(data) {
             `;
         }
     }
-    document.querySelector(".product__container").innerHTML = htmlProducts;
+    document.querySelector(".home-product__list").innerHTML = htmlProducts;
 
     loadingProducts();
 }
@@ -444,20 +201,59 @@ function loadingProducts() {
     }, 1000);
 }
 
-// Toggle active voucher 
-setInterval(() => {
-    document.querySelectorAll(".banner__voucher-day").forEach(e => {
-        e.classList.toggle("active");
-    });
-}, 1000);
-
-// Fix Suggest Bar
-window.addEventListener('scroll', () => {
-    const y = this.pageYOffset;
-    if (y > 1100) {
-        //console.log(y);
-        document.querySelector(".suggest__header").classList.add("scroll");
-    } else {
-        document.querySelector(".suggest__header").classList.remove("scroll");
+function getPagination(data) {
+    let htmlPagination = "";
+    if (data.currentPage > 1) {
+        htmlPagination += `
+                    <li class="pagination-item">
+                        <a href="javascript:pageNumber(${data.currentPage - 1})" class="pagination-item__link">
+                            <i class="pagination-item__icon fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                `;
     }
-});
+    for (let i = 1; i <= data.totalPage; i++) {
+        if (i == data.currentPage) {
+            htmlPagination += `
+                        <li class="pagination-item pagination-item--active">
+                            <a href="javascript:pageNumber(${i})" class="pagination-item__link">${i}</a>
+                        </li>
+                    `;
+        } else {
+            htmlPagination += `
+                        <li class="pagination-item">
+                            <a href="javascript:pageNumber(${i})" class="pagination-item__link">${i}</a>
+                        </li>
+                    `;
+        }
+    }
+    if (data.currentPage < data.totalPage) {
+        htmlPagination += `
+                    <li class="pagination-item">
+                        <a href="javascript:pageNumber(${data.currentPage + 1})" class="pagination-item__link">
+                            <i class="pagination-item__icon fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                `;
+    }
+    document.querySelectorAll(".pagination").forEach(e => {
+        e.innerHTML = htmlPagination;
+    });
+}
+
+function pageNumber(currentPage) {
+    var xhr = new XMLHttpRequest();
+    var formData = new FormData();
+    formData.append("currentPage", currentPage);
+    xhr.open('post', '/home/suggest', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+
+            getProducts(data);
+            getPagination(data);
+        }
+    };
+    xhr.send(formData);
+}

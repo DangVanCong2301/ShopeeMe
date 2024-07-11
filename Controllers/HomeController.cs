@@ -132,6 +132,33 @@ namespace Project.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("/home/suggest")]
+        public IActionResult Suggest() {
+            var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+            ShopeeViewModel model = new ShopeeViewModel {
+                RoleID = Convert.ToInt32(sessionUserID)
+            };
+            return View(model);  
+        }
+
+        [HttpPost]
+        [Route("/home/suggest")]
+        public IActionResult GetDataSuggest(int currentPage = 1) {
+            IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
+            int totalRecord = products.Count();
+            int pageSize = 12;
+            int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
+            products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
+            ShopeeViewModel model = new ShopeeViewModel {
+                Products = products,
+                TotalPage = totalPage,
+                PageSize = pageSize,
+                CurrentPage = currentPage
+            };
+            return Ok(model);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

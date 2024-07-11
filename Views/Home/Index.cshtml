@@ -256,39 +256,9 @@
                         
                     </div>
                 </div>
-                @* <ul class="pagination home-product__pagination">
-                    @if (Model.CurrentPage > 1) {
-                        <li class="pagination-item">
-                            <a href="/Home/Index?currentPage=@(Model.CurrentPage - 1)" class="pagination-item__link">
-                                <i class="pagination-item__icon fas fa-angle-left"></i>
-                            </a>
-                        </li>
-                    }
-                    @for (int i = 1; i <= Model.TotalPage; i++) {
-                        @if (i == Model.CurrentPage) {
-                            <li class="pagination-item pagination-item--active">
-                                <a href="/Home/Index?currentPage=@i" class="pagination-item__link">@i</a>
-                            </li>
-                        } else {
-                            <li class="pagination-item">
-                                <a href="/Home/Index?currentPage=@i" class="pagination-item__link">@i</a>
-                            </li>
-                        }
-                    }
-                    @* <li class="pagination-item">
-                        <a href="" class="pagination-item__link">...</a>
-                    </li> 
-                    @if (Model.CurrentPage < Model.TotalPage) {
-                        <li class="pagination-item">
-                            <a href="/Home/Index?currentPage=@(Model.CurrentPage + 1)" class="pagination-item__link">
-                                <i class="pagination-item__icon fas fa-angle-right"></i>
-                            </a>
-                        </li>
-                    }
-                </ul> *@
             </div>
             <div class="home-suggest__more">
-                <a href="#" class="home-suggest__more-link">Xem thêm</a>
+                <a href="/home/suggest" class="home-suggest__more-link">Xem thêm</a>
             </div>
         </div>
     </div>
