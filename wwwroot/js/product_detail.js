@@ -34,9 +34,11 @@ function loadDetailInfo(data) {
                                 <div class="detail__price">`;
                                 if (data.products[0].dPerDiscount != 1) {
                                     htmlProductDetail += `<p class="detail__price-old"><span>${money(data.products[0].dPrice)} đ</span></p>`;
+                                    htmlProductDetail += `<p class="detail__price-new"><span>${money((data.products[0].dPrice * (1 - data.products[0].dPerDiscount)))} đ</span></p>`;
+                                } else {
+                                    htmlProductDetail += `          <p class="detail__price-new"><span>${money(data.products[0].dPrice)} đ</span></p>`;
                                 }
-    htmlProductDetail += `          <p class="detail__price-new"><span>${money((data.products[0].dPrice * (1 - data.products[0].dPerDiscount)))} đ</span></p>
-                                </div>
+    htmlProductDetail += `      </div>
                                 <div class="detail__text">
                                     <h2 class="detail__text-title">về mặt hàng này: </h2>
                                     <p class="detail__text-desc">

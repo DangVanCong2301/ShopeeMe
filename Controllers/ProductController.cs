@@ -105,8 +105,8 @@ public class ProductController : Controller {
         return View("Index", model);
     }
 
-    [Route("/Home/CartDetail")]
-    public IActionResult CartDetail()
+    [Route("/product/similar")]
+    public IActionResult Similar()
     {
         return View();
     }

@@ -186,16 +186,16 @@
                         </a>
                     </div>
 
-                    <div class="header__mobile-title hide-on-destop hide-on-home hide-on-product-detail hide-on-shop">
+                    <div class="header__mobile-title hide-on-destop hide-on-home hide-on-product-detail hide-on-shop hide-on-detail">
                         Giỏ hàng
                     </div>
 
-                    <div class="header__mobile-fix hide-on-destop hide-on-home hide-on-product-detail hide-on-shop" onclick="changeBottomCheckout(this)">Sửa</div>
+                    <div class="header__mobile-fix hide-on-destop hide-on-home hide-on-product-detail hide-on-shop hide-on-detail" onclick="changeBottomCheckout(this)">Sửa</div>
                     @if (ViewData["Title"] == "Chi tiết") {
                         <div class="header__mobile-product-name">Sạc dự phòng E893</div>
                     }
 
-                    <div class="header__search hide-on-cart hide-on-product-detail">
+                    <div class="header__search hide-on-cart hide-on-detail">
                         <div class="header__search-input-wrap">
                             <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
                             <input type="text" class="header__search-input" onkeyup="searchProducts(this)"

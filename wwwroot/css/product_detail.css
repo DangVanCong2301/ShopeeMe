@@ -354,6 +354,10 @@
 }
 
 @media screen and (max-width: 768px) {
+    .hide-on-detail {
+        display: none;
+    }
+
     .header__product-detail {
         padding: 8px 8px 8px 8px;
     }
@@ -653,6 +657,18 @@
         color: var(--white-color);
         cursor: pointer;
     }
+
+    .detai__left-progress {
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+    }
+
+    .detail__right-loading {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
 }
-
-
