@@ -42,8 +42,9 @@
 ![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/a8e018a9-86e4-4cbd-aca2-29a3d112b676)
 ### Quản lý thông tin tài khoản
 ![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/bef0bda4-ea4b-46eb-af38-e77e64aee75f)
-### Đặt hàng
-![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/30261bcb-5b7f-48aa-aa36-315cda07caae)
+### Đơn mua
+![image](https://github.com/user-attachments/assets/fd216ade-27c0-4b5d-9c9f-593fa1b5ded5)
+
 
 
 
