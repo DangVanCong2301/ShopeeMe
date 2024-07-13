@@ -39,9 +39,9 @@
 ### Bình luận, đánh giá sản phẩm
 ![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/a0ba7b83-b26f-40d9-9171-422402bfa703)
 ### Giỏ hàng
-![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/a8e018a9-86e4-4cbd-aca2-29a3d112b676)
+![image](https://github.com/user-attachments/assets/5d90efef-4d4f-4442-90d5-653f77c01465)
 ### Quản lý thông tin tài khoản
-![image](https://github.com/DangVanCong2301/F4-Shop/assets/111124018/bef0bda4-ea4b-46eb-af38-e77e64aee75f)
+![image](https://github.com/user-attachments/assets/9a416472-aa78-44b5-9d96-25b5c85f947d)
 ### Đơn mua
 ![image](https://github.com/user-attachments/assets/fd216ade-27c0-4b5d-9c9f-593fa1b5ded5)
 
