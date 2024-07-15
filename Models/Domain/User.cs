@@ -11,15 +11,12 @@ namespace Project.Models
         public string sFullName { get; set; }
         public int iGender { get; set; }
         public string sImageProfile { get; set; }
-        public string sAddress { get; set; }
         [Required(ErrorMessage = "Bạn chưa nhập email")]
         public string sEmail { get; set; }
         public int FK_iRoleID { get; set; }
         [Required(ErrorMessage = "Bạn chưa nhập mật khẩu")]
         public string sPassword { get; set; }
         public DateTime dDateBirth {  get; set; }
-        [NotMapped]
-        public string sPhone {  get; set; }
         [NotMapped]
         public DateTime dCreatedTime { get; set; }
         [NotMapped]

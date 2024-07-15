@@ -6,11 +6,13 @@ public class CheckoutController : Controller {
     private readonly IHttpContextAccessor _accessor;
     private readonly ICartReponsitory _cartResponsitory;
     private readonly IProductResponsitory _productResponsitory;
-    public CheckoutController(IHttpContextAccessor accessor, ICartReponsitory cartResponsitory, IProductResponsitory productResponsitory)
+    private readonly ICheckoutResponsitory _checkoutResponsitory;
+    public CheckoutController(IHttpContextAccessor accessor, ICartReponsitory cartResponsitory, IProductResponsitory productResponsitory, ICheckoutResponsitory checkoutResponsitory)
     {
         _accessor = accessor;
         _cartResponsitory = cartResponsitory;
         _productResponsitory = productResponsitory;
+        _checkoutResponsitory = checkoutResponsitory;
     }
 
     List<Checkout> checkouts => HttpContext.Session.Get<List<Checkout>>("cart_key") ?? new List<Checkout>();
@@ -22,7 +24,7 @@ public class CheckoutController : Controller {
         IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)); 
         // Lấy số lượng giỏ hàng
         int cartCount = carts.Count();
-        ProductViewModel model = new ProductViewModel {
+        ShopeeViewModel model = new ShopeeViewModel {
             CartDetails = carts,
             CartCount = cartCount,
             Checkouts = checkouts
@@ -33,7 +35,13 @@ public class CheckoutController : Controller {
     [HttpPost]
     [Route("/checkout/get-data")]
     public IActionResult GetData() {
-        return Ok(checkouts);
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        List<Address> addresses = _checkoutResponsitory.checkAddressAccount(Convert.ToInt32(sessionUserID)).ToList();
+        CheckoutViewModel model = new CheckoutViewModel {
+            Checkouts = checkouts,
+            Addresses = addresses
+        };
+        return Ok(model);
     }
 
     [HttpPost]

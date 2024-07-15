@@ -17,6 +17,7 @@ namespace Project.Models
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetail> CartDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -58,6 +59,10 @@ namespace Project.Models
 
             modelBuilder.Entity<CartDetail>(entity => {
                 entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<Address>(entity => {
+                entity.HasKey(e => e.PK_iAddressID);
             });
         }
     }
