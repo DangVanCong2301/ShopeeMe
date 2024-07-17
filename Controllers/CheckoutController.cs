@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
+using Project.Models;
 
 public class CheckoutController : Controller {
 
@@ -7,12 +8,14 @@ public class CheckoutController : Controller {
     private readonly ICartReponsitory _cartResponsitory;
     private readonly IProductResponsitory _productResponsitory;
     private readonly ICheckoutResponsitory _checkoutResponsitory;
-    public CheckoutController(IHttpContextAccessor accessor, ICartReponsitory cartResponsitory, IProductResponsitory productResponsitory, ICheckoutResponsitory checkoutResponsitory)
+    private readonly IUserResponsitory _userResponsitory;
+    public CheckoutController(IHttpContextAccessor accessor, ICartReponsitory cartResponsitory, IProductResponsitory productResponsitory, ICheckoutResponsitory checkoutResponsitory, IUserResponsitory userResponsitory)
     {
         _accessor = accessor;
         _cartResponsitory = cartResponsitory;
         _productResponsitory = productResponsitory;
         _checkoutResponsitory = checkoutResponsitory;
+        _userResponsitory = userResponsitory;
     }
 
     List<Checkout> checkouts => HttpContext.Session.Get<List<Checkout>>("cart_key") ?? new List<Checkout>();
@@ -36,10 +39,18 @@ public class CheckoutController : Controller {
     [Route("/checkout/get-data")]
     public IActionResult GetData() {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        List<User> users = _userResponsitory.getUserInfoByID(Convert.ToInt32(sessionUserID)).ToList();
         List<Address> addresses = _checkoutResponsitory.checkAddressAccount(Convert.ToInt32(sessionUserID)).ToList();
+        List<City> cities = _checkoutResponsitory.getCities().ToList();
+        List<District> districts = _checkoutResponsitory.getDistricts().ToList();
+        List<AddressChoose> addressChooses = _checkoutResponsitory.getAddressChoose().ToList();
         CheckoutViewModel model = new CheckoutViewModel {
+            Users = users,
             Checkouts = checkouts,
-            Addresses = addresses
+            Addresses = addresses,
+            Cities = cities,
+            Districts = districts,
+            AddressChooses = addressChooses
         };
         return Ok(model);
     }

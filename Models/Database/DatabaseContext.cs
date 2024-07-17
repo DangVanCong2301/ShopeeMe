@@ -18,6 +18,9 @@ namespace Project.Models
         public DbSet<CartDetail> CartDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<AddressChoose> AddressChooses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -63,6 +66,18 @@ namespace Project.Models
 
             modelBuilder.Entity<Address>(entity => {
                 entity.HasKey(e => e.PK_iAddressID);
+            });
+
+            modelBuilder.Entity<City>(entity => {
+                entity.HasKey(e => e.PK_iCityID);
+            });
+
+            modelBuilder.Entity<District>(entity => {
+                entity.HasKey(e => e.PK_iDistrictID);
+            });
+
+            modelBuilder.Entity<AddressChoose>(entity => {
+                entity.HasNoKey();
             });
         }
     }
