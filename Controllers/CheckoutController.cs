@@ -56,6 +56,12 @@ public class CheckoutController : Controller {
     }
 
     [HttpPost]
+    [Route("/checkout/crud-address")]
+    public IActionResult CRUDAddress() {
+        return Ok();
+    }
+
+    [HttpPost]
     [Route("/checkout/add-to-checkout")]
     public IActionResult AddToCheckout(int productID, int quantity) {
         var cartsCheckout = checkouts;

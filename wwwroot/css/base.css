@@ -299,6 +299,10 @@ input, textarea, button {
     animation: spinner .7s linear infinite;
 }
 
+.spinner.hide {
+    display: none;
+}
+
 @keyframes spinner {
     from {
 
