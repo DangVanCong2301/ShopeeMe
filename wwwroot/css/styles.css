@@ -47,7 +47,6 @@
 }
 
 .header__navbar-user-name {
-    font-size: 1.4rem;
     margin-left: 4px;
     font-weight: 400;
 }
@@ -107,7 +106,6 @@
 .header__navbar-user-item a {
     margin: 8px 0;
     text-decoration: none;
-    font-size: 1.4rem;
     color: var(--text-color);
     padding: 4px 16px;
     display: block;
@@ -132,7 +130,6 @@
 }
 
 .header__sort-link {
-    font-size: 1.4rem;
     color: var(--text-color);
     line-height: var(--header-sort-bar-height);
     text-decoration: none;
@@ -181,7 +178,6 @@
 
 .header__navbar-item, .header__navbar-item-link {
     display: inline-block;
-    font-size: 1.5rem;
     color: var(--white-color);
     text-decoration: none; /*Bỏ gạch chân*/
     font-weight: 300;
@@ -219,7 +215,7 @@
 }
 
 .header__navbar-icon {
-    font-size: 1.8rem;
+    font-size: 16px;
     margin: 0 4px;
 }
 
@@ -341,7 +337,6 @@
         color: #666;
         margin: 0 0 0 12px;
         font-weight: 400;
-        font-size: 1.4rem;
         line-height: 40px;
     }
 
@@ -380,15 +375,14 @@
 
 .header__notify-name {
     display: block;
-    font-size: 1.4rem;
     color: var(--text-color);
     font-weight: 400;
 }
 
 .header__notify-descriotion {
     display: block;
-    font-size: 1.2rem;
-    line-height: 1.6rem;
+    font-size: 12px;
+    line-height: 1.5rem;
     color: #756f6e;
     margin-top: 4px;
 }
@@ -402,7 +396,6 @@
     color: var(--text-color);
     padding: 8px 16px;
     margin: auto;
-    font-size: 1.4rem;
     font-weight: 400;
 }
 
@@ -452,7 +445,6 @@
     height: 40px;
     margin-top: 16px;
     padding: 0 12px;
-    font-size: 1.4rem;
     border: 1px solid var(--border-color);
     border-radius: 2px;
     outline: none;
@@ -470,7 +462,7 @@
 }
 
 .auth-form__policy-text {
-    font-size: 1.2rem;
+    font-size: 12px;
     line-height: 1.8rem;
     text-align: center;
     padding: 0 12px;
@@ -653,7 +645,6 @@
 .header__cart-heading {
     text-align: left;
     margin: 8px 0 8px 12px;
-    font-size: 1.4rem;
     font-weight: 400;
     color: var(--text-color);
 }
@@ -693,12 +684,12 @@
 }
 
 .header__cart-item-name {
-    font-size: 1.4rem;
+    font-size: var(--normal-font-size);
     font-weight: 400;
     color: var(--text-color);
     margin: 0;
-    line-height: 2rem;
-    max-height: 4rem; /* Dòng tách xa nhau thì dùng để dính lại*/
+    line-height: 20px;
+    max-height: 40px; /* Dòng tách xa nhau thì dùng để dính lại*/
     overflow: hidden;
     flex: 1;
     padding-right: 16px;
@@ -709,19 +700,18 @@
 }
 
 .header__cart-item-price {
-    font-size: 1.4rem;
     font-weight: 400;
     color: var(--primary-color);
 }
 
 .header__cart-item-multifly {
-    font-size: 0.9rem;
+    font-size: 10px;
     margin: 0 4px;
     color: #757575;
 }
 
 .header__cart-item-qnt {
-    font-size: 1.2rem;
+    font-size: 12px;
     color: #757575;
 }
 
@@ -732,13 +722,12 @@
 
 .header__cart-item-description {
     color: #757575;
-    font-size: 1.2rem;
+    font-size: 12px;
     font-weight: 300;
 }
 
 .header__cart-item-remove {
     color: var(--text-color);
-    font-size: 1.4rem;
     font-weight: 400;
 }
 
@@ -767,7 +756,6 @@
 
 .header__cart-btn-sub {
     color: var(--white-color);
-    font-size: 1.4rem;
     font-weight: 300;
     padding: 36px;
     text-decoration: none;
@@ -781,11 +769,15 @@
     position: absolute;
     top: -4px;
     right: -4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 20px;
     padding: 2px 4px;
     color: var(--primary-color);
     background-color: var(--white-color);
-    font-size: 1.4rem;
-    line-height: 1.4rem;
+    line-height: 20px;
     border-radius: 10px;
     border: 2px solid #ee4d2d;
 }
@@ -804,14 +796,13 @@
 
 .header__cart-list-no-cart-msg {
     display: none;
-    font-size: 1.4rem;
     margin-top: 14px;
     color: var(--text-color);
 }
 
 .header__cart-icon {
     color: var(--white-color);
-    font-size: 2.4rem;
+    font-size: 24px;
     margin-top: 6px;
 }
 
@@ -826,10 +817,10 @@
     height: 100%;
     border: none;
     outline: none;
-    font-size: 1.4rem;
     color: var(--text-color);
     padding: 0 16px;
     border-radius: 2px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .header__search-select {
@@ -840,12 +831,11 @@
 }
 
 .header__search-select-label {
-    font-size: 1.4rem;
     color: var(--text-color);
 }
 
 .header__search-select-icon {
-    font-size: 1.4rem;
+    font-size: 16px;
     color: #4a4a4a;
     position: relative;
     top: 1px;
@@ -867,7 +857,7 @@
     }
 
 .header__search-btn-icon {
-    font-size: 1.4rem;
+    font-size: 20px;
     color: var(--white-color);
 }
 
@@ -919,13 +909,12 @@
     }
 
     .header__search-option-item span {
-        font-size: 1.4rem;
         color: var(--text-color);
         margin-left: 8px;
     }
 
     .header__search-option-item i {
-        font-size: 1.2rem;
+        font-size: 12px;
         color: var(--primary-color);
         margin-left: 12px;
     }
@@ -952,7 +941,6 @@
 
 .header__search-history-heading {
     margin: 6px 12px;
-    font-size: 1.4rem;
     color: #9999;
 }
 
@@ -976,7 +964,6 @@
 
     .header__search-history-item a {
         text-decoration: none;
-        font-size: 1.4rem;
         color: var(--text-color);
     }
 
@@ -1618,7 +1605,6 @@
 }
 
 .category-item__name {
-    font-size: 1.4rem;
     font-weight: 400;
     color: var(--text-color);
     line-height: 1.8rem;
@@ -1707,7 +1693,6 @@
 
 .home-product-item__name {
     position: relative;
-    font-size: 1.4rem;
     font-weight: 400;
     color: var(--text-color);
     line-height: 1.8rem;
@@ -1747,7 +1732,6 @@
 
 .home-product-item__price-old {
     position: relative;
-    font-size: 1.4rem;
     color: #666;
     text-decoration: line-through;
 }
@@ -1770,7 +1754,6 @@
 
 .home-product-item__price-current {
     position: relative;
-    font-size: 1.6rem;
     color: var(--primary-color);
 }
 
@@ -1782,7 +1765,7 @@
 
 .home-product-item__like {
     position: relative;
-    font-size: 1.4rem;
+    font-size: 16px;
     padding: 2px;
 }
 
@@ -1804,7 +1787,7 @@ i.home-product-item__like-icon-empty {
 
 .home-product-item__rating {
     position: relative;
-    font-size: 1rem;
+    font-size: 10px;
     transform: scale(0.8); /*Cho nhỏ nhỏ hơn nữa*/
     transform-origin: right; /*Đẻ tâm thay đổi sát bên phải*/
     color: #d5d5d5;
@@ -1818,7 +1801,7 @@ i.home-product-item__like-icon-empty {
 
 .home-product-item__sold {
     position: relative;
-    font-size: 1.2rem;
+    font-size: 12px;
     color: var(--text-color);
     margin-left: 6px;
 }
@@ -1829,7 +1812,7 @@ i.home-product-item__like-icon-empty {
     margin: 3px 10px 0;
     padding-bottom: 10px;
     color: #595959;
-    font-size: 1.2rem;
+    font-size: 12px;
     font-weight: 300;
 }
 
@@ -1844,7 +1827,6 @@ i.home-product-item__like-icon-empty {
     left: -4px;
     color: var(--primary-color);
     background-color: currentColor; /*Ăn theo màu chủ đạo*/
-    font-size: 1.2rem;
     font-weight: 500;
     line-height: 1.6rem;
     padding-right: 4px;
@@ -1854,6 +1836,7 @@ i.home-product-item__like-icon-empty {
 
     .home-product-item__favourite span {
         color: var(--white-color);
+        font-size: 12px;
     }
 
     .home-product-item__favourite::after {
@@ -1896,19 +1879,17 @@ i.home-product-item__like-icon-empty {
 .home-product-item__sale-off-percent {
     color: #ee4d2d;
     font-weight: 600;
-    font-size: 1.3rem;
-    line-height: 1.3rem;
+    font-size: 12px;
     position: relative;
-    top: 3px;
+    top: 0px;
 }
 
 .home-product-item__sale-off-label {
     position: relative;
-    font-size: 1.3rem;
     color: var(--white-color);
-    line-height: 1.3rem;
     font-weight: 600;
-    top: 4px;
+    font-size: 12px;
+    top: -7px;
 }
 
 .home-item {
@@ -1957,7 +1938,7 @@ i.home-product-item__like-icon-empty {
 }
 
 .product-category__heading {
-    font-size: 1.5rem;
+    font-size: 16px;
     color: var(--text-color);
     padding: 12px 16px 0;
     margin-top: 0;
@@ -1966,7 +1947,6 @@ i.home-product-item__like-icon-empty {
 }
 
 .category__heading-icon {
-    font-size: 1.4rem;
     margin-right: 4px;
     position: relative;
     top:-1px;
@@ -2012,7 +1992,6 @@ i.home-product-item__like-icon-empty {
 
 .category-item__link {
     position: relative;
-    font-size: 1.4rem;
     color: var(--text-color);
     text-decoration: none;
     line-height: 3rem;
@@ -2061,7 +2040,6 @@ i.home-product-item__like-icon-empty {
 .mobile-category__link {
     --line-height:2rem;
     text-decoration: none;
-    font-size: 1.4rem;
     line-height: var(--line-height);
     text-align: center;
     color: var(--text-color);
@@ -2092,17 +2070,14 @@ i.home-product-item__like-icon-empty {
     display:flex;
     align-items: center;
     margin-left:auto;
-    font-size:1.4rem;
 }
 
 .home-filter__page-num {
-    font-size: 1.4rem;
     color: var(--text-color);
     margin-right: 22px;
 }
 
 .home-filter__label {
-    font-size: 1.4rem;
     color: #555555;
     margin-right: 12px;
 }
@@ -2149,3 +2124,8 @@ i.home-product-item__like-icon-empty {
 .home-filter__page-btn--disabled .home-filter__page-icon {
     color: #ccc;
 }
+
+
+
+
+
