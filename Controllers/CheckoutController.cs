@@ -23,8 +23,14 @@ public class CheckoutController : Controller {
     [HttpGet]
     [Route("/checkout")]
     public IActionResult Index() {
-        var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");  
-        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)); 
+        // Lấy Cookies trên trình duyệt
+        var userID = Request.Cookies["UserID"];
+        if (userID != null)
+        {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        }
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");  
+        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)); 
         // Lấy số lượng giỏ hàng
         int cartCount = carts.Count();
         ShopeeViewModel model = new ShopeeViewModel {
@@ -57,8 +63,19 @@ public class CheckoutController : Controller {
 
     [HttpPost]
     [Route("/checkout/crud-address")]
-    public IActionResult CRUDAddress() {
-        return Ok();
+    public IActionResult CRUDAddress(string phone = "", string address = "") {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        _checkoutResponsitory.insertAddressAccount(Convert.ToInt32(sessionUserID), phone, address);
+        List<Address> addresses = _checkoutResponsitory.checkAddressAccount(Convert.ToInt32(sessionUserID)).ToList();
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Thêm địa chỉ thành công"
+        };
+        CheckoutViewModel model = new CheckoutViewModel {
+            Status = status,
+            Addresses = addresses
+        };
+        return Ok(model);
     }
 
     [HttpPost]

@@ -15,7 +15,6 @@ function getAPICheckout() {
 
             showAddressForm(data);
 
-            setDataAddressNewChoose(data);
         }
     };
     xhr.send(null);
@@ -27,11 +26,30 @@ function showAddressForm(data) {
         document.querySelector(".checkout__address-desc").classList.add("hide");
         openNewAddressForm(data);
         modal.classList.add('open');
+    } else {
+        setDataAddressDesc(data);
     }
 
 }
 
-function setDataAddressNewChoose(data) {
+function setDataAddressDesc(data) {
+    let htmlAddressDesc = "";
+    htmlAddressDesc +=
+        `
+                    <div class="checkout__address-desc">
+                        <div class="checkout__address-desc-name">${data.addresses[0].sFullName}</div>
+                        <div class="checkout__address-desc-phone">(+84) ${data.addresses[0].sPhone}</div>
+                        <div class="checkout__address-desc-direction">
+                            ${data.addresses[0].sAddress}
+                        </div>
+                        <div class="checkout__address-desc-sub">Mặc định</div>
+                        <a href="javascript:openAddressModal()" class="checkout__address-desc-change">Thay đổi</a>
+                    </div>
+            `;
+    document.querySelector(".checkout__address-detail").innerHTML = htmlAddressDesc;
+}
+
+function setDataAddressNewChoose() {
     let htmlCities = "";
     for (let i = 0 ; i < data.cities.length; i++) {
         htmlCities += " <li class='address-form__new-choose-detail-city-item' onclick='chooseCityNew(" + data.cities[i].pK_iCityID + ")'>";
@@ -291,54 +309,39 @@ function backMainForm() {
         updateAddressForm.classList.add("hide");
         newAddressForm.classList.add("hide");
     }
-    document.querySelector(".modal__body").innerHTML = 
+    let htmlAddress = "";
+    htmlAddress += 
     `
         <div class="address-form">
             <div class="address-form__container">
                 <div class="address-form__title">Địa chỉ của tôi</div>
                 <div class="address-form__body">
-                    <ul class="address-form__list">
-                        <li class="address-form__item">
-                            <div class="address-form__item-box">
-                                <input type="radio" name="address" class="address-form__item-input">
-                            </div>
-                            <div class="address-form__item-content">
-                                <div class="address-form__item-header">
-                                    <div class="address-form__item-header-info">
-                                        <div class="address-form__item-name">Đặng Văn Công</div>
-                                        <div class="address-form__item-phone">(+84) 347797502</div>
-                                    </div>
-                                    <a href="javascript:openUpdate()" class="address-form__item-update">Cập nhật</a>
-                                </div>
-                                <div class="address-form__item-body">
-                                    <div class="address-form__item-body-row">Số 20, Ngõ 259 Định Công, Phường Định Công
-                                    </div>
-                                    <div class="address-form__item-body-row">Quận Hoàng Mai, Hà Nội</div>
-                                </div>
-                                <button class="address-form__item-sub">Mặc định</button>
-                            </div>
-                        </li>
-                        <li class="address-form__item">
-                            <div class="address-form__item-box">
-                                <input type="radio" name="address" class="address-form__item-input">
-                            </div>
-                            <div class="address-form__item-content">
-                                <div class="address-form__item-header">
-                                    <div class="address-form__item-header-info">
-                                        <div class="address-form__item-name">Đặng Văn Công</div>
-                                        <div class="address-form__item-phone">(+84) 347797502</div>
-                                    </div>
-                                    <a href="" class="address-form__item-update">Cập nhật</a>
-                                </div>
-                                <div class="address-form__item-body">
-                                    <div class="address-form__item-body-row">Số 20, Ngõ 259 Định Công, Phường Định Công
-                                    </div>
-                                    <div class="address-form__item-body-row">Quận Hoàng Mai, Hà Nội</div>
-                                </div>
-                                <button class="address-form__item-sub">Mặc định</button>
-                            </div>
-                        </li>
-                    </ul>
+                    <ul class="address-form__list">`;
+                    htmlAddress += data.addresses.map(obj => 
+                        `
+                                                <li class="address-form__item">
+                                                    <div class="address-form__item-box">
+                                                        <input type="radio" name="address" class="address-form__item-input">
+                                                    </div>
+                                                    <div class="address-form__item-content">
+                                                        <div class="address-form__item-header">
+                                                            <div class="address-form__item-header-info">
+                                                                <div class="address-form__item-name">${obj.sFullName}</div>
+                                                                <div class="address-form__item-phone">(+84) ${obj.sPhone}</div>
+                                                            </div>
+                                                            <a href="" class="address-form__item-update">Cập nhật</a>
+                                                        </div>
+                                                        <div class="address-form__item-body">
+                                                            <div class="address-form__item-body-row">
+                                                                ${obj.sAddress}
+                                                            </div>
+                                                        </div>
+                                                        <button class="address-form__item-sub">Mặc định</button>
+                                                    </div>
+                                                </li>
+                        `).join('');
+                        
+    htmlAddress += `</ul>
                     <button class="address-form__add-btn" onclick="openNewAddressForm()">
                         <i class="uil uil-plus address-form__add-btn-icon"></i>
                         <span>Thêm địa chỉ mới</span>
@@ -351,6 +354,7 @@ function backMainForm() {
             </div>
         </div>
     `;
+    document.querySelector(".modal__body").innerHTML = htmlAddress;
 }
 
 function openNewAddressForm() {
@@ -448,5 +452,65 @@ function openNewAddressForm() {
         document.querySelector(".address-form__new-label-fullname").style.display = 'none';
         document.querySelector(".address-form__new-input-fullname").value = data.users[0].sFullName;
     }
+    setDataAddressNewChoose();
     addEvent();
+}
+
+function addressNewAddress() {
+    const phone = document.querySelector(".address-form__new-input-phone").value;
+    const addressChoose = document.querySelector(".address-form__new-input-choose").value;
+    const addressDesc = document.querySelector(".address-form__new-textarea-desc").value;
+    const address = addressDesc + ", " + addressChoose;
+
+    const formData = new FormData();
+    formData.append("phone", phone);
+    formData.append("address", address);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/checkout/crud-address', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+            let htmlAddressDesc = "";
+            htmlAddressDesc += 
+            `
+                    <div class="checkout__address-desc">
+                        <div class="checkout__address-desc-name">${data.addresses[0].sFullName}</div>
+                        <div class="checkout__address-desc-phone">(+84) ${data.addresses[0].sPhone}</div>
+                        <div class="checkout__address-desc-direction">
+                            ${data.addresses[0].sAddress}
+                        </div>
+                        <div class="checkout__address-desc-sub">Mặc định</div>
+                        <a href="javascript:openAddressModal()" class="checkout__address-desc-change">Thay đổi</a>
+                    </div>
+            `;
+            document.querySelector(".checkout__address-detail").innerHTML = htmlAddressDesc;
+            
+            closeAddressModal();
+
+            addSpinner();
+
+            addConfirmSuccess();
+        }
+    };
+    xhr.send(formData);
+}
+
+function addSpinner() {
+    document.querySelector(".modal").classList.add('open');
+    document.querySelector(".modal__body").innerHTML = 
+    `
+        <div class="spinner"></div>
+    `;
+}
+
+function addConfirmSuccess() {
+    setTimeout(() => {
+        document.querySelector(".modal").classList.remove('open');
+        setTimeout(() => {
+            toast({ title: "Thông báo", msg: `Thêm địa chỉ thành công`, type: "success", duration: 5000 });
+            document.querySelector(".checkout__address-desc").classList.remove("hide");
+        }, 1000)
+    }, 2000);
 }

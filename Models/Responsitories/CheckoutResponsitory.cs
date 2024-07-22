@@ -30,4 +30,13 @@ public class CheckoutResponsitory : ICheckoutResponsitory
     {
         return _context.Districts.FromSqlRaw("EXEC sp_GetDistricts");
     }
+
+    public bool insertAddressAccount(int userID, string phone = "", string address = "")
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        SqlParameter phoneParam = new SqlParameter("@sPhone", phone);
+        SqlParameter addressParam = new SqlParameter("@sAddress", address);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertAddressAccount @FK_iUserID, @sPhone, @sAddress", userIDParam, phoneParam, addressParam);
+        return true;
+    }
 }

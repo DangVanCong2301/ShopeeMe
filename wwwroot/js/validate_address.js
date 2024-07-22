@@ -113,19 +113,3 @@ function addEvent() {
         };
     });
 }
-
-function addressNewAddress() {
-    closeAddressModal();
-    document.querySelector(".modal").classList.add('open');
-    document.querySelector(".modal__body").innerHTML = 
-    `
-    <div class="spinner"></div>
-    `;
-    setTimeout(() => {
-        document.querySelector(".modal").classList.remove('open');
-        setTimeout(() => {
-            toast({ title: "Thông báo", msg: `Thêm địa chỉ thành công`, type: "success", duration: 5000 });
-            document.querySelector(".checkout__address-desc").classList.remove("hide");
-        }, 1000)
-    }, 2000);
-}
