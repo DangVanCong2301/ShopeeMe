@@ -79,6 +79,30 @@ public class CheckoutController : Controller {
     }
 
     [HttpPost]
+    [Route("/checkout/address-detail")]
+    public IActionResult AddressDetail(int addressID, int userID) {
+        var address = _checkoutResponsitory.getAddressesByID(addressID, userID);
+        return Ok(address);
+    }
+
+    [HttpPost]
+    [Route("/checkout/address-update")]
+    public IActionResult AddressUpdate(int addressID, int userID, string fullname = "", string phone = "", string address = "") {
+        _checkoutResponsitory.updateAddressAccountUserByID(userID, fullname);
+        _checkoutResponsitory.updateAddressAccountByID(addressID, userID, phone, address);
+        List<Address> addresses = _checkoutResponsitory.checkAddressAccount(Convert.ToInt32(userID)).ToList();
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Cập nhật thành công"
+        };
+        CheckoutViewModel model = new CheckoutViewModel {
+            Addresses = addresses,
+            Status = status
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
     [Route("/checkout/add-to-checkout")]
     public IActionResult AddToCheckout(int productID, int quantity) {
         var cartsCheckout = checkouts;

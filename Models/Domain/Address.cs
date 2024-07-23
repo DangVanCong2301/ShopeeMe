@@ -5,4 +5,5 @@ public class Address
     public string sFullName { get; set; }
     public string sPhone { get; set; }
     public string sAddress { get; set; }
+    public int iDefault { get; set; }
 }
