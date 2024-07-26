@@ -6,4 +6,5 @@ public class CartDetail {
     public double dUnitPrice { get; set; }
     public double dDiscount { get; set; }
     public double dMoney { get; set; }
+    public double dTransportPrice { get; set; }
 }

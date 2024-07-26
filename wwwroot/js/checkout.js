@@ -15,6 +15,8 @@ function getAPICheckout() {
 
             showAddressForm(data);
 
+            getCheckoutItemsDestop(data);
+
         }
     };
     xhr.send(null);
@@ -659,4 +661,119 @@ function addConfirmSuccess() {
             document.querySelector(".checkout__address-desc").classList.remove("hide");
         }, 1000)
     }, 2000);
+}
+
+// Checkout Items
+function getCheckoutItemsDestop(data) {
+    let htmlCheckoutItem = "";
+    htmlCheckoutItem += data.checkouts.map(obj => 
+    `
+                    <div class="checkout__product">
+                        <div class="checkout__product-header">
+                            <div class="checkout__product-header-name">Sản phẩm</div>
+                            <div class="checkout__product-header-type"></div>
+                            <div class="checkout__product-header-cost">Đơn giá</div>
+                            <div class="checkout__product-header-quantity">Số lượng</div>
+                            <div class="checkout__product-header-money">Thành tiền</div>
+                        </div>
+                        <div class="checkout__product-body">
+                            <div class="checkout__product-body-felling">
+                                <button type="button" class="checkout__product-body-felling-btn">Yêu thích</button>
+                                <a href="#" class="checkout__product-body-felling-chat">
+                                    <i class="uil uil-chat checkout__product-body-felling-chat-icon"></i>
+                                    <span>Chat ngay</span>
+                                </a>
+                            </div>
+                            <div class="checkout__product-body-item">
+                                <div class="checkout__product-body-item-name">
+                                    <div class="checkout__product-body-item-img"
+                                        style="background-image: url(/img/${obj.sImageUrl});"></div>
+                                    <div class="checkout__product-body-item-desc">
+                                        <div class="checkout__product-body-item-text">
+                                            ${obj.sProductName}
+                                        </div>
+                                        <span>Đổi ý miễn phí 15 ngày</span>
+                                    </div>
+                                </div>
+                                <div class="checkout__product-body-item-type">Loại: Bạc</div>
+                                <div class="checkout__product-body-item-cost">${money(obj.dUnitPrice)} đ</div>
+                                <div class="checkout__product-body-item-quantity">${obj.iQuantity}</div>
+                                <div class="checkout__product-body-item-money">${money(obj.dMoney)} đ</div>
+                            </div>
+                            <div class="checkout__product-body-promotion">
+                                <div class="checkout__product-body-electronic-invoice">
+                                    <div class="checkout__product-body-invoice-sub">
+                                        <span>Hoá đơn điện tử</span>
+                                        <i class="uil uil-question-circle checkout__product-body-invoice-icon"></i>
+                                    </div>
+                                    <a href="" class="checkout__product-body-invoice-request">Yêu cầu ngay</a>
+                                </div>
+                                <div class="checkout__product-body-voucher">
+                                    <div class="checkout__product-body-voucher-shop">
+                                        <i class="uis uis-check-circle checkout__product-body-voucher-shop-icon"></i>
+                                        Voucher của shop
+                                    </div>
+                                    <div class="checkout__product-body-voucher-other">
+                                        <span>-18k</span>
+                                        <a href="#" class="checkout__product-body-voucher-other-link">Chọn Voucher khác</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkout__product-body-contact">
+                                <div class="checkout__product-body-message">
+                                    <div class="checkout__product-body-message-content">
+                                        <label for="" class="checkout__product-body-message-label">Lời nhắn</label>
+                                        <input type="text" class="checkout__product-body-message-input"
+                                            placeholder="Lưu ý cho người bán...">
+                                    </div>
+                                </div>
+                                <div class="checkout__product-body-transport">
+                                    <div class="checkout__product-body-transport-top">
+                                        <div class="checkout__product-body-transport-sub">Đơn vị vận chuyển: </div>
+                                        <div class="checkout__product-body-transport-type">
+                                            <div class="checkout__product-body-transport-type-top">
+                                                <span>Nhanh</span>
+                                                <a href="#" class="checkout__product-body-transport-change">Thay đổi</a>
+                                                <div class="checkout__product-body-transport-cost">16.500 đ</div>
+                                            </div>
+                                            <div class="checkout__product-body-transport-type-bottom">
+                                                <div class="checkout__product-body-transport-type-bottom-sub">Đảm bảo nhận
+                                                    hàng từ 16 Tháng 5 - 17 Tháng 5</div>
+                                                <div class="checkout__product-body-transport-type-bottom-sub">Nhận Voucher
+                                                    trị giá 10.000đ nếu đơn hàng được giao đến bạn sau ngày 17 Tháng 5 năm
+                                                    2024. <i
+                                                        class="uil uil-question-circle checkout__product-body-transport-type-bottom-icon"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkout__product-body-transport-between">
+                                        <div class="checkout__product-body-transport-between-sub">Hoặc chọn phương thức Hoả
+                                            Tốc để </div>
+                                        <a href="#" class="checkout__product-body-transport-between-link">
+                                            <i
+                                                class="uil uil-truck checkout__product-body-transport-between-link-icon-truck"></i>
+                                            <span>Đảm bảo nhận hàng vào hôm nay</span>
+                                            <i
+                                                class="uil uil-angle-right-b checkout__product-body-transport-between-link-row"></i>
+                                        </a>
+                                    </div>
+                                    <div class="checkout__product-body-transport-bottom">
+                                        <div class="checkout__product-body-transport-bottom-sub">
+                                            <span>Được đồng kiểm</span>
+                                            <i
+                                                class="uil uil-question-circle checkout__product-body-transport-bottom-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__product-bottom">
+                            <div class="checkout__product-bottom-sub">Tổng số tiền (${obj.iQuantity} sản phẩm): </div>
+                            <span>${money(obj.dMoney)} đ</span>
+                        </div>
+                    </div>
+    `
+    ).join('');
+    document.querySelector(".checkout__list").innerHTML = htmlCheckoutItem;
 }
