@@ -56,7 +56,7 @@ function getCartItemsDestop(data) {
                 <div class="cart__purchase-voucher">
                     <div class="cart__purchase-voucher-title">
                         <i class="uil uil-store cart__body-discount-icon"></i>
-                        <div class="cart__purchase-voucher-sub">F4 Shop Voucher</div>
+                        <div class="cart__purchase-voucher-sub">Shopee Voucher</div>
                     </div>
                     <a href="#" class="cart__purchase-voucher-link">Chọn hoặc nhập mã</a>
                 </div>
@@ -99,8 +99,8 @@ function getCartItemsDestop(data) {
             <div class="cart__input">
                 <input type="checkbox" class="cart__checkout-input" name="" id="">
             </div>
-            <span>F4 Shop Mall</span>
-            <div class="cart__body-header-text">LenovoThinkplus.vn</div>
+            <span>Yêu thích</span>
+            <div class="cart__body-header-text">${obj.sStoreName}</div>
             <a href="#" class="cart__body-header-chat">
                 <i class="uil uil-chat cart__body-header-chat-icon"></i>
             </a>

@@ -105,10 +105,11 @@ public class CheckoutController : Controller {
     [HttpPost]
     [Route("/checkout/add-to-checkout")]
     public IActionResult AddToCheckout(int productID, int quantity) {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         var cartsCheckout = checkouts;
         var item = cartsCheckout.SingleOrDefault(p => p.PK_iProductID == productID);
         if (item == null) {
-            List<Product> product = _productResponsitory.getProductByID(productID).ToList();
+            List<CartDetail> product = _cartResponsitory.getProductCartByID(Convert.ToInt32(sessionUserID), productID).ToList();
             if (product == null) {
                 System.Console.WriteLine($"Không tìm thấy hàng hoá có mã {productID}");
             }
@@ -116,9 +117,10 @@ public class CheckoutController : Controller {
                 PK_iProductID = product[0].PK_iProductID,
                 sProductName = product[0].sProductName,
                 sImageUrl = product[0].sImageUrl,
-                dUnitPrice = product[0].dPrice, // https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
+                dUnitPrice = product[0].dUnitPrice, // https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
                 iQuantity = quantity,
-                dMoney = product[0].dPrice * quantity
+                dMoney = product[0].dUnitPrice * quantity,
+                dTransportPrice = product[0].dTransportPrice
             };
             cartsCheckout.Add(item);
         }

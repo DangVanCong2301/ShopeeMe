@@ -1,5 +1,6 @@
 public interface ICartReponsitory {
     IEnumerable<CartDetail> getCartInfo(int userID);
+    IEnumerable<CartDetail> getProductCartByID(int userID, int productID);
     IEnumerable<Cart> checkCartIDExist();
     bool insertCart();
     bool insertCartDetail(int userID, int productID, int cartID, int quantity, double unitPrice);

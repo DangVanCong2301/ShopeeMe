@@ -69,4 +69,11 @@ public class CartResponsitory : ICartReponsitory
     {
         return _context.Products.FromSqlRaw("EXEC sp_Get12ProductsAndSortIncre");
     }
+
+    public IEnumerable<CartDetail> getProductCartByID(int userID, int productID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        SqlParameter productIDParam = new SqlParameter("@PK_iProductID", productID);
+        return _context.CartDetails.FromSqlRaw("EXEC sp_GetInfoCartByProductID @PK_iUserID, @PK_iProductID", userIDParam, productIDParam);
+    }
 }
