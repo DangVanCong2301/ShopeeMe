@@ -65,7 +65,7 @@ public class CartController : Controller {
         if (sessionUserID == null) {
             sessionUserID = 0;
         } 
-        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", sessionUserID);
+        
         List<User> user = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
 
         List<CartDetail> checkProduct = _cartResponsitory.checkProduct(Convert.ToInt32(sessionUserID), productID).ToList();

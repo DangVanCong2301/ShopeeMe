@@ -734,7 +734,7 @@ function getCheckoutItemsDestop(data) {
                                             <div class="checkout__product-body-transport-type-top">
                                                 <span>Nhanh</span>
                                                 <a href="#" class="checkout__product-body-transport-change">Thay đổi</a>
-                                                <div class="checkout__product-body-transport-cost">16.500 đ</div>
+                                                <div class="checkout__product-body-transport-cost">${money(obj.dTransportPrice)} đ</div>
                                             </div>
                                             <div class="checkout__product-body-transport-type-bottom">
                                                 <div class="checkout__product-body-transport-type-bottom-sub">Đảm bảo nhận
@@ -776,4 +776,43 @@ function getCheckoutItemsDestop(data) {
     `
     ).join('');
     document.querySelector(".checkout__list").innerHTML = htmlCheckoutItem;
+    setTotalPrice(data);
+}
+
+// Set Price
+function setTotalPrice(data) {
+    var totalItemPrice = data.checkouts.reduce((total, item) => {
+        return total + item.dUnitPrice;
+    }, 0)
+
+    var totalTransportPrice = data.checkouts.reduce((total, transport) => {
+        return total + transport.dTransportPrice;
+    }, 0);
+
+    document.querySelector(".checkout__payment-money-total-item-price").innerText = `${money(totalItemPrice)}`;
+    document.querySelector(".checkout__payment-money-total-transport-price").innerText = `${money(totalTransportPrice)}`;
+    document.querySelector(".checkout__payment-money-total-price").innerText = `${money(totalItemPrice + totalTransportPrice)}`;
+    
+    var totalPrice = totalItemPrice + totalTransportPrice;
+    addToOrder(totalPrice);
+}
+
+// Add To Order
+function addToOrder(totalPrice) {
+    document.querySelector(".checkout__payment-order-btn-submit").addEventListener("click", () => {
+        var formData = new FormData();
+        formData.append("totalPrice", totalPrice);
+        formData.append("paymentID", 1);
+        formData.append("orderStatusID", 1);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/checkout/add-to-order', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const result = JSON.parse(xhr.responseText);
+                console.log(result);
+            }
+        };
+        xhr.send(formData);
+    });
 }

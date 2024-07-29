@@ -9,13 +9,15 @@ public class CheckoutController : Controller {
     private readonly IProductResponsitory _productResponsitory;
     private readonly ICheckoutResponsitory _checkoutResponsitory;
     private readonly IUserResponsitory _userResponsitory;
-    public CheckoutController(IHttpContextAccessor accessor, ICartReponsitory cartResponsitory, IProductResponsitory productResponsitory, ICheckoutResponsitory checkoutResponsitory, IUserResponsitory userResponsitory)
+    private readonly IOrderResponsitory _orderResponsitory;
+    public CheckoutController(IHttpContextAccessor accessor, ICartReponsitory cartResponsitory, IProductResponsitory productResponsitory, ICheckoutResponsitory checkoutResponsitory, IUserResponsitory userResponsitory, IOrderResponsitory orderResponsitory)
     {
         _accessor = accessor;
         _cartResponsitory = cartResponsitory;
         _productResponsitory = productResponsitory;
         _checkoutResponsitory = checkoutResponsitory;
         _userResponsitory = userResponsitory;
+        _orderResponsitory = orderResponsitory;
     }
 
     List<Checkout> checkouts => HttpContext.Session.Get<List<Checkout>>("cart_key") ?? new List<Checkout>();
@@ -124,7 +126,24 @@ public class CheckoutController : Controller {
             };
             cartsCheckout.Add(item);
         }
+        // Đặt lại danh sách session sản phẩm thanh toán 
         HttpContext.Session.Set("cart_key", cartsCheckout);
         return Ok(checkouts);
+    }
+
+    [HttpPost]
+    [Route("/checkout/add-to-order")]
+    public IActionResult AddToOrder(double totalPrice, int paymentID, int orderStatusID) {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        // _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), totalPrice, orderStatusID, paymentID);
+        List<Order> order = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID)).ToList();
+        var orderID = order[0].PK_iOrderID;
+        foreach (var item in checkouts) {
+            // Thêm vào chi tiết đơn hàng
+            _orderResponsitory.inserOrderDetail(orderID, item.PK_iProductID, item.iQuantity, item.dUnitPrice);
+            // Xoá sản phẩm trong giỏ hàng
+            _cartResponsitory.deleteProductInCart(item.PK_iProductID, Convert.ToInt32(sessionUserID));
+        } 
+        return Ok("Thêm thành công");
     }
 }
