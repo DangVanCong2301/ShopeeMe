@@ -1,96 +1,155 @@
 @{
-    Layout = "_UserLayout";
-    ViewData["Title"] = "Thêm thể loại";
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Trang quản trị";
 }
-@model Category
-<link rel="stylesheet" href="~/css/cart.css">
-<!--Register form-->
-<div class="app__container">
-    <div class="auth">
-        <div class="auth__content">
-            <div class="auth__logo">
-                <div class="cart">
-                    <div class="row">
-                        <div class="col l-4">
-                            <tr>
-                                        <th>Mã</th>
-                                        <th>Tên thể loại</th>
-                                        <th>Chi tiết</th>
-                                    </tr>
-                        </div>
-                        <div class="col l-4">
-                            <tr>
-                                        <th>Mã</th>
-                                        <th>Tên thể loại</th>
-                                        <th>Chi tiết</th>
-                                    </tr>
-                        </div>
-                        <div class="col l-4">
-                            <tr>
-                                        <th>Mã</th>
-                                        <th>Tên thể loại</th>
-                                        <th>Chi tiết</th>
-                                    </tr>
-                        </div>
-                        <div class="col l-4">
-                            <tr>
-                                        <th>Mã</th>
-                                        <th>Tên thể loại</th>
-                                        <th>Chi tiết</th>
-                                    </tr>
-
-                    </div>
-                    </div>
-                    <div class="table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Mã</th>
-                                    <th>Tên thể loại</th>
-                                    <th>Chi tiết</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table__body">
-                                
-                            </tbody>
-                        </table>
+<div class="admin__main">
+    <div class="admin__main-title">Bảng quản trị</div>
+    <div class="admin__main-date">
+        <input type="date" class="admin__main-date-input">
+    </div>
+    <div class="admin__main-insights">
+        <div class="admin__main-sales">
+            <div class="admin__main-box">
+                <i class="uil uil-analytics admin__main-icon"></i>
+            </div>
+            <div class="admin__main-middle">
+                <div class="admin__main-left">
+                    <div class="admin__main-middle-title">Tổng bán hàng</div>
+                    <div class="admin__main-middle-price">1.500.000đ</div>
+                </div>
+                <div class="admin__main-progress">
+                    <svg class="admin__main-progress-img">
+                        <circle cx="38" cy="38" r="36"></circle>
+                    </svg>
+                    <div class="admin__main-number">
+                        <p class="admin__main-number-text">84%</p>
                     </div>
                 </div>
             </div>
-            <div class="auth-form">
-                <form action="/Admin/Index" method="post" class="auth-form__container">
-                    <div class="auth-form__header">
-                        <h3 class="auth-form__heading">Thêm thể loại</h3>
-                        @* <span class="auth-form__switch-btn"><i class="fa-solid fa-xmark auth-form__close"></i></span> *@
+            <small class="admin__main-text-muted">24 tiếng trước</small>
+        </div>
+        <!-- End Of Sales -->
+        <div class="admin__main-expenses">
+            <div class="admin__main-box">
+                <i class="uil uil-chart admin__main-box-icon"></i>
+            </div>
+            <div class="admin__main-middle">
+                <div class="admin__main-left">
+                    <div class="admin__main-middle-title">Tổng bán hàng</div>
+                    <div class="admin__main-middle-price">1.500.000đ</div>
+                </div>
+                <div class="admin__main-progress">
+                    <svg class="admin__main-progress-img">
+                        <circle cx="38" cy="38" r="36"></circle>
+                    </svg>
+                    <div class="admin__main-number">
+                        <p class="admin__main-number-text">84%</p>
                     </div>
-                    <div class="auth-form__form">
-                        <div class="auth-form__group">
-                            <input type="text" asp-for="sCategoryName" class="auth-form__input" placeholder="Tên thể loại" />
-                            <span asp-validation-for="sCategoryName" class="auth-msg auth-msg__err"></span>
+                </div>
+            </div>
+            <small class="admin__main-text-muted">24 tiếng trước</small>
+        </div>
+        <!-- End Of Expenses -->
+        <div class="admin__main-income">
+            <div class="admin__main-box">
+                <i class="uil uil-comparison admin__main-box-icon"></i>
+            </div>
+            <div class="admin__main-middle">
+                <div class="admin__main-left">
+                    <div class="admin__main-middle-title">Tổng thu</div>
+                    <div class="admin__main-middle-price">1.500.000đ</div>
+                </div>
+                <div class="admin__main-progress">
+                    <svg class="admin__main-progress-img">
+                        <circle cx="38" cy="38" r="36"></circle>
+                    </svg>
+                    <div class="admin__main-number">
+                        <p class="admin__main-number-text">74%</p>
+                    </div>
+                </div>
+            </div>
+            <small class="admin__main-text-muted">24 tiếng trước</small>
+        </div>
+        <!-- End Of Income -->
+    </div>
+    <div class="admin__main-recent-orders">
+        <div class="admin__main-recent-orders-title">Đơn hàng gần đây</div>
+        <div class="admin__order-header">
+            <ul class="admin__order-header-list">
+                <li class="admin__order-header-item active">
+                    Tất cả
+                </li>
+                <li class="admin__order-header-item">
+                    Chờ thanh toán
+                </li>
+                <li class="admin__order-header-item">
+                    Vận chuyển (1)
+                </li>
+                <li class="admin__order-header-item">
+                    Chờ giao hàng
+                </li>
+                <li class="admin__order-header-item">
+                    Hoàn thành
+                </li>
+                <li class="admin__order-header-item">
+                    Đã huỷ
+                </li>
+                <li class="admin__order-header-item">
+                    Trả hàng/hoàn tiền
+                </li>
+            </ul>
+        </div>
+        <div class="admin__order-container">
+            <div class="admin__order-table">
+                <div class="admin__order-table-header">
+                    <div class="admin__order-table-header-row">
+                        <div class="admin__order-table-header-col">Mã đơn hàng</div>
+                        <div class="admin__order-table-header-col">Sản phẩm</div>
+                        <div class="admin__order-table-header-col">Thanh toán</div>
+                        <div class="admin__order-table-header-col">Trạng thái</div>
+                        <div class="admin__order-table-header-col"></div>
+                    </div>
+                </div>
+                <div class="admin__order-table-body">
+                    <div class="admin__order-table-body-row">
+                        <div class="admin__order-table-body-col">DH123</div>
+                        <div class="admin__order-table-body-col">3</div>
+                        <div class="admin__order-table-body-col">500.000 đ</div>
+                        <div class="admin__order-table-body-col warning">Chờ xác nhận</div>
+                        <div class="admin__order-table-body-col primary">
+                            <a href="#" class="admin__order-table-body-col-link">Chi tiết</a>
                         </div>
-                        <div class="auth-form__group">
-                            <input type="text" asp-for="sCategoryDescription" class="auth-form__input" placeholder="Chi tiết thể loại" />
-                            <span asp-validation-for="sCategoryDescription" class="auth-msg auth-msg__err"></span>
+                    </div>
+                    <div class="admin__order-table-body-row">
+                        <div class="admin__order-table-body-col">DH435</div>
+                        <div class="admin__order-table-body-col">3</div>
+                        <div class="admin__order-table-body-col">500.000 đ</div>
+                        <div class="admin__order-table-body-col primary">Đã thanh toán</div>
+                        <div class="admin__order-table-body-col primary">
+                            <a href="#" class="admin__order-table-body-col-link">Chi tiết</a>
                         </div>
-                        <div class="auth-form__group">
-                            <input type="text" asp-for="sCategoryImage" class="auth-form__input" placeholder="Chi tiết thể loại" />
-                            <span asp-validation-for="sCategoryImage" class="auth-msg auth-msg__err"></span>
+                    </div>
+                    <div class="admin__order-table-body-row">
+                        <div class="admin__order-table-body-col">DH432</div>
+                        <div class="admin__order-table-body-col">3</div>
+                        <div class="admin__order-table-body-col">500.000 đ</div>
+                        <div class="admin__order-table-body-col success">Đã giao hàng</div>
+                        <div class="admin__order-table-body-col primary">
+                            <a href="#" class="admin__order-table-body-col-link">Chi tiết</a>
                         </div>
                     </div>
-            
-                    <div class="auth-form__result">
-                        @if (TempData["msg"] != null) {
-                            @TempData["msg"]
-                        }
+                    <div class="admin__order-table-body-row">
+                        <div class="admin__order-table-body-col">DH987</div>
+                        <div class="admin__order-table-body-col">3</div>
+                        <div class="admin__order-table-body-col">500.000 đ</div>
+                        <div class="admin__order-table-body-col danger">Khách hàng huỷ</div>
+                        <div class="admin__order-table-body-col primary">
+                            <a href="#" class="admin__order-table-body-col-link">Chi tiết</a>
+                        </div>
                     </div>
-                    <div class="auth-form__controls">
-                        <button class="btn auth-form__controls-back btn--normal js-login-form-close">TRỞ LẠI</button>
-                        <button type="submit" class="btn btn--primary">THÊM</button>
-                    </div>
-                </form>
-               
+                </div>
             </div>
         </div>
+        <a href="#" class="admin__order-more">Xem tất cả</a>
     </div>
 </div>
-<script src="~/js/admin.js"></script>

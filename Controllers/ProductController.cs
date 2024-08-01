@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Project.Models;
 
 [Route("/product")]
@@ -105,9 +106,36 @@ public class ProductController : Controller {
         return View("Index", model);
     }
 
-    [Route("/product/similar")]
-    public IActionResult Similar()
+    [HttpGet]
+    [Route("/product/similar/{productSimilarID?}/{categorySimilar?}")]
+    public IActionResult Similar(int productSimilarID, int categorySimilar)
     {
-        return View();
+        _accessor?.HttpContext?.Session.SetInt32("ProductSimilarID", productSimilarID);
+        _accessor?.HttpContext?.Session.SetInt32("CategorySimilarID", categorySimilar);
+        ShopeeViewModel model = new ShopeeViewModel {
+            
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    [Route("/product/similar/get-data")]
+    public IActionResult Similar() {
+        var sessionProductSimilarID = _accessor?.HttpContext?.Session.GetInt32("ProductSimilarID");
+        var sessionCategorySimilarID = _accessor?.HttpContext?.Session.GetInt32("ProductSimilarID");
+        List<Product> product = _productResponsitory.getProductByID(Convert.ToInt32(sessionProductSimilarID)).ToList();
+        IEnumerable<Product> products = _productResponsitory.getProductsByCategoryID(Convert.ToInt32(sessionCategorySimilarID));
+        Product item = new Product {
+            PK_iProductID = product[0].PK_iProductID,
+            sProductName = product[0].sProductName,
+            sImageUrl = product[0].sImageUrl,
+            dPrice = product[0].dPrice,
+            dPerDiscount = product[0].dPerDiscount
+        };
+        ProductViewModel model = new ProductViewModel {
+            Product = item,
+            Products = products
+        };
+        return Ok(model);
     }
 }
