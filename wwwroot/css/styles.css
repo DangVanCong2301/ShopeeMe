@@ -1761,6 +1761,7 @@
 .home-product-item__action {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 6px 10px 0;
 }
 
@@ -1889,7 +1890,7 @@ i.home-product-item__like-icon-empty {
     color: var(--white-color);
     font-weight: 600;
     font-size: 12px;
-    top: -7px;
+    top: -2px;
 }
 
 .home-item {
@@ -2124,8 +2125,3 @@ i.home-product-item__like-icon-empty {
 .home-filter__page-btn--disabled .home-filter__page-icon {
     color: #ccc;
 }
-
-
-
-
-

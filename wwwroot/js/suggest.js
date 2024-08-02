@@ -78,7 +78,7 @@ function getProducts(data) {
                                     </a>
                                     <div class="home-product-item__find-similar">
                                     </div>
-                                    <a href="#" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
+                                    <a href="/product/similar/${data.products[i].pK_iProductID}/${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
                                 </div>
                             </div>
             `;
@@ -148,7 +148,7 @@ function getProducts(data) {
                                             <span class="home-product-item__sale-off-label">GIẢM</span>
                                         </div>
                                     </a>
-                                    <a href="#" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
+                                    <a href="/product/similar/${data.products[i].pK_iProductID}/${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
                                 </div>
                             </div>
             `;

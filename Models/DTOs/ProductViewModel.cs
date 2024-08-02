@@ -10,6 +10,7 @@ public class ProductViewModel {
     public IEnumerable<User> Users { get; set; }
     public IEnumerable<Checkout> Checkouts { get; set; }
     public Product Product { get; set; }
+    public Store Store { get; set; }
     public int UserID { get; set; }
     public int TotalPage { get; set; }
     public int CurrentPage { get; set; }

@@ -9,13 +9,15 @@ public class ProductController : Controller {
     private readonly ICartReponsitory _cartResponsitory;
     private readonly IHomeResponsitory _homeResponsitory;
     private readonly IUserResponsitory _userResponsitory;
-    public ProductController(IProductResponsitory productResponsitory, ICartReponsitory cartReponsitoty, IHttpContextAccessor accessor, IHomeResponsitory homeResponsitory, IUserResponsitory userResponsitory)
+    private readonly IShopResponsitory _shopResponsitory;
+    public ProductController(IProductResponsitory productResponsitory, ICartReponsitory cartReponsitoty, IHttpContextAccessor accessor, IHomeResponsitory homeResponsitory, IUserResponsitory userResponsitory, IShopResponsitory shopResponsitory)
     {
         _productResponsitory = productResponsitory;
         _cartResponsitory = cartReponsitoty;
         _accessor = accessor;
         _homeResponsitory = homeResponsitory;
         _userResponsitory = userResponsitory;
+        _shopResponsitory = shopResponsitory;
     }
 
     [Route("index/{categoryID}")]
@@ -79,8 +81,18 @@ public class ProductController : Controller {
     public IActionResult GetDetail() {
         var sessionCurrentProductID = _accessor?.HttpContext?.Session.GetInt32("CurrentProductID");
         var product = _productResponsitory.getProductByID(Convert.ToInt32(sessionCurrentProductID));
+        List<Store> store = _shopResponsitory.getShopByProductID(Convert.ToInt32(sessionCurrentProductID)).ToList();
+        Store storeDetail = new Store {
+            PK_iStoreID = store[0].PK_iStoreID,
+            sStoreName = store[0].sStoreName,
+            sImageAvatar = store[0].sImageAvatar,
+            sImageLogo = store[0].sImageLogo,
+            sImageBackground = store[0].sImageBackground,
+            sDesc = store[0].sDesc
+        };
         ProductViewModel model = new ProductViewModel {
-            Products = product
+            Products = product,
+            Store = storeDetail
         };
         return Ok(model);
     }
@@ -120,21 +132,38 @@ public class ProductController : Controller {
 
     [HttpPost]
     [Route("/product/similar/get-data")]
-    public IActionResult Similar() {
+    public IActionResult Similar(int currentPage = 1) {
         var sessionProductSimilarID = _accessor?.HttpContext?.Session.GetInt32("ProductSimilarID");
-        var sessionCategorySimilarID = _accessor?.HttpContext?.Session.GetInt32("ProductSimilarID");
+        var sessionCategorySimilarID = _accessor?.HttpContext?.Session.GetInt32("CategorySimilarID");
         List<Product> product = _productResponsitory.getProductByID(Convert.ToInt32(sessionProductSimilarID)).ToList();
+        List<Store> store = _shopResponsitory.getShopByProductID(Convert.ToInt32(sessionProductSimilarID)).ToList();
         IEnumerable<Product> products = _productResponsitory.getProductsByCategoryID(Convert.ToInt32(sessionCategorySimilarID));
-        Product item = new Product {
+        Product productDetail = new Product {
             PK_iProductID = product[0].PK_iProductID,
             sProductName = product[0].sProductName,
             sImageUrl = product[0].sImageUrl,
             dPrice = product[0].dPrice,
             dPerDiscount = product[0].dPerDiscount
         };
+        Store storeDetail = new Store {
+            PK_iStoreID = store[0].PK_iStoreID,
+            sStoreName = store[0].sStoreName,
+            sImageAvatar = store[0].sImageAvatar,
+            sImageLogo = store[0].sImageLogo,
+            sImageBackground = store[0].sImageBackground,
+            sDesc = store[0].sDesc
+        };
+        int totalRecord = products.Count();
+        int pageSize = 6;
+        int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
+        products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         ProductViewModel model = new ProductViewModel {
-            Product = item,
-            Products = products
+            Product = productDetail,
+            Store = storeDetail,
+            Products = products,
+            TotalPage = totalPage,
+            PageSize = pageSize,
+            CurrentPage = currentPage
         };
         return Ok(model);
     }

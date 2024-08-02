@@ -58,4 +58,10 @@ public class ShopResponsitory : IShopResponsitory
         SqlParameter shopIDParam = new SqlParameter("@FK_iShopID", shopID);
         return _context.SliderShops.FromSqlRaw("EXEC sp_GetBannersShopByShopID @FK_iShopID", shopIDParam);
     }
+
+    public IEnumerable<Store> getShopByProductID(int productID)
+    {
+        SqlParameter productIDParam = new SqlParameter("@PK_iProductID", productID);
+        return _context.Stores.FromSqlRaw("sp_GetShopByProductID @PK_iProductID", productIDParam);
+    }
 }
