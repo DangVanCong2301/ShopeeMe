@@ -4,6 +4,7 @@ public interface IShopResponsitory
     IEnumerable<Category> getCategoriesByShopID(int shopID);
     IEnumerable<Product> getProductsByShopID(int shopID);
     IEnumerable<Store> getShopByID(int shopID);
+    IEnumerable<Store> getShopByParentCategoryID(int parentCategoryID);
     IEnumerable<Store> getShopByProductID(int productID);
     IEnumerable<Product> getTop3SellingProductsShop(int shopID);
     IEnumerable<Product> getTop10SellingProductsShop(int shopID);

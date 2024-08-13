@@ -39,4 +39,15 @@ public class HomeResponsitory : IHomeResponsitory
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
         return _context.Favorites.FromSqlRaw("sp_SelectProductFavorites @FK_iUserID", userIDParam);
     }
+
+    public IEnumerable<Category> getCategoriesByParentCategoryID(int parentCategoryID)
+    {
+        SqlParameter parentCategoryIDParam = new SqlParameter("@FK_iParentCategoryID", parentCategoryID);
+        return _context.Categories.FromSqlRaw("EXEC sp_SelectCategoriesByParentCategoryID @FK_iParentCategoryID", parentCategoryIDParam);
+    }
+
+    public IEnumerable<ParentCategory> getParentCategories()
+    {
+        return _context.ParentCategories.FromSqlRaw("EXEC sp_SelectParentCategories");
+    }
 }

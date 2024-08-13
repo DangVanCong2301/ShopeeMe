@@ -99,6 +99,7 @@ namespace Project.Controllers
             int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
             products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
             IEnumerable<Store> stores = _homeResponsitory.getStores();
+            IEnumerable<ParentCategory> parentCategories = _homeResponsitory.getParentCategories();
             IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
             IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(Convert.ToInt32(sessionUserID));
             IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
@@ -107,6 +108,7 @@ namespace Project.Controllers
             ShopeeViewModel model = new ShopeeViewModel {
                 Stores = stores,
                 Products = products,
+                ParentCategories = parentCategories,
                 Categories = categories,
                 Favorites = favorites,
                 CartDetails = cartDetails,

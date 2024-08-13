@@ -5,6 +5,7 @@ public class ShopeeViewModel
     public IEnumerable<Store> Stores { get; set; }
     public IEnumerable<Product> Products {get; set;}
     public IEnumerable<Favorite> Favorites { get; set; }
+    public IEnumerable<ParentCategory> ParentCategories { get; set; }
     public IEnumerable<Category> Categories {get; set;}
     public IEnumerable<CartDetail> CartDetails { get; set; }
     public IEnumerable<User> Users { get; set; }

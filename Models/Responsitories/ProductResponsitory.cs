@@ -37,4 +37,16 @@ public class ProductResponsitory : IProductResponsitory {
         SqlParameter categoryIDParam = new SqlParameter("@FK_iCategoryID", categoryID);
         return _context.Products.FromSqlRaw("sp_SelectProductsByCategoryIDIfRoleAdmin @FK_iCategoryID", categoryIDParam);
     }
+
+    public IEnumerable<Product> getProductsByParentCategoryID(int parentCategoryID)
+    {
+        SqlParameter parentCategoryParam = new SqlParameter("@FK_iParentCategoryID", parentCategoryID);
+        return _context.Products.FromSqlRaw("EXEC sp_SelectProductsByParentCategoryID @FK_iParentCategoryID", parentCategoryParam);
+    }
+
+    public IEnumerable<Product> getProductsByParentCategoryIDIfRoleAdmin(int parentCategoryID)
+    {
+        SqlParameter parentCategoryParam = new SqlParameter("@FK_iParentCategoryID", parentCategoryID);
+        return _context.Products.FromSqlRaw("EXEC sp_SelectProductsByParentCategoryIDIfRoleAdmin @FK_iParentCategoryID", parentCategoryParam);
+    }
 }

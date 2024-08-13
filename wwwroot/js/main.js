@@ -89,7 +89,7 @@ function getDataHome() {
 
             getStores(data);
 
-            getCategories(data);
+            getParentCategories(data);
 
             getProducts(data);
             
@@ -190,18 +190,18 @@ function loadingStores() {
     }, 1000);
 }
 
-function getCategories(data) {
-    let htmlCategory = "";
-    htmlCategory += data.categories.map(obj => `
+function getParentCategories(data) {
+    let htmlParentCategory = "";
+    htmlParentCategory += data.parentCategories.map(obj => `
         <li class="category-item-home">
-            <a href="/product/index/${obj.pK_iCategoryID}" class="category-item-link">
-                <div class="category-item__img" style="background-image: url(/img/${obj.sCategoryImage});">
+            <a href="/product/index/${obj.pK_iParentCategoryID}" class="category-item-link">
+                <div class="category-item__img" style="background-image: url(/img/${obj.sParentCategoryImage});">
                     <div class="category-item__img-loading">
                         <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
                     </div>
                 </div>
                 <div class="category-item__sub">
-                    <div class="category-item__name">${obj.sCategoryName}</div>
+                    <div class="category-item__name">${obj.sParentCategoryName}</div>
                     <div class="category-item__name-loading">
                         <div class="category-item__name-loading-line"></div>
                         <div class="category-item__name-loading-line"></div>
@@ -211,15 +211,15 @@ function getCategories(data) {
         </li>
         `).join('');
 
-    document.querySelector(".category-list").innerHTML = htmlCategory;
+    document.querySelector(".category-list").innerHTML = htmlParentCategory;
 
-    let htmlCategoiesMobile = "";
-    htmlCategoiesMobile += data.categories.map((obj, index) => 
+    let htmlParentCategoiesMobile = "";
+    htmlParentCategoiesMobile += data.parentCategories.map((obj, index) => 
     `
                         <div class="category__mobile-item" id="category-mobile-item-${index}">
-                            <a href="/product/index/${obj.pK_iCategoryID}" class="category__mobile-item-link">
+                            <a href="/product/index/${obj.pK_iParentCategoryID}" class="category__mobile-item-link">
                                 <div class="category__mobile-item-img"
-                                    style="background-image: url(/img/${obj.sCategoryImage});">
+                                    style="background-image: url(/img/${obj.sParentCategoryImage});">
                                     <div class="store__item-img-blur-bottom">
                                     </div>
                                     <div class="category-item__img-loading">
@@ -227,7 +227,7 @@ function getCategories(data) {
                                     </div>
                                 </div>
                                 <div class="category__mobile-item-sub">
-                                    <div class="category__mobile-item-name">${obj.sCategoryName}</div>
+                                    <div class="category__mobile-item-name">${obj.sParentCategoryName}</div>
                                     <div class="category-item__name-loading">
                                         <div class="category-item__name-loading-line"></div>
                                         <div class="category-item__name-loading-line"></div>
@@ -237,7 +237,7 @@ function getCategories(data) {
                         </div>
     `
     ).join('');
-    document.querySelector(".category__mobile-list").innerHTML = htmlCategoiesMobile;
+    document.querySelector(".category__mobile-list").innerHTML = htmlParentCategoiesMobile;
 
     loadingCategoryItems();
 }

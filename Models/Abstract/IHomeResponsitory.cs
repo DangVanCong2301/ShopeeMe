@@ -7,6 +7,8 @@ using System.Collections;
 public interface IHomeResponsitory {
     IEnumerable<Store> getStores();
     IEnumerable<Product> getProducts();
+    IEnumerable<ParentCategory> getParentCategories();
+    IEnumerable<Category> getCategoriesByParentCategoryID(int parentCategoryID);
     IEnumerable<Category> getCategories();
     IEnumerable<Product> displayProductsPagination(int pageSize, int pageNumber);
     IEnumerable<Category> searchProductsByKeyword(string keyword);
