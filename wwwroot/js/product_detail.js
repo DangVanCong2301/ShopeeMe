@@ -352,7 +352,7 @@ function loadDetailInfo(data) {
                                             </div>
                                             <div class="detail__shop-info-btn-view">
                                                 <i class="uil uil-store-alt detail__shop-info-btn-view-icon"></i>
-                                                <span>Chat ngay</span>
+                                                <span>Xem Shop</span>
                                             </div>
                                         </div>
                                     </div>

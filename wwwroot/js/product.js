@@ -5,6 +5,14 @@ function getAPIProduct() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
             console.log(data);
+
+            getShopMalls(data);
+
+            getCategories(data);
+
+            getProducts(data);
+
+            setPagination(data);
         }
     };
     xhr.send(null);
@@ -98,5 +106,181 @@ function sortIncre(categoryID) {
             document.querySelector(".product__container").innerHTML = html;
         }
     }
+    xhr.send(formData);
+}
+
+// Get Shop Malls
+function getShopMalls(data) {
+    let htmlShopMall = "";
+    htmlShopMall += data.stores.map(obj => 
+    `
+                    <div class="l-2">
+                        <a href="/shop/${obj.pK_iStoreID}" class="product__mall-item">
+                            <img src="/img/${obj.sImageMall}" class="product__mall-item-img" alt="">
+                        </a>
+                    </div>
+    `
+    ).join('');
+    document.querySelector(".product__mall-body-list").innerHTML = htmlShopMall;
+}
+
+function getCategories(data) {
+    let htmlCategory = "";
+    htmlCategory += data.categories.map(obj => 
+    `
+        <li class="category-item">
+            <a href="/product/index/" class="category-item__link">${obj.sCategoryName}</a>
+        </li>
+    `
+    ).join('');
+    document.querySelector(".category-list").innerHTML = htmlCategory;
+}
+
+function getProducts(data) {
+    let htmlProduct = "";
+    for (let i = 0; i < data.products.length; i++) {
+        htmlProduct += 
+        `
+                <div class="col l-2-4 c-6 m-4">
+                    <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
+                        <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl})">
+                            <div class="home-product-item__img-loading">
+                                <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
+                            </div>
+                        </div>
+                        <h4 class="home-product-item__name">
+                            ${data.products[i].sProductName}
+                            <div class="home-product-item__name-loading">
+                                <div class="home-product-item__name-loading-line"></div>
+                                <div class="home-product-item__name-loading-line"></div>
+                            </div>
+                        </h4>
+                        <div class="home-product-item__price">`;
+                        if (data.products[i].dPerDiscount != 1) {
+        htmlProduct += 
+                            `<span class="home-product-item__price-old">
+                                ${data.products[i].dPrice} đ
+                                <div class="home-product-item__price-old-loading"></div>
+                            </span>
+                            <span class="home-product-item__price-current">
+                                ${money(data.products[i].dPrice * (1 - data.products[i].dPerDiscount))} đ
+                                <div class="home-product-item__price-current-loading"></div>
+                            </span>`;
+                        } else {
+        htmlProduct += 
+                            `<span class="home-product-item__price-current">
+                                ${money(data.products[i].dPrice)} đ
+                                <div class="home-product-item__price-current-loading"></div>
+                            </span>`;
+                        }
+        htmlProduct +=
+                        `</div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item__like home-product-item__like--liked">
+                                <i class="home-product-item__like-icon-empty far fa-heart"></i>
+                                <i class="home-product-item__like-icon-fill fas fa-heart"></i>
+                                <div class="home-product-item__like-loading"></div>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                <i class="home-product-item__star--gold fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <div class="home-product-item__rating-loading"></div>
+                            </div>
+                            <span class="home-product-item__sold"> 
+                                88 Đã bán
+                                <div class="home-product-item__sold-loading"></div>
+                            </span>
+                        </div>
+                        <div class="home-product-item__origin">
+                            <span class="home-product-item__brand">
+                                ${data.products[i].sStoreName}
+                                <div class="home-product-item__brand-loading"></div>
+                            </span>
+                            <span class="home-product-item__origin-name">
+                                Hà Nội
+                                <div class="home-product-item__origin-name-loading"></div>
+                            </span>
+                        </div>
+                        <div class="home-product-item__favourite">
+                            <i class="fas fa-check"></i>
+                            <span>Yêu thích</span>
+                        </div>`;
+                        if (data.products[i].dPerDiscount != 1) {
+                            htmlProduct += 
+                            `<div class="home-product-item__sale-off">
+                                <span class="home-product-item__sale-off-percent">${Math.floor(data.products[i].dPerDiscount * 100)}%</span>
+                                <span class="home-product-item__sale-off-label">GIẢM</span>
+                            </div>`;
+                        }
+        htmlProduct += 
+                    `</a>
+                </div>
+        `;
+    }
+    document.querySelectorAll(".product__container").forEach(e => {
+        e.innerHTML = htmlProduct;
+    });
+    loadingProducts();
+}
+
+// Set Pagination
+function setPagination(data) {
+    let htmlPagination = "";
+    if (data.currentPage > 1) {
+        htmlPagination += `
+                    <li class="pagination-item">
+                        <a href="javascript:pageNumber(${data.currentPage - 1})" class="pagination-item__link">
+                            <i class="pagination-item__icon fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                `;
+    }
+    for (let i = 1; i <= data.totalPage; i++) {
+        if (i == data.currentPage) {
+            htmlPagination += `
+                        <li class="pagination-item pagination-item--active">
+                            <a href="javascript:pageNumber(${i})" class="pagination-item__link">${i}</a>
+                        </li>
+                    `;
+        } else {
+            htmlPagination += `
+                        <li class="pagination-item">
+                            <a href="javascript:pageNumber(${i})" class="pagination-item__link">${i}</a>
+                        </li>
+                    `;
+        }
+    }
+    if (data.currentPage < data.totalPage) {
+        htmlPagination += `
+                    <li class="pagination-item">
+                        <a href="javascript:pageNumber(${data.currentPage + 1})" class="pagination-item__link">
+                            <i class="pagination-item__icon fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                `;
+    }
+    document.querySelectorAll(".pagination").forEach(e => {
+        e.innerHTML = htmlPagination;
+    });
+}
+
+function pageNumber(currentPage) {
+    var xhr = new XMLHttpRequest();
+    var formData = new FormData();
+    formData.append("currentPage", currentPage);
+    xhr.open('post', '/product/get-data', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+
+            getProducts(data);
+
+            setPagination(data);
+        }
+    };
     xhr.send(formData);
 }

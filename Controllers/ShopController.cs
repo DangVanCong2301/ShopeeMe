@@ -33,7 +33,7 @@ public class ShopController : Controller
         IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
         int totalRecord = products.Count();
         int pageSize = 12;
-        int totalPage = (int)Math.Ceiling(totalRecord / (double)pageSize);
+        int totalPage = (int)Math.Ceiling(totalRecord / (double) pageSize);
         products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         IEnumerable<Store> store = _shopResponsitory.getShopByID(shopID);
         IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();

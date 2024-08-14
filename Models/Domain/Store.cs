@@ -6,4 +6,5 @@ public class Store
     public string sImageLogo { get; set; }
     public string sImageBackground { get; set; }
     public string sDesc { get; set; }
+    public string sImageMall { get; set; }
 }

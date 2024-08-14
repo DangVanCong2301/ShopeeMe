@@ -70,14 +70,16 @@ public class ProductController : Controller {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         }
         int totalRecord = products.Count();
-        int pageSize = 12;
+        int pageSize = 10;
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
         products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
+        IEnumerable<Store> stores = _shopResponsitory.getShopByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         IEnumerable<Category> categories = _homeResponsitory.getCategoriesByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
         ShopeeViewModel model = new ShopeeViewModel {
             Products = products,
+            Stores = stores,
             Categories = categories,
             CartDetails = cartDetails,
             CurrentCategoryID = Convert.ToInt32(sessionParentCategoryID),
