@@ -19,8 +19,8 @@ public class ShopController : Controller
         }
 
     [HttpGet]
-    [Route("/shop/{shopID?}")]
-    public IActionResult Index(int currentPage = 1, int shopID = 1) {
+    [Route("/shop/{shopUsername?}")]
+    public IActionResult Index(string shopUsername = "") {
         // Lấy Cookies trên trình duyệt
         var userID = Request.Cookies["UserID"];
         if (userID != null)
@@ -28,17 +28,7 @@ public class ShopController : Controller
             _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
         }
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        _accessor?.HttpContext?.Session.SetInt32("CurrentShopID", shopID);
         System.Console.WriteLine("sessionUserID: " + sessionUserID);
-        IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
-        int totalRecord = products.Count();
-        int pageSize = 12;
-        int totalPage = (int)Math.Ceiling(totalRecord / (double) pageSize);
-        products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
-        IEnumerable<Store> store = _shopResponsitory.getShopByID(shopID);
-        IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
-        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
-        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
         if (userID != null)
         {
             List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
@@ -49,29 +39,18 @@ public class ShopController : Controller
         {
             _accessor?.HttpContext?.Session.SetString("UserName", "");
         }
-        int cartCount = carts.Count();
-        System.Console.WriteLine("Role ID: " + Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("RoleID")));
-        ShopeeViewModel model = new ShopeeViewModel
-        {
-            Products = products,
-            Stores = store,
-            Categories = categories,
-            CartDetails = cartDetails,
-            TotalPage = totalPage,
-            PageSize = pageSize,
-            CurrentPage = currentPage,
-            UserID = Convert.ToInt32(sessionUserID),
-            CartCount = cartCount,
-            RoleID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("RoleID"))
-        };
-        return View(model);
+        List<Store> store = _shopResponsitory.getShopByUsername(shopUsername).ToList();
+        _accessor?.HttpContext?.Session.SetInt32("CurrentShopID", store[0].PK_iStoreID);
+        _accessor?.HttpContext?.Session.SetString("CurrentShopUsername", shopUsername);
+        return View();
     }
 
     [HttpPost]
     [Route("/shop/get-data")]
     public IActionResult GetData(int currentPage = 1) {
+        var sessionCurrentShopUsername = _accessor?.HttpContext?.Session.GetString("CurrentShopUsername");
         var sessionCurrentShopID = _accessor?.HttpContext?.Session.GetInt32("CurrentShopID");
-        var shop = _shopResponsitory.getShopByID(Convert.ToInt32(sessionCurrentShopID));
+        var shop = _shopResponsitory.getShopByUsername(sessionCurrentShopUsername);
         IEnumerable<SliderShop> slidersShop = _shopResponsitory.getSlidersShopByShopID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Category> categories = _shopResponsitory.getCategoriesByShopID(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionCurrentShopID));

@@ -7,4 +7,5 @@ public class Store
     public string sImageBackground { get; set; }
     public string sDesc { get; set; }
     public string sImageMall { get; set; }
+    public string sStoreUsername { get; set; }
 }

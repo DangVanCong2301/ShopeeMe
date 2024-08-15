@@ -5,7 +5,7 @@ const loadingBannerRightBottom = document.querySelector(".banner-right__content-
 
 function loadingProgress() {
     setTimeout(() => {
-        console.log(loadingBannerLeft);
+        // console.log(loadingBannerLeft);
         loadingBannerLeft.style.display = 'none';
         loadingBannerRightTop.style.display = 'none';
         loadingBannerRightBottom.style.display = 'none';

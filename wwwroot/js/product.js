@@ -112,10 +112,10 @@ function sortIncre(categoryID) {
 // Get Shop Malls
 function getShopMalls(data) {
     let htmlShopMall = "";
-    htmlShopMall += data.stores.map(obj => 
-    `
+    htmlShopMall += data.stores.map(obj =>
+        `
                     <div class="l-2">
-                        <a href="/shop/${obj.pK_iStoreID}" class="product__mall-item">
+                        <a href="/shop/${obj.sStoreUsername}" class="product__mall-item">
                             <img src="/img/${obj.sImageMall}" class="product__mall-item-img" alt="">
                         </a>
                     </div>
@@ -126,10 +126,10 @@ function getShopMalls(data) {
 
 function getCategories(data) {
     let htmlCategory = "";
-    htmlCategory += data.categories.map(obj => 
-    `
+    htmlCategory += data.categories.map(obj =>
+        `
         <li class="category-item">
-            <a href="/product/index/" class="category-item__link">${obj.sCategoryName}</a>
+            <a href="javascript:filterProductByCategoryID(${obj.pK_iCategoryID})" class="category-item__link">${obj.sCategoryName}</a>
         </li>
     `
     ).join('');
@@ -139,8 +139,8 @@ function getCategories(data) {
 function getProducts(data) {
     let htmlProduct = "";
     for (let i = 0; i < data.products.length; i++) {
-        htmlProduct += 
-        `
+        htmlProduct +=
+            `
                 <div class="col l-2-4 c-6 m-4">
                     <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
                         <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl})">
@@ -156,9 +156,9 @@ function getProducts(data) {
                             </div>
                         </h4>
                         <div class="home-product-item__price">`;
-                        if (data.products[i].dPerDiscount != 1) {
-        htmlProduct += 
-                            `<span class="home-product-item__price-old">
+        if (data.products[i].dPerDiscount != 1) {
+            htmlProduct +=
+                `<span class="home-product-item__price-old">
                                 ${data.products[i].dPrice} đ
                                 <div class="home-product-item__price-old-loading"></div>
                             </span>
@@ -166,15 +166,15 @@ function getProducts(data) {
                                 ${money(data.products[i].dPrice * (1 - data.products[i].dPerDiscount))} đ
                                 <div class="home-product-item__price-current-loading"></div>
                             </span>`;
-                        } else {
-        htmlProduct += 
-                            `<span class="home-product-item__price-current">
+        } else {
+            htmlProduct +=
+                `<span class="home-product-item__price-current">
                                 ${money(data.products[i].dPrice)} đ
                                 <div class="home-product-item__price-current-loading"></div>
                             </span>`;
-                        }
+        }
         htmlProduct +=
-                        `</div>
+            `</div>
                         <div class="home-product-item__action">
                             <span class="home-product-item__like home-product-item__like--liked">
                                 <i class="home-product-item__like-icon-empty far fa-heart"></i>
@@ -208,15 +208,15 @@ function getProducts(data) {
                             <i class="fas fa-check"></i>
                             <span>Yêu thích</span>
                         </div>`;
-                        if (data.products[i].dPerDiscount != 1) {
-                            htmlProduct += 
-                            `<div class="home-product-item__sale-off">
+        if (data.products[i].dPerDiscount != 1) {
+            htmlProduct +=
+                `<div class="home-product-item__sale-off">
                                 <span class="home-product-item__sale-off-percent">${Math.floor(data.products[i].dPerDiscount * 100)}%</span>
                                 <span class="home-product-item__sale-off-label">GIẢM</span>
                             </div>`;
-                        }
-        htmlProduct += 
-                    `</a>
+        }
+        htmlProduct +=
+            `</a>
                 </div>
         `;
     }
@@ -283,4 +283,47 @@ function pageNumber(currentPage) {
         }
     };
     xhr.send(formData);
+}
+
+// Lọc sản phẩm theo mã danh mục con
+function filterProductByCategoryID(categoryID) {
+    var formData = new FormData();
+    formData.append("categoryID", categoryID);
+    var xhr = new XMLHttpRequest();
+    xhr.open("post", "/product/get-data", true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+
+            setActiveCategories(data);
+
+            getProducts(data);
+
+            setPagination(data);
+        }
+    };
+    xhr.send(formData);
+}
+
+function setActiveCategories(data) {
+    let htmlCategory = "";
+    data.categories.forEach(e => {
+        if (e.pK_iCategoryID == data.currentCategoryID) {
+            htmlCategory +=
+                `
+                <li class="category-item category-item--active">
+                    <a href="javascript:filterProductByCategoryID(${e.pK_iCategoryID})" class="category-item__link">${e.sCategoryName}</a>
+                </li>
+                `;
+        } else {
+            htmlCategory +=
+                `
+                <li class="category-item">
+                    <a href="javascript:filterProductByCategoryID(${e.pK_iCategoryID})" class="category-item__link">${e.sCategoryName}</a>
+                </li>
+                `;
+        }
+    });
+    document.querySelector(".category-list").innerHTML = htmlCategory;
 }

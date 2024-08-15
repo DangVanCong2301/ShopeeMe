@@ -12,6 +12,10 @@ function getDataSite() {
 
             console.log(data);
 
+            setAccount(data);
+
+            setAccountMobile(data);
+
             getCartsItem(data);
 
             getShopsItem(data);
@@ -21,10 +25,144 @@ function getDataSite() {
 }
 getDataSite();
 
+function setAccount(data) {
+    let htmlAccount = "";
+    if (data.userID == 0) {
+        htmlAccount +=
+            `
+                <a class="header__navbar-item-link" href="/user/login">Đăng nhập</a>
+            `;
+    } else {
+        if (data.roleID == 2) {
+            htmlAccount +=
+                `
+                                    <div class="header__navbar-user">
+                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                                        <span class="header__navbar-user-name">${data.username}</span>
+                                        <div class="header__navbar-user-manager">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/profile">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/admin">Quản trị</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                `;
+        } else {
+            htmlAccount +=
+                `
+                                    <div class="header__navbar-user">
+                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                                        <span class="header__navbar-user-name">${data.username}</span>
+                                        <div class="header__navbar-user-manager">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/profile">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                `;
+        }
+    }
+    document.querySelector(".header__navbar-item-account").innerHTML = htmlAccount;
+}
+
+function setAccountMobile(data) {
+    htmlAccountMobile = "";
+    if (data.userID == 0) {
+        htmlAccountMobile +=
+            `
+                                <div class="header__mobile-user-symbol">
+                                    <a href="/user/login" class="header__mobile-user-link">
+                                        <i class="uil uil-user header__mobile-user-icon"></i>
+                                    </a>
+                                </div>
+            `;
+    } else {
+        if (data.roleID == 2) {
+            htmlAccountMobile +=
+                `
+                                    <div class="header__mobile-user-avatar">
+                                        <div class="header__mobile-user-avatar-img"
+                                            style="background-image: url(/img/profile_avatar.jpg);"></div>
+                                        <div class="header__mobile-user-avatar-menu">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="#">Quản trị</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                `;
+        } else {
+            htmlAccountMobile +=
+                `
+                                    <div class="header__mobile-user-avatar">
+                                        <div class="header__mobile-user-avatar-img"
+                                            style="background-image: url(/img/profile_avatar.jpg);"></div>
+                                        <div class="header__mobile-user-avatar-menu">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                `;
+        }
+    }
+    if (document.querySelector(".header__mobile-user") != null) {
+        document.querySelector(".header__mobile-user").innerHTML = htmlAccountMobile;
+    }
+}
+
 function getCartsItem(data) {
     let htmlCartDetail = "";
     if (data.cartCount == 0 || data.userID == 0) {
-        console.log('b');
+        console.log('Giỏ hàng trống!');
         htmlCartDetail +=
             `
                     <div class="header__cart-list header__cart-list--no-cart">
@@ -35,7 +173,7 @@ function getCartsItem(data) {
                     </div>
                 `;
     } else {
-        console.log('a');
+        console.log('Có sản phẩm trong giỏ!');
         htmlCartDetail +=
             `
                 <div class="header__cart-list">

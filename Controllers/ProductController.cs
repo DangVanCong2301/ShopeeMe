@@ -20,11 +20,19 @@ public class ProductController : Controller {
         _shopResponsitory = shopResponsitory;
     }
 
-    [Route("index/{parentCategoryID}")]
+    [Route("{parentCategoryID}")]
     [HttpGet]
     public IActionResult Index(int parentCategoryID, int currentPage = 1) {
         _accessor?.HttpContext?.Session.SetInt32("CurrentParentCategoryID", parentCategoryID);
+        // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
+        return View();
+    }
+
+    [HttpPost("get-data")]
+    [Route("get-data")]
+    public IActionResult GetData(int categoryID = 0, int currentPage = 1) {
         IEnumerable<Product> products;
+        IEnumerable<Product> productsByCategoryID;
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         var sessionParentCategoryID = _accessor?.HttpContext?.Session.GetInt32("CurrentParentCategoryID");
         List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
@@ -35,39 +43,9 @@ public class ProductController : Controller {
         } else {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         }
-        int totalRecord = products.Count();
-        int pageSize = 12;
-        int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
-        products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
-        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
-        IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
-        // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
-        ShopeeViewModel model = new ShopeeViewModel {
-            Products = products,
-            Categories = categories,
-            CartDetails = cartDetails,
-            CurrentCategoryID = Convert.ToInt32(sessionParentCategoryID),
-            TotalPage = totalPage,
-            PageSize = pageSize,
-            CurrentPage = currentPage,
-            CartCount = cartDetails.Count()
-        };
-        return View(model);
-    }
-
-    [HttpPost("get-data")]
-    [Route("get-data")]
-    public IActionResult GetData(int currentPage = 1) {
-        IEnumerable<Product> products;
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        var sessionParentCategoryID = _accessor?.HttpContext?.Session.GetInt32("CurrentParentCategoryID");
-        List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-        if (users.Count() == 0) {
-            products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        } else if (users[0].FK_iRoleID == 2) {
-            products = _productResponsitory.getProductsByParentCategoryIDIfRoleAdmin(Convert.ToInt32(sessionParentCategoryID));
-        } else {
-            products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
+        if (categoryID != 0)
+        {
+            products = _productResponsitory.getProductsByCategoryID(Convert.ToInt32(categoryID));
         }
         int totalRecord = products.Count();
         int pageSize = 10;
@@ -82,7 +60,7 @@ public class ProductController : Controller {
             Stores = stores,
             Categories = categories,
             CartDetails = cartDetails,
-            CurrentCategoryID = Convert.ToInt32(sessionParentCategoryID),
+            CurrentCategoryID = categoryID,
             TotalPage = totalPage,
             PageSize = pageSize,
             CurrentPage = currentPage,
@@ -98,20 +76,7 @@ public class ProductController : Controller {
     public IActionResult Detail(int id)
     {
         _accessor?.HttpContext?.Session.SetInt32("CurrentProductID", id);
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        IEnumerable<Store> stores = _homeResponsitory.getStores();
-        IEnumerable<Product> product = _productResponsitory.getProductByID(id);
-        IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(Convert.ToInt32(sessionUserID));
-        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
-        ShopeeViewModel model = new ShopeeViewModel {
-            Stores = stores,
-            Products = product,
-            Favorites = favorites,
-            CartDetails = cartDetails,
-            CartCount = cartDetails.Count(),
-            CurrentProductID = id
-        };
-        return View(model);
+        return View();
     }
 
     [HttpPost]

@@ -70,4 +70,10 @@ public class ShopResponsitory : IShopResponsitory
         SqlParameter parentCategoryIDParam = new SqlParameter("@FK_iParentCategoryID", parentCategoryID);
         return _context.Stores.FromSqlRaw("EXEC sp_GetShopByParentCategoryID @FK_iParentCategoryID", parentCategoryIDParam);
     }
+
+    public IEnumerable<Store> getShopByUsername(string shopUsername)
+    {
+        SqlParameter shopUsernameParam = new SqlParameter("@sShopUsername", shopUsername);
+        return _context.Stores.FromSqlRaw("EXEC sp_GetShopByUsername @sShopUsername", shopUsernameParam);
+    }
 }

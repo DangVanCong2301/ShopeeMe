@@ -31,7 +31,7 @@ public class HomeResponsitory : IHomeResponsitory
 
     public IEnumerable<Store> getStores()
     {
-        return _context.Stores.FromSqlRaw("sp_SelelteStores");
+        return _context.Stores.FromSqlRaw("EXEC sp_GetStores");
     }
 
     public IEnumerable<Favorite> getFavorites(int userID)

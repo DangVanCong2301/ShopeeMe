@@ -104,7 +104,7 @@ function getStores(data) {
     htmlStores += data.stores.map((obj, index) => 
     `
                         <div class="col l-2 c-6 m-4">
-                            <a href="/shop/${obj.pK_iStoreID}" class="store__item" id="store-item-${index}">
+                            <a href="/shop/${obj.sStoreUsername}" class="store__item" id="store-item-${index}">
                                 <div class="store__item-img" style="background-image: url(/img/${obj.sImageAvatar});">
                                     <div class="store__item-img-blur-bottom">
                                     </div>
@@ -141,7 +141,7 @@ function getStores(data) {
     htmlStoresMobile += data.stores.map((obj, index) => 
     `
                         <div class="store__mobile-item" id="store-mobile-item-${index}">
-                            <a href="/shop/${obj.pK_iStoreID}" class="store__mobile-item-link">
+                            <a href="/shop/${obj.sStoreUsername}" class="store__mobile-item-link">
                                 <div class="store__mobile-item-img"
                                     style="background-image: url(/img/${obj.sImageAvatar});">
                                     <div class="store__mobile-item-img-blur-bottom">
@@ -194,7 +194,7 @@ function getParentCategories(data) {
     let htmlParentCategory = "";
     htmlParentCategory += data.parentCategories.map(obj => `
         <li class="category-item-home">
-            <a href="/product/index/${obj.pK_iParentCategoryID}" class="category-item-link">
+            <a href="/product/${obj.pK_iParentCategoryID}" class="category-item-link">
                 <div class="category-item__img" style="background-image: url(/img/${obj.sParentCategoryImage});">
                     <div class="category-item__img-loading">
                         <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
@@ -217,7 +217,7 @@ function getParentCategories(data) {
     htmlParentCategoiesMobile += data.parentCategories.map((obj, index) => 
     `
                         <div class="category__mobile-item" id="category-mobile-item-${index}">
-                            <a href="/product/index/${obj.pK_iParentCategoryID}" class="category__mobile-item-link">
+                            <a href="/product/${obj.pK_iParentCategoryID}" class="category__mobile-item-link">
                                 <div class="category__mobile-item-img"
                                     style="background-image: url(/img/${obj.sParentCategoryImage});">
                                     <div class="store__item-img-blur-bottom">

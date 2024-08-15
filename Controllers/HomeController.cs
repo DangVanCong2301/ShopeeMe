@@ -54,16 +54,6 @@ namespace Project.Controllers
                 _accessor?.HttpContext?.Session.SetInt32("UserID", 0);
             }
             System.Console.WriteLine("sessionUserID: " + sessionUserID);
-            IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
-            IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(Convert.ToInt32(sessionUserID));
-            int totalRecord = products.Count();
-            int pageSize = 12;
-            int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
-            products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
-            IEnumerable<Store> stores = _homeResponsitory.getStores();
-            IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
-            IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
-            IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
             if (userID != null) {
                 List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
                 _accessor?.HttpContext?.Session.SetString("UserName", users[0].sFullName);
@@ -71,28 +61,14 @@ namespace Project.Controllers
             } else {
                 _accessor?.HttpContext?.Session.SetString("UserName", "");
             }
-            int cartCount = carts.Count();
-            System.Console.WriteLine("Role ID: " + Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("RoleID")));
-            ShopeeViewModel model = new ShopeeViewModel {
-                Stores = stores,
-                Products = products,
-                Favorites = favorites,
-                Categories = categories,
-                CartDetails = cartDetails,
-                TotalPage = totalPage,
-                PageSize = pageSize,
-                CurrentPage = currentPage,
-                UserID = Convert.ToInt32(sessionUserID),
-                CartCount = cartCount,
-                RoleID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("RoleID"))
-            };
-            return View(model);
+            return View();
         }
 
         [HttpPost]
         [Route("/home/get-data")]
         public IActionResult GetData(int currentPage = 1) {
             var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+            var sessionUsername = _accessor?.HttpContext?.Session.GetString("UserName");
             IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
             int totalRecord = products.Count();
             int pageSize = 12;
@@ -116,6 +92,7 @@ namespace Project.Controllers
                 PageSize = pageSize,
                 CurrentPage = currentPage,
                 UserID = Convert.ToInt32(sessionUserID),
+                Username = sessionUsername,
                 CartCount = cartCount
             };
             return Ok(model);
