@@ -12,12 +12,14 @@ public class UserController : Controller {
     private readonly IHttpContextAccessor _accessor;
     private readonly IUserResponsitory _userResponsitory;
     private readonly ICartReponsitory _cartResponsitory;
-    public UserController(DatabaseContext context, IHttpContextAccessor accessor, IUserResponsitory userResponsitory, ICartReponsitory cartReponsitory)
+    private readonly IOrderResponsitory _orderResponsitory;
+    public UserController(DatabaseContext context, IHttpContextAccessor accessor, IUserResponsitory userResponsitory, ICartReponsitory cartReponsitory, IOrderResponsitory orderResponsitory)
     {
         _context = context;
         _accessor = accessor;
         _userResponsitory = userResponsitory;
         _cartResponsitory = cartReponsitory;
+        _orderResponsitory = orderResponsitory;
     }
 
     [Route("/user/login")]
@@ -159,5 +161,37 @@ public class UserController : Controller {
     public IActionResult GetUser() {
         var users = _context.Users.FromSqlRaw("select * from tbl_Users");
         return Ok(users);
+    }
+
+    [HttpGet]
+    [Route("/user/purchase")]
+    public IActionResult Purchase() {
+        // Lấy Cookies trên trình duyệt
+        var userID = Request.Cookies["UserID"];
+        if (userID != null)
+        {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        }
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        if (sessionUserID == null)
+        {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", 0);
+        }
+        return View();
+    }
+
+    [HttpPost]
+    [Route("/user/purchase")]
+    public IActionResult GetDataPurchase() {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getProductsOrderByUserID(Convert.ToInt32(sessionUserID));
+        IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrdersByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
+        IEnumerable<OrderDetail> orderDetailsWaitSettlement = _orderResponsitory.getProductsOrderByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
+        OrderViewModel model = new OrderViewModel {
+            OrderDetails = orderDetails,
+            OrdersWaitSettlement = ordersWaitSettlement,
+            OrderDetailsWaitSettlement = orderDetailsWaitSettlement
+        };
+        return Ok(model);
     }
 }

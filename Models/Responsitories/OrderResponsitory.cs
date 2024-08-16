@@ -18,6 +18,24 @@ public class OrderResponsitory : IOrderResponsitory
         return _context.Orders.FromSqlRaw("SET DATEFORMAT dmy EXEC sp_GetOrderByID @FK_iUserID, @dDate", userIDParam, dateParam);
     }
 
+    public IEnumerable<Order> getOrdersByUserIDWaitSettlement(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderByUserIDWaitSettlement @FK_iUserID", userIDParam);
+    }
+
+    public IEnumerable<OrderDetail> getProductsOrderByUserID(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetProductsOrderByUserID @PK_iUserID", userIDParam);
+    }
+
+    public IEnumerable<OrderDetail> getProductsOrderByUserIDWaitSettlement(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetProductsOrderByUserIDWaitSettlement @PK_iUserID", userIDParam);
+    }
+
     public bool inserOrder(int userID, double totalPrice, int orderStatusID, int paymentID)
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);

@@ -48,7 +48,7 @@ function setAccount(data) {
                                                     <a href="#">Địa chỉ của tôi</a>
                                                 </li>
                                                 <li class="header__navbar-user-item">
-                                                    <a href="#">Đơn mua</a>
+                                                    <a href="/user/purchase">Đơn mua</a>
                                                 </li>
                                                 <li class="header__navbar-user-item">
                                                     <a href="/admin">Quản trị</a>
@@ -75,7 +75,7 @@ function setAccount(data) {
                                                     <a href="">Địa chỉ của tôi</a>
                                                 </li>
                                                 <li class="header__navbar-user-item">
-                                                    <a href="">Đơn mua</a>
+                                                    <a href="/user/purchase">Đơn mua</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
                                                     <a href="/User/Logout">Đăng xuất</a>

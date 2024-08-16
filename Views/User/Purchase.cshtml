@@ -1,0 +1,147 @@
+@{
+    ViewData["Title"] = "Đơn mua";
+}
+
+<link rel="stylesheet" href="~/css/purchase.css">
+<div class="app__container">
+    <div class="grid wide">
+        <div class="row">
+            <div class="col l-2 m-0 c-0">
+                <div class="profile__left">
+                    <div class="profile__left-header">
+                        <img src="/img/profile_avatar.jpg" alt="" class="profile__left-avatar">
+                        <div class="profile__left-account">
+                            <div class="profile__left-account-name">vancong23012002</div>
+                            <div class="profile__left-account-edit"><i class="uil uil-pen"></i>Chỉnh sửa</div>
+                        </div>
+                    </div>
+                    <div class="profile__left-body">
+                        <ul class="profile__left-list">
+                            <li class="profile__left-item">
+                                <a href="" class="profile__left-link">
+                                    <i class="uil uil-user"></i> Tài khoản của tôi
+                                </a>
+                            </li>
+                            <li class="profile__left-item">
+                                <a href="" class="profile__left-link">
+                                    <i class="uil uil-clipboard-notes"></i> Đơn mua
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col l-10 m-12 c-12">
+                <div class="purchase">
+                    <div class="purchase__header">
+                        <ul class="purchase__header-list">
+                            <li class="purchase__header-item active">
+                                Tất cả
+                            </li>
+                            <li class="purchase__header-item">
+                                Chờ thanh toán <span class="purchase__header-item-count purchase__header-item-wait-settlement-count">(1)</span>
+                            </li>
+                            <li class="purchase__header-item">
+                                Vận chuyển (1)
+                            </li>
+                            <li class="purchase__header-item">
+                                Chờ giao hàng
+                            </li>
+                            <li class="purchase__header-item">
+                                Hoàn thành
+                            </li>
+                            <li class="purchase__header-item">
+                                Đã huỷ
+                            </li>
+                            <li class="purchase__header-item">
+                                Trả hàng/hoàn tiền
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="purchase__all">
+                        <div class="purchase__search">
+                            <i class="uil uil-search purchase__search-icon"></i>
+                            <input type="text" class="purchase__search-input"
+                                placeholder="Bạn có thể tìm kiếm theo ID đơn hàng hoặc tên sản phẩm">
+                        </div>
+                        <div class="purchase__all-list">
+                            
+                        </div>
+                    </div>
+                    <div class="purchase__wait hide-on-destop hide-on-mobile">
+                        
+                    </div>
+                    <div class="purchase__transport hide-on-destop hide-on-mobile">
+                        <div class="purchase__item">
+                            <div class="purchase__body">
+                                <div class="purchase__body-header-wait">
+                                    <div class="purchase__body-header-btns">
+                                        <button class="purchase__body-header-btn"><i
+                                                class="uil uil-chat"></i><span>Chat</span></button>
+                                        <a class="purchase__body-header-btn-link"><i class="uil uil-shop"></i><span>Xem
+                                                Shop</span></a>
+                                    </div>
+                                    <div class="purchase__body-title">
+                                        <div class="purchase__body-header-subwait">Vận chuyển</div>
+                                    </div>
+                                </div>
+                                <div class="purchase__body-container">
+                                    <ul class="purchase__body-list">
+                                        <li class="purchase__body-item">
+                                            <a class="purchase__body-item-link">
+                                                <div class="purchase__body-item-img">
+                                                    <img src="./assets/img/sac_du_phong.png" alt="">
+                                                </div>
+                                                <div class="purchase__body-item-info">
+                                                    <div class="purchase__body-item-info-left">
+                                                        <div class="purchase__body-item-title">
+                                                            Bút Laze Trình Chiếu PowerPoint Kèm Remote Điều Khiển Không
+                                                            Dây Cho Laptop RF 2.4GHz
+                                                        </div>
+                                                        <div class="purchase__body-item-sub">
+                                                            <div class="purchase__body-item-desc">Phân loại hàng: Bạc
+                                                            </div>
+                                                            <span class="purchase__body-item-qnt">x 3</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="purchase__body-item-info-right">
+                                                        <div class="purchase__body-item-old-price">189.000 đ</div>
+                                                        <div class="purchase__body-item-price">121.000 đ</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="purchase__prevent">
+                                <div class="purchase__prevent-box purchase__prevent-box-left"></div>
+                                <div class="purchase__prevent-box purchase__prevent-box-right"></div>
+                            </div>
+                            <div class="purchase__bottom">
+                                <div class="purchase__bottom-head">
+                                    <div class="purchase__bottom-head-sub-price">
+                                        <i class="uil uil-shield-check"></i>
+                                        <span>Thành tiền:</span>
+                                    </div>
+                                    <div class="purchase__bottom-head-price">121.000 đ</div>
+                                </div>
+                                <div class="purchase__bottom-btns purchase__bottom-btns-transport">
+                                    <div class="purchase__bottom-btns-sub">Đơn hàng sẽ được chuẩn bị và chuyển đi trước
+                                        <span>22-5-2024</span></div>
+                                    <div class="">
+                                        <button class="btn btn--primary purchase__bottom-btn hide-on-mobile">Liên hệ
+                                            người bán</button>
+                                        <a href="" class="btn purchase__bottom-link hide-on-mobile">Huỷ đơn hàng</a>
+                                        <a href="#" class="btn btn--primary hide-on-destop">Liên hệ Shop</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/purchase.js"></script>

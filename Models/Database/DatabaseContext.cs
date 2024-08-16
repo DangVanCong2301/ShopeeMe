@@ -18,6 +18,7 @@ namespace Project.Models
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetail> CartDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<District> Districts { get; set; }
@@ -66,6 +67,10 @@ namespace Project.Models
             });
 
             modelBuilder.Entity<CartDetail>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<OrderDetail>(entity => {
                 entity.HasNoKey();
             });
 
