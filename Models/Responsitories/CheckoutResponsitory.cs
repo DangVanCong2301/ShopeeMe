@@ -16,6 +16,12 @@ public class CheckoutResponsitory : ICheckoutResponsitory
         return _context.Addresses.FromSqlRaw("EXEC sp_CheckAddressAccount @FK_iUserID", userIDParam);
     }
 
+    public IEnumerable<Payment> checkPaymentsTypeByUserID(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@iUserID", userID);
+        return _context.PaymentTypes.FromSqlRaw("EXEC sp_CheckPaymentsTypeByUserID @iUserID", userIDParam);
+    }
+
     public IEnumerable<AddressChoose> getAddressChoose()
     {
         return _context.AddressChooses.FromSqlRaw("EXEC sp_GetAddressChoose");
@@ -43,7 +49,16 @@ public class CheckoutResponsitory : ICheckoutResponsitory
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
         SqlParameter phoneParam = new SqlParameter("@sPhone", phone);
         SqlParameter addressParam = new SqlParameter("@sAddress", address);
-        _context.Database.ExecuteSqlRaw("EXEC sp_InsertAddressAccount @FK_iUserID, @sPhone, @sAddress", userIDParam, phoneParam, addressParam);
+        SqlParameter defaultParam = new SqlParameter("@iDefault", 1);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertAddressAccount @FK_iUserID, @sPhone, @sAddress, @iDefault", userIDParam, phoneParam, addressParam, defaultParam);
+        return true;
+    }
+
+    public bool insertPaymentType(int paymentID, int userID)
+    {
+        SqlParameter paymentIDParam = new SqlParameter("@PK_iPaymentTypeID", paymentID);
+        SqlParameter userIDParam = new SqlParameter("@UserID", userID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertPaymentsType @PK_iPaymentTypeID, @UserID", paymentIDParam, userIDParam);
         return true;
     }
 
@@ -62,6 +77,14 @@ public class CheckoutResponsitory : ICheckoutResponsitory
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
         SqlParameter fullnameParam = new SqlParameter("@sFullName", fullname);
         _context.Database.ExecuteSqlRaw("sp_UpdateAddressAccountUserByID @PK_iUserID, @sFullName", userIDParam, fullnameParam);
+        return true;
+    }
+
+    public bool updatePaymentType(int paymentID, int userID)
+    {
+        SqlParameter paymentIDParam = new SqlParameter("@PK_iPaymentType", paymentID);
+        SqlParameter userIDParam = new SqlParameter("@UserID", userID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_UpdatePaymentsType @PK_iPaymentType, @UserID", paymentIDParam, userIDParam);
         return true;
     }
 }

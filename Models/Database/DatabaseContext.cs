@@ -17,6 +17,7 @@ namespace Project.Models
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetail> CartDetails { get; set; }
+        public DbSet<Payment> PaymentTypes { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Address> Addresses { get; set; }
@@ -60,6 +61,10 @@ namespace Project.Models
 
             modelBuilder.Entity<Cart>(entity => {
                 entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<Payment>(entity => {
+                entity.HasKey(e => e.PK_iPaymentID);
             });
 
             modelBuilder.Entity<Order>(entity => {

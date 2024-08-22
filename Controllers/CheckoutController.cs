@@ -31,16 +31,7 @@ public class CheckoutController : Controller {
         {
             _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
         }
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");  
-        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)); 
-        // Lấy số lượng giỏ hàng
-        int cartCount = carts.Count();
-        ShopeeViewModel model = new ShopeeViewModel {
-            CartDetails = carts,
-            CartCount = cartCount,
-            Checkouts = checkouts
-        };
-        return View(model); 
+        return View(); 
     }
 
     [HttpPost]
@@ -52,13 +43,15 @@ public class CheckoutController : Controller {
         List<City> cities = _checkoutResponsitory.getCities().ToList();
         List<District> districts = _checkoutResponsitory.getDistricts().ToList();
         List<AddressChoose> addressChooses = _checkoutResponsitory.getAddressChoose().ToList();
+        List<Payment> paymentTypes = _checkoutResponsitory.checkPaymentsTypeByUserID(Convert.ToInt32(sessionUserID)).ToList();
         CheckoutViewModel model = new CheckoutViewModel {
             Users = users,
             Checkouts = checkouts,
             Addresses = addresses,
             Cities = cities,
             Districts = districts,
-            AddressChooses = addressChooses
+            AddressChooses = addressChooses,
+            PaymentTypes = paymentTypes
         };
         return Ok(model);
     }
@@ -129,6 +122,40 @@ public class CheckoutController : Controller {
         // Đặt lại danh sách session sản phẩm thanh toán 
         HttpContext.Session.Set("cart_key", cartsCheckout);
         return Ok(checkouts);
+    }
+
+    [HttpPost]
+    [Route("/checkout/add-payment")]
+    public IActionResult AddPayment(int paymentID) {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        _checkoutResponsitory.insertPaymentType(paymentID, Convert.ToInt32(sessionUserID));
+        List<Payment> paymentTypes = _checkoutResponsitory.checkPaymentsTypeByUserID(Convert.ToInt32(sessionUserID)).ToList();
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Thêm thành công!"
+        };
+        CheckoutViewModel model = new CheckoutViewModel {
+            Status = status,
+            PaymentTypes = paymentTypes
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/checkout/update-payment")]
+    public IActionResult UpdatePayment(int paymentID) {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        _checkoutResponsitory.updatePaymentType(paymentID, Convert.ToInt32(sessionUserID));
+        List<Payment> paymentTypes = _checkoutResponsitory.checkPaymentsTypeByUserID(Convert.ToInt32(sessionUserID)).ToList();
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Cập nhật thành công!"
+        };
+        CheckoutViewModel model = new CheckoutViewModel {
+            Status = status,
+            PaymentTypes = paymentTypes
+        };
+        return Ok(model);
     }
 
     [HttpPost]
