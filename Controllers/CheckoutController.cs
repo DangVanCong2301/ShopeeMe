@@ -162,7 +162,7 @@ public class CheckoutController : Controller {
     [Route("/checkout/add-to-order")]
     public IActionResult AddToOrder(double totalPrice, int paymentID, int orderStatusID) {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        // _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), totalPrice, orderStatusID, paymentID);
+        _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), totalPrice, orderStatusID, paymentID);
         List<Order> order = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID)).ToList();
         var orderID = order[0].PK_iOrderID;
         foreach (var item in checkouts) {
@@ -171,6 +171,15 @@ public class CheckoutController : Controller {
             // Xoá sản phẩm trong giỏ hàng
             _cartResponsitory.deleteProductInCart(item.PK_iProductID, Convert.ToInt32(sessionUserID));
         } 
-        return Ok("Thêm thành công");
+        // Đặt lại checkouts
+        HttpContext.Session.Set("cart_key", null);
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Đặt hàng thành công!"
+        };
+        CheckoutViewModel model = new CheckoutViewModel {
+            Status = status
+        };
+        return Ok(model);
     }
 }

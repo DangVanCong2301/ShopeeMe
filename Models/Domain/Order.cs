@@ -4,5 +4,5 @@ public class Order {
     public DateTime dDate { get; set; }
     public double fTotalPrice { get; set; }
     public int FK_iOrderStatusID { get; set; }
-    public int FK_iPaymentID { get; set; }
+    public int FK_iPaymentTypeID { get; set; }
 }

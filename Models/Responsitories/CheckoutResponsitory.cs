@@ -56,9 +56,9 @@ public class CheckoutResponsitory : ICheckoutResponsitory
 
     public bool insertPaymentType(int paymentID, int userID)
     {
-        SqlParameter paymentIDParam = new SqlParameter("@PK_iPaymentTypeID", paymentID);
+        SqlParameter paymentIDParam = new SqlParameter("@FK_iPaymentID", paymentID);
         SqlParameter userIDParam = new SqlParameter("@UserID", userID);
-        _context.Database.ExecuteSqlRaw("EXEC sp_InsertPaymentsType @PK_iPaymentTypeID, @UserID", paymentIDParam, userIDParam);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertPaymentsType @FK_iPaymentID, @UserID", paymentIDParam, userIDParam);
         return true;
     }
 
@@ -82,9 +82,9 @@ public class CheckoutResponsitory : ICheckoutResponsitory
 
     public bool updatePaymentType(int paymentID, int userID)
     {
-        SqlParameter paymentIDParam = new SqlParameter("@PK_iPaymentType", paymentID);
+        SqlParameter paymentIDParam = new SqlParameter("@FK_iPaymentID", paymentID);
         SqlParameter userIDParam = new SqlParameter("@UserID", userID);
-        _context.Database.ExecuteSqlRaw("EXEC sp_UpdatePaymentsType @PK_iPaymentType, @UserID", paymentIDParam, userIDParam);
+        _context.Database.ExecuteSqlRaw("EXEC sp_UpdatePaymentsType @FK_iPaymentID, @UserID", paymentIDParam, userIDParam);
         return true;
     }
 }

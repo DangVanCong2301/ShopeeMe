@@ -1251,11 +1251,13 @@ function setTotalPrice(data) {
     document.querySelector(".checkout__payment-money-total-price").innerText = `${money(totalItemPrice + totalTransportPrice)}`;
     
     var totalPrice = totalItemPrice + totalTransportPrice;
-    addToOrder(totalPrice);
+    if (data.paymentTypes.length != 0) {
+        addToOrder(totalPrice, data.paymentTypes[0].pK_iPaymentTypeID);
+    }
 }
 
 // Add To Order
-function addToOrder(totalPrice) {
+function addToOrder(totalPrice, paymentID) {
     document.querySelector(".checkout__payment-order-btn-submit").addEventListener("click", () => {
         if (data.paymentTypes.length == 0) {
             openModal();
@@ -1276,9 +1278,11 @@ function addToOrder(totalPrice) {
                 </div>
             `;
         } else {
+            console.log(totalPrice, paymentID);
+            
             var formData = new FormData();
             formData.append("totalPrice", totalPrice);
-            formData.append("paymentID", 1);
+            formData.append("paymentID", paymentID);
             formData.append("orderStatusID", 1);
     
             var xhr = new XMLHttpRequest();
@@ -1287,6 +1291,8 @@ function addToOrder(totalPrice) {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     const result = JSON.parse(xhr.responseText);
                     console.log(result);
+                    toast({title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000});
+                    window.location.assign("/payment/momo");
                 }
             };
             xhr.send(formData);

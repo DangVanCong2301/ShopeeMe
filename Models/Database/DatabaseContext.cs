@@ -64,7 +64,7 @@ namespace Project.Models
             });
 
             modelBuilder.Entity<Payment>(entity => {
-                entity.HasKey(e => e.PK_iPaymentID);
+                entity.HasKey(e => e.PK_iPaymentTypeID);
             });
 
             modelBuilder.Entity<Order>(entity => {
