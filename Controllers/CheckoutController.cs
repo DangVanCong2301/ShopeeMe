@@ -114,8 +114,10 @@ public class CheckoutController : Controller {
                 sImageUrl = product[0].sImageUrl,
                 dUnitPrice = product[0].dUnitPrice, // https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
                 iQuantity = quantity,
-                dMoney = product[0].dUnitPrice * quantity,
-                dTransportPrice = product[0].dTransportPrice
+                // Toán tử if else rút gọn trong c#: https://laptrinhvb.net/bai-viet/chuyen-de-csharp/---Csharp----Huong-dan-su-dung-Ternary-Operator-(rut-gon-cau-truc-re-nhanh-if-else)/23b78c4150dae226.html
+                dMoney = (product[0].dDiscount == 1) ? (product[0].dUnitPrice * quantity) + product[0].dTransportPrice : product[0].dUnitPrice * quantity * (1 - product[0].dDiscount) + product[0].dTransportPrice,
+                dTransportPrice = product[0].dTransportPrice,
+                dDiscount = product[0].dDiscount
             };
             cartsCheckout.Add(item);
         }
@@ -160,19 +162,26 @@ public class CheckoutController : Controller {
 
     [HttpPost]
     [Route("/checkout/add-to-order")]
-    public IActionResult AddToOrder(double totalPrice, int paymentID, int orderStatusID) {
+    public IActionResult AddToOrder(double totalPrice, int paymentTypeID, int orderStatusID) {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), totalPrice, orderStatusID, paymentID);
         List<Order> order = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID)).ToList();
-        var orderID = order[0].PK_iOrderID;
+        // Kiểm tra đơn hàng trong ngày của tài khoản đã đăng ký chưa
+        int orderID;
+        if (order.Count() != 0) {
+            orderID = order[0].PK_iOrderID;
+        } else {
+            _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), totalPrice, orderStatusID, paymentTypeID);
+            List<Order> newOrder = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID)).ToList();
+            orderID = newOrder[0].PK_iOrderID;
+        }
         foreach (var item in checkouts) {
             // Thêm vào chi tiết đơn hàng
-            _orderResponsitory.inserOrderDetail(orderID, item.PK_iProductID, item.iQuantity, item.dUnitPrice);
+            _orderResponsitory.inserOrderDetail(orderID, item.PK_iProductID, item.iQuantity, item.dUnitPrice, item.dMoney);
             // Xoá sản phẩm trong giỏ hàng
             _cartResponsitory.deleteProductInCart(item.PK_iProductID, Convert.ToInt32(sessionUserID));
         } 
         // Đặt lại checkouts
-        HttpContext.Session.Set("cart_key", null);
+        HttpContext.Session.Set("cart_key", "");
         Status status = new Status {
             StatusCode = 1,
             Message = "Đặt hàng thành công!"

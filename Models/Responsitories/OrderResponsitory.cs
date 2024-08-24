@@ -15,6 +15,7 @@ public class OrderResponsitory : IOrderResponsitory
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
         SqlParameter dateParam = new SqlParameter("@dDate", DateTime.Now.ToString("dd/MM/yyyy"));
+        //SqlParameter dateParam = new SqlParameter("@dDate", "29/7/2024");
         return _context.Orders.FromSqlRaw("SET DATEFORMAT dmy EXEC sp_GetOrderByID @FK_iUserID, @dDate", userIDParam, dateParam);
     }
 
@@ -42,18 +43,19 @@ public class OrderResponsitory : IOrderResponsitory
         SqlParameter dataParam = new SqlParameter("@dDate", DateTime.Now.ToString("dd/MM/yyyy"));
         SqlParameter totalPriceParam = new SqlParameter("@dTotalPrice", totalPrice);
         SqlParameter orderStatusIDParam = new SqlParameter("@FK_iOrderStatusID", orderStatusID);
-        SqlParameter paymentIDParam = new SqlParameter("@FK_iPaymentID", paymentID);
-        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertOrder @FK_iUserID, @dDate, @dTotalPrice, @FK_iOrderStatusID, @FK_iPaymentID", userIDParam, dataParam, totalPriceParam, orderStatusIDParam, paymentIDParam);
+        SqlParameter paymentIDParam = new SqlParameter("@FK_iPaymentTypeID", paymentID);
+        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertOrder @FK_iUserID, @dDate, @dTotalPrice, @FK_iOrderStatusID, @FK_iPaymentTypeID", userIDParam, dataParam, totalPriceParam, orderStatusIDParam, paymentIDParam);
         return true;
     }
 
-    public bool inserOrderDetail(int orderID, int productID, int quantity, double unitPrice)
+    public bool inserOrderDetail(int orderID, int productID, int quantity, double unitPrice, double money)
     {
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
         SqlParameter productIDParam = new SqlParameter("@PK_iProductID", productID);
         SqlParameter quantityParam = new SqlParameter("@iQuantity", quantity);
         SqlParameter unitPriceParam = new SqlParameter("@iUnitPrice", unitPrice);
-        _context.Database.ExecuteSqlRaw("sp_InserProductIntoOrderDetail @PK_iOrderID, @PK_iProductID, @iQuantity, @iUnitPrice", orderIDParam, productIDParam, quantityParam, unitPriceParam);
+        SqlParameter moneyParam = new SqlParameter("@dMoney", money);
+        _context.Database.ExecuteSqlRaw("sp_InserProductIntoOrderDetail @PK_iOrderID, @PK_iProductID, @iQuantity, @iUnitPrice, @dMoney", orderIDParam, productIDParam, quantityParam, unitPriceParam, moneyParam);
         return true;
     }
 

@@ -10,4 +10,5 @@ public class CheckoutViewModel
     public List<User> Users { get; set; }
     public List<Payment> PaymentTypes { get; set; }
     public Status Status { get; set;}
+    public Order Order { get; set; }
 }

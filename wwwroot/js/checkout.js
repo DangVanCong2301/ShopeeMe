@@ -1251,15 +1251,14 @@ function setTotalPrice(data) {
     document.querySelector(".checkout__payment-money-total-price").innerText = `${money(totalItemPrice + totalTransportPrice)}`;
     
     var totalPrice = totalItemPrice + totalTransportPrice;
-    if (data.paymentTypes.length != 0) {
-        addToOrder(totalPrice, data.paymentTypes[0].pK_iPaymentTypeID);
-    }
+    addToOrder(totalPrice);
 }
 
 // Add To Order
-function addToOrder(totalPrice, paymentID) {
+function addToOrder(totalPrice) {
     document.querySelector(".checkout__payment-order-btn-submit").addEventListener("click", () => {
         if (data.paymentTypes.length == 0) {
+            console.log("Chưa có phương thức thanh toán");
             openModal();
             document.querySelector(".modal__body").innerHTML = 
             `
@@ -1273,17 +1272,15 @@ function addToOrder(totalPrice, paymentID) {
                     </div>
                     <div class="modal__confirm-btns">
                         <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
-                        <div class="modal__confirm-btn-send"onclick="changeShopUsername()">Chọn phương thức thanh toán</div>
+                        <div class="modal__confirm-btn-send"onclick="choosePaymentsType()">Chọn phương thức thanh toán</div>
                     </div>
                 </div>
             `;
         } else {
-            console.log(totalPrice, paymentID);
-            
             var formData = new FormData();
             formData.append("totalPrice", totalPrice);
-            formData.append("paymentID", paymentID);
-            formData.append("orderStatusID", 1);
+            formData.append("paymentTypeID", data.paymentTypes[0].pK_iPaymentTypeID);
+            formData.append("orderStatusID", 2);
     
             var xhr = new XMLHttpRequest();
             xhr.open('post', '/checkout/add-to-order', true);
@@ -1292,7 +1289,11 @@ function addToOrder(totalPrice, paymentID) {
                     const result = JSON.parse(xhr.responseText);
                     console.log(result);
                     toast({title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000});
-                    window.location.assign("/payment/momo");
+                    if (data.paymentTypes[0].pK_iPaymentID == 4) {
+                        window.location.assign("/payment/momo");
+                    } else {
+                        window.location.assign("/user/purchase");
+                    }
                 }
             };
             xhr.send(formData);
