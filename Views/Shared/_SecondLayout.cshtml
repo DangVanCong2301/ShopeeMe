@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="sortcut icon" href="~/img/shopee_logo.png">
+    <link rel="stylesheet" href="~/css/base.css">
+    <link rel="stylesheet" href="~/css/grid.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link rel="stylesheet" href="~/css/product.css">
+    <link rel="stylesheet" href="~/css/cart.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!--=============== ICONSCOUT ===============-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <title>ShopeeMe - @ViewData["Title"]</title>
+</head>
+<body class="body">
+    <div class="app">
+        <header class="header__cart-mobile hide-on-table hide-on-destop">
+            <div class="header__mobile-container">
+                <div class="header__mobile-back">
+                    <a href="index.html" class="header__mobile-back-link">
+                        <i class="uil uil-arrow-left header__mobile-back-icon"></i>
+                    </a>
+                </div>
+    
+                <div class="header__mobile-title hide-on-destop">Giỏ hàng</div>
+    
+                <div class="header__mobile-fix hide-on-destop" onclick="changeBottomCheckout(this)">Sửa</div>
+            </div>
+        </header>
+        <header class="header hide-on-mobile">
+            <div class="grid wide header__container">
+                <div class="header__left">
+                    <div class="header__list">
+                        <div class="header__item header__item-line">
+                            <a href="#" class="header__item-link">Kênh người bán</a>
+                        </div>
+                        <div class="header__item header__item-line header__item--has-qr">
+                            <a href="#" class="header__item-link">Tải ứng dụng</a>
+                            <div class="header__qr">
+                                <img src="~/img/qr_code.png" alt="" class="header__qr-img">
+                                <div class="header__qr-apps">
+                                    <a href="" class="header__qr-link">
+                                        <img src="~/img/app-store.png" alt="App Store" class="header__qr-download-img">
+                                    </a>
+                                    <a href="" class="header__qr-link">
+                                        <img src="~/img/google_play.png" alt="Google Play" class="header__qr-download-img">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header__item">
+                            <div class="header__item-sub">Kết nối</div>
+                            <a href="#" class="header__item-link header__item-link-facebook">
+                                <i class="fa-brands fa-facebook header__item-icon"></i>
+                            </a>
+                            <a href="#" class="header__item-link header__item-link-instagram">
+                                <i class="uil uil-instagram header__item-icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="header__right">
+                    <div class="header__list">
+                        <div class="header__item header__item--has-notify">
+                            <a href="#" class="header__item-link">
+                                <i class="uil uil-bell"></i>
+                                <div class="header__item-sub">Thông báo</div>
+                            </a>
+                            <div class="header__notify">
+                                <header class="header__notify-header">
+                                    <h3>Thông báo mới nhận</h3>
+                                </header>
+                                <ul class="header__notify-list">
+                                    <li class="header__notify-item header__notify-item--viewed ">
+                                        <a href="" class="header__notify-link">
+                                            <div class="header__notify-img"><img src="~/img/sac_du_phong.png" alt="" class=""></div>
+                                            <div class="header__notify-info">
+                                                <span class="header__notify-name">Xác thực chính hãnh nguồn gốc của các
+                                                    sản
+                                                    phẩm 0hui</span>
+                                                <span class="header__notify-descriotion">Hidden tag là giải pháp xác
+                                                    thực
+                                                    hàng chính hãng bằng công nghệ tiên tiến nhất hiện nay</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="header__notify-item header__notify-item--viewed ">
+                                        <a href="" class="header__notify-link">
+                                            <div class="header__notify-img"><img src="~/img/sac_du_phong.png" alt="" class=""></div>
+                                            <div class="header__notify-info">
+                                                <span class="header__notify-name">Sale Sốc bộ dưỡng 0hui The First tái
+                                                    tạo
+                                                    trẻ hoá da SALE OFF 70%</span>
+                                                <span class="header__notify-descriotion">Mô tả mỹ phẩm 0hui chính
+                                                    hãng</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="header__notify-item header__notify-item--viewed ">
+                                        <a href="" class="header__notify-link">
+                                            <div class="header__notify-img"><img src="~/img/sac_du_phong.png" alt="" class=""></div>
+                                            <div class="header__notify-info">
+                                                <span class="header__notify-name">Mỹ phẩm chính 0thui hãng</span>
+                                                <span class="header__notify-descriotion">Mô tả mỹ phẩm 0hui chính
+                                                    hãng</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <footer class="header__notify-footer">
+                                    <a href="" class="header__notify-footer-btn">Xem tất cả</a>
+                                </footer>
+                            </div>
+                        </div>
+                        <div class="header__item">
+                            <a href="#" class="header__item-link">
+                                <i class="uil uil-question-circle header__item-icon"></i>
+                                <div class="header__item-sub">Hỗ trợ</div>
+                            </a>
+                        </div>
+                        <div class="header__item header__item--has-language">
+                            <a href="#" class="header__item-link">
+                                <i class="uil uil-globe header__item-icon"></i>
+                                <div class="header__item-sub">Tiếng Việt</div>
+                                <i class="uil uil-angle-down header__item-icon"></i>
+                            </a>
+                            <div class="header__item-language">
+                                <ul class="header__navbar-user-menu">
+                                    <li class="header__navbar-user-item header__item-language-item active">
+                                        <a href="">Tiếng Việt</a>
+                                    </li>
+                                    <li class="header__navbar-user-item header__item-language-item">
+                                        <a href="">Tiêng Anh</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="header__item header__item--has-user">
+                            <a href="#" class="header__item-link">
+                                <img src="~/img/profile_avatar.jpg" class="header__item-img" alt="">
+                                <div class="header__item-sub">Công Đặng</div>
+                            </a>
+                            <div class="header__item-user">
+                                <ul class="header__navbar-user-menu">
+                                    <li class="header__navbar-user-item">
+                                        <a href="">Tài khoản của tôi</a>
+                                    </li>
+                                    <li class="header__navbar-user-item">
+                                        <a href="">Địa chỉ của tôi</a>
+                                    </li>
+                                    <li class="header__navbar-user-item">
+                                        <a href="">Đơn mua</a>
+                                    </li>
+                                    <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                        <a href="/User/Logout">Đăng xuất</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header__bottom">
+                <div class="grid wide header__bottom-container">
+                    <div class="header__bottom-left">
+                        <a href="/" class="header__logo-link">
+                            <img src="~/img/shopeeme_logo_primary.png" class="header__logo-img" alt="">
+                        </a>
+                        <div class="header__bottom-title">@ViewData["Title"]</div>
+                    </div>
+                    <div class="header__bottom-right">
+                        <div class="header__search">
+                            <input type="text" class="header__search-input" placeholder="Tìm kiếm ShopeeMe...">
+                            <div class="header__search-btn">
+                                <i class="uil uil-search header__search-btn-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="home__table hide-on-mobile hide-on-destop">
+            Sản phẩm chưa được tối ưu trên máy tính bảng, vui lòng sử dụng điện thoại và laptop 
+            để có trả nghiệm tốt hơn!
+        </div>
+        <div class="container">
+            @RenderBody()
+        </div>
+        <footer class="footer">
+            <div class="grid wide footer__content">
+                <div class="row">
+                    <div class="col l-2-4 c-6 m-4">
+                        <h3 class="footer__heading">Chăm sóc khách hàng</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Trung tâm trợ giúp</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">F4 Shop Mail</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Hướng dẫn mua hàng</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col l-2-4 c-6 m-4">
+                        <h3 class="footer__heading">Giới thiệu</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Giới thiệu</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Tuyển dụng </a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Điều khoản</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col l-2-4 c-6 m-4">
+                        <h3 class="footer__heading">Danh mục</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">
+                                    <i class="footer-item__icon fab fa-facebook"></i>
+                                    Facebook
+                                </a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class=" footer-item__link">
+                                    <i class="footer-item__icon fab fa-instagram"></i>
+                                    Instagram
+                                </a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">
+                                    <i class="footer-item__icon fa-brands fa-linkedin"></i>
+                                    Linking
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col l-2-4 c-6 m-4">
+                        <h3 class="footer__heading">Thep dõi khách hàng</h3>
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Trung tâm trợ giúp</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">VanCong Shop Mail</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Hướng dẫn mua hàng</a>
+                            </li>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col l-2-4 c-12 m-4">
+                        <h3 class="footer__heading">Vào cửa hàng ShopeeMe</h3>
+                        <div class="footer__download">
+                            <img src="~/img/qr_code.png" alt="" class="footer__download-qr">
+                            <div class="footer__download-apps">
+                                <a href="#" class="footer__download-apps-link">
+                                    <img src="~/img/app-store.png" alt="Google Play" class="footer__download-apps-img">
+                                </a>
+                                <a href="#" class="footer__download-apps-link">
+                                    <img src="~/img/google_play.png" alt="App Store" class="footer__download-apps-img">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer__bottom">
+                    <div class="grid wide">
+                        <p class="footer__text">2022 - Bản quyền thuộc về công ty Shopee (Đồ án tốt nghiệp)</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!--Modal layoyt-->
+    <div class="cart__message">
+
+    </div>
+    <div class="modal">
+        <div class="modal__overlay">
+    
+        </div>
+        <div class="modal__body">
+            
+        </div>
+    </div>
+    <div class="" id="toast">
+        
+    </div>
+</body>
+<script src="~/js/second_site.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</html>

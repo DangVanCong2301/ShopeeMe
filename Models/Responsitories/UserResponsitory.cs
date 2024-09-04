@@ -48,6 +48,12 @@ public class UserResponsitory : IUserResponsitory
         return Convert.ToBase64String(result);
     }
 
+    public IEnumerable<User> getPassswordAccountByEmail(string email)
+    {
+        SqlParameter emailParam = new SqlParameter("@sEmail", email);
+        return _context.Users.FromSqlRaw("EXEC sp_GetPasswordAccountByEmail @sEmail", emailParam);
+    }
+
     public IEnumerable<User> getUserInfoByID(int userID)
     {
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);

@@ -70,6 +70,7 @@ public class UserController : Controller {
         return Redirect("/");
     }
 
+    [HttpGet]
     [Route("/user/forgot")]
     public IActionResult Forgot() {
         return View();
@@ -77,8 +78,16 @@ public class UserController : Controller {
 
     [Route("/user/forgot")]
     [HttpPost]
-    public IActionResult Forgot(string email) {
-        TempData["result"] = "Mật khẩu của bạn là: 12345678";
+    public IActionResult Forgot(ForgotViewModel forgotViewModel) {
+        if (!ModelState.IsValid) {
+            return View(forgotViewModel);
+        }
+        List<User> user = _userResponsitory.getPassswordAccountByEmail(forgotViewModel.sEmail).ToList();
+        if (user.Count() == 0) {
+            TempData["result"] = "Không có Email này, vui lòng nhập lại";
+        } else {
+            TempData["result"] = $"Mật khẩu của bạn là: {user[0].sPassword}";
+        }
         return RedirectToAction("Forgot");
     }
 

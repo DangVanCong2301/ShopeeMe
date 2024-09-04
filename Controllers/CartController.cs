@@ -20,6 +20,7 @@ public class CartController : Controller {
     }
 
     [Route("cart")]
+    [HttpGet]
     public IActionResult Index() {
         // Lấy Cookies trên trình duyệt
         var userID = Request.Cookies["UserID"];
@@ -118,7 +119,8 @@ public class CartController : Controller {
     }
 
     [HttpPost]
-    public IActionResult DeleteProduct(int productID) {
+    [Route("/cart/delete-item")]
+    public IActionResult DeleteItem(int productID) {
         _cartResponsitory.deleteProductInCart(productID, Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID")));
         string msg = "Sản phẩm đã được xoá khỏi giỏ hàng!";
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID")));

@@ -38,44 +38,48 @@ function getCartItemsDestop(data) {
                 <div class="cart__instruct-text">Nhấn vào mục Mã giảm giá ở cuối trang để hưởng miễn phí vận chuyển
                     bạn nhé!</div>
             </div>
-            <div class="cart__header">
-                <div class="cart__input">
-                    <input type="checkbox" class="cart__checkout-input" name="" id="">
-                </div>
-                <div class="cart__header-sub">Sản phẩm</div>
-                <div class="cart__header-type"></div>
-                <div class="cart__header-cost">Đơn giá</div>
-                <div class="cart__header-quantity">Số lượng</div>
-                <div class="cart__header-money">Số tiền</div>
-                <div class="cart__header-operation">Thao tác</div>
-            </div>
-            <div class="cart__product-list">
-
-            </div>
-            <div class="cart__purchase">
-                <div class="cart__purchase-voucher">
-                    <div class="cart__purchase-voucher-title">
-                        <i class="uil uil-store cart__body-discount-icon"></i>
-                        <div class="cart__purchase-voucher-sub">Shopee Voucher</div>
-                    </div>
-                    <a href="#" class="cart__purchase-voucher-link">Chọn hoặc nhập mã</a>
-                </div>
-                <div class="cart__purchase-payment">
+            <div class="cart__container">
+                <div class="cart__header">
                     <div class="cart__input">
-                        <input type="checkbox" class="cart__checkout-input-all" onchange="checkAllProduct(this)"
-                            name="" id="">
+                        <input type="checkbox" class="cart__checkout-input" name="" id="">
                     </div>
-                    <div class="cart__purchase-payment-desc">
-                        <div class="cart__purchase-payment-left">
-                            <div class="cart__purchase-footer-select">Chọn tất cả (${data.cartCount})</div>
-                            <a href="javascript:deleteAllProductModal()"
-                                class="cart__purchase-footer-delele">Xoá</a>
-                        </div>
-                        <div class="cart__purchase-payment-right">
-                            <div class="cart__purchase-payment-total-sub">Tổng thanh toán (0 sản phẩm):
-                                <span>0 đ</span>
+                    <div class="cart__header-sub">Sản phẩm</div>
+                    <div class="cart__header-type"></div>
+                    <div class="cart__header-cost">Đơn giá</div>
+                    <div class="cart__header-quantity">Số lượng</div>
+                    <div class="cart__header-money">Số tiền</div>
+                    <div class="cart__header-operation">Thao tác</div>
+                </div>
+                <div class="cart__product-list">
+
+                </div>
+                <div class="cart__footer">
+                    <div class="cart__purchase">
+                        <div class="cart__purchase-voucher">
+                            <div class="cart__purchase-voucher-title">
+                                <i class="uil uil-store cart__body-discount-icon"></i>
+                                <div class="cart__purchase-voucher-sub">Shopee Voucher</div>
                             </div>
-                            <a href="javascript:checkout()" class="btn btn--primary">Mua hàng</a>
+                            <a href="#" class="cart__purchase-voucher-link">Chọn hoặc nhập mã</a>
+                        </div>
+                        <div class="cart__purchase-payment">
+                            <div class="cart__input">
+                                <input type="checkbox" class="cart__checkout-input-all" onchange="checkAllProduct(this)"
+                                    name="" id="">
+                            </div>
+                            <div class="cart__purchase-payment-desc">
+                                <div class="cart__purchase-payment-left">
+                                    <div class="cart__purchase-footer-select">Chọn tất cả (${data.cartCount})</div>
+                                    <a href="javascript:deleteAllProductModal()"
+                                        class="cart__purchase-footer-delele">Xoá</a>
+                                </div>
+                                <div class="cart__purchase-payment-right">
+                                    <div class="cart__purchase-payment-total-sub">Tổng thanh toán (0 sản phẩm):
+                                        <span>0 đ</span>
+                                    </div>
+                                    <a href="javascript:checkout()" class="btn btn--primary">Mua hàng</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -194,10 +198,17 @@ function checkout() {
                 let htmlConfirm = "";
                 htmlConfirm += 
                 `
-                    <div class="confirm">
-                        <div class="confirm__msg">Bạn chưa chọn sản phẩm để mua!</div>
-                        <div class="confirm__btn-back">
-                            <div class="btn btn--primary" onclick="exitModal()">Trở lại</div>
+                    <div class="modal__confirm">
+                        <div class="modal__confirm-header">
+                            <div class="modal__confirm-title">Thông báo</div>
+                            <i class="uil uil-multiply modal__confirm-close" onclick="exitModal()"></i>
+                        </div>
+                        <div class="modal__confirm-desc">
+                            Bạn chưa chọn sản phẩm để mua!
+                        </div>
+                        <div class="modal__confirm-btns">
+                            <div class="modal__confirm-btn-destroy" onclick="exitModal()">Huỷ</div>
+                            <div class="modal__confirm-btn-send">Trở lại</div>
                         </div>
                     </div>
                 `;
@@ -614,14 +625,12 @@ function deleteProductModal(productID) {
     var formData = new FormData();
     formData.append('productID', productID);
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Cart/DeleteProduct', true);
+    xhr.open('post', '/cart/delete-item', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
             console.log(data);
-            document.querySelector(".modal").classList.remove("open");
-            document.querySelector(".header__cart-notice").innerText = data.cartCount;
-            document.querySelector(".table__total-count").innerText = `Có ${data.cartCount} sản phẩm trong giỏ hàng của bạn`;
+            exitModal();
             document.getElementById("product__" + productID).style.display = 'none';
             toast({ title: "Thông báo", msg: `${data.message}`, type: "success", duration: 5000 });
         }
@@ -630,28 +639,24 @@ function deleteProductModal(productID) {
 }
 
 function deleteProduct(productID) {
+    openModal();
     let html = "";
     html += `
-        <div class="modal">
-            <div class="modal__overlay">
-    
-            </div>
-            <div class="modal__body">
-                <!--Form message -->
-                <div class="auth-form">
-                    <div class="auth-form__container">
-                        <p class="auth-form__msg">Bạn muốn xoá mặt hàng này khỏi giỏ?</p>
-                        <div class="auth-form__controls">
-                            <button onclick="exitModal()" class="btn btn--primary">HUỶ</button>
-                            <button class="btn" onclick="deleteProductModal(${productID})">ĐỒNG Ý</button>
-                        </div>
+                <div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                        <i class="uil uil-multiply modal__confirm-close" onclick="exitModal()"></i>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        Bạn muốn xoá mặt hàng này khỏi giỏ?
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="exitModal()">Huỷ</div>
+                        <div class="modal__confirm-btn-send"onclick="deleteProductModal(${productID})"">Đồng ý</div>
                     </div>
                 </div>
-            </div>
-        </div>
         `;
-    document.querySelector(".cart__message").innerHTML = html;
-    document.querySelector(".modal").classList.add("open");
+    document.querySelector(".modal__body").innerHTML = html;
 }
 
 // Checkout
