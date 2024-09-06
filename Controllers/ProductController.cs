@@ -22,7 +22,7 @@ public class ProductController : Controller {
 
     [Route("{parentCategoryID}")]
     [HttpGet]
-    public IActionResult Index(int parentCategoryID, int currentPage = 1) {
+    public IActionResult Index(int parentCategoryID) {
         _accessor?.HttpContext?.Session.SetInt32("CurrentParentCategoryID", parentCategoryID);
         // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
         return View();
@@ -39,7 +39,7 @@ public class ProductController : Controller {
         if (users.Count() == 0) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         } else if (users[0].FK_iRoleID == 2) {
-            products = _productResponsitory.getProductsByParentCategoryIDIfRoleAdmin(Convert.ToInt32(sessionParentCategoryID));
+            products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         } else {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         }

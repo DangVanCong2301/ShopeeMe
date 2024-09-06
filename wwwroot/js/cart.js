@@ -111,7 +111,7 @@ function getCartItemsDestop(data) {
         </div>
         <div class="cart__body-product">
             <div class="cart__input">
-                <input type="checkbox" class="cart__checkout-input" onchange="addToCheckout(${obj.pK_iProductID}, event)" name="" id="">
+                <input type="checkbox" class="cart__checkout-input" onchange="addToCheckout(${obj.pK_iProductID}, ${obj.pK_iStoreID}, event)" name="" id="">
             </div>
             <div class="cart__body-product-info">
                 <div class="cart__body-product-img" style="background-image: url(/img/${obj.sImageUrl});">
@@ -753,13 +753,14 @@ function deleteAllProduct() {
     xhr.send(null);
 }
 
-function addToCheckout(productID, event) {
+function addToCheckout(productID, shopID, event) {
     const parentElement = event.target.parentNode;
     const cartBody = parentElement.parentNode;
     var quantity = cartBody.querySelector("#qnt").value;
     // console.log(quantity);
     var formData = new FormData();
     formData.append('productID', productID);
+    formData.append('shopID', shopID);
     formData.append('quantity', quantity);
     var xhr = new XMLHttpRequest();
     xhr.open('post', '/checkout/add-to-checkout', true);

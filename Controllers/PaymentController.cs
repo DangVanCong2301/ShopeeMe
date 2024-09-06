@@ -27,7 +27,8 @@ public class PaymentController : Controller
     [Route("momo")]
     public IActionResult GetDataMomo() {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        List<Order> orders = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID)).ToList();
+        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("ShopID");
+        List<Order> orders = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionShopID)).ToList();
         Order order = new Order {
             PK_iOrderID = orders[0].PK_iOrderID,
             fTotalPrice = orders[0].fTotalPrice

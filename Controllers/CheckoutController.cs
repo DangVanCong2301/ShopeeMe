@@ -99,8 +99,10 @@ public class CheckoutController : Controller {
 
     [HttpPost]
     [Route("/checkout/add-to-checkout")]
-    public IActionResult AddToCheckout(int productID, int quantity) {
+    public IActionResult AddToCheckout(int productID, int shopID, int quantity) {
+        _accessor?.HttpContext?.Session.SetInt32("ShopID", shopID);
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("ShopID");
         var cartsCheckout = checkouts;
         var item = cartsCheckout.SingleOrDefault(p => p.PK_iProductID == productID);
         if (item == null) {
@@ -123,7 +125,11 @@ public class CheckoutController : Controller {
         }
         // Đặt lại danh sách session sản phẩm thanh toán 
         HttpContext.Session.Set("cart_key", cartsCheckout);
-        return Ok(checkouts);
+        CheckoutViewModel model = new CheckoutViewModel {
+            Checkouts = checkouts,
+            SessionShopID = Convert.ToInt32(sessionShopID)
+        };
+        return Ok(model);
     }
 
     [HttpPost]
@@ -164,14 +170,15 @@ public class CheckoutController : Controller {
     [Route("/checkout/add-to-order")]
     public IActionResult AddToOrder(double totalPrice, int paymentTypeID, int orderStatusID) {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        List<Order> order = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID)).ToList();
+        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("ShopID");
+        List<Order> order = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionShopID)).ToList();
         // Kiểm tra đơn hàng trong ngày của tài khoản đã đăng ký chưa
         int orderID;
         if (order.Count() != 0) {
             orderID = order[0].PK_iOrderID;
         } else {
-            _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), totalPrice, orderStatusID, paymentTypeID);
-            List<Order> newOrder = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID)).ToList();
+            _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionShopID), totalPrice, orderStatusID, paymentTypeID);
+            List<Order> newOrder = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionShopID)).ToList();
             orderID = newOrder[0].PK_iOrderID;
         }
         foreach (var item in checkouts) {

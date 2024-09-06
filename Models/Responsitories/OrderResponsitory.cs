@@ -11,12 +11,13 @@ public class OrderResponsitory : IOrderResponsitory
         _context = context;
     }
 
-    public IEnumerable<Order> getOrderByID(int userID)
+    public IEnumerable<Order> getOrderByID(int userID, int shopID)
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        SqlParameter shopIDParam = new SqlParameter("@FK_iShopID", shopID);
         SqlParameter dateParam = new SqlParameter("@dDate", DateTime.Now.ToString("dd/MM/yyyy"));
         //SqlParameter dateParam = new SqlParameter("@dDate", "29/7/2024");
-        return _context.Orders.FromSqlRaw("SET DATEFORMAT dmy EXEC sp_GetOrderByID @FK_iUserID, @dDate", userIDParam, dateParam);
+        return _context.Orders.FromSqlRaw("SET DATEFORMAT dmy EXEC sp_GetOrderByID @FK_iUserID, @FK_iShopID, @dDate", userIDParam, shopIDParam, dateParam);
     }
 
     public IEnumerable<Order> getOrdersByUserIDWaitSettlement(int userID)
@@ -37,14 +38,15 @@ public class OrderResponsitory : IOrderResponsitory
         return _context.OrderDetails.FromSqlRaw("EXEC sp_GetProductsOrderByUserIDWaitSettlement @PK_iUserID", userIDParam);
     }
 
-    public bool inserOrder(int userID, double totalPrice, int orderStatusID, int paymentID)
+    public bool inserOrder(int userID, int shopID, double totalPrice, int orderStatusID, int paymentID)
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        SqlParameter shopIDParam = new SqlParameter("@FK_iShopID", shopID);
         SqlParameter dataParam = new SqlParameter("@dDate", DateTime.Now.ToString("dd/MM/yyyy"));
         SqlParameter totalPriceParam = new SqlParameter("@dTotalPrice", totalPrice);
         SqlParameter orderStatusIDParam = new SqlParameter("@FK_iOrderStatusID", orderStatusID);
         SqlParameter paymentIDParam = new SqlParameter("@FK_iPaymentTypeID", paymentID);
-        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertOrder @FK_iUserID, @dDate, @dTotalPrice, @FK_iOrderStatusID, @FK_iPaymentTypeID", userIDParam, dataParam, totalPriceParam, orderStatusIDParam, paymentIDParam);
+        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertOrder @FK_iUserID, @FK_iShopID, @dDate, @dTotalPrice, @FK_iOrderStatusID, @FK_iPaymentTypeID", userIDParam, shopIDParam, dataParam, totalPriceParam, orderStatusIDParam, paymentIDParam);
         return true;
     }
 

@@ -68,6 +68,7 @@ namespace Project.Controllers
         [Route("/home/get-data")]
         public IActionResult GetData(int currentPage = 1) {
             var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+            var sessionRoleID = _accessor?.HttpContext?.Session.GetInt32("RoleID");
             var sessionUsername = _accessor?.HttpContext?.Session.GetString("UserName");
             IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
             int totalRecord = products.Count();
@@ -91,6 +92,7 @@ namespace Project.Controllers
                 TotalPage = totalPage,
                 PageSize = pageSize,
                 CurrentPage = currentPage,
+                RoleID = Convert.ToInt32(sessionRoleID),
                 UserID = Convert.ToInt32(sessionUserID),
                 Username = sessionUsername,
                 CartCount = cartCount
