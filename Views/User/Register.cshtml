@@ -67,7 +67,7 @@
         <div class="auth__content grid wide">
             <div class="auth__left">
                 <div class="auth__left-img">
-                    <img src="~/img/shopee_logo_white.png" class="auth__content-logo" alt="">
+                    <img src="~/img/shopeeme_cart_white_logo.png" class="auth__content-logo" alt="">
                 </div>
                 <div class="auth__left-sub">Nền tảng thương mại trưc tuyến</div>
             </div>
@@ -80,16 +80,12 @@
                         </div>
                         <div class="auth-form__form">
                             <div class="auth-form__group">
-                                <input type="text" asp-for="sName" class="auth-form__input" placeholder="Tên của bạn" />
-                                <span asp-validation-for="sName" class="auth-msg auth-msg__err"></span>
+                                <input type="text" asp-for="sUserName" class="auth-form__input" placeholder="Tên đăng nhâp của bạn" />
+                                <span asp-validation-for="sUserName" class="auth-msg auth-msg__err"></span>
                             </div>
                             <div class="auth-form__group">
                                 <input type="text" asp-for="sEmail" class="auth-form__input" placeholder="Email của bạn" />
                                 <span asp-validation-for="sEmail" class="auth-msg auth-msg__err"></span>
-                            </div>
-                            <div class="auth-form__group">
-                                <input type="text" asp-for="sAddress" class="auth-form__input" placeholder="Địa chỉ của bạn" />
-                                <span asp-validation-for="sAddress" class="auth-msg auth-msg__err"></span>
                             </div>
                             <div class="auth-form__group">
                                 <input type="password" asp-for="sPassword"  class="auth-form__input" placeholder="Mật khẩu của bạn" />

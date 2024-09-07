@@ -32,7 +32,7 @@ public class ShopController : Controller
         if (userID != null)
         {
             List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sFullName);
+            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
             _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
         }
         else

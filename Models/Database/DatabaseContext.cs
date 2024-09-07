@@ -9,6 +9,7 @@ namespace Project.Models
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserInfo> UserInfos { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<SliderShop> SliderShops { get; set; }
         public DbSet<ParentCategory> ParentCategories { get; set; }
@@ -29,6 +30,10 @@ namespace Project.Models
         {
             modelBuilder.Entity<User>(entity => {
                 entity.HasKey(e => e.PK_iUserID);
+            });
+
+            modelBuilder.Entity<UserInfo>(entity => {
+                entity.HasKey(e => e.PK_iUserInfoID);
             });
 
             modelBuilder.Entity<Store>(entity => {

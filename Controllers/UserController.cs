@@ -44,7 +44,7 @@ public class UserController : Controller {
             TempData["msg"] = "Tài khoản hoặc mật khẩu không chính xác!";
             return Redirect("/user/login");
         }
-        string nameUser = userLogin[0].sFullName;
+        string nameUser = userLogin[0].sUserName;
         int value = userLogin[0].PK_iUserID;
         // Tạo Cookies
         CookieOptions options = new CookieOptions {

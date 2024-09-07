@@ -54,10 +54,23 @@ public class UserResponsitory : IUserResponsitory
         return _context.Users.FromSqlRaw("EXEC sp_GetPasswordAccountByEmail @sEmail", emailParam);
     }
 
+    public IEnumerable<User> getUserIDAccountByEmail(string email)
+    {
+        SqlParameter emailParam = new SqlParameter("@sEmail", email);
+        return _context.Users.FromSqlRaw("EXEC sp_GetUserIDAccountByEmail @sEmail", emailParam);
+    }
+
     public IEnumerable<User> getUserInfoByID(int userID)
     {
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
         return _context.Users.FromSqlRaw("EXEC sp_GetUserInfoByID @PK_iUserID", userIDParam);
+    }
+
+    public bool insertUserInfoWithUserID(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertUserInfo @FK_iUserID", userIDParam);
+        return true;
     }
 
     public IEnumerable<User> login(string email, string password)
@@ -71,14 +84,13 @@ public class UserResponsitory : IUserResponsitory
     {
         // Phải đặt enctype="multipart/form-data" thì IFromFile mới có giá trị
         SqlParameter roleIdParam = new SqlParameter("@FK_iRoleID", 1);
-        SqlParameter nameParam = new SqlParameter("@sName", user.sName);
+        SqlParameter nameParam = new SqlParameter("@sUserName", user.sUserName);
         SqlParameter emailParam = new SqlParameter("@sEmail", user.sEmail);
-        SqlParameter addressParam = new SqlParameter("@sAddress", user.sAddress);
         SqlParameter createTimeParam = new SqlParameter("@dCreateTime", DateTime.Now);
         SqlParameter passwordParam = new SqlParameter("@sPassword", user.sPassword);
         _context.Database.ExecuteSqlRaw(
-            "EXEC sp_InsertUser @FK_iRoleID, @sName, @sEmail, @sAddress, @dCreateTime, @sPassword", 
-            roleIdParam, nameParam, emailParam, addressParam, createTimeParam, passwordParam
+            "EXEC sp_InsertUser @FK_iRoleID, @sUserName, @sEmail, @dCreateTime, @sPassword", 
+            roleIdParam, nameParam, emailParam, createTimeParam, passwordParam
         );
         return true;
     }
