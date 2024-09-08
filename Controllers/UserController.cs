@@ -67,7 +67,30 @@ public class UserController : Controller {
         // _accessor?.HttpContext?.Session.SetInt32("CartCount", cartCount);
 
         // return Json(user);
+        List<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(userLogin[0].PK_iUserID).ToList();
+        if (userInfo.Count == 0) {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", userLogin[0].PK_iUserID);
+            return Redirect("/user/portal");
+        }
         return Redirect("/");
+    }
+
+    [HttpGet]
+    [Route("/user/portal")]
+    public IActionResult Portal() {
+        return View();
+    }
+
+    [HttpPost]
+    [Route("user/get-data-portal")]
+    public IActionResult GetDataPortal() {
+        //var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        var sessionUserID = 16;
+        IEnumerable<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID));
+        ShopeeViewModel model = new ShopeeViewModel {
+            Users = users
+        };
+        return Ok(model);
     }
 
     [HttpGet]

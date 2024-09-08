@@ -6,6 +6,7 @@ public interface IUserResponsitory
     bool register(RegistrastionModel user);
     bool insertUserInfoWithUserID(int userID);
     IEnumerable<User> checkUserLogin(int userID);
+    IEnumerable<UserInfo> checkUserInfoByUserID(int userID);
     IEnumerable<User> getUserInfoByID(int userID);
     IEnumerable<User> getPassswordAccountByEmail(string email);
     IEnumerable<User> getUserIDAccountByEmail(string email);

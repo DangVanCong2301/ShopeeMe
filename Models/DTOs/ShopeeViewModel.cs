@@ -9,6 +9,7 @@ public class ShopeeViewModel
     public IEnumerable<Category> Categories {get; set;}
     public IEnumerable<CartDetail> CartDetails { get; set; }
     public IEnumerable<User> Users { get; set; }
+    public IEnumerable<UserInfo> UserInfos { get; set; }
     public IEnumerable<Checkout> Checkouts { get; set; }
     public int UserID { get; set; }
     public string Username { get; set; }

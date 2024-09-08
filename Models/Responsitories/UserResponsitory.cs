@@ -13,6 +13,12 @@ public class UserResponsitory : IUserResponsitory
         _context = context;
     }
 
+    public IEnumerable<UserInfo> checkUserInfoByUserID(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        return _context.UserInfos.FromSqlRaw("sp_CheckUserInfoByUserID @FK_iUserID", userIDParam);
+    }
+
     public IEnumerable<User> checkUserLogin(int userID)
     {
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
