@@ -4,7 +4,7 @@ public interface IUserResponsitory
 {
     IEnumerable<User> login(string email, string password);
     bool register(RegistrastionModel user);
-    bool insertUserInfoWithUserID(int userID);
+    bool insertUserInfo(int userID, string fullName, int gender, string birth, string image);
     IEnumerable<User> checkUserLogin(int userID);
     IEnumerable<UserInfo> checkUserInfoByUserID(int userID);
     IEnumerable<User> getUserInfoByID(int userID);

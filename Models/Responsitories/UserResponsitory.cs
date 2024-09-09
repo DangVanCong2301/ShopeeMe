@@ -72,10 +72,21 @@ public class UserResponsitory : IUserResponsitory
         return _context.Users.FromSqlRaw("EXEC sp_GetUserInfoByID @PK_iUserID", userIDParam);
     }
 
-    public bool insertUserInfoWithUserID(int userID)
+    public bool insertUserInfo(int userID, string fullName, int gender, string birth, string image)
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
-        _context.Database.ExecuteSqlRaw("EXEC sp_InsertUserInfo @FK_iUserID", userIDParam);
+        SqlParameter fullNameParam = new SqlParameter("@sFullName", fullName);
+        SqlParameter genderParam = new SqlParameter("@iGender", gender);
+        SqlParameter birthParam = new SqlParameter("@dDateBirth", Convert.ToDateTime(birth));
+        SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
+        SqlParameter imageParam = new SqlParameter("@sImageProfile", image);
+        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertUserInfo @FK_iUserID, @sFullName, @iGender, @dDateBirth, @dUpdateTime, @sImageProfile", 
+        userIDParam,
+        fullNameParam,
+        genderParam,
+        birthParam,
+        updateTimeParam,
+        imageParam);
         return true;
     }
 

@@ -82,15 +82,26 @@ public class UserController : Controller {
     }
 
     [HttpPost]
-    [Route("user/get-data-portal")]
+    [Route("/user/get-data-portal")]
     public IActionResult GetDataPortal() {
-        //var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        var sessionUserID = 16;
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         IEnumerable<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID));
         ShopeeViewModel model = new ShopeeViewModel {
             Users = users
         };
         return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/user/add-user-portal")]
+    public IActionResult AddUserPort(string fullName = "", int gender = 0, string birth = "", string image = "") {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        _userResponsitory.insertUserInfo(Convert.ToInt32(sessionUserID), fullName, gender, birth, image);
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Cập nhật thành công"
+        };
+        return Ok(status);
     }
 
     [HttpGet]
