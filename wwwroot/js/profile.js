@@ -3,9 +3,7 @@ function picImage(input) {
 }
 
 function updateProfile() {
-    const userName = document.querySelector(".profile__input-username").value;
     const fullName = document.querySelector(".profile__input-fullname").value;
-    const email = document.querySelector(".profile__input-email").value;
     const gender = document.getElementsByName("gender");
     const avatar = document.querySelector(".profile__avatar-upload").value;
     const birth = document.querySelector(".profile__input-birth").value;
@@ -15,22 +13,39 @@ function updateProfile() {
             checkValue = gender.item(i).value;
         }
     }
-    console.log({userName, fullName, email, checkValue, avatar});
+    console.log({fullName, checkValue, birth, avatar});
     const formData = new FormData();
-    formData.append('userName', userName);
     formData.append('fullName', fullName);
-    formData.append('email', email);
     formData.append('gender', checkValue);
-    formData.append('avatar', avatar);
+    formData.append('image', "no_user.jpg");
     formData.append('birth', birth);
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/User/Profile', true);
+    xhr.open('post', '/user/update-profile', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
-            alert(`${data.msg}`);
-            window.location.assign('/user/profile');
+            openModal();
+            document.querySelector(".modal__body").innerHTML = 
+            `
+                <div class="spinner"></div>
+            `;
+            setTimeout(() => {
+                toast({ title: "Thông báo", msg: `${data.message}`, type: "success", duration: 5000 });
+                closeModal();
+                document.querySelector(".modal__body").innerHTML = "";
+                setTimeout(() => {
+                    window.location.assign('/user/profile');
+                }, 1000)
+            }, 2000);
         }
     }
     xhr.send(formData);
+}
+
+function openModal() {
+    document.querySelector(".modal").classList.add("open");
+}
+
+function closeModal() {
+    document.querySelector(".modal").classList.remove("open");
 }

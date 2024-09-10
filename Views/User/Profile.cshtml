@@ -3,7 +3,7 @@
     ViewData["Title"] = "Hồ sơ của tôi";
 }
 
-@model ProductViewModel
+@model ShopeeViewModel
 
 @* Nếu ta khai báo cho nhưng model đơn lẻ thì có IEnumerable *@
 
@@ -16,9 +16,9 @@
                 <div class="profile__left">
                     <div class="profile__left-header">
                         @foreach (var user in Model.UserInfos) {
-                            <img src="~/img/no_user.jpg" alt="" class="profile__left-avatar">
+                            <img src="~/img/@user.sImageProfile" alt="" class="profile__left-avatar">
                             <div class="profile__left-account">
-                                <div class="profile__left-account-name">@user.sUserName</div>
+                                <div class="profile__left-account-name">@user.sEmail</div>
                                 <div class="profile__left-account-edit"><i class="uil uil-pen"></i>Chỉnh sửa</div>
                             </div>
                         }
@@ -47,11 +47,7 @@
                     </div>
                     <div class="profile__avatar">
                         @foreach (var user in Model.UserInfos) {
-                            @if (@user.sImageProfile == "") {
-                                <img height="100" src="~/img/no_user.jpg" alt="" class="profile__avatar-img">
-                            } else {
-                                <img height="100" src="~/img/@user.sImageProfile" alt="" class="profile__avatar-img">
-                            }
+                            <img height="100" src="~/img/@user.sImageProfile" alt="" class="profile__avatar-img">
                         }
                         <input type="button" onclick="picImage(this)" class="profile__avatar-upload" value="Chọn ảnh">
                         <div class="profile__avatar-sub">Dung lượng file tối đa 1MB <br> Định dạng: .JPG, .PNG</div>
@@ -62,19 +58,13 @@
                                 <tr class="">
                                     <td>Tên đăng nhập</td>
                                     <td>
-                                        <input type="text" value="@user.sUserName" class="profile__input-username">
+                                        <input type="text" readonly value="@user.sUserName" class="profile__input-username">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Tên</td>
+                                    <td>Tên đầy đủ</td>
                                     <td>
                                         <input type="text" value="@user.sFullName" class="profile__input-fullname">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Email</td>
-                                    <td>
-                                        <input type="text" value="@user.sEmail" class="profile__input-email">
                                     </td>
                                 </tr>
                                 <tr>
@@ -97,10 +87,6 @@
                                                 }
                                             </span>
                                             <label for="">Nữ</label>
-                                            <span>
-                                                <input type="radio" name="gender" value="2" id="">
-                                            </span>
-                                            <label for="">Khác</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -120,4 +106,12 @@
         </div>
     </div>
 </div>
+<div class="modal">
+        <div class="modal__overlay">
+
+        </div>
+        <div class="modal__body">
+            
+        </div>
+    </div>
 <script src="~/js/profile.js"></script>

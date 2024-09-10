@@ -149,21 +149,25 @@ public class UserController : Controller {
         // Phải Refresh lại trang chủ thì mới lấy được sessionUserID
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         System.Console.WriteLine("sessionUserID: " + sessionUserID);
-        IEnumerable<User> users = _userResponsitory.getUserInfoByID(Convert.ToInt32(sessionUserID));
-        ProductViewModel model = new ProductViewModel
+        IEnumerable<UserInfo> userInfos = _userResponsitory.getUserInfoByID(Convert.ToInt32(sessionUserID));
+        ShopeeViewModel model = new ShopeeViewModel
         {
             UserID = Convert.ToInt32(sessionUserID),
-            Users = users
+            UserInfos = userInfos
         };
         return View(model);
     }
 
+    [Route("/user/update-profile")]
     [HttpPost] 
-    public IActionResult Profile(string userName = "", string fullName = "", string email = "", int gender = 0, string birth = "", string avatar = "") {
+    public IActionResult UpdateProfile(string fullName = "", int gender = 0, string birth = "", string image = "") {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        _userResponsitory.updateUserInfoByID(Convert.ToInt32(sessionUserID), userName, fullName, email, gender, birth, avatar);
-        string msg = "Cập nhật thành công";
-        return Ok(new {msg});
+        _userResponsitory.updateUserInfoByID(Convert.ToInt32(sessionUserID), fullName, gender, birth, image);
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Cập nhật thành công"
+        };
+        return Ok(status);
     }
 
     public IActionResult Logout() {

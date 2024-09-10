@@ -38,14 +38,14 @@ public class CheckoutController : Controller {
     [Route("/checkout/get-data")]
     public IActionResult GetData() {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        List<User> users = _userResponsitory.getUserInfoByID(Convert.ToInt32(sessionUserID)).ToList();
+        List<UserInfo> userInfos = _userResponsitory.getUserInfoByID(Convert.ToInt32(sessionUserID)).ToList();
         List<Address> addresses = _checkoutResponsitory.checkAddressAccount(Convert.ToInt32(sessionUserID)).ToList();
         List<City> cities = _checkoutResponsitory.getCities().ToList();
         List<District> districts = _checkoutResponsitory.getDistricts().ToList();
         List<AddressChoose> addressChooses = _checkoutResponsitory.getAddressChoose().ToList();
         List<Payment> paymentTypes = _checkoutResponsitory.checkPaymentsTypeByUserID(Convert.ToInt32(sessionUserID)).ToList();
         CheckoutViewModel model = new CheckoutViewModel {
-            Users = users,
+            UserInfos = userInfos,
             Checkouts = checkouts,
             Addresses = addresses,
             Cities = cities,

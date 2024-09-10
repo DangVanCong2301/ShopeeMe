@@ -60,6 +60,60 @@ function setAccount(data) {
                                         </div>
                                     </div>
                 `;
+        } else if (data.roleID == 3) {
+            htmlAccount +=
+                `
+                                    <div class="header__navbar-user">
+                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                                        <span class="header__navbar-user-name">${data.username}</span>
+                                        <div class="header__navbar-user-manager">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/profile">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/profile">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/purchase">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/picker">Kênh lấy hàng</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                `;
+        } else if (data.roleID == 4) {
+            htmlAccount +=
+                `
+                                    <div class="header__navbar-user">
+                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                                        <span class="header__navbar-user-name">${data.username}</span>
+                                        <div class="header__navbar-user-manager">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/profile">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/profile">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/purchase">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/delivery">Kênh giao hàng</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                `;
         } else {
             htmlAccount +=
                 `
@@ -72,7 +126,7 @@ function setAccount(data) {
                                                     <a href="/user/profile">Tài khoản của tôi</a>
                                                 </li>
                                                 <li class="header__navbar-user-item">
-                                                    <a href="">Địa chỉ của tôi</a>
+                                                    <a href="/user/profile">Địa chỉ của tôi</a>
                                                 </li>
                                                 <li class="header__navbar-user-item">
                                                     <a href="/user/purchase">Đơn mua</a>
@@ -120,6 +174,33 @@ function setAccountMobile(data) {
                                                 </li>
                                                 <li class="header__navbar-user-item">
                                                     <a href="#">Quản trị</a>
+                                                </li>
+                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                `;
+        } else if (data.roleID == 3) {
+            htmlAccountMobile +=
+                `
+                                    <div class="header__mobile-user-avatar">
+                                        <div class="header__mobile-user-avatar-img"
+                                            style="background-image: url(/img/profile_avatar.jpg);"></div>
+                                        <div class="header__mobile-user-avatar-menu">
+                                            <ul class="header__navbar-user-menu">
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Kênh người lấy hàng</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="">Đơn mua</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
                                                     <a href="/User/Logout">Đăng xuất</a>

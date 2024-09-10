@@ -66,10 +66,10 @@ public class UserResponsitory : IUserResponsitory
         return _context.Users.FromSqlRaw("EXEC sp_GetUserIDAccountByEmail @sEmail", emailParam);
     }
 
-    public IEnumerable<User> getUserInfoByID(int userID)
+    public IEnumerable<UserInfo> getUserInfoByID(int userID)
     {
-        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
-        return _context.Users.FromSqlRaw("EXEC sp_GetUserInfoByID @PK_iUserID", userIDParam);
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        return _context.UserInfos.FromSqlRaw("EXEC sp_GetUserInfoByID @FK_iUserID", userIDParam);
     }
 
     public bool insertUserInfo(int userID, string fullName, int gender, string birth, string image)
@@ -112,24 +112,22 @@ public class UserResponsitory : IUserResponsitory
         return true;
     }
 
-    public bool updateUserInfoByID(int userID, string userName = "", string fullName = "", string email = "", int gender = 0, string birth = "", string avatar = "")
+    public bool updateUserInfoByID(int userID, string fullName = "", int gender = 0, string birth = "", string image = "")
     {
-        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
-        SqlParameter userNameParam = new SqlParameter("@sUserName", userName);
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
         SqlParameter fullNameParam = new SqlParameter("@sFullName", fullName);
-        SqlParameter emailParam = new SqlParameter("@sEmail", email);
         SqlParameter genderParam = new SqlParameter("@iGender", gender);
-        SqlParameter birthParam = new SqlParameter("@DateBirth", birth);
-        SqlParameter avatarParam = new SqlParameter("@sImageProfile", avatar);
+        SqlParameter birthParam = new SqlParameter("@dDateBirth", Convert.ToDateTime(birth));
+        SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
+        SqlParameter imageParam = new SqlParameter("@sImageProfile", image);
         _context.Database.ExecuteSqlRaw(
-            "sp_UpdateProfile @PK_iUserID, @sUserName, @sFullName, @sEmail, @iGender, @DateBirth, @sImageProfile", 
-            userIDParam, 
-            userNameParam,
+            "sp_UpdateProfile @FK_iUserID, @sFullName, @dDateBirth, @dUpdateTime, @iGender, @sImageProfile", 
+            userIDParam,
             fullNameParam,
-            emailParam,
-            genderParam,
             birthParam,
-            avatarParam
+            updateTimeParam,
+            genderParam,
+            imageParam
         );
         return true;
     }

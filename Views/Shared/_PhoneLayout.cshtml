@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="sortcut icon" href="~/img/shopee_logo.png">
+    <link rel="stylesheet" href="~/css/base.css">
+    <link rel="stylesheet" href="~/css/grid.css">
+    <link rel="stylesheet" href="~/css/site_phone.css">
+    <link rel="stylesheet" href="~/css/pickup_channel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!--=============== ICONSCOUT ===============-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <title>ShopeeMe - @ViewData["Title"]</title>
+</head>
+<body>
+    <div class="app__phone">
+        <div class="phone">
+            <div class="phone__buttons">
+                <div class="phone__buttons-left">
+                    <div class="phone__buttons-left-button"></div>
+                    <div class="phone__buttons-left-button"></div>
+                    <div class="phone__buttons-left-button"></div>
+                </div>
+                <div class="phone__buttons-right">
+                    <div class="phone__buttons-right-button"></div>
+                </div>
+            </div>
+            <div class="phone__camera"></div>
+            <div class="phone__screen-container">
+                <div class="phone__screen-bg">
+                    <header class="phone-header">
+                        <div class="phone-header__with-search">
+                            <div class="phone-header__logo">
+                                <img src="~/img/SPX_express_logo.png" class="phone-header__logo-img" alt="">
+                                <div class="phone-header__title">@ViewData["Title"]</div>
+                            </div>
+                            <div class="phone-header__user">
+                                <div class="phone-header__user-avatar">
+                                    <div class="phone-header__mobile-user-avatar-img" style="background-image: url(/img/profile_avatar.jpg);"></div>
+                                    <div class="phone-header__user-avatar-menu">
+                                        <ul class="phone-header__navbar-user-menu">
+                                            <li class="phone-header__navbar-user-item">
+                                                <a href="">Tài khoản của tôi</a>
+                                            </li>
+                                            <li class="phone-header__navbar-user-item">
+                                                <a href="">Địa chỉ của tôi</a>
+                                            </li>
+                                            <li class="phone-header__navbar-user-item">
+                                                <a href="">Đơn mua</a>
+                                            </li>
+                                            <li class="phone-header__navbar-user-item phone-header__navbar-user-item--separate">
+                                                <a href="/User/Logout">Đăng xuất</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                    </header>
+                    <div class="container">
+                        @RenderBody()
+                    </div>
+                    <div class="phone-bottom__navigation">
+                        <div class="phone-bottom__navigation-list">
+                            <div class="phone-bottom__navigation-item">
+                                <i class="uil uil-clipboard-alt phone-bottom__navigation-item-icon"></i>
+                                <div class="phone-bottom__navigation-item-text">Đơn hàng</div>
+                            </div>
+                            <div class="phone-bottom__navigation-item">
+                                <i class="uil uil-list-ol phone-bottom__navigation-item-icon"></i>
+                                <div class="phone-bottom__navigation-item-text">Đang làm</div>
+                            </div>
+                            <div class="phone-bottom__navigation-item">
+                                <i class="uil uil-bag phone-bottom__navigation-item-icon"></i>
+                                <div class="phone-bottom__navigation-item-text">Đã hoàn thành</div>
+                            </div>
+                            <div class="phone-bottom__navigation-item">
+                                <i class="uil uil-user phone-bottom__navigation-item-icon"></i>
+                                <div class="phone-bottom__navigation-item-text">Thông tin</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="phone__notch-container">
+                <div class="phone__notch"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="~/js/site_phone.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</html>
