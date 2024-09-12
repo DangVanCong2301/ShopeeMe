@@ -25,7 +25,7 @@ public class UserController : Controller {
     [Route("/user/login")]
     [HttpGet("/user/login")]
     public IActionResult Login() {
-        string password = "10";
+        string password = "1";
         string encrypted = _userResponsitory.encrypt(password);
         string decryted = _userResponsitory.decrypt(encrypted);
         System.Console.WriteLine("Mat khau ma hoa: " + encrypted);
@@ -39,7 +39,8 @@ public class UserController : Controller {
         if (!ModelState.IsValid) {
             return View(user);
         }
-        List<User> userLogin = _userResponsitory.login(user.sEmail, user.sPassword).ToList();
+        string passwordEncrypted = _userResponsitory.encrypt(user.sPassword);
+        List<User> userLogin = _userResponsitory.login(user.sEmail, passwordEncrypted).ToList();
         if (userLogin.Count() == 0) {
             TempData["msg"] = "Tài khoản hoặc mật khẩu không chính xác!";
             return Redirect("/user/login");
@@ -120,7 +121,8 @@ public class UserController : Controller {
         if (user.Count() == 0) {
             TempData["result"] = "Không có Email này, vui lòng nhập lại";
         } else {
-            TempData["result"] = $"Mật khẩu của bạn là: {user[0].sPassword}";
+            string passwordDecrypted = _userResponsitory.decrypt(user[0].sPassword);
+            TempData["result"] = $"Mật khẩu của bạn là: {passwordDecrypted}";
         }
         return RedirectToAction("Forgot");
     }
@@ -132,7 +134,13 @@ public class UserController : Controller {
 
     [Route("/user/change")]
     [HttpPost]
-    public IActionResult Change(string password) {
+    public IActionResult Change(ChangePasswordModel model) {
+        if (!ModelState.IsValid) {
+            return View(model);
+        }
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        string passwordEncrypted = _userResponsitory.encrypt(model.sNewPassword);
+        _userResponsitory.changePasswordByUserID(Convert.ToInt32(sessionUserID), passwordEncrypted);
         TempData["result"] = "Đổi mật khẩu thành công";
         return RedirectToAction("Change");
     }
@@ -199,6 +207,12 @@ public class UserController : Controller {
         if (!ModelState.IsValid) {
             return View("Register", user);
         }
+        List<User> userCheck = _userResponsitory.checkEmailUserIsRegis(user.sEmail).ToList();
+        if (userCheck.Count() != 0 && userCheck[0].sEmail != null) {
+            TempData["msg"] = "Email này đã tồn tại!";
+            return RedirectToAction("Register");
+        }
+        user.sPassword = _userResponsitory.encrypt(user.sPassword);
         _userResponsitory.register(user);
         TempData["msg"] = "Đăng ký tài khoản thành công!";
         return RedirectToAction("Register");

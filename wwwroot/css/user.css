@@ -4,6 +4,10 @@
     background-image: linear-gradient(0,#fe6433,#fe532d);
 }
 
+.app.hight {
+    height: 100vh;
+}
+
 /* Login */
 .auth {
     display: grid;

@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+.app.hight {
+    height: 100vh;
+}
+
 /* Header */
 header {
     display: flex;
@@ -40,4 +44,11 @@ header {
     border-top: 4px solid transparent;
     padding-top: 12px;
     background-color: #f5f5f5;
+}
+
+.footer__bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
 }

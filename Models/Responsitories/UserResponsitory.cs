@@ -13,6 +13,20 @@ public class UserResponsitory : IUserResponsitory
         _context = context;
     }
 
+    public bool changePasswordByUserID(int userID, string password)
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        SqlParameter passwordParam = new SqlParameter("@sPassword", password);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ChangePasswordByUserID @PK_iUserID, @sPassword", userIDParam, passwordParam);
+        return true;
+    }
+
+    public IEnumerable<User> checkEmailUserIsRegis(string email)
+    {
+        SqlParameter emailParam = new SqlParameter("@sEmail", email);
+        return _context.Users.FromSqlRaw("EXEC sp_CheckEmailUserIsRegis @sEmail", emailParam);
+    }
+
     public IEnumerable<UserInfo> checkUserInfoByUserID(int userID)
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
