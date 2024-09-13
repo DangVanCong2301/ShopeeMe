@@ -39,3 +39,12 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
         main.appendChild(toast);
     }
 }
+
+// Modal
+function openModal() {
+    document.querySelector(".modal").classList.add('open');
+}
+
+function closeModal() {
+    document.querySelector(".modal").classList.remove('open');
+}

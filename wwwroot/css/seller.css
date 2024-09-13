@@ -110,11 +110,15 @@
     font-family: var(--body-font);
 }
 
+.seller-auth__input-phone.err,
+.seller-auth__input-password.err {
+    border: 1px solid var(--primary-color);
+}
+
 .auth-msg__err {
     color: var(--primary-color);
     font-size: 12px;
     margin-top: 10px;
-    display: block;
 }
 
     .auth-form__input:focus {

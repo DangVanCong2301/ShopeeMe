@@ -1,0 +1,85 @@
+@{
+    Layout = "_UserLayout";
+    ViewData["Title"] = "Đăng ký Kênh người bán";
+}
+<link rel="stylesheet" href="~/css/seller.css">
+
+<div class="app__container">
+    <div class="seller-auth__sign-up">
+        <div class="seller-auth hide-on-mobile hide-on-table">
+            <div class="seller-auth__content grid wide">
+                <div class="seller-auth__left">
+                    <div class="seller-auth__title-container">
+                        <div class="seller-auth__title-county">ShopeeMe Việt Nam</div>
+                        <div class="seller-auth__title">Trở thành Người bán</div>
+                        <div class="seller-auth__title">ngay hôm nay</div>
+                        <div class="seller-auth__title-list">
+                            <div class="seller-auth__title-item">
+                                <i class="uil uil-store-alt seller-auth__title-item-icon"></i>
+                                <div class="seller-auth__title-item-sub">Nền tảng thương mại điện tử hàng đầu Đông Nam Á
+                                    và Đài Loan</div>
+                            </div>
+                            <div class="seller-auth__title-item">
+                                <i class="uil uil-gift seller-auth__title-item-icon"></i>
+                                <div class="seller-auth__title-item-sub">Phát triển trở thành thương hiệu toàn cầu</div>
+                            </div>
+                            <div class="seller-auth__title-item">
+                                <i class="uil uil-chart seller-auth__title-item-icon"></i>
+                                <div class="seller-auth__title-item-sub">Dẫn đầu lượng người dùng trên ứng dụng mua sắm
+                                    tại Việt Nam</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="seller-auth__right">
+                    <div class="auth-form">
+                        <form action="/User/Login" method="post" class="auth-form__container">
+                            <div class="auth-form__header">
+                                <h3 class="auth-form__heading">Đăng ký</h3>
+                            </div>
+                            <div class="auth-form__form">
+                                <div class="auth-form__group">
+                                    <input type="text" class="auth-form__input" placeholder="Số điện thoại của bạn" />
+                                    <span class="auth-msg auth-msg__err"></span>
+                                </div>
+                            </div>
+                            <div class="auth-form__controls">
+                                <div class="auth-form__btn" onclick="openConfirmModal()">TIẾP THEO</div>
+                            </div>
+                        </form>
+                        <div class="auth-form__or">
+                            <div class="auth-form__or-line"></div>
+                            <div class="auth-form__or-title">Hoặc</div>
+                            <div class="auth-form__or-line"></div>
+                        </div>
+                        <div class="auth-form__socials">
+                            <a href=""
+                                class="auth-form__socials--facebook btn btn--size-s btn--size-color btn--with-icon">
+                                <i class="auth-form__socials-icon fab fa-facebook-square"></i>
+                                <span class="auth-form__socials-title">
+                                    Facebook
+                                </span>
+                            </a>
+                            <a href="" class="auth-form__socials--google btn btn--size-s btn--with-icon">
+                                <i class="auth-form__socials-icon fab fa-google"></i>
+                                <span class="auth-form__socials-title">
+                                    Google
+                                </span>
+                            </a>
+                        </div>
+                        <div class="auth-form__agree">
+                            <div class="auth-form__agree-text">Bằng việc đăng ký, bạn đã đồng ý với Shopee về</div>
+                            <div class="auth-form__agree-text">
+                                <a href="#" class="auth-form__agree-link">Điều khoản dịch vụ </a> & <a href="#"
+                                    class="auth-form__agree-link">Chính sách bảo mật</a>
+                            </div>
+                        </div>
+                        <div class="auth-form__footer">Bạn đã có tài khoản? <a href="javascript:openSigninSeller()"
+                                class="auth-form__footer-link">Đăng nhập</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
