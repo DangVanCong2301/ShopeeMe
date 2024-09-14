@@ -39,12 +39,12 @@
                             </div>
                             <div class="auth-form__form">
                                 <div class="auth-form__group">
-                                    <input type="text" class="auth-form__input" placeholder="Số điện thoại của bạn" />
-                                    <span class="auth-msg auth-msg__err"></span>
+                                    <input type="text" class="auth-form__input seller-auth__regis-input-phone"placeholder="Số điện thoại của bạn" />
+                                    <div class="auth-msg auth-msg__err seller-auth__msg-regis-phone hide-on-destop">Điện thoại không được trống!</div>
                                 </div>
                             </div>
                             <div class="auth-form__controls">
-                                <div class="auth-form__btn" onclick="openConfirmModal()">TIẾP THEO</div>
+                                <div class="auth-form__btn seller-auth__regis-btn">TIẾP THEO</div>
                             </div>
                         </form>
                         <div class="auth-form__or">
@@ -74,7 +74,7 @@
                                     class="auth-form__agree-link">Chính sách bảo mật</a>
                             </div>
                         </div>
-                        <div class="auth-form__footer">Bạn đã có tài khoản? <a href="javascript:openSigninSeller()"
+                        <div class="auth-form__footer">Bạn đã có tài khoản? <a href="/seller/login"
                                 class="auth-form__footer-link">Đăng nhập</a></div>
                     </div>
                 </div>
@@ -82,4 +82,5 @@
         </div>
     </div>
 </div>
+<script src="~/js/seller_regis.js"></script>
 

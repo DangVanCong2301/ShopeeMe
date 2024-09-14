@@ -111,7 +111,9 @@
 }
 
 .seller-auth__input-phone.err,
-.seller-auth__input-password.err {
+.seller-auth__input-password.err,
+.seller-auth__regis-input-phone.err,
+.seller-confirm__method-body-input-password.err {
     border: 1px solid var(--primary-color);
 }
 
@@ -318,7 +320,7 @@
 }
 
 .seller-confirm__steps {
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     display: flex;
 }
 
