@@ -80,13 +80,42 @@ const addEvent = (() => {
             `
                 <div class="spinner"></div>
             `;
-            setTimeout(() => {
-                closeModal();
-                document.querySelector(".modal__body").innerHTML = "";
-                setTimeout(() => {
-                    //window.location.assign('/user/profile');
-                }, 1000)
-            }, 2000);
+            var formData = new FormData();
+            formData.append("phone", phoneSellerInput.value);
+            formData.append("password", passwordSellerInput.value);
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', '/seller/login', true);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    const result = JSON.parse(xhr.responseText);
+                    console.log(result);
+
+                    if (result.status.statusCode == -1) {
+                        setTimeout(() => {
+                            closeModal();
+                            toast({ title: "Thông báo", msg: `${result.status.message}`, type: "err", duration: 5000 });
+                            document.querySelector(".modal__body").innerHTML = "";
+                            setTimeout(() => {
+                                phoneSellerInput.value = "";
+                                passwordSellerInput.value = "";
+                                //window.location.assign('/user/profile');
+                            }, 1000)
+                        }, 2000);
+                    } 
+                    
+                    if (result.status.statusCode == 1) {
+                        setTimeout(() => {
+                            closeModal();
+                            toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
+                            document.querySelector(".modal__body").innerHTML = "";
+                            setTimeout(() => {
+                                //window.location.assign('/user/profile');
+                            }, 1000)
+                        }, 2000);
+                    }
+                }
+            };
+            xhr.send(formData);
         }
     });
 })();

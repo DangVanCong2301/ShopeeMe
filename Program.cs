@@ -16,6 +16,7 @@ builder.Services.AddDistributedMemoryCache();
 
 // Regis Transient
 builder.Services.AddTransient<IHomeResponsitory, HomeResponsitory>();
+builder.Services.AddTransient<ISellerResponsitory, SellerResponsitory>();
 builder.Services.AddTransient<IShopResponsitory, ShopResponsitory>();
 builder.Services.AddTransient<ICartReponsitory, CartResponsitory>();
 builder.Services.AddTransient<IProductResponsitory, ProductResponsitory>();

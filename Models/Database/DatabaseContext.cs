@@ -10,6 +10,7 @@ namespace Project.Models
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserInfo> UserInfos { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<SliderShop> SliderShops { get; set; }
         public DbSet<ParentCategory> ParentCategories { get; set; }
@@ -34,6 +35,10 @@ namespace Project.Models
 
             modelBuilder.Entity<UserInfo>(entity => {
                 entity.HasKey(e => e.PK_iUserInfoID);
+            });
+
+            modelBuilder.Entity<Seller>(entity => {
+                entity.HasKey(e => e.PK_iSellerID);
             });
 
             modelBuilder.Entity<Store>(entity => {

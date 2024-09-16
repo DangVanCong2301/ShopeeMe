@@ -16,7 +16,7 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
 
         const icons = {
             success: 'uil uil-check-circle',
-            error: 'uil uil-exclamation-triangle'
+            err: 'uil uil-exclamation-triangle'
         };
 
         icon = icons[type];

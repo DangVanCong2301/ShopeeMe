@@ -83,7 +83,7 @@ function openConfirmModal(number) {
             <div class="modal__confirm-btns">
                 <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
                 <div class="modal__confirm-btn-method" onclick="openConfirmPage(${number})">Các phương pháp khác</div>
-                <div class="modal__confirm-btn-send">Gửi đến Zalo</div>
+                <div class="modal__confirm-btn-send" onclick="openZaloConfirm(${number})">Gửi đến Zalo</div>
             </div>
         </div>
     `;
@@ -155,9 +155,32 @@ function openConfirmPage(number) {
 }
 
 function openZaloConfirm(number) {
-    document.querySelectorAll(".seller-confirm__vector")[0].classList.add("active");
-    document.querySelector(".seller-confirm__method-container").innerHTML = 
+    closeModal();
+    document.querySelector(".app__container").innerHTML = 
     `
+                <div class="seller-confirm grid wide">
+                    <div class="seller-confirm__steps">
+                        <div class="seller-confirm__step active">
+                            <div class="seller-confirm__step-numb">1</div>
+                            <div class="seller-confirm__step-sub">Xác minh số điện thoại</div>
+                        </div>
+                        <div class="seller-confirm__vector">
+                        </div>
+                        <div class="seller-confirm__step">
+                            <div class="seller-confirm__step-numb">2</div>
+                            <div class="seller-confirm__step-sub">Tạo mật khẩu</div>
+                        </div>
+                        <div class="seller-confirm__vector">
+                        </div>
+                        <div class="seller-confirm__step">
+                            <div class="seller-confirm__step-numb">
+                                <i class="uil uil-check seller-confirm__step-numb-icon"></i>
+                            </div>
+                            <div class="seller-confirm__step-sub">Hoàn thành</div>
+                        </div>
+                    </div>
+                    <div class="seller-confirm__method">
+                        <div class="seller-confirm__method-container">
                             <div class="seller-confirm__method-header">
                                 <div class="seller-confirm__method-header-back">
                                     <i class="uil uil-arrow-left seller-confirm__method-header-back-icon"></i>
@@ -183,7 +206,11 @@ function openZaloConfirm(number) {
                                 <div class="seller-confirm__method-body-please">Vui lòng chờ 20 giây để thử lại</div>
                                 <div class="seller-confirm__method-btn" onclick="openPasswordConfirm(${number})">Kế tiếp</div>
                             </div>
+                        </div>
+                    </div>
+                </div>
     `;
+    document.querySelectorAll(".seller-confirm__vector")[0].classList.add("active");
 }
 
 function openPasswordConfirm(number) {
