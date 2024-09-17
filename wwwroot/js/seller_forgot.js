@@ -41,40 +41,17 @@ function phoneSellerValidate() {
     return isValidate;
 }
 
-function passwordSellerValidate() {
-    const passwordSellerInput = document.querySelector(".seller-auth__input-password");
-    const passwordSellerMsg = document.querySelector(".seller-auth__msg-password");
-    const password = passwordSellerInput.value;
-
-    if (password === "") {
-        showErrStyles(passwordSellerInput, passwordSellerMsg);
-        passwordSellerMsg.innerHTML = "Mật khẩu không được trống!";
-        isValidate = false;
-    } else {
-        removeErrStyles(passwordSellerInput, passwordSellerMsg);
-        passwordSellerMsg.innerHTML = "";
-        isValidate = true;
-    }
-    return isValidate;
-}
-
 const addEvent = (() => {
     const phoneSellerInput = document.querySelector(".seller-auth__input-phone");
-    const passwordSellerInput = document.querySelector(".seller-auth__input-password");
     const submitSellerBtn = document.querySelector(".seller-auth__btn-submit");
 
     phoneSellerInput.addEventListener("blur", () => {
         phoneSellerValidate();
     });
 
-    passwordSellerInput.addEventListener("blur", () => {
-        passwordSellerValidate();
-    });
-
     submitSellerBtn.addEventListener("click", () => {
         phoneSellerValidate();
-        passwordSellerValidate();
-        if (phoneSellerValidate() && passwordSellerValidate()) {
+        if (phoneSellerValidate()) {
             openModal();
             document.querySelector(".modal__body").innerHTML = 
             `
@@ -82,9 +59,8 @@ const addEvent = (() => {
             `;
             var formData = new FormData();
             formData.append("phone", phoneSellerInput.value);
-            formData.append("password", passwordSellerInput.value);
             var xhr = new XMLHttpRequest();
-            xhr.open('post', '/seller/login', true);
+            xhr.open('post', '/seller/forgot', true);
             xhr.onreadystatechange = () => {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     const result = JSON.parse(xhr.responseText);
@@ -106,7 +82,7 @@ const addEvent = (() => {
                     if (result.status.statusCode == 1) {
                         setTimeout(() => {
                             closeModal();
-                            toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
+                            document.querySelector(".auth-form__result").innerHTML = result.status.message;
                             document.querySelector(".modal__body").innerHTML = "";
                             setTimeout(() => {
                                 //window.location.assign('/user/profile');

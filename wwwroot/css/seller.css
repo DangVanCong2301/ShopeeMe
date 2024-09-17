@@ -113,7 +113,10 @@
 .seller-auth__input-phone.err,
 .seller-auth__input-password.err,
 .seller-auth__regis-input-phone.err,
-.seller-confirm__method-body-input-password.err {
+.seller-confirm__method-body-input-password.err,
+.seller-auth__input-old-password.err,
+.seller-auth__input-new-password.err,
+.seller-auth__input-re-new-password.err {
     border: 1px solid var(--primary-color);
 }
 

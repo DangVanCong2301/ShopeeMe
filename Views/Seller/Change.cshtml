@@ -1,6 +1,6 @@
 @{
     Layout = "_UserLayout";
-    ViewData["Title"] = "Đăng nhập Kênh người bán";
+    ViewData["Title"] = "Đổi mật khẩu";
 }
 <link rel="stylesheet" href="~/css/seller.css">
 <div class="app__container">
@@ -21,27 +21,32 @@
                     <div class="auth-form">
                         <form action="/User/Login" method="post" class="auth-form__container">
                             <div class="auth-form__header">
-                                <h3 class="auth-form__heading">Đăng nhập</h3>
+                                <h3 class="auth-form__heading">@ViewData["Title"]</h3>
                             </div>
                             <div class="auth-form__form">
                                 <div class="auth-form__group">
-                                    <input type="text" class="auth-form__input seller-auth__input-phone" placeholder="Số điện thoại của bạn" />
-                                    <span class="auth-msg auth-msg__err seller-auth__msg-phone hide-on-destop">Số điện thoại không được trống!</span>
+                                    <input type="password" class="auth-form__input seller-auth__input-old-password" placeholder="Mật khẩu cũ" />
+                                    <div class="auth-msg auth-msg__err seller-auth__msg-old-password hide-on-destop"></div>
                                 </div>
                                 <div class="auth-form__group">
-                                    <input type="password" class="auth-form__input seller-auth__input-password" placeholder="Mật khẩu" />
-                                    <span class="auth-msg auth-msg__err seller-auth__msg-password hide-on-destop">Mật khẩu không được trống!</span>
+                                    <input type="password" class="auth-form__input seller-auth__input-new-password" placeholder="Mật khẩu mới" />
+                                    <div class="auth-msg auth-msg__err seller-auth__msg-new-password hide-on-destop"></div>
+                                </div>
+                                <div class="auth-form__group">
+                                    <input type="password" class="auth-form__input seller-auth__input-re-new-password" placeholder="Nhập lại mật khẩu" />
+                                    <div class="auth-msg auth-msg__err seller-auth__msg-re-new-password hide-on-destop"></div>
                                 </div>
                             </div>
                             <div class="auth-form__aside">
                                 <div class="auth-form__help">
-                                    <a href="/seller/forgot" class="auth-form__help-link auth-form__help-link">Quên mật khẩu</a>
+                                    <a href="/seller/login" class="auth-form__help-link auth-form__help-link">Đăng nhập</a>
                                     <span class="auth-form__help-separate"></span>
                                     <a href="" class="auth-form__help-link">Cần trợ giúp</a>
                                 </div>
                             </div>
+                            <div class="auth-form__result"></div>
                             <div class="auth-form__controls">
-                                <div class="auth-form__btn seller-auth__btn-submit">ĐĂNG NHẬP</div>
+                                <div class="auth-form__btn seller-auth__btn-submit">ĐỔI MẬT KHẨU</div>
                             </div>
                         </form>
                         <div class="auth-form__or">
@@ -71,4 +76,4 @@
         </div>
     </div>
 </div>
-<script src="~/js/seller_login.js"></script>
+<script src="~/js/seller_change.js"></script>
