@@ -1,4 +1,4 @@
-# Sàn giao dịch - Shopee (Đồ án tốt nghiệp)
+# Sàn TMĐT ShopeeMe(Shopee) (Đồ án tốt nghiệp)
 # Công nghệ: ASP.NET Core MVC  7.0
 - Luồng sử lý dữ liệu cơ bản: 
 ![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/380752c3-aafb-47ed-a503-971c3e655532)
