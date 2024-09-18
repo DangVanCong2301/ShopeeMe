@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ShopeeMe</title>
+    <link rel="sortcut icon" href="~/img/shopee_logo.png">
+    <link rel="stylesheet" href="~/css/base.css">
+    <link rel="stylesheet" href="~/css/grid.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link rel="stylesheet" href="~/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!--=============== ICONSCOUT ===============-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/solid.css" />
+</head>
+<body>
+    <div class="app">
+        <div class="admin__table hide-on-mobile hide-on-destop">
+            Sản phẩm chưa được tối ưu trên máy tính bảng, vui lòng sử dụng điện thoại và laptop 
+            để có trả nghiệm tốt hơn!
+        </div>
+        <div class="admin__mobile hide-on-table hide-on-destop">
+            Sản phẩm chưa được tối ưu trên điện thại, vui lòng sử dụng điện thoại và laptop 
+            để có trả nghiệm tốt hơn!
+        </div>
+        <header class="header hide-on-table">
+            <div class="header__container">
+                <div class="header__text hide-on-mobile">
+                    <div class=" header__text-logo">
+                        <a href="/" class="header__text-link">
+                            <img src="~/img/shopeeme_logo_primary.png" class="header__logo-img" alt="">
+                        </a>
+                    </div>
+                    <div class="header__text-name">@ViewData["Title"]</div>
+                </div>
+                <div class="header__left">
+                    <div class="header__notice">
+                        <span class="header__notice-numb">1</span>
+                        <i class="header__notice-icon fa-regular fa-bell"></i>
+                        <div class="header__notify">
+                            <header class="header__notify-header">
+                                <h3>Thông báo mới nhận</h3>
+                            </header>
+                            <ul class="header__notify-list">
+                                <li class="header__notify-item header__notify-item--viewed ">
+                                    <a href="" class="header__notify-link">
+                                        <div class="header__notify-img"><img src="~/img/sac_du_phong.png" alt=""
+                                                class=""></div>
+                                        <div class="header__notify-info">
+                                            <span class="header__notify-name">Xác thực chính hãnh nguồn gốc của các
+                                                sản
+                                                phẩm 0hui</span>
+                                            <span class="header__notify-descriotion">Hidden tag là giải pháp xác
+                                                thực
+                                                hàng chính hãng bằng công nghệ tiên tiến nhất hiện nay</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="header__notify-item header__notify-item--viewed ">
+                                    <a href="" class="header__notify-link">
+                                        <div class="header__notify-img"><img src="~/img/sac_du_phong.png" alt=""
+                                                class=""></div>
+                                        <div class="header__notify-info">
+                                            <span class="header__notify-name">Sale Sốc bộ dưỡng 0hui The First tái
+                                                tạo
+                                                trẻ hoá da SALE OFF 70%</span>
+                                            <span class="header__notify-descriotion">Mô tả mỹ phẩm 0hui chính
+                                                hãng</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="header__notify-item header__notify-item--viewed ">
+                                    <a href="" class="header__notify-link">
+                                        <div class="header__notify-img"><img src="~/img/sac_du_phong.png" alt=""
+                                                class=""></div>
+                                        <div class="header__notify-info">
+                                            <span class="header__notify-name">Mỹ phẩm chính 0thui hãng</span>
+                                            <span class="header__notify-descriotion">Mô tả mỹ phẩm 0hui chính
+                                                hãng</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <footer class="header__notify-footer">
+                                <a href="" class="header__notify-footer-btn">Xem tất cả</a>
+                            </footer>
+                        </div>
+                    </div>
+                    <div class="header__account">
+                        
+                    </div>
+                    <div class="admin__right-top-theme-toggler" onclick="toggleTheme(this)">
+                        <i class="uil uil-sun admin__right-top-theme-icon active"></i>
+                        <i class="uil uil-moon admin__right-top-theme-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="app__container hide-on-mobile">
+            <div class="admin">
+                <div class="admin__aside">
+                    <div class="admin__aside-sidebar">
+                        <div class="admin__aside-sidebar-link active">
+                            <div class="admin__aside-sidebar-container">
+                                <div class="admin__aside-sidebar-symb">
+                                    <i class="uil uil-th admin__aside-sidebar-icon"></i>
+                                </div>
+                                <div class="admin__aside-sidebar-sub">Quản lý đơn hàng</div>
+                                <div class="admin__aside-sidebar-down">
+                                    <i class="uil uil-angle-down admin__aside-sidebar-down-icon"></i>
+                                </div>
+                            </div>
+                            <div class="admin__aside-sidebar-colappse">
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <a href="javascript:showAll(event)" class="admin__aside-sidebar-sub">Tất cả</a>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Giao hàng loạt</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Đơn huỷ</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Trả hàng/Hoàn tiền</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Cài đặt vận chuyển</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin__aside-sidebar-link active">
+                            <div class="admin__aside-sidebar-container">
+                                <div class="admin__aside-sidebar-symb">
+                                    <i class="uil uil-sitemap admin__aside-sidebar-icon"></i>
+                                </div>
+                                <div class="admin__aside-sidebar-sub">Quản lý sản phẩm</div>
+                                <div class="admin__aside-sidebar-down">
+                                    <i class="uil uil-angle-down admin__aside-sidebar-down-icon"></i>
+                                </div>
+                            </div>
+                            <div class="admin__aside-sidebar-colappse">
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Tất cả sản phẩm</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub" onclick="showAddProduct(event)">Thêm sản phẩm</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin__aside-sidebar-link">
+                            <div class="admin__aside-sidebar-container">
+                                <div class="admin__aside-sidebar-symb">
+                                    <i class="uil uil-mobile-android admin__aside-sidebar-icon"></i>
+                                </div>
+                                <div class="admin__aside-sidebar-sub">Kênh Marketing</div>
+                                <div class="admin__aside-sidebar-down">
+                                    <i class="uil uil-angle-down admin__aside-sidebar-down-icon"></i>
+                                </div>
+                            </div>
+                            <div class="admin__aside-sidebar-colappse">
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Khuyến mãi của Shop</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Mã giảm giá của Shop</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin__aside-sidebar-link">
+                            <div class="admin__aside-sidebar-container">
+                                <div class="admin__aside-sidebar-symb">
+                                    <i class="uil uil-chat admin__aside-sidebar-icon"></i>
+                                </div>
+                                <div class="admin__aside-sidebar-sub">Chăm sóc khách hàng</div>
+                                <div class="admin__aside-sidebar-down">
+                                    <i class="uil uil-angle-down admin__aside-sidebar-down-icon"></i>
+                                </div>
+                            </div>
+                            <div class="admin__aside-sidebar-colappse">
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Quản lý Chat</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Quản lý đánh giá</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin__aside-sidebar-link">
+                            <div class="admin__aside-sidebar-container">
+                                <div class="admin__aside-sidebar-symb">
+                                    <i class="uil uil-wallet admin__aside-sidebar-icon"></i>
+                                </div>
+                                <div class="admin__aside-sidebar-sub">Tài chính</div>
+                                <div class="admin__aside-sidebar-down">
+                                    <i class="uil uil-angle-down admin__aside-sidebar-down-icon"></i>
+                                </div>
+                            </div>
+                            <div class="admin__aside-sidebar-colappse">
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Doanh thu</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Số dư tài khoản Shopee</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Tài khoản ngân hàng</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin__aside-sidebar-link">
+                            <div class="admin__aside-sidebar-container">
+                                <div class="admin__aside-sidebar-symb">
+                                    <i class="uil uil-chart-line admin__aside-sidebar-icon"></i>
+                                </div>
+                                <div class="admin__aside-sidebar-sub">Dữ liệu</div>
+                                <div class="admin__aside-sidebar-down">
+                                    <i class="uil uil-angle-down admin__aside-sidebar-down-icon"></i>
+                                </div>
+                            </div>
+                            <div class="admin__aside-sidebar-colappse">
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Phân tích bán hàng</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Hiệu quả hoạt động</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin__aside-sidebar-link active">
+                            <div class="admin__aside-sidebar-container">
+                                <div class="admin__aside-sidebar-symb">
+                                    <i class="uil uil-store admin__aside-sidebar-icon"></i>
+                                </div>
+                                <div class="admin__aside-sidebar-sub">Quản lý Shop</div>
+                                <div class="admin__aside-sidebar-down">
+                                    <i class="uil uil-angle-down admin__aside-sidebar-down-icon"></i>
+                                </div>
+                            </div>
+                            <div class="admin__aside-sidebar-colappse">
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub" onclick="showProfileShop()">Hồ sơ Shop</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub">Trang trí Shop</div>
+                                </div>
+                                <div class="admin__aside-sidebar-colappse-item">
+                                    <div class="admin__aside-sidebar-symb">
+                                    </div>
+                                    <div class="admin__aside-sidebar-sub" onclick="showSetupShop()">Thiết lập Shop</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="admin__aside-sidebar-link">
+                            <div class="admin__aside-sidebar-container">
+                                <div class="admin__aside-sidebar-symb">
+                                    <i class="uil uil-signout admin__aside-sidebar-icon"></i>
+                                </div>
+                                <div class="admin__aside-sidebar-sub">Đăng xuất</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="container">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal__overlay">
+
+        </div>
+        <div class="modal__body">
+
+        </div>
+    </div>
+    <div class="" id="toast">
+
+    </div>
+    <script src="~/js/site_seller.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

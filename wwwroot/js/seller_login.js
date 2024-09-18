@@ -98,7 +98,6 @@ const addEvent = (() => {
                             setTimeout(() => {
                                 phoneSellerInput.value = "";
                                 passwordSellerInput.value = "";
-                                //window.location.assign('/user/profile');
                             }, 1000)
                         }, 2000);
                     } 
@@ -109,7 +108,7 @@ const addEvent = (() => {
                             toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
                             document.querySelector(".modal__body").innerHTML = "";
                             setTimeout(() => {
-                                //window.location.assign('/user/profile');
+                                window.location.assign('/seller');
                             }, 1000)
                         }, 2000);
                     }

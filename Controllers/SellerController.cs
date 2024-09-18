@@ -15,12 +15,40 @@ public class SellerController : Controller
     [HttpGet]
     [Route("/seller")]
     public IActionResult Index() {
+        // Lấy Cookie trên trình duyệt
+        var sellerID = Request.Cookies["SellerID"];
+        if (sellerID != null) {
+            _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
+        } else {
+            return Redirect("/seller/login");
+        }
+        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
+        List<Seller> seller = _sellerResponsitory.getSellerAccountByID(Convert.ToInt32(sessionSellerID)).ToList();
+        _accessor?.HttpContext?.Session.SetString("SellerUsername", seller[0].sSellerUsername);
         return View();
+    }
+
+    [HttpPost]
+    [Route("/seller")]
+    public IActionResult GetData() {
+        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
+        var sessionSellerUsername = _accessor?.HttpContext?.Session.GetString("SellerUsername");
+        SellerViewModel model = new SellerViewModel {
+            SellerID = Convert.ToInt32(sessionSellerID),
+            SellerUsername = sessionSellerUsername
+        };
+        return Ok(model);
     }
 
     [HttpGet]
     [Route("/seller/login")]
     public IActionResult Login() {
+        // Lấy Cookie trên trình duyệt
+        var sellerID = Request.Cookies["SellerID"];
+        if (sellerID != null) {
+            _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
+            return Redirect("/seller");
+        }
         return View();
     }
 
@@ -143,5 +171,20 @@ public class SellerController : Controller
             Status = status
         };
         return Ok(model);
+    }
+
+    [HttpGet]
+    [Route("/seller/logout")]
+    public IActionResult Logout() {
+        CookieOptions options = new CookieOptions {
+            Expires = DateTime.Now.AddDays(-1)
+        };
+        Response.Cookies.Append("SellerID", "0", options);
+        _accessor?.HttpContext?.Session.SetInt32("SellerID", 0);
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Đăng xuất thành công!"
+        };
+        return Ok(status);
     }
 }
