@@ -27,8 +27,20 @@ public class CartController : Controller {
         if (userID != null)
         {
             _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        } else {
+            return View();
         }
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        if (sessionUserID != null)
+        {
+            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
+            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
+            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
+        }
+        else
+        {
+            _accessor?.HttpContext?.Session.SetString("UserName", "");
+        }
         System.Console.WriteLine("UserID: " + userID);
         if (sessionUserID == 0) {
             return Redirect("/user/login");
@@ -46,15 +58,21 @@ public class CartController : Controller {
     }
 
     [HttpPost]
+    [Route("/cart")]
     public IActionResult GetCartInfo() {
-        var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");  
-        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(userID)); 
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        var sessionUsername = _accessor?.HttpContext?.Session.GetString("UserName");  
+        var sessionRoleID = _accessor?.HttpContext?.Session.GetInt32("RoleID");
+        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)); 
         IEnumerable<Product> get12ProductsAndSortAsc = _cartResponsitory.get12ProductsAndSortAsc(); 
         int cartCount = carts.Count();
         CartViewModel model = new CartViewModel {
             CartDetails = carts,
             Get12ProductsAndSortAsc = get12ProductsAndSortAsc,
-            CartCount = cartCount
+            CartCount = cartCount,
+            RoleID = Convert.ToInt32(sessionRoleID),
+            UserID = Convert.ToInt32(sessionUserID),
+            Username = sessionUsername
         };
         return Json(model);  
     }

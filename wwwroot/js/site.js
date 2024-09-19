@@ -30,66 +30,76 @@ function setAccount(data) {
     if (data.userID == 0) {
         htmlAccount +=
             `
-                <a class="header__navbar-item-link" href="/user/login">Đăng nhập</a>
+                            <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">
+                                <a class="header__navbar-item-link" href="/user/register">Đăng ký</a>
+                            </li>
+                            <li class="header__navbar-item header__navbar-item-account header__navbar-item--strong">
+                                <a class="header__navbar-item-link" href="/user/login">Đăng nhập</a>
+                            </li>
             `;
     } else {
         if (data.roleID == 2) {
             htmlAccount +=
                 `
-                                    <div class="header__navbar-user">
-                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                                        <span class="header__navbar-user-name">${data.username}</span>
-                                        <div class="header__navbar-user-manager">
-                                            <ul class="header__navbar-user-menu">
-                                                <li class="header__navbar-user-item">
-                                                    <a href="/user/profile">Tài khoản của tôi</a>
-                                                </li>
-                                                <li class="header__navbar-user-item">
-                                                    <a href="#">Địa chỉ của tôi</a>
-                                                </li>
-                                                <li class="header__navbar-user-item">
-                                                    <a href="/user/purchase">Đơn mua</a>
-                                                </li>
-                                                <li class="header__navbar-user-item">
-                                                    <a href="/admin">Quản trị</a>
-                                                </li>
-                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                <div class="header__navbar-item">
+                    <div class="header__navbar-user">
+                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                        <span class="header__navbar-user-name">${data.username}</span>
+                        <div class="header__navbar-user-manager">
+                            <ul class="header__navbar-user-menu">
+                                <li class="header__navbar-user-item">
+                                    <a href="/user/profile">Tài khoản của tôi</a>
+                                </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="#">Địa chỉ của tôi</a>
+                                </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="/user/purchase">Đơn mua</a>
+                                </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="/admin">Quản trị</a>
+                                </li>
+                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                    <a href="/user/logout">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 `;
         } else if (data.roleID == 3) {
             htmlAccount +=
                 `
-                                    <div class="header__navbar-user">
-                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                                        <span class="header__navbar-user-name">${data.username}</span>
-                                        <div class="header__navbar-user-manager">
-                                            <ul class="header__navbar-user-menu">
-                                                <li class="header__navbar-user-item">
-                                                    <a href="/user/profile">Tài khoản của tôi</a>
-                                                </li>
-                                                <li class="header__navbar-user-item">
-                                                    <a href="/user/profile">Địa chỉ của tôi</a>
-                                                </li>
-                                                <li class="header__navbar-user-item">
-                                                    <a href="/user/purchase">Đơn mua</a>
-                                                </li>
-                                                <li class="header__navbar-user-item">
-                                                    <a href="/picker">Kênh lấy hàng</a>
-                                                </li>
-                                                <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                <div class="header__navbar-item">
+                    <div class="header__navbar-user">
+                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                        <span class="header__navbar-user-name">${data.username}</span>
+                        <div class="header__navbar-user-manager">
+                            <ul class="header__navbar-user-menu">
+                                <li class="header__navbar-user-item">
+                                    <a href="/user/profile">Tài khoản của tôi</a>
+                                </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="/user/profile">Địa chỉ của tôi</a>
+                                </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="/user/purchase">Đơn mua</a>
+                                </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="/picker">Kênh lấy hàng</a>
+                                </li>
+                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                    <a href="/User/Logout">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 `;
         } else if (data.roleID == 4) {
             htmlAccount +=
                 `
+                                <div class="header__navbar-item">
                                     <div class="header__navbar-user">
                                         <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
                                         <span class="header__navbar-user-name">${data.username}</span>
@@ -113,10 +123,12 @@ function setAccount(data) {
                                             </ul>
                                         </div>
                                     </div>
+                                </div>
                 `;
         } else {
             htmlAccount +=
                 `
+                                <div class="header__navbar-item">
                                     <div class="header__navbar-user">
                                         <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
                                         <span class="header__navbar-user-name">${data.username}</span>
@@ -137,10 +149,11 @@ function setAccount(data) {
                                             </ul>
                                         </div>
                                     </div>
+                                </div>              
                 `;
         }
     }
-    document.querySelector(".header__navbar-item-account").innerHTML = htmlAccount;
+    document.querySelector(".header__navbar-auth").innerHTML = htmlAccount;
 }
 
 function setAccountMobile(data) {
@@ -262,7 +275,7 @@ function getCartsItem(data) {
                     <ul class="header__cart-list-item">
                 `;
         htmlCartDetail += data.cartDetails.map(obj => `
-                    <li class="header__cart-item">
+                    <a href="/product/detail/${obj.pK_iProductID}" class="header__cart-item">
                         <div class="header__cart-item-img">
                             <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
                         </div>
@@ -282,14 +295,14 @@ function getCartsItem(data) {
                                 <span class="header__cart-item-remove">Xoá</span>
                             </div>
                         </div>
-                    </li>
+                    </a>
                 `).join('');
         htmlCartDetail +=
             `
                     </ul>
-                    <div class="header__cart-btn">
-                        <div class="header__cart-btn-sub">Xem giỏ hàng</div>
-                    </div>
+                    <a href="/cart" class="header__cart-btn btn--primary">
+                        Xem giỏ hàng
+                    </a>
                 </div>
                 `;
     }

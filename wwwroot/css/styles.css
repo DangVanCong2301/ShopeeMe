@@ -26,6 +26,11 @@
     align-items: center;
 }
 
+.header__navbar-auth {
+    display: flex;
+    align-items: center;
+}
+
 .header__navbar-item {
     margin: 12px 0 8px 8px;
     position: relative; /*Định vị tuyệt đối cho thành phần*/
@@ -284,7 +289,7 @@
     top: 150%;
     width: 404px;
     right: 0;
-    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px #ccc;
     background-color: var(--white-color);
     cursor: default;
     transform-origin: 90% top;
@@ -329,6 +334,8 @@
 }
 
 .header__notify-header {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     height: 40px;
     background-color: var(--white-color);
 }
@@ -655,6 +662,10 @@
     list-style: none;
     max-height: 56vh; /*Hiện thanh scu*/
     overflow-y: auto;
+}
+
+.header__cart-list-item::-webkit-scrollbar {
+    display: none;
 }
 
 .header__cart-item:hover {

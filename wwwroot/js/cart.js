@@ -1,7 +1,7 @@
 // lấy số lượng sản phẩm giỏ hàng, khi khai báo window.onload ở site.js thì ở file này ta không khai báo nữa
 function getCartInfo() {
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Cart/GetCartInfo', true);
+    xhr.open('post', '/cart', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);

@@ -103,6 +103,7 @@ public class CheckoutController : Controller {
         _accessor?.HttpContext?.Session.SetInt32("ShopID", shopID);
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("ShopID");
+        System.Console.WriteLine("Session ShopID: " + sessionShopID);
         var cartsCheckout = checkouts;
         var item = cartsCheckout.SingleOrDefault(p => p.PK_iProductID == productID);
         if (item == null) {

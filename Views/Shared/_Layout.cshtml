@@ -111,12 +111,9 @@
                                 </a> Trợ giúp
                             </a>
                         </li>
-                        <li class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">
-                            <a class="header__navbar-item-link" href="/user/register">Đăng ký</a>
-                        </li>
-                        <li class="header__navbar-item header__navbar-item-account header__navbar-item--strong">
+                        <div class="header__navbar-auth">
                             
-                        </li>
+                        </div>
                     </ul>
                 </nav>
                 <!--Header with search-->
@@ -175,14 +172,16 @@
                     </div>
                     <!--Cart layout-->
                     <div class="header__cart hide-on-cart">
-                        <a href="/cart" class="header__cart-wrap">
-                            <i class="header__cart-icon fa-solid fa-cart-shopping"></i>
-                            <span class="header__cart-notice">0</span>
-                            <!--No cart: header__cart-list--no-cart-->
+                        <div class="header__cart-wrap">
+                            <a href="/cart" class="header__cart-wrap-link">
+                                <i class="header__cart-icon fa-solid fa-cart-shopping"></i>
+                                <span class="header__cart-notice">0</span>
+                            </a>
                             <div class="header__cart-container">
-                                
+                                <!--No cart: header__cart-list--no-cart-->
+
                             </div>
-                        </a>
+                        </div>
                     </div>
 
                     @if (ViewData["Title"] == "Trang chủ") {

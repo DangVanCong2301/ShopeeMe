@@ -178,6 +178,8 @@ public class UserController : Controller {
         return Ok(status);
     }
 
+    [HttpGet]
+    [Route("/user/logout")]
     public IActionResult Logout() {
         CookieOptions options = new CookieOptions {
             Expires = DateTime.Now.AddDays(-1)

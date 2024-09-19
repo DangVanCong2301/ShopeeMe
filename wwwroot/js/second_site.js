@@ -1,3 +1,151 @@
+function getAPISite() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/cart', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            setAccount(data);
+            
+        }
+    };
+    xhr.send(null);
+}
+getAPISite();
+
+function setAccount(data) {
+    let htmlAccount = "";
+    if (data.userID == 0) {
+        htmlAccount += 
+        `
+                            <div class="header__item header__item-line">
+                                <a class="header__item-link" href="/user/register">Đăng ký</a>
+                            </div>
+                            <div class="header__item header__item--has-user">
+                                <a class="header__item-link" href="/user/login">Đăng nhập</a>
+                            </div>                  
+        `;
+    } else {
+        if (data.roleID == 2) {
+            htmlAccount +=
+            `
+                            <div class="header__item header__item--has-user">
+                                <a href="#" class="header__item-link">
+                                    <img src="/img/no_user.jpg" class="header__item-img" alt="">
+                                    <div class="header__item-sub">${data.username}</div>
+                                </a>
+                                <div class="header__item-user">
+                                    <ul class="header__navbar-user-menu">
+                                        <li class="header__navbar-user-item">
+                                            <a href="/user/profile">Tài khoản của tôi</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="#">Địa chỉ của tôi</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="/user/purchase">Đơn mua</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="/admin">Kênh quản trị</a>
+                                        </li>
+                                        <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                            <a href="/user/logout">Đăng xuất</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+            `;
+        } else if (data.roleID == 3) {
+            htmlAccount += 
+            `
+                            <div class="header__item header__item--has-user">
+                                <a href="#" class="header__item-link">
+                                    <img src="/img/no_user.jpg" class="header__item-img" alt="">
+                                    <div class="header__item-sub">${data.username}</div>
+                                </a>
+                                <div class="header__item-user">
+                                    <ul class="header__navbar-user-menu">
+                                        <li class="header__navbar-user-item">
+                                            <a href="/user/profile">Tài khoản của tôi</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="#">Địa chỉ của tôi</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="/user/purchase">Đơn mua</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="/picker">Kênh lấy hàng</a>
+                                        </li>
+                                        <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                            <a href="/user/logout">Đăng xuất</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+            `;
+        } else if (data.roleID == 4) {
+            htmlAccount += 
+            `
+                            <div class="header__item header__item--has-user">
+                                <a href="#" class="header__item-link">
+                                    <img src="/img/no_user.jpg" class="header__item-img" alt="">
+                                    <div class="header__item-sub">${data.username}</div>
+                                </a>
+                                <div class="header__item-user">
+                                    <ul class="header__navbar-user-menu">
+                                        <li class="header__navbar-user-item">
+                                            <a href="/user/profile">Tài khoản của tôi</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="#">Địa chỉ của tôi</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="/user/purchase">Đơn mua</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="/delivery">Kênh giao hàng</a>
+                                        </li>
+                                        <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                            <a href="/user/logout">Đăng xuất</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+            `;
+        } else {
+            htmlAccount += 
+            `
+                            <div class="header__item header__item--has-user">
+                                <a href="#" class="header__item-link">
+                                    <img src="/img/no_user.jpg" class="header__item-img" alt="">
+                                    <div class="header__item-sub">${data.username}</div>
+                                </a>
+                                <div class="header__item-user">
+                                    <ul class="header__navbar-user-menu">
+                                        <li class="header__navbar-user-item">
+                                            <a href="/user/profile">Tài khoản của tôi</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="#">Địa chỉ của tôi</a>
+                                        </li>
+                                        <li class="header__navbar-user-item">
+                                            <a href="/user/purchase">Đơn mua</a>
+                                        </li>
+                                        <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                            <a href="/user/logout">Đăng xuất</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+            `;
+        }
+    }
+    document.querySelector(".header__item-auth").innerHTML = htmlAccount;
+}
+
 // Toast
 function toast({ title = "", msg = "", type = "", duration = 3000}) {
     const main = document.getElementById('toast');
