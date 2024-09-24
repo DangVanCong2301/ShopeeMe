@@ -148,5 +148,43 @@ function setTotalPrice(data) {
                     </div>
     `;
     document.querySelector(".checkout__payment-money").innerHTML = htmlMoney;
-
 }
+
+// Set Time
+const startingMinutes = 30;
+let time = startingMinutes * 60;
+
+setInterval(updateCountdown, 1000);
+
+function updateCountdown() {
+    const minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    document.querySelector(".admin-order__times-value").innerText = `${minutes}:${seconds}`
+    time--;
+    if (seconds == 40) {
+        
+    }
+}
+
+// Confirm Order
+function confirmOrder() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/admin/confirm-order', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const result = JSON.parse(xhr.responseText);
+            document.querySelector(".checkout__payment-order-btn-spinner").classList.remove("hide-on-destop");
+            setTimeout(() => {
+                toast({ title: "Thông báo", msg: `${result.message}`, type: "success", duration: 5000 });
+                setTimeout(() => {
+                    document.querySelector(".checkout__payment-order-btn-spinner").classList.add("hide-on-destop");
+                    document.querySelector(".checkout__payment-order-btn-container").innerHTML = "Chờ lấy hàng";
+                    window.location.assign("/admin");
+                }, 1000);
+            }, 2000)
+        }
+    };
+    xhr.send(null);
+}
+

@@ -30,6 +30,12 @@
     position: relative; /*Định vị tuyệt đối cho thành phần*/
 }
 
+.header__navbar-auth {
+    display: flex;
+    align-items: center;
+    column-gap: 14px;
+}
+
 .header__navbar-user {
     display: flex;
     justify-items: center;
@@ -538,6 +544,10 @@
     list-style: none;
     max-height: 56vh; /*Hiện thanh scu*/
     overflow-y: auto;
+}
+
+.header__cart-list-item::-webkit-scrollbar {
+    display: none;
 }
 
 .header__cart-item:hover {

@@ -106,9 +106,9 @@ function showAll(data) {
                                         </div>
                                         <!-- End Of Sales -->
                                         <div class="admin__main-expenses">
-                                            <div class="admin__main-to-do-list-item" onclick="showWaitingPickup()">
+                                            <div class="admin__main-to-do-list-item admin__main-to-do-list-item-wait-pickup">
                                                 <div class="admin__main-to-do-list-numb">
-                                                    0
+                                                ${data.ordersWaitPickup.length}
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
                                                     Chờ lấy hàng
@@ -348,6 +348,11 @@ function showAll(data) {
     document.querySelector(".admin__main-to-do-list-item-wait-settlment").addEventListener('click', () => {
         showWaitingSettlment(data);
     });
+
+    document.querySelector(".admin__main-to-do-list-item-wait-pickup").addEventListener("click", () => {
+        showWaitingPickup(data);
+    });
+
 }
 
 function showWaitingSettlment(data) {
@@ -406,6 +411,64 @@ function showWaitingSettlment(data) {
                     </div>
     `;
     document.querySelector(".admin__container").innerHTML = htmlWaitSettlment;
+}
+
+function showWaitingPickup(data) {
+    let htmlWaitPickup = "";
+    htmlWaitPickup += 
+    `
+    <div class="admin__orders-waiting">
+                        <div class="admin__add-product-container">
+                            <div class="admin__add-product-header">
+                                <div class="admin__add-product-header-item active">
+                                    Tất cả
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Chờ xác nhận  
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Đang giao
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Đã giao
+                                </div>
+                            </div>
+                            <div class="admin__setup-shop-body">
+                                <div class="admin__setup-shop-container">
+                                    <div class="admin__profile-shop-body-header">
+                                        <div class="admin__add-product-title">
+                                            ${data.ordersWaitPickup.length} Đơn hàng 
+                                        </div>
+                                    </div>
+                                    <div class="admin__order-container">
+                                        <div class="admin__order-table">
+                                            <div class="admin__order-table-header">
+                                                <div class="admin__order-table-header-row">
+                                                    <div class="admin__order-table-header-col">Mã đơn hàng</div>
+                                                    <div class="admin__order-table-header-col">Khách hàng</div>
+                                                    <div class="admin__order-table-header-col">Cửa hàng</div>
+                                                    <div class="admin__order-table-header-col">Ngày đặt</div>
+                                                    <div class="admin__order-table-header-col">Tổng tiền</div>
+                                                    <div class="admin__order-table-header-col">Trạng thái</div>
+                                                    <div class="admin__order-table-header-col">Thanh toán</div>
+                                                    <div class="admin__order-table-header-col">Xem</div>
+                                                </div>
+                                            </div>
+     
+                                            <div class="admin__order-table-body">`;
+    htmlWaitPickup += 
+                                            data.htmlWaitPickupItem;
+    htmlWaitPickup += 
+                                            `</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="admin__order-more">Xem tất cả</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    `;
+    document.querySelector(".admin__container").innerHTML = htmlWaitPickup;
 }
 
 // Theme Color

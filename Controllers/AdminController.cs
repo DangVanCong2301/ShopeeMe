@@ -35,6 +35,7 @@ public class AdminController : Controller {
     [Route("/admin/get-data")]
     public IActionResult GetData() {
         IEnumerable<Order> ordersWaitSettlment = _adminResponsitory.getOrdersWaitSettlment().ToList();
+        IEnumerable<Order> ordersWaitPickup = _adminResponsitory.getOrsersWaitPickup();
         string htmlWaitSettlmentItem = "";
         foreach (var item in ordersWaitSettlment) {
             htmlWaitSettlmentItem += $" <div class='admin__order-table-body-row'>";
@@ -50,9 +51,26 @@ public class AdminController : Controller {
             htmlWaitSettlmentItem += $"     </div>";
             htmlWaitSettlmentItem += $" </div>";
         }
+        string htmlWaitPickupItem = "";
+        foreach (var item in ordersWaitPickup) {
+            htmlWaitPickupItem += $" <div class='admin__order-table-body-row'>";
+            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.PK_iOrderID}</div>";
+            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
+            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
+            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
+            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
+            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sPaymentName}</div>";
+            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col primary'>";
+            htmlWaitPickupItem += $"         <a href='/admin/order/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
+            htmlWaitPickupItem += $"     </div>";
+            htmlWaitPickupItem += $" </div>";
+        }
         AdminViewModel model = new AdminViewModel {
             OrdersWaitSettlment = ordersWaitSettlment,
-            HtmlWaitSettlmentItem = htmlWaitSettlmentItem
+            HtmlWaitSettlmentItem = htmlWaitSettlmentItem,
+            OrdersWaitPickup = ordersWaitPickup,
+            HtmlWaitPickupItem = htmlWaitPickupItem
         };
         return Ok(model);
     }
@@ -79,5 +97,18 @@ public class AdminController : Controller {
             Payments = payments
         };
         return Ok(model);
+    }
+
+    [HttpGet]
+    [Route("/admin/confirm-order")]
+    public IActionResult ConfirmOrder() {
+        var sessionOrderID = _accessor?.HttpContext?.Session.GetInt32("CurrentOrderID");
+        List<Order> order = _orderResponsitory.getOrderWaitSettlementByOrderID(Convert.ToInt32(sessionOrderID)).ToList();
+        _orderResponsitory.confirmOrderAboutPickup(Convert.ToInt32(sessionOrderID), order[0].PK_iUserID);
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Xác nhận đơn hàng thành công!"
+        };
+        return Ok(status);
     }
 }

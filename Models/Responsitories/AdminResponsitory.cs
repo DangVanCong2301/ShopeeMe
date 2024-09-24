@@ -13,4 +13,9 @@ public class AdminResponsitory : IAdminResponsitory
     {
         return _context.Orders.FromSqlRaw("EXEC sp_GetOrderWaitSettlement");
     }
+
+    public IEnumerable<Order> getOrsersWaitPickup()
+    {
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderWaitPickup");
+    }
 }

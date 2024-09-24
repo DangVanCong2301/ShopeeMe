@@ -11,6 +11,14 @@ public class OrderResponsitory : IOrderResponsitory
         _context = context;
     }
 
+    public bool confirmOrderAboutPickup(int orderID, int userID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        _context.Database.ExecuteSqlRaw("sp_ConfirmOrderAboutPickup @PK_iOrderID, @PK_iUserID", orderIDParam, userIDParam);
+        return true;
+    }
+
     public IEnumerable<Order> getOrderByID(int userID, int shopID)
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
