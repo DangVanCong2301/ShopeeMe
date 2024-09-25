@@ -76,4 +76,10 @@ public class ShopResponsitory : IShopResponsitory
         SqlParameter shopUsernameParam = new SqlParameter("@sShopUsername", shopUsername);
         return _context.Stores.FromSqlRaw("EXEC sp_GetShopByUsername @sShopUsername", shopUsernameParam);
     }
+
+    public IEnumerable<Store> getShopBySellerID(int sellerID)
+    {
+        SqlParameter sellerIDParam = new SqlParameter("@FK_iSellerID", sellerID);
+        return _context.Stores.FromSqlRaw("EXEC sp_GetShopBySellerID @FK_iSellerID", sellerIDParam);
+    }
 }

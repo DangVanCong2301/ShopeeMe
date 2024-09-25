@@ -4,6 +4,8 @@ public interface IOrderResponsitory
     IEnumerable<Order> getOrderByID(int userID, int shopID);
     IEnumerable<Order> getOrdersByUserIDWaitSettlement(int userID);
     IEnumerable<Order> getOrderWaitSettlementByOrderID(int orderID);
+    IEnumerable<Order> getOrderWaitSettlementByShopID(int shopID);
+    IEnumerable<Order> getOrderWaitPickupByShopID(int shopID);
     IEnumerable<OrderDetail> getProductsOrderByUserIDWaitSettlement(int userID);
     IEnumerable<OrderDetail> getProductsOrderByUserID(int userID);
     IEnumerable<OrderDetail> getOrderDetailWaitSettlementByOrderID(int orderID);

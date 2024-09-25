@@ -7,4 +7,7 @@ public class AdminViewModel
     public IEnumerable<OrderDetail> OrderDetails { get; set; }
     public List<Address> Addresses { get; set; }
     public List<Payment> Payments { get; set; }
+    public int RoleID { get; set; }
+    public int UserID { get; set; }
+    public string Username { get; set; }
 }

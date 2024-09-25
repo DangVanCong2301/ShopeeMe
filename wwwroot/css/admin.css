@@ -1018,6 +1018,11 @@
     color: var(--warning-color);
 }
 
+.admin__order-table-body-col.primary {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
 .admin__order-table-body-col.success {
     color: var(--success-color);
 }

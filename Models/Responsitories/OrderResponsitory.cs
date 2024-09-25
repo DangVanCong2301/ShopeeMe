@@ -40,10 +40,22 @@ public class OrderResponsitory : IOrderResponsitory
         return _context.Orders.FromSqlRaw("EXEC sp_GetOrderByUserIDWaitSettlement @FK_iUserID", userIDParam);
     }
 
+    public IEnumerable<Order> getOrderWaitPickupByShopID(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@FK_iShopID", shopID);
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderWaitPickupByShopID @FK_iShopID", shopIDParam);
+    }
+
     public IEnumerable<Order> getOrderWaitSettlementByOrderID(int orderID)
     {
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
         return _context.Orders.FromSqlRaw("EXEC sp_GetOrderWaitSettlementByOrderID @PK_iOrderID", orderIDParam);
+    }
+
+    public IEnumerable<Order> getOrderWaitSettlementByShopID(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@FK_iShopID", shopID);
+        return _context.Orders.FromSqlRaw("sp_GetOrderWaitSettlementByShopID @FK_iShopID", shopIDParam);
     }
 
     public IEnumerable<OrderDetail> getProductsOrderByUserID(int userID)

@@ -1,3 +1,53 @@
+function getAPISiteAdmin() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/admin/get-data', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+            
+            setAccount(data);
+        }
+    };
+    xhr.send(null);
+}
+
+getAPISiteAdmin();
+
+function setAccount(data) {
+    let htmlAccount = "";
+    htmlAccount += 
+    `
+                    <div class="header__account-avatar">
+                            <img src="/img/no_user.jpg" class="header__account-avatar-img" alt="">
+                        </div>
+                        <div class="header__account-info">
+                            <span class="header__account-info-name">${data.username}</span>
+                            <div class="header__account-info-down">
+                                <i class="uil uil-angle-down header__account-info-icon"></i>
+                            </div>
+                        </div>
+                        <div class="header__account-manager">
+                            <ul class="header__navbar-user-menu">
+                                <li class="header__navbar-user-item">
+                                    <div class="header__account-manager-info">
+                                        <img src="/img/no_user.jpg" alt="" class="header__account-manager-img">
+                                        <div class="header__account-manager-name">${data.username}</div>
+                                    </div>
+                                </li>
+                                <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                    <a href="/user/logout">
+                                        <i class="uil uil-signout header__account-manager-icon"></i>
+                                        Đăng xuất
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+    `;
+    document.querySelector(".header__account").innerHTML = htmlAccount;
+}
+
 // Tách lấy chữ số
 // Nguồn: http://vncoding.net/2015/10/30/tach-cac-chu-so-thuoc-hang-tram-hang-chuc-hang-don-vi/
 function money(number) {

@@ -4,12 +4,16 @@ public class SellerController : Controller
 {
     private readonly IUserResponsitory _userResponsitory;
     private readonly ISellerResponsitory _sellerResponsitory;
+    private readonly IShopResponsitory _shopResponsitory;
+    private readonly IOrderResponsitory _orderResponsitory;
     private readonly IHttpContextAccessor _accessor;
-    public SellerController(IHttpContextAccessor accessor, IUserResponsitory userResponsitory, ISellerResponsitory sellerResponsitory)
+    public SellerController(IHttpContextAccessor accessor, IUserResponsitory userResponsitory, ISellerResponsitory sellerResponsitory, IShopResponsitory shopResponsitory, IOrderResponsitory orderResponsitory)
     {
         _accessor = accessor;
         _userResponsitory = userResponsitory;
         _sellerResponsitory = sellerResponsitory;
+        _shopResponsitory = shopResponsitory;
+        _orderResponsitory = orderResponsitory;
     }
 
     [HttpGet]
@@ -17,8 +21,10 @@ public class SellerController : Controller
     public IActionResult Index() {
         // Lấy Cookie trên trình duyệt
         var sellerID = Request.Cookies["SellerID"];
+        List<Store> store = _shopResponsitory.getShopBySellerID(Convert.ToInt32(sellerID)).ToList();
         if (sellerID != null) {
             _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
+            _accessor?.HttpContext?.Session.SetInt32("SellerShopID", store[0].PK_iStoreID);
         } else {
             return Redirect("/seller/login");
         }
@@ -33,9 +39,48 @@ public class SellerController : Controller
     public IActionResult GetData() {
         var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
         var sessionSellerUsername = _accessor?.HttpContext?.Session.GetString("SellerUsername");
+        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
+        IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrderWaitSettlementByShopID(Convert.ToInt32(sessionShopID));
+        IEnumerable<Order> ordersWaitPickup = _orderResponsitory.getOrderWaitPickupByShopID(Convert.ToInt32(sessionShopID));
+        string htmlOrdersWaitSettlmentItem = "";
+        string htmlOrdersWaitPickupItem = "";
+        foreach (var item in ordersWaitSettlement) {
+            htmlOrdersWaitSettlmentItem += $" <div class='admin__order-table-body-row'>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.PK_iOrderID}</div>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sPaymentName}</div>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col primary'>";
+            htmlOrdersWaitSettlmentItem += $"         30:00";
+            htmlOrdersWaitSettlmentItem += $"     </div>";
+            htmlOrdersWaitSettlmentItem += $" </div>";
+        }
+
+        foreach (var item in ordersWaitPickup) {
+            htmlOrdersWaitPickupItem += $" <div class='admin__order-table-body-row'>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.PK_iOrderID}</div>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sPaymentName}</div>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col primary'>";
+            htmlOrdersWaitPickupItem += $"         <a href='/admin/order/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chuẩn bị hàng</a>";
+            htmlOrdersWaitPickupItem += $"     </div>";
+            htmlOrdersWaitPickupItem += $" </div>";
+        }
+
         SellerViewModel model = new SellerViewModel {
             SellerID = Convert.ToInt32(sessionSellerID),
-            SellerUsername = sessionSellerUsername
+            SellerUsername = sessionSellerUsername,
+            OrdersWaitSettlement = ordersWaitSettlement,
+            OrdersWaitPickup = ordersWaitPickup,
+            HtmlOrdersWaitSettlementItem = htmlOrdersWaitSettlmentItem,
+            HtmlOrdersWaitPickupItem = htmlOrdersWaitPickupItem
         };
         return Ok(model);
     }
