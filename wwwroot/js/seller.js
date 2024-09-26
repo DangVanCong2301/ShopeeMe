@@ -388,7 +388,6 @@ function showWaitingSettlment(data) {
                                                 <div class="admin__order-table-header-row">
                                                     <div class="admin__order-table-header-col">Mã đơn hàng</div>
                                                     <div class="admin__order-table-header-col">Khách hàng</div>
-                                                    <div class="admin__order-table-header-col">Cửa hàng</div>
                                                     <div class="admin__order-table-header-col">Ngày đặt</div>
                                                     <div class="admin__order-table-header-col">Tổng tiền</div>
                                                     <div class="admin__order-table-header-col">Trạng thái</div>
@@ -446,7 +445,6 @@ function showWaitingPickup(data) {
                                                 <div class="admin__order-table-header-row">
                                                     <div class="admin__order-table-header-col">Mã đơn hàng</div>
                                                     <div class="admin__order-table-header-col">Khách hàng</div>
-                                                    <div class="admin__order-table-header-col">Cửa hàng</div>
                                                     <div class="admin__order-table-header-col">Ngày đặt</div>
                                                     <div class="admin__order-table-header-col">Tổng tiền</div>
                                                     <div class="admin__order-table-header-col">Trạng thái</div>
@@ -469,4 +467,163 @@ function showWaitingPickup(data) {
                     </div>
     `;
     document.querySelector(".admin__container").innerHTML = htmlWaitPickup;
+}
+
+function prepareGoodModal(orderID) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/seller', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            openModal();
+            document.querySelector(".modal__body").innerHTML =
+                `
+            <div class="transport-form">
+                <div class="transport-form__header">
+                    <div class="transport-form__header-title">Giao đơn hàng</div>
+                </div>
+                <div class="transport-form__body">
+                    <div class="transport-form__body-header">
+                        <div class="transport-form__body-title">
+                            Mã đơn hàng: ĐH${orderID}
+                        </div>
+                    </div>
+                    <div class="transport-form__body-list">
+                        <div class="transport-form__body-item">
+                            <div class="transport-form__body-item-left">
+                                <div class="transport-form__body-item-name">
+                                    <div class="transport-form__body-item-type">Tôi sẽ tự mang hàng tới bưu cục</div>
+                                </div>
+                                <div class="transport-form__body-item-time">
+                                    <div class="transport-form__body-item-time-text">
+                                        Bạn có thể gửi đơn hàng tại bất kỳ bưu cục SPX Express nào thuộc cùng Tỉnh/Thành phố
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transport-form__body-item-right">
+                                <i class="uil uil-check"></i>
+                            </div>
+                        </div>
+                        <div class="transport-form__body-item active">
+                            <div class="transport-form__body-item-left">
+                                <div class="transport-form__body-item-name">
+                                    <div class="transport-form__body-item-type">Đơn vị vận chuyển đến lấy hàng</div>
+                                </div>
+                                <div class="transport-form__body-item-time">
+                                    <div class="transport-form__body-item-time-text">
+                                        SPX Express sẽ đến lấy hàng theo địa chỉ lấy hàng mà bạn đã xác nhận 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transport-form__body-item-right">
+                                <i class="uil uil-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="transport-form__footer">
+                    <div class="transport-form__btn btn" onclick="closeModal()">TRỞ LẠI</div>
+                    <div class="transport-form__btn btn btn--primary shipping-unit__btn">XÁC NHẬN</div>
+                </div>
+            </div>
+    `;
+            const shippingType = document.querySelectorAll(".transport-form__body-item");
+            for (let i = 0; i < shippingType.length; i++) {
+                shippingType[i].addEventListener('click', () => {
+                    var shippingTypeID;
+                    if (i == 0) {
+                        shippingType[i].classList.add("active");
+                        shippingType[1].classList.remove("active");
+                        console.log("Mang hàng tới bưu cục");
+                    } else if (i == 1) {
+                        shippingType[i].classList.add("active");
+                        shippingType[0].classList.remove("active");
+                        console.log("SPX Express đến lấy hàng");
+                        shippingTypeID = 1;
+                    }
+                });
+            }
+
+            document.querySelector(".shipping-unit__btn").addEventListener('click', () => {
+                openPickupAddressModal(data, orderID);
+            });
+        }
+    };
+    xhr.send(null);
+}
+
+function openPickupAddressModal(data, orderID) {
+    document.querySelector(".modal__body").innerHTML = 
+    `
+            <div class="transport-form">
+                <div class="transport-form__header">
+                    <div class="transport-form__header-title">Giao đơn hàng</div>
+                </div>
+                <div class="transport-form__body">
+                    <div class="transport-form__body-header">
+                        <div class="transport-form__body-title">
+                            Đơn vị vận chuyển
+                        </div>
+                        <div class="transport-form__header-sub">
+                            SPX Express
+                        </div>
+                    </div>
+                    <div class="waiting-form__body">
+                        <div class="checkout__label">
+                            <div class="checkout__label-box"></div>
+                        </div>
+                        <div class="checkout__address">
+                            <div class="checkout__address-title">
+                                <i class="uil uil-map-marker checkout__address-title-icon"></i>
+                                <span>Địa chỉ lấy hàng</span>
+                            </div>
+                            <div class="checkout__address-desc">
+                                <div class="waiting-form__seller-info">
+                                    <div class="checkout__address-desc-name">Cửa hàng ${data.sellerInfos[0].sStoreName}</div>
+                                    <div class="checkout__address-desc-phone">(+84) ${data.sellerInfos[0].sSellerPhone}</div>
+                                    <div class="waiting-form__seller-info-pickup">Đến lấy hàng</div>
+                                    <div class="waiting-form__seller-info-return">Trả hàng</div>
+                                    <a href="javascript:openAddressModal()" class="checkout__address-desc-change">Thay đổi</a>
+                                </div>
+                                <div class="checkout__address-desc-direction">${data.sellerInfos[0].sSellerAddress}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="transport-form__footer">
+                    <div class="transport-form__btn btn" onclick="closeModal()">TRỞ LẠI</div>
+                    <div class="transport-form__btn btn btn--primary shipping-unit__btn-confirm">XÁC NHẬN</div>
+                </div>
+            </div>
+    `;
+    document.querySelector(".shipping-unit__btn-confirm").addEventListener('click', () => {
+        confirmShippingOrder(data, orderID);
+    });
+}
+
+function confirmShippingOrder(data, orderID) {
+    openModal();
+    document.querySelector(".modal__body").innerHTML =
+    `
+        <div class="spinner"></div>
+    `;
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/seller/confirm-shipping-order', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const result = JSON.parse(xhr.responseText);
+            if (result.statusCode == 1) {
+                setTimeout(() => {
+                    closeModal();
+                    toast({ title: "Thông báo", msg: `${result.message}`, type: "success", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        // window.location.assign('/seller/login');
+                    }, 1000)
+                }, 2000);
+            }
+        }
+    };
+    xhr.send(null);
 }

@@ -38,6 +38,12 @@ public class SellerResponsitory : ISellerResponsitory
         return _context.Sellers.FromSqlRaw("EXEC sp_GetSellerAccountByID @PK_iSellerID", sellerIDParam);
     }
 
+    public IEnumerable<SellerInfo> getSellerInfoBySellerID(int sellerID)
+    {
+        SqlParameter sellerIDParam = new SqlParameter("@PK_iSellerID", sellerID);
+        return _context.SellerInfos.FromSqlRaw("EXEC sp_GetSellerInfoBySellerID @PK_iSellerID", sellerIDParam);
+    }
+
     public IEnumerable<Seller> loginAccount(string phone, string password)
     {
         SqlParameter phoneParam = new SqlParameter("@sSellerPhone", phone);

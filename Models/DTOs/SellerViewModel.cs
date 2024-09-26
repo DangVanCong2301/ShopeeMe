@@ -7,4 +7,5 @@ public class SellerViewModel
     public string HtmlOrdersWaitPickupItem { get; set; }
     public IEnumerable<Order> OrdersWaitSettlement { get; set; }
     public IEnumerable<Order> OrdersWaitPickup { get; set; }
+    public IEnumerable<SellerInfo> SellerInfos { get; set; }
 }

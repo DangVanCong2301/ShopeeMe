@@ -25,6 +25,7 @@ builder.Services.AddTransient<ICategoryResponsitory, CategoryResponsitory>();
 builder.Services.AddTransient<IOrderResponsitory, OrderResponsitory>();
 builder.Services.AddTransient<ICheckoutResponsitory, CheckoutResponsitory>();
 builder.Services.AddTransient<IAdminResponsitory, AdminResponsitory>();
+builder.Services.AddTransient<IShippingOrderRepository, ShippingOrderRepository>();
 
 var app = builder.Build();
 

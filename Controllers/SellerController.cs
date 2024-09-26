@@ -40,6 +40,7 @@ public class SellerController : Controller
         var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
         var sessionSellerUsername = _accessor?.HttpContext?.Session.GetString("SellerUsername");
         var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
+        IEnumerable<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoBySellerID(Convert.ToInt32(sessionSellerID));
         IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrderWaitSettlementByShopID(Convert.ToInt32(sessionShopID));
         IEnumerable<Order> ordersWaitPickup = _orderResponsitory.getOrderWaitPickupByShopID(Convert.ToInt32(sessionShopID));
         string htmlOrdersWaitSettlmentItem = "";
@@ -48,11 +49,10 @@ public class SellerController : Controller
             htmlOrdersWaitSettlmentItem += $" <div class='admin__order-table-body-row'>";
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.PK_iOrderID}</div>";
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
-            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
-            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sPaymentName}</div>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col primary'>";
             htmlOrdersWaitSettlmentItem += $"         30:00";
             htmlOrdersWaitSettlmentItem += $"     </div>";
@@ -63,13 +63,12 @@ public class SellerController : Controller
             htmlOrdersWaitPickupItem += $" <div class='admin__order-table-body-row'>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.PK_iOrderID}</div>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
-            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
-            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sPaymentName}</div>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col primary'>";
-            htmlOrdersWaitPickupItem += $"         <a href='/admin/order/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chuẩn bị hàng</a>";
+            htmlOrdersWaitPickupItem += $"         <a href='javascript:prepareGoodModal({item.PK_iOrderID})' class='admin__order-table-body-col-link'>Chuẩn bị hàng</a>";
             htmlOrdersWaitPickupItem += $"     </div>";
             htmlOrdersWaitPickupItem += $" </div>";
         }
@@ -77,6 +76,7 @@ public class SellerController : Controller
         SellerViewModel model = new SellerViewModel {
             SellerID = Convert.ToInt32(sessionSellerID),
             SellerUsername = sessionSellerUsername,
+            SellerInfos = sellerInfos,
             OrdersWaitSettlement = ordersWaitSettlement,
             OrdersWaitPickup = ordersWaitPickup,
             HtmlOrdersWaitSettlementItem = htmlOrdersWaitSettlmentItem,
@@ -229,6 +229,16 @@ public class SellerController : Controller
         Status status = new Status {
             StatusCode = 1,
             Message = "Đăng xuất thành công!"
+        };
+        return Ok(status);
+    }
+
+    [HttpPost]
+    [Route("/seller/confirm-shipping-order")]
+    public IActionResult ShippingOrder() {
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Phiếu đã được tạo thành công!"
         };
         return Ok(status);
     }
