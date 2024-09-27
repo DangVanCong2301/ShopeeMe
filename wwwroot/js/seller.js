@@ -117,9 +117,9 @@ function showAll(data) {
                                         </div>
                                         <!-- End Of Expenses -->
                                         <div class="admin__main-income">
-                                            <div class="admin__main-to-do-list-item">
+                                            <div class="admin__main-to-do-list-item admin__main-to-do-list-item-processed">
                                                 <div class="admin__main-to-do-list-numb">
-                                                    0
+                                                    ${data.shippingOrders.length}
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
                                                     Đã xử lý
@@ -353,6 +353,10 @@ function showAll(data) {
     document.querySelector(".admin__main-to-do-list-item-wait-pickup").addEventListener("click", () => {
         showWaitingPickup(data);
     });
+
+    document.querySelector(".admin__main-to-do-list-item-processed").addEventListener("click", () => {
+        showProcessed(data);
+    });
 }
 
 function showWaitingSettlment(data) {
@@ -469,7 +473,64 @@ function showWaitingPickup(data) {
     document.querySelector(".admin__container").innerHTML = htmlWaitPickup;
 }
 
-function prepareGoodModal(orderID) {
+function showProcessed(data) {
+    let htmlProcessed = "";
+    htmlProcessed +=
+        `
+    <div class="admin__orders-waiting">
+                        <div class="admin__add-product-container">
+                            <div class="admin__add-product-header">
+                                <div class="admin__add-product-header-item active">
+                                    Tất cả
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Chờ xác nhận  
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Đang giao
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Đã giao
+                                </div>
+                            </div>
+                            <div class="admin__setup-shop-body">
+                                <div class="admin__setup-shop-container">
+                                    <div class="admin__profile-shop-body-header">
+                                        <div class="admin__add-product-title">
+                                            ${data.ordersProcessed.length} Đơn hàng 
+                                        </div>
+                                    </div>
+                                    <div class="admin__order-container">
+                                        <div class="admin__order-table">
+                                            <div class="admin__order-table-header">
+                                                <div class="admin__order-table-header-row">
+                                                    <div class="admin__order-table-header-col">Mã đơn hàng</div>
+                                                    <div class="admin__order-table-header-col">Khách hàng</div>
+                                                    <div class="admin__order-table-header-col">Ngày đặt</div>
+                                                    <div class="admin__order-table-header-col">Tổng tiền</div>
+                                                    <div class="admin__order-table-header-col">Trạng thái</div>
+                                                    <div class="admin__order-table-header-col">Thanh toán</div>
+                                                    <div class="admin__order-table-header-col">Thao tác</div>
+                                                </div>
+                                            </div>
+     
+                                            <div class="admin__order-table-body">`;
+    htmlProcessed +=
+        data.htmlOrdersProcessedItem;
+    htmlProcessed +=
+        `</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="admin__order-more">Xem tất cả</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    `;
+    document.querySelector(".admin__container").innerHTML = htmlProcessed;
+}
+
+function prepareGoodModal(orderID, userID) {
     var xhr = new XMLHttpRequest();
     xhr.open('post', '/seller', true);
     xhr.onreadystatechange = () => {
@@ -546,14 +607,14 @@ function prepareGoodModal(orderID) {
             }
 
             document.querySelector(".shipping-unit__btn").addEventListener('click', () => {
-                openPickupAddressModal(data, orderID);
+                openPickupAddressModal(data, orderID, userID);
             });
         }
     };
     xhr.send(null);
 }
 
-function openPickupAddressModal(data, orderID) {
+function openPickupAddressModal(data, orderID, userID) {
     document.querySelector(".modal__body").innerHTML = 
     `
             <div class="transport-form">
@@ -598,16 +659,19 @@ function openPickupAddressModal(data, orderID) {
             </div>
     `;
     document.querySelector(".shipping-unit__btn-confirm").addEventListener('click', () => {
-        confirmShippingOrder(data, orderID);
+        confirmShippingOrder(data, orderID, userID);
     });
 }
 
-function confirmShippingOrder(data, orderID) {
+function confirmShippingOrder(data, orderID, userID) {
     openModal();
     document.querySelector(".modal__body").innerHTML =
     `
         <div class="spinner"></div>
     `;
+    var formData = new FormData();
+    formData.append("orderID", orderID);
+    formData.append("userID", userID);
     var xhr = new XMLHttpRequest();
     xhr.open('post', '/seller/confirm-shipping-order', true);
     xhr.onreadystatechange = () => {
@@ -619,11 +683,11 @@ function confirmShippingOrder(data, orderID) {
                     toast({ title: "Thông báo", msg: `${result.message}`, type: "success", duration: 5000 });
                     document.querySelector(".modal__body").innerHTML = "";
                     setTimeout(() => {
-                        // window.location.assign('/seller/login');
+                        window.location.assign('/seller/delivery-note');
                     }, 1000)
                 }, 2000);
             }
         }
     };
-    xhr.send(null);
+    xhr.send(formData);
 }

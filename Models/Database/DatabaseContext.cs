@@ -27,6 +27,7 @@ namespace Project.Models
         public DbSet<City> Cities { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<AddressChoose> AddressChooses { get; set; }
+        public DbSet<ShippingOrder> ShippingOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -108,6 +109,10 @@ namespace Project.Models
 
             modelBuilder.Entity<AddressChoose>(entity => {
                 entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<ShippingOrder>(entity => {
+                entity.HasKey(e => e.PK_iShippingOrderID);
             });
         }
     }

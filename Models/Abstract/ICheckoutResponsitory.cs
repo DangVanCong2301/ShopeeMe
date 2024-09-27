@@ -6,6 +6,7 @@ public interface ICheckoutResponsitory
     IEnumerable<AddressChoose> getAddressChoose();
     bool insertAddressAccount(int userID, string phone = "", string address = "");
     IEnumerable<Address> getAddressesByID(int addressID, int userID);
+    IEnumerable<Address> getAddressAccountByOrderID(int orderID);
     bool insertPaymentType(int paymentID, int userID);
     bool updatePaymentType(int paymentID, int userID);
     bool updateAddressAccountUserByID (int userID, string fullname = "");

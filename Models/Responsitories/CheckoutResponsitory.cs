@@ -22,6 +22,12 @@ public class CheckoutResponsitory : ICheckoutResponsitory
         return _context.PaymentTypes.FromSqlRaw("EXEC sp_CheckPaymentsTypeByUserID @iUserID", userIDParam);
     }
 
+    public IEnumerable<Address> getAddressAccountByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        return _context.Addresses.FromSqlRaw("EXEC sp_GetAddressAccountByOrderID @PK_iOrderID", orderIDParam);
+    }
+
     public IEnumerable<AddressChoose> getAddressChoose()
     {
         return _context.AddressChooses.FromSqlRaw("EXEC sp_GetAddressChoose");
