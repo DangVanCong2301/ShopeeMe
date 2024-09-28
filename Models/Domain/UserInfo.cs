@@ -9,4 +9,5 @@ public class UserInfo
     public DateTime dUpdateTime { get; set; }
     public int iGender { get; set; }
     public string sImageProfile { get; set; }
+    public int iIsLock { get; set; }
 }

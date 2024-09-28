@@ -60,6 +60,7 @@ public class AdminController : Controller {
         var sessionRoleID = _accessor?.HttpContext?.Session.GetInt32("RoleID");
         IEnumerable<Order> ordersWaitSettlment = _adminResponsitory.getOrdersWaitSettlment().ToList();
         IEnumerable<Order> ordersWaitPickup = _adminResponsitory.getOrsersWaitPickup();
+        IEnumerable<UserInfo> userInfos = _userResponsitory.getUsersInfo();
         string htmlWaitSettlmentItem = "";
         foreach (var item in ordersWaitSettlment) {
             htmlWaitSettlmentItem += $" <div class='admin__order-table-body-row'>";
@@ -90,11 +91,49 @@ public class AdminController : Controller {
             htmlWaitPickupItem += $"     </div>";
             htmlWaitPickupItem += $" </div>";
         }
+
+        string htmlUsersInfoItem = "";
+        foreach (var item in userInfos) {
+            htmlUsersInfoItem += $" <div class='admin__order-table-body-row'>";
+            htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.sUserName}</div>";
+            htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.sEmail}</div>";
+            htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
+            htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.dUpdateTime.ToString("dd/MM/yyyy")}</div>";
+            htmlUsersInfoItem += $"     <div class='admin__order-table-body-col islock'>";
+            if (item.iIsLock == 1) {
+                htmlUsersInfoItem += $"     <div class='admin-account__control active'>"; 
+                htmlUsersInfoItem += $"         <div class='admin-account__control-circle'></div>";      
+                htmlUsersInfoItem += $"     </div>";
+            } else {
+                htmlUsersInfoItem += $"     <div class='admin-account__control'>"; 
+                htmlUsersInfoItem += $"         <div class='admin-account__control-circle'></div>";      
+                htmlUsersInfoItem += $"     </div>";
+            }
+            htmlUsersInfoItem += $"     </div>";
+            htmlUsersInfoItem += $"     <div class='admin__order-table-body-col del'>";
+            htmlUsersInfoItem += $"         <div class='admin-account__more' onclick='showAccountTool()'>";
+            htmlUsersInfoItem += $"             <i class='uil uil-ellipsis-v admin-account__more-icon'></i>";
+            htmlUsersInfoItem += $"             <div class='admin-account__more-container'>";
+            htmlUsersInfoItem += $"                 <div class='admin-account__more-item' onclick='openUpdateAccount()'>";
+            htmlUsersInfoItem += $"                     <i class='uil uil-pen admin-account__more-item-icon'></i>";
+            htmlUsersInfoItem += $"                     <span>Chỉnh sửa</span>";
+            htmlUsersInfoItem += $"                 </div>";
+            htmlUsersInfoItem += $"                 <div class='admin-account__more-item' onclick='openDeleteAccount()'>";
+            htmlUsersInfoItem += $"                     <i class='uil uil-trash admin-account__more-item-icon'></i>";
+            htmlUsersInfoItem += $"                     <span>Xoá</span>";
+            htmlUsersInfoItem += $"                 </div>";
+            htmlUsersInfoItem += $"             </div>";
+            htmlUsersInfoItem += $"         </div>";
+            htmlUsersInfoItem += $"     </div>";
+            htmlUsersInfoItem += $" </div>";
+        }
         AdminViewModel model = new AdminViewModel {
             OrdersWaitSettlment = ordersWaitSettlment,
             HtmlWaitSettlmentItem = htmlWaitSettlmentItem,
             OrdersWaitPickup = ordersWaitPickup,
             HtmlWaitPickupItem = htmlWaitPickupItem,
+            UserInfos = userInfos,
+            HtmlUsersInfoItem = htmlUsersInfoItem,
             RoleID = Convert.ToInt32(sessionRoleID),
             UserID = Convert.ToInt32(sessionUserID),
             Username = sellerUsername

@@ -86,6 +86,11 @@ public class UserResponsitory : IUserResponsitory
         return _context.UserInfos.FromSqlRaw("EXEC sp_GetUserInfoByID @FK_iUserID", userIDParam);
     }
 
+    public IEnumerable<UserInfo> getUsersInfo()
+    {
+        return _context.UserInfos.FromSqlRaw("EXEC sp_GetUsersInfo");
+    }
+
     public bool insertUserInfo(int userID, string fullName, int gender, string birth, string image)
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
@@ -94,13 +99,15 @@ public class UserResponsitory : IUserResponsitory
         SqlParameter birthParam = new SqlParameter("@dDateBirth", Convert.ToDateTime(birth));
         SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
         SqlParameter imageParam = new SqlParameter("@sImageProfile", image);
-        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertUserInfo @FK_iUserID, @sFullName, @iGender, @dDateBirth, @dUpdateTime, @sImageProfile", 
+        SqlParameter isLockParam = new SqlParameter("@iIsLock", 0);
+        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertUserInfo @FK_iUserID, @sFullName, @iGender, @dDateBirth, @dUpdateTime, @sImageProfile, @iIsLock", 
         userIDParam,
         fullNameParam,
         genderParam,
         birthParam,
         updateTimeParam,
-        imageParam);
+        imageParam,
+        isLockParam);
         return true;
     }
 

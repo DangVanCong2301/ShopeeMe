@@ -130,7 +130,7 @@ function setSidebar(data) {
                                 <div class="admin__aside-sidebar-colappse-item">
                                     <div class="admin__aside-sidebar-symb">
                                     </div>
-                                    <div class="admin__aside-sidebar-sub">Tất cả tài khoản</div>
+                                    <div class="admin__aside-sidebar-sub admin__aside-sidebar-sub-account-all">Tất cả tài khoản</div>
                                 </div>
                                 <div class="admin__aside-sidebar-colappse-item">
                                     <div class="admin__aside-sidebar-symb">
@@ -153,7 +153,7 @@ function setSidebar(data) {
                                 <div class="admin__aside-sidebar-colappse-item">
                                     <div class="admin__aside-sidebar-symb">
                                     </div>
-                                    <div class="admin__aside-sidebar-sub admin__aside-sidebar-sub-account-all">Tất cả tài khoản</div>
+                                    <div class="admin__aside-sidebar-sub">Tất cả tài khoản</div>
                                 </div>
                                 <div class="admin__aside-sidebar-colappse-item">
                                     <div class="admin__aside-sidebar-symb">
@@ -226,11 +226,11 @@ function setSidebar(data) {
     document.querySelector(".admin__aside").innerHTML = htmlSidebar;
 
     document.querySelector(".admin__aside-sidebar-sub-account-all").addEventListener('click', () => {
-        showAccountAll();
+        showAccountAll(data);
     });
 }
 
-function showAccountAll() {
+function showAccountAll(data) {
     let htmlAccountAll = "";
     htmlAccountAll += 
     `
@@ -260,32 +260,25 @@ function showAccountAll() {
                                                     <div class="admin__order-table-header-col">Họ tên</div>
                                                     <div class="admin__order-table-header-col">Ngày tạo</div>
                                                     <div class="admin__order-table-header-col">Khoá</div>
-                                                    <div class="admin__order-table-header-col">Thao tác</div>
+                                                    <div class="admin__order-table-header-col">Công cụ</div>
                                                 </div>
                                             </div>
-                                            <div class="admin__order-table-body">
-                                                <div class="admin__order-table-body-row">
-                                                    <div class="admin__order-table-body-col">dangcong23012002</div>
-                                                    <div class="admin__order-table-body-col">dangcong@gmail.com</div>
-                                                    <div class="admin__order-table-body-col">Đặng Văn Công</div>
-                                                    <div class="admin__order-table-body-col warning">2/9/2024</div>
-                                                    <div class="admin__order-table-body-col primary">
-                                                        <a href="javascript:openPickUpModal()" class="admin__order-table-body-col-link">Khoá</a>
-                                                    </div>
-                                                    <div class="admin__order-table-body-col primary">
-                                                        <a href="#" class="admin__order-table-body-col-link">Xoá</a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <div class="admin__order-table-body">`;
+                                                htmlAccountAll += data.htmlUsersInfoItem;    
+    htmlAccountAll+= `                      </div>
                                         </div>
                                     </div>
-                                    <a href="#" class="admin__order-more">Xem tất cả</a>
+                                    <a href="#" class="admin__order-more">Xem tất cả</a> 
                                 </div>
                             </div>
                         </div>
                     </div>
     `;
     document.querySelector(".admin__container").innerHTML = htmlAccountAll;
+}
+
+function showAccountTool() {
+    document.querySelector(".admin-account__more-container").classList.add("show");
 }
 
 // Tách lấy chữ số
