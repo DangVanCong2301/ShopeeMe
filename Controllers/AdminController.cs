@@ -97,7 +97,7 @@ public class AdminController : Controller {
             htmlUsersInfoItem += $" <div class='admin__order-table-body-row'>";
             htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.sUserName}</div>";
             htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.sEmail}</div>";
-            htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
+            htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.sDescription}</div>";
             htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.dUpdateTime.ToString("dd/MM/yyyy")}</div>";
             htmlUsersInfoItem += $"     <div class='admin__order-table-body-col islock'>";
             if (item.iIsLock == 1) {
@@ -111,7 +111,7 @@ public class AdminController : Controller {
             }
             htmlUsersInfoItem += $"     </div>";
             htmlUsersInfoItem += $"     <div class='admin__order-table-body-col del'>";
-            htmlUsersInfoItem += $"         <div class='admin-account__more' onclick='showAccountTool()'>";
+            htmlUsersInfoItem += $"         <div class='admin-account__more' onclick='showAccountTool(event)'>";
             htmlUsersInfoItem += $"             <i class='uil uil-ellipsis-v admin-account__more-icon'></i>";
             htmlUsersInfoItem += $"             <div class='admin-account__more-container'>";
             htmlUsersInfoItem += $"                 <div class='admin-account__more-item' onclick='openUpdateAccount()'>";

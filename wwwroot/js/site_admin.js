@@ -248,7 +248,7 @@ function showAccountAll(data) {
                                 <div class="admin__setup-shop-container">
                                     <div class="admin__profile-shop-body-header">
                                         <div class="admin__add-product-title">
-                                            1 tài khoản
+                                            ${data.userInfos.length} tài khoản
                                         </div>
                                     </div>
                                     <div class="admin__order-container">
@@ -257,7 +257,7 @@ function showAccountAll(data) {
                                                 <div class="admin__order-table-header-row">
                                                     <div class="admin__order-table-header-col">Tên đăng nhập</div>
                                                     <div class="admin__order-table-header-col">Email</div>
-                                                    <div class="admin__order-table-header-col">Họ tên</div>
+                                                    <div class="admin__order-table-header-col">Tên quyền</div>
                                                     <div class="admin__order-table-header-col">Ngày tạo</div>
                                                     <div class="admin__order-table-header-col">Khoá</div>
                                                     <div class="admin__order-table-header-col">Công cụ</div>
@@ -277,8 +277,9 @@ function showAccountAll(data) {
     document.querySelector(".admin__container").innerHTML = htmlAccountAll;
 }
 
-function showAccountTool() {
-    document.querySelector(".admin-account__more-container").classList.add("show");
+function showAccountTool(event) {
+    const parentElement = event.target.parentNode;
+    parentElement.querySelector(".admin-account__more-container").classList.toggle("show");
 }
 
 // Tách lấy chữ số
