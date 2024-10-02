@@ -281,7 +281,7 @@ function getProducts(data) {
                                         </h4>
                                         <div class="home-product-item__price">
                                             <span class="home-product-item__price-current">
-                                                ${money(data.products[i].dPrice)} đ
+                                                ${money_2(data.products[i].dPrice)}
                                                 <div class="home-product-item__price-current-loading"></div>
                                             </span>
                                         </div>
@@ -345,11 +345,11 @@ function getProducts(data) {
                                         </h4>
                                         <div class="home-product-item__price">
                                             <span class="home-product-item__price-old">
-                                                ${money(data.products[i].dPrice)} đ
+                                                ${money_2(data.products[i].dPrice)}
                                                 <div class="home-product-item__price-old-loading"></div>
                                             </span>
                                             <span class="home-product-item__price-current">
-                                                ${money((data.products[i].dPrice * (1 - data.products[i].dPerDiscount)))} đ
+                                                ${money_2((data.products[i].dPrice * (1 - data.products[i].dPerDiscount)))}
                                                 <div class="home-product-item__price-current-loading"></div>
                                             </span>
                                         </div>

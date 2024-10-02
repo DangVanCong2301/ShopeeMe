@@ -514,6 +514,14 @@ function money(number) {
     return result;
 }
 
+function money_2(number) {
+    const formattedAmount = new Intl.NumberFormat('vi-VI', {
+        style: 'currency',
+        currency: 'VND',
+    }).format(number);
+    return formattedAmount;
+}
+
 // Back History
 function backHistory() {
     window.history.back();

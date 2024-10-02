@@ -99,7 +99,7 @@ public class UserResponsitory : IUserResponsitory
         SqlParameter birthParam = new SqlParameter("@dDateBirth", Convert.ToDateTime(birth));
         SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
         SqlParameter imageParam = new SqlParameter("@sImageProfile", image);
-        SqlParameter isLockParam = new SqlParameter("@iIsLock", 0);
+        SqlParameter isLockParam = new SqlParameter("@iIsLock", 1);
         _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertUserInfo @FK_iUserID, @sFullName, @iGender, @dDateBirth, @dUpdateTime, @sImageProfile, @iIsLock", 
         userIDParam,
         fullNameParam,

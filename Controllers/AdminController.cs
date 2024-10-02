@@ -100,7 +100,7 @@ public class AdminController : Controller {
             htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.sDescription}</div>";
             htmlUsersInfoItem += $"     <div class='admin__order-table-body-col'>{item.dUpdateTime.ToString("dd/MM/yyyy")}</div>";
             htmlUsersInfoItem += $"     <div class='admin__order-table-body-col islock'>";
-            if (item.iIsLock == 1) {
+            if (item.iIsLock == 0) {
                 htmlUsersInfoItem += $"     <div class='admin-account__control active'>"; 
                 htmlUsersInfoItem += $"         <div class='admin-account__control-circle'></div>";      
                 htmlUsersInfoItem += $"     </div>";
