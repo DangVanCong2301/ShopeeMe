@@ -1,6 +1,7 @@
-public class ShippingOrder
+public class ShippingPicker
 {
-    public int PK_iShippingOrderID { get; set; }
+    public int PK_iShippingPickerID { get; set; }
+    public int FK_iShippingOrderID { get; set; }
     public int FK_iShippingUnitID { get; set; }
     public int FK_iOrderID { get; set; }
     public int FK_iUserID { get; set; }
@@ -10,6 +11,7 @@ public class ShippingOrder
     public double fTotalPrice { get; set; }
     public string sOrderStatusName { get; set; }
     public string sPaymentName { get; set; }
-    public DateTime dShippingTime { get; set; }
+    public DateTime dShippingPickerTime { get; set; }
     public string sShippingUnitName { get; set; }
+    public string sPickerName { get; set; }
 }

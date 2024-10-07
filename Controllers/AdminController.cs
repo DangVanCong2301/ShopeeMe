@@ -9,7 +9,17 @@ public class AdminController : Controller {
     private readonly IHttpContextAccessor _accessor;
     private readonly IOrderResponsitory _orderResponsitory;
     private readonly ICheckoutResponsitory _checkoutResponsitory;
-    public AdminController(DatabaseContext context, IAdminResponsitory adminResponsitory, IHttpContextAccessor accessor, IOrderResponsitory orderResponsitory, ICheckoutResponsitory checkoutResponsitory, IUserResponsitory userResponsitory)
+    private readonly IShippingOrderRepository _shippingOrderRepository;
+    private readonly ISellerResponsitory _sellerResponsitory;
+    public AdminController(
+        DatabaseContext context, 
+        IAdminResponsitory adminResponsitory, 
+        IHttpContextAccessor accessor, 
+        IOrderResponsitory orderResponsitory, 
+        ICheckoutResponsitory checkoutResponsitory, 
+        IUserResponsitory userResponsitory, 
+        IShippingOrderRepository shippingOrderRepository,
+        ISellerResponsitory sellerResponsitory)
     {
         _context = context;
         _adminResponsitory = adminResponsitory;
@@ -17,6 +27,8 @@ public class AdminController : Controller {
         _orderResponsitory = orderResponsitory;
         _checkoutResponsitory = checkoutResponsitory;
         _userResponsitory = userResponsitory;
+        _shippingOrderRepository = shippingOrderRepository;
+        _sellerResponsitory = sellerResponsitory;
     }
 
     [Route("/admin")]
@@ -60,6 +72,7 @@ public class AdminController : Controller {
         var sessionRoleID = _accessor?.HttpContext?.Session.GetInt32("RoleID");
         IEnumerable<Order> ordersWaitSettlment = _adminResponsitory.getOrdersWaitSettlment().ToList();
         IEnumerable<Order> ordersWaitPickup = _adminResponsitory.getOrsersWaitPickup();
+        IEnumerable<ShippingPicker> shippingPickers = _shippingOrderRepository.getShippingPickers();
         IEnumerable<UserInfo> userInfos = _userResponsitory.getUsersInfo();
         string htmlWaitSettlmentItem = "";
         foreach (var item in ordersWaitSettlment) {
@@ -90,6 +103,20 @@ public class AdminController : Controller {
             htmlWaitPickupItem += $"         <a href='/admin/order/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
             htmlWaitPickupItem += $"     </div>";
             htmlWaitPickupItem += $" </div>";
+        }
+
+        string htmlShippingPickerItem = "";
+        foreach (var item in shippingPickers) {
+            htmlShippingPickerItem += $" <div class='admin__order-table-body-row'>";
+            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>ĐH{item.FK_iOrderID}</div>";
+            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
+            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>{item.dShippingPickerTime.ToString("dd/MM/yyyy")}</div>";
+            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
+            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
+            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col primary'>";
+            htmlShippingPickerItem += $"         <a href='/admin/bill/{item.FK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
+            htmlShippingPickerItem += $"     </div>";
+            htmlShippingPickerItem += $" </div>";
         }
 
         string htmlUsersInfoItem = "";
@@ -132,6 +159,8 @@ public class AdminController : Controller {
             HtmlWaitSettlmentItem = htmlWaitSettlmentItem,
             OrdersWaitPickup = ordersWaitPickup,
             HtmlWaitPickupItem = htmlWaitPickupItem,
+            ShippingPickers = shippingPickers,
+            HtmlShippingPickerItem = htmlShippingPickerItem,
             UserInfos = userInfos,
             HtmlUsersInfoItem = htmlUsersInfoItem,
             RoleID = Convert.ToInt32(sessionRoleID),
@@ -176,5 +205,40 @@ public class AdminController : Controller {
             Message = "Xác nhận đơn hàng thành công!"
         };
         return Ok(status);
+    }
+
+    [HttpGet]
+    [Route("/admin/bill/{orderID?}")]
+    public IActionResult Bill(int orderID = 0) {
+        // Lấy Cookie tài khoản người dùng trên trình duyệt
+        var userID = Request.Cookies["UserID"];
+        if (userID != null) {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        } else {
+            return Redirect("/user/login");
+        }
+        // Lấy đơn vận theo mã đơn hàng
+        List<ShippingOrder> shippingOrder = _shippingOrderRepository.getShippingOrderByOrderID(orderID).ToList();
+        _accessor?.HttpContext?.Session.SetInt32("CurrentShippingOrderID", shippingOrder[0].PK_iShippingOrderID);
+        return View();
+    }
+
+    [HttpGet]
+    [Route("/admin/bill-api")]
+    public IActionResult BillAPI() {
+        var sessionShippingOrderID = _accessor?.HttpContext?.Session.GetInt32("CurrentShippingOrderID");
+        IEnumerable<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoByShippingOrderID(Convert.ToInt32(sessionShippingOrderID));
+        List<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByID(Convert.ToInt32(sessionShippingOrderID)).ToList();
+        IEnumerable<Order> ordersPickingUp = _orderResponsitory.getOrderWaitPickingUpByOrderID(shippingOrders[0].FK_iOrderID);
+        IEnumerable<OrderDetail> orderDetailsPickingUp = _orderResponsitory.getOrderDetailPickingUpByOrderID(shippingOrders[0].FK_iOrderID);
+        List<Address> deliveryAddresses = _checkoutResponsitory.getAddressAccountByOrderID(shippingOrders[0].FK_iOrderID).ToList();
+        AdminViewModel model = new AdminViewModel {
+            ShippingOrders = shippingOrders,
+            SellerInfos = sellerInfos,
+            OrdersPickingUp = ordersPickingUp,
+            OrderDetailsPickingUp = orderDetailsPickingUp,
+            Addresses = deliveryAddresses
+        };
+        return Ok(model); 
     }
 }

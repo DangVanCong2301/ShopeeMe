@@ -7,10 +7,12 @@ public interface IOrderResponsitory
     IEnumerable<Order> getOrderWaitDeliveryByOrderID(int orderID);
     IEnumerable<Order> getOrderWaitSettlementByShopID(int shopID);
     IEnumerable<Order> getOrderWaitPickupByShopID(int shopID);
+    IEnumerable<Order> getOrderWaitPickingUpByOrderID(int orderID);
     IEnumerable<Order> getOrderProcessedByShopID(int shopID);
     IEnumerable<OrderDetail> getProductsOrderByUserIDWaitSettlement(int userID);
     IEnumerable<OrderDetail> getProductsOrderByUserID(int userID);
     IEnumerable<OrderDetail> getOrderDetailWaitSettlementByOrderID(int orderID);
+    IEnumerable<OrderDetail> getOrderDetailPickingUpByOrderID(int orderID);
     IEnumerable<OrderDetail> getOrderDetailWaitDeliveyByOrderID(int orderID);
     bool confirmOrderAboutPickup(int orderID, int userID);
     bool confirmOrderAboutWaitDelivery(int orderID, int userID);

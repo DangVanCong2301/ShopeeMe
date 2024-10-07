@@ -117,12 +117,12 @@ function showAll(data) {
                                         </div>
                                         <!-- End Of Expenses -->
                                         <div class="admin__main-income">
-                                            <div class="admin__main-to-do-list-item">
+                                            <div class="admin__main-to-do-list-item admin__main-to-do-list-item-shipping-picker">
                                                 <div class="admin__main-to-do-list-numb">
-                                                    0
+                                                    ${data.shippingPickers.length}
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
-                                                    Đã xử lý
+                                                    Đang lấy hàng
                                                 </div>
                                             </div>
                                         </div>
@@ -134,7 +134,18 @@ function showAll(data) {
                                                     0
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
-                                                    Đơn huỷ
+                                                    Đang giao hàng
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Of Expenses -->
+                                        <div class="admin__main-income">
+                                            <div class="admin__main-to-do-list-item">
+                                                <div class="admin__main-to-do-list-numb">
+                                                    0
+                                                </div>
+                                                <div class="admin__main-to-do-list-sub">
+                                                    Đã hoàn thành
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +166,7 @@ function showAll(data) {
                                                     0
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
-                                                    Sản phẩm bị khoá
+                                                    Khoá sản phẩm
                                                 </div>
                                             </div>
                                         </div>
@@ -165,7 +176,7 @@ function showAll(data) {
                                                     0
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
-                                                    Sản phẩm hết hàng
+                                                    Khoá cửa hàng
                                                 </div>
                                             </div>
                                         </div>
@@ -353,6 +364,10 @@ function showAll(data) {
         showWaitingPickup(data);
     });
 
+    document.querySelector(".admin__main-to-do-list-item-shipping-picker").addEventListener('click', () => {
+        showShippingPicker(data);
+    });
+
 }
 
 function showWaitingSettlment(data) {
@@ -469,6 +484,62 @@ function showWaitingPickup(data) {
                     </div>
     `;
     document.querySelector(".admin__container").innerHTML = htmlWaitPickup;
+}
+
+function showShippingPicker(data) {
+    let htmlShippingPicker = "";
+    htmlShippingPicker += 
+    `
+    <div class="admin__orders-waiting">
+                        <div class="admin__add-product-container">
+                            <div class="admin__add-product-header">
+                                <div class="admin__add-product-header-item active">
+                                    Tất cả
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Chờ xác nhận  
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Đang giao
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Đã giao
+                                </div>
+                            </div>
+                            <div class="admin__setup-shop-body">
+                                <div class="admin__setup-shop-container">
+                                    <div class="admin__profile-shop-body-header">
+                                        <div class="admin__add-product-title">
+                                            ${data.shippingPickers.length} Đơn hàng 
+                                        </div>
+                                    </div>
+                                    <div class="admin__order-container">
+                                        <div class="admin__order-table">
+                                            <div class="admin__order-table-header">
+                                                <div class="admin__order-table-header-row">
+                                                    <div class="admin__order-table-header-col">Mã đơn hàng</div>
+                                                    <div class="admin__order-table-header-col">Cửa hàng</div>
+                                                    <div class="admin__order-table-header-col">Ngày lấy dự kiến</div>
+                                                    <div class="admin__order-table-header-col">Tổng tiền</div>
+                                                    <div class="admin__order-table-header-col">Trạng thái</div>
+                                                    <div class="admin__order-table-header-col">Xem</div>
+                                                </div>
+                                            </div>
+     
+                                            <div class="admin__order-table-body">`;
+    htmlShippingPicker += 
+                                            data.htmlShippingPickerItem;
+    htmlShippingPicker += 
+                                            `</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="admin__order-more">Xem tất cả</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    `;
+    document.querySelector(".admin__container").innerHTML = htmlShippingPicker;
 }
 
 // Theme Color

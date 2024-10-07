@@ -44,6 +44,12 @@ public class SellerResponsitory : ISellerResponsitory
         return _context.SellerInfos.FromSqlRaw("EXEC sp_GetSellerInfoBySellerID @PK_iSellerID", sellerIDParam);
     }
 
+    public IEnumerable<SellerInfo> getSellerInfoByShippingOrderID(int shippingOrderID)
+    {
+        SqlParameter shippingOrderIDParam = new SqlParameter("@PK_iShippingOrderID", shippingOrderID);
+        return _context.SellerInfos.FromSqlRaw("EXEC sp_GetSellerInfoByShippingOrderID @PK_iShippingOrderID", shippingOrderIDParam);
+    }
+
     public IEnumerable<Seller> loginAccount(string phone, string password)
     {
         SqlParameter phoneParam = new SqlParameter("@sSellerPhone", phone);

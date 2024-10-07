@@ -36,6 +36,12 @@ public class OrderResponsitory : IOrderResponsitory
         return _context.Orders.FromSqlRaw("SET DATEFORMAT dmy EXEC sp_GetOrderByID @FK_iUserID, @FK_iShopID, @dDate", userIDParam, shopIDParam, dateParam);
     }
 
+    public IEnumerable<OrderDetail> getOrderDetailPickingUpByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetOrderDetailPickingUpByOrderID @PK_iOrderID", orderIDParam);
+    }
+
     public IEnumerable<OrderDetail> getOrderDetailWaitDeliveyByOrderID(int orderID)
     {
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
@@ -64,6 +70,12 @@ public class OrderResponsitory : IOrderResponsitory
     {
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
         return _context.Orders.FromSqlRaw("EXEC sp_GetOrderWaitDeliveryByOrderID @PK_iOrderID", orderIDParam);
+    }
+
+    public IEnumerable<Order> getOrderWaitPickingUpByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderWaitPickingUpByOrderID @PK_iOrderID", orderIDParam);
     }
 
     public IEnumerable<Order> getOrderWaitPickupByShopID(int shopID)
