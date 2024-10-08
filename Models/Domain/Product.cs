@@ -12,10 +12,7 @@ public class Product {
     public int iQuantity { get; set; }
     public string sProductDescription { get; set; }
     public int iIsVisible { get; set; }
-    [NotMapped]
     public DateTime dCreateTime {get; set;}
-
-    [NotMapped]
     public DateTime dUpdateTime { get; set; }
     [NotMapped]
     public DateTime dDeleteTime {get; set;}
