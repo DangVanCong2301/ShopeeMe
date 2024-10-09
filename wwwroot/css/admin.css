@@ -1014,6 +1014,40 @@
     display: block;
 }
 
+/* Product Update Form */
+.admin-account__update-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.admin-account__update-title {
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.admin-account__update-label {
+    font-weight: bold;
+}
+
+.admin-account__update-div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.admin__update-product-pic {
+    display: flex;
+    column-gap: 10px;
+}
+
+.admin__update-product-pic-value {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+}
+
 /* Transport Modal */
 .transport-form {
     background-color: var(--white-color);

@@ -121,7 +121,7 @@ public class SellerController : Controller
             htmlProductItem += $"           <div class='admin-tool__more'>";
             htmlProductItem += $"               <i class='uil uil-ellipsis-v admin-tool__more-icon'></i>";
             htmlProductItem += $"               <div class='admin-tool__more-container'>";
-            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openUpdateAccount()'>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openUpdateProduct({item.PK_iProductID})'>";
             htmlProductItem += $"                       <i class='uil uil-pen admin-tool__more-item-icon'></i>";
             htmlProductItem += $"                       <span>Chỉnh sửa</span>";
             htmlProductItem += $"                   </div>";
@@ -150,6 +150,12 @@ public class SellerController : Controller
             HtmlProductItem = htmlProductItem
         };
         return Ok(model);
+    }
+
+    [HttpGet]
+    [Route("/seller/product-detail/{productID}")]
+    public IActionResult ProductDetailAPI(int productID = 0) {
+        return Ok();
     }
 
     [HttpGet]

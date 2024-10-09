@@ -16,6 +16,7 @@ namespace Project.Models
         public DbSet<SliderShop> SliderShops { get; set; }
         public DbSet<ParentCategory> ParentCategories { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryModel> CategoryModels { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Cart> Carts { get; set; }
@@ -61,6 +62,10 @@ namespace Project.Models
             });
 
             modelBuilder.Entity<Category>(entity => {
+                entity.HasKey(e => e.PK_iCategoryID);
+            });
+
+            modelBuilder.Entity<CategoryModel>(entity => {
                 entity.HasKey(e => e.PK_iCategoryID);
             });
 
