@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Project.Models.Domain;
 
 public class SellerController : Controller
 {
@@ -9,7 +10,18 @@ public class SellerController : Controller
     private readonly IShippingOrderRepository _shippingOrderRepository;
     private readonly ICheckoutResponsitory _checkoutResponsitory;
     private readonly IHttpContextAccessor _accessor;
-    public SellerController(IHttpContextAccessor accessor, IUserResponsitory userResponsitory, ISellerResponsitory sellerResponsitory, IShopResponsitory shopResponsitory, IOrderResponsitory orderResponsitory, IShippingOrderRepository shippingOrderRepository, ICheckoutResponsitory checkoutResponsitory)
+    private readonly ICategoryResponsitory _categoryResponsitory;
+    private readonly IProductResponsitory _productResponsitory;
+    public SellerController(
+        IHttpContextAccessor accessor, 
+        IUserResponsitory userResponsitory, 
+        ISellerResponsitory sellerResponsitory, 
+        IShopResponsitory shopResponsitory, 
+        IOrderResponsitory orderResponsitory, 
+        IShippingOrderRepository shippingOrderRepository, 
+        ICheckoutResponsitory checkoutResponsitory,
+        ICategoryResponsitory categoryResponsitory,
+        IProductResponsitory productResponsitory)
     {
         _accessor = accessor;
         _userResponsitory = userResponsitory;
@@ -18,6 +30,8 @@ public class SellerController : Controller
         _orderResponsitory = orderResponsitory;
         _shippingOrderRepository = shippingOrderRepository;
         _checkoutResponsitory = checkoutResponsitory;
+        _categoryResponsitory = categoryResponsitory;
+        _productResponsitory = productResponsitory;
     }
 
     [HttpGet]
@@ -155,7 +169,16 @@ public class SellerController : Controller
     [HttpGet]
     [Route("/seller/product-detail/{productID}")]
     public IActionResult ProductDetailAPI(int productID = 0) {
-        return Ok();
+        List<Product> products = _productResponsitory.getProductByID(productID).ToList();
+        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategoriesByShopID(products[0].FK_iStoreID);
+        IEnumerable<Discount> discounts = _productResponsitory.getDiscounts();
+        SellerViewModel model = new SellerViewModel
+        {
+            Categories = categories,
+            Discounts = discounts,
+            Products = products
+        };
+        return Ok(model);
     }
 
     [HttpGet]

@@ -1048,6 +1048,27 @@
     border-radius: 4px;
 }
 
+.admin__update-product-industry-propose {
+    display: none;
+}
+
+    .admin__update-product-industry-propose.show {
+        display: block;
+    }
+
+.admin__update-product-discount {
+    display: flex;
+    column-gap: 10px;
+}
+
+.admin__update-product-discount-choose {
+    display: none;
+}
+
+    .admin__update-product-discount-choose.show {
+        display: block;
+    }
+
 /* Transport Modal */
 .transport-form {
     background-color: var(--white-color);
@@ -1936,7 +1957,11 @@
     align-items: center;
     color: var(--primary-color);
     cursor: pointer;
-} 
+}
+
+.admin__update-product-file {
+    display: none;
+}
 
 .admin__add-product-table-add-img-pic-icon {
     font-size: 24px;
@@ -2062,6 +2087,7 @@
 }
 
 .admin__add-product-table-industry-icon {
+    padding: 0 4px;
     font-size: 18px;
     color: rgba(0, 0, 0, .54);
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Project.Models.Domain;
 
 namespace Project.Models
 {
@@ -17,6 +18,7 @@ namespace Project.Models
         public DbSet<ParentCategory> ParentCategories { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryModel> CategoryModels { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Cart> Carts { get; set; }
@@ -67,6 +69,11 @@ namespace Project.Models
 
             modelBuilder.Entity<CategoryModel>(entity => {
                 entity.HasKey(e => e.PK_iCategoryID);
+            });
+
+            modelBuilder.Entity<Discount>(entity =>
+            {
+                entity.HasKey(e => e.PK_iDiscountID);
             });
 
             modelBuilder.Entity<Product>(entity => {

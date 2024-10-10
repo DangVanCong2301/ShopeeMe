@@ -1,3 +1,5 @@
+using Project.Models.Domain;
+
 public class SellerViewModel
 {
     public Status Status { get; set; }
@@ -15,5 +17,7 @@ public class SellerViewModel
     public IEnumerable<SellerInfo> SellerInfos { get; set; }
     public IEnumerable<ShippingOrder> ShippingOrders { get; set; }
     public IEnumerable<Address> DeliveryAddresses { get; set; }
+    public IEnumerable<CategoryModel> Categories { get; set; }
+    public IEnumerable<Discount> Discounts { get; set; }
     public IEnumerable<Product> Products { get; set; }
 }

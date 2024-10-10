@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
+using Project.Models.Domain;
 
 public class ProductResponsitory : IProductResponsitory {
     private readonly DatabaseContext _context;
@@ -48,5 +49,10 @@ public class ProductResponsitory : IProductResponsitory {
     {
         SqlParameter parentCategoryParam = new SqlParameter("@FK_iParentCategoryID", parentCategoryID);
         return _context.Products.FromSqlRaw("EXEC sp_SelectProductsByParentCategoryIDIfRoleAdmin @FK_iParentCategoryID", parentCategoryParam);
+    }
+
+    public IEnumerable<Discount> getDiscounts()
+    {
+        return _context.Discounts.FromSqlRaw("sp_GetDiscounts");
     }
 }

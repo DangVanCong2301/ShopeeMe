@@ -10,6 +10,12 @@ public class CategoryResponsitory : ICategoryResponsitory
         _context = context;
     }
 
+    public IEnumerable<CategoryModel> getAllCategoriesByShopID(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@FK_iShopID", shopID);
+        return _context.CategoryModels.FromSqlRaw("EXEC sp_GetAllCategoriesByShopID @FK_iShopID", shopIDParam);
+    }
+
     public IEnumerable<Category> getCategories()
     {
         return _context.Categories.FromSqlRaw("EXEC sp_SelectCategories");

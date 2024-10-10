@@ -2,7 +2,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class Product {
     public int PK_iProductID { get; set; }
+    public int FK_iStoreID { get; set; }
+    public int FK_iParentCategoryID { get; set; }
     public int FK_iCategoryID { get; set; }
+    public int FK_iDiscountID { get; set; }
+    public string sParentCategoryName { get; set; }
     public string sProductName { get; set; }
     public string sStoreName { get; set; }
     public string sCategoryName { get; set; }
