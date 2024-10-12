@@ -152,7 +152,7 @@ input, textarea, button {
 .modal__confirm-btns {
     margin-top: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     column-gap: 10px;
 }
 
