@@ -879,7 +879,7 @@ function setProductDetail(data) {
                             <div class="admin-account__update-div">
                                 <label for="" class="admin-account__update-label">Ngành hàng</label>
                                 <div class="admin__add-product-table-industry-container">
-                                    <input type="text" class="admin__add-product-table-industry-input" readonly value="${data.products[0].sParentCategoryName} > ${data.products[0].sCategoryName}" placeholder="Chọn ngành hàng">
+                                    <input type="text" class="admin__add-product-table-industry-input admin__update-product-industry-input" readonly value="${data.products[0].sParentCategoryName} > ${data.products[0].sCategoryName}" placeholder="Chọn ngành hàng">
                                     <i class="uil uil-pen admin__add-product-table-industry-icon admin__update-product-industry-icon"></i>
                                 </div>
                                 <div class="admin__update-product-industry-propose">
@@ -890,15 +890,15 @@ function setProductDetail(data) {
     data.categories.forEach(element => {
         if (data.products[0].fK_iCategoryID == element.pK_iCategoryID) {
             htmlUpdateProductFrom += `
-                                                <div class="admin__add-product-table-industry-propose-item">
+                                                <div class="admin__add-product-table-industry-propose-item admin__update-product-industry-item">
                                                     <input type="radio" checked name="category" value="${element.pK_iCategoryID}" class="admin__add-product-table-industry-propose-item-input">
-                                                    <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">${element.sParentCategoryName} &gt; ${element.sCategoryName} </label>
+                                                    <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label admin__update-product-industry-label">${element.sParentCategoryName} &gt; ${element.sCategoryName} </label>
                                                 </div>`;
         } else {
             htmlUpdateProductFrom += `
-                                                <div class="admin__add-product-table-industry-propose-item">
+                                                <div class="admin__add-product-table-industry-propose-item admin__update-product-industry-item">
                                                     <input type="radio" name="category" value="${element.pK_iCategoryID}" class="admin__add-product-table-industry-propose-item-input">
-                                                    <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">${element.sParentCategoryName} &gt; ${element.sCategoryName} </label>
+                                                    <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label admin__update-product-industry-label">${element.sParentCategoryName} &gt; ${element.sCategoryName} </label>
                                                 </div>`;
         }
     
@@ -938,7 +938,7 @@ function setProductDetail(data) {
                                         </div>`;
     }
                                         htmlUpdateProductFrom += `
-                                        <div class="admin__add-product-sell-table-type" onclick="showUpdateProductDiscount()">
+                                        <div class="admin__add-product-sell-table-type admin__update-product-dicount-type">
                                             <i class="uil uil-plus admin__add-product-sell-table-type-icon"></i>
                                             <span class="admin__add-product-sell-table-type-sub">Thêm khoảng giảm giá</span>
                                         </div>
@@ -946,7 +946,7 @@ function setProductDetail(data) {
                                     <div class="admin__add-product-sell-table-discount-sub">
                                         Mua nhiều giảm giá sẽ bị ẩn khi sản phẩm đang tham gia Mua Kèm Deal Sốc hay Combo Khuyến Mãi 
                                     </div>
-                                    <div class="admin__update-product-discount-choose show">
+                                    <div class="admin__update-product-discount-choose">
                                         <div class="admin__add-product-table-industry-propose">
                                             <div class="admin__add-product-table-industry-propose-title">Mức giảm giá được đề xuất</div>
                                             <div class="admin__add-product-table-industry-list">`;
@@ -954,19 +954,19 @@ function setProductDetail(data) {
         if (element.dPerDiscount == 1) {
             htmlUpdateProductFrom += `
                                                 <div class="admin__add-product-table-industry-propose-item">
-                                                    <input type="radio" checked class="admin__add-product-table-industry-propose-item-input">
+                                                    <input type="radio" name="discount" checked class="admin__add-product-table-industry-propose-item-input">
                                                     <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">0%</label>
                                                 </div>`;
         } else if (data.products[0].fK_iDiscountID == element.pK_iDiscountID) {
             htmlUpdateProductFrom += `
                                                 <div class="admin__add-product-table-industry-propose-item">
-                                                    <input type="radio" checked class="admin__add-product-table-industry-propose-item-input">
+                                                    <input type="radio" checked name="discount" class="admin__add-product-table-industry-propose-item-input">
                                                     <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">${Math.floor(element.dPerDiscount * 100)}%</label>
                                                 </div>`;
         } else {
             htmlUpdateProductFrom += `
                                                 <div class="admin__add-product-table-industry-propose-item">
-                                                    <input type="radio" class="admin__add-product-table-industry-propose-item-input">
+                                                    <input type="radio" name="discount" class="admin__add-product-table-industry-propose-item-input">
                                                     <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">${Math.floor(element.dPerDiscount * 100) }%</label>
                                                 </div>`;
         }
@@ -982,24 +982,32 @@ function setProductDetail(data) {
                                 <label for="" class="admin-account__update-label">Vận chuyển</label>
                                 <div class="admin__add-product-table-industry-container">
                                     <input type="text" value="${data.products[0].sTransportName} (${money_2(data.products[0].dTransportPrice)})" class="admin__add-product-table-industry-input" readonly placeholder="Chọn giá vận chuyển">
-                                    <i class="uil uil-pen admin__add-product-table-industry-icon"></i>
+                                    <i class="uil uil-pen admin__add-product-table-industry-icon admin__update-product-transport-icon"></i>
                                 </div>
-                                <div class="admin__update-product-transport-choose">
+                                <div class="admin__update-product-transport-choose hide-on-destop">
                                     <div class="admin__add-product-table-industry-propose">
                                         <div class="admin__add-product-table-industry-propose-title">Giá vận chuyển đề xuất</div>
-                                        <div class="admin__add-product-table-industry-list">
+                                        <div class="admin__add-product-table-industry-list">`;
+                                        data.transportPrices.forEach(element => {
+                                            if (data.products[0].fK_iTransportID == element.pK_iTransportID) {
+                                                htmlUpdateProductFrom += 
+                                            `
                                             <div class="admin__add-product-table-industry-propose-item">
-                                                <input type="radio" checked class="admin__add-product-table-industry-propose-item-input">
-                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">Miễn phí vận chuyển (0 đ)</label>
+                                                <input type="radio" checked name="transport" class="admin__add-product-table-industry-propose-item-input">
+                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">${element.sTransportName} (${element.sTransportPriceSub})</label>
                                             </div>
+                                            `;
+                                            } else {
+                                                htmlUpdateProductFrom += 
+                                                `
                                             <div class="admin__add-product-table-industry-propose-item">
-                                                <input type="radio" class="admin__add-product-table-industry-propose-item-input">
-                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">Nhanh (0 đ - 16.500 đ)</label>
+                                                <input type="radio" name="transport" class="admin__add-product-table-industry-propose-item-input">
+                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">${element.sTransportName} (${element.sTransportPriceSub})</label>
                                             </div>
-                                            <div class="admin__add-product-table-industry-propose-item">
-                                                <input type="radio" class="admin__add-product-table-industry-propose-item-input">
-                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">Hoả tốc (50.000 đ - 60.500 đ)</label>
-                                            </div>
+                                                `;
+                                            }
+                                        });
+                                        htmlUpdateProductFrom += `
                                         </div>
                                     </div>
                                 </div>
@@ -1009,7 +1017,7 @@ function setProductDetail(data) {
                     <div class="address-form__new-footer">
                         <div class="address-form__new-footer-btns">
                             <button class="btn" onclick="closeModal()">Thoát</button>
-                            <button class="btn btn--primary address-form__new-btn">Cập nhât</button>
+                            <button class="btn btn--primary address-form__new-btn admin__update-product-btn-submit">Cập nhât</button>
                         </div>
                     </div>
                 </div>
@@ -1030,6 +1038,31 @@ function setProductDetail(data) {
     document.querySelector(".admin__update-product-industry-icon").onclick = () => {
         document.querySelector(".admin__update-product-industry-propose").classList.toggle("show");
     };
+
+    document.querySelector(".admin__update-product-dicount-type").onclick = () => {
+        document.querySelector(".admin__update-product-discount-choose").classList.toggle("show");
+    };
+
+    document.querySelector(".admin__update-product-transport-icon").onclick = () => {
+        document.querySelector(".admin__update-product-transport-choose").classList.toggle("hide-on-destop");
+    };
+
+    const categoryUpdate = document.getElementsByName("category");
+    let categoryCheck = "";
+    for (let i = 0; i < categoryUpdate.length; i++) {
+        categoryUpdate.item(i).onchange = () => {
+            const categoryItem = categoryUpdate.item(i).parentNode;
+            document.querySelector(".admin__update-product-industry-input").value = categoryItem.querySelector(".admin__update-product-industry-label").innerText;
+            document.querySelector(".admin__update-product-industry-propose").classList.remove("show");
+            categoryCheck = categoryUpdate.item(i).value;
+        }
+    }
+
+    document.querySelector(".admin__update-product-btn-submit").addEventListener("click", () => {
+        console.log(categoryCheck);
+        
+    });
+
 }
 
 // Show Add Product

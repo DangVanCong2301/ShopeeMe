@@ -10,4 +10,5 @@ public interface IProductResponsitory {
     IEnumerable<Product> getProductsByCategoryIDAndSortReduce(int categoryID);
     // product discount
     IEnumerable<Discount> getDiscounts();
+    IEnumerable<TransportPrice> getTransportPrice();
 }

@@ -55,4 +55,9 @@ public class ProductResponsitory : IProductResponsitory {
     {
         return _context.Discounts.FromSqlRaw("sp_GetDiscounts");
     }
+
+    public IEnumerable<TransportPrice> getTransportPrice()
+    {
+        return _context.TransportPrices.FromSqlRaw("sp_GetTransportPrice");
+    }
 }

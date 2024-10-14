@@ -19,5 +19,6 @@ public class SellerViewModel
     public IEnumerable<Address> DeliveryAddresses { get; set; }
     public IEnumerable<CategoryModel> Categories { get; set; }
     public IEnumerable<Discount> Discounts { get; set; }
+    public IEnumerable<TransportPrice> TransportPrices { get; set; }
     public IEnumerable<Product> Products { get; set; }
 }

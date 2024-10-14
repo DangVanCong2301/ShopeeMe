@@ -172,10 +172,12 @@ public class SellerController : Controller
         List<Product> products = _productResponsitory.getProductByID(productID).ToList();
         IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategoriesByShopID(products[0].FK_iStoreID);
         IEnumerable<Discount> discounts = _productResponsitory.getDiscounts();
+        IEnumerable<TransportPrice> transportPrices = _productResponsitory.getTransportPrice();
         SellerViewModel model = new SellerViewModel
         {
             Categories = categories,
             Discounts = discounts,
+            TransportPrices = transportPrices,
             Products = products
         };
         return Ok(model);

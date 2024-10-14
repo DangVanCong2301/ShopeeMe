@@ -19,6 +19,7 @@ namespace Project.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryModel> CategoryModels { get; set; }
         public DbSet<Discount> Discounts { get; set; }
+        public DbSet<TransportPrice> TransportPrices { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Cart> Carts { get; set; }
@@ -74,6 +75,10 @@ namespace Project.Models
             modelBuilder.Entity<Discount>(entity =>
             {
                 entity.HasKey(e => e.PK_iDiscountID);
+            });
+
+            modelBuilder.Entity<TransportPrice>(entity => {
+                entity.HasKey(e => e.PK_iTransportID);
             });
 
             modelBuilder.Entity<Product>(entity => {

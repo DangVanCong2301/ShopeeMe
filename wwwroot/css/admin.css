@@ -2090,6 +2090,7 @@
     padding: 0 4px;
     font-size: 18px;
     color: rgba(0, 0, 0, .54);
+    cursor: pointer;
 }
 
 .admin__add-product-table-desc-textarea {
@@ -2166,6 +2167,7 @@
     border: 1px dashed var(--border-color);
     border-radius: 4px;
     color: var(--primary-color);
+    cursor: pointer;
 }
 
 .admin__add-product-sell-table-type-icon {
