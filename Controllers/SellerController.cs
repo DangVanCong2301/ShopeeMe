@@ -63,6 +63,9 @@ public class SellerController : Controller
         IEnumerable<Order> ordersWaitPickup = _orderResponsitory.getOrderWaitPickupByShopID(Convert.ToInt32(sessionShopID));
         IEnumerable<Order> ordersProcessed = _orderResponsitory.getOrderProcessedByShopID(Convert.ToInt32(sessionShopID));
         IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByShopID(Convert.ToInt32(sessionShopID));
+        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategoriesByShopID(Convert.ToInt32(sessionShopID));
+        IEnumerable<Discount> discounts = _productResponsitory.getDiscounts();
+        IEnumerable<TransportPrice> transportPrices = _productResponsitory.getTransportPrice();
         IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionShopID));
         string htmlOrdersWaitSettlmentItem = "";
         string htmlOrdersWaitPickupItem = "";
@@ -160,6 +163,9 @@ public class SellerController : Controller
             HtmlOrdersWaitPickupItem = htmlOrdersWaitPickupItem,
             HtmlOrdersProcessedItem = htmlOrdersProcessedItem,
             ShippingOrders = shippingOrders,
+            Categories = categories,
+            Discounts = discounts,
+            TransportPrices = transportPrices,
             Products = products,
             HtmlProductItem = htmlProductItem
         };
@@ -179,6 +185,63 @@ public class SellerController : Controller
             Discounts = discounts,
             TransportPrices = transportPrices,
             Products = products
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/seller/update-product")]
+    public IActionResult UpdateProduct(int productID = 0, int categoryID = 0, int discountID = 0, int transportID = 0, string productName = "", int quantity = 0, string productDesc = "", string imageUrl = "", double price = 0) {
+        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
+        _productResponsitory.updateProduct(productID, categoryID, discountID, transportID, productName, quantity, productDesc, imageUrl, price);
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Cập nhật sản phẩm thành công"
+        };
+        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionShopID));
+        string htmlProductItem = "";
+        foreach (var item in products) {
+            htmlProductItem += $"    <div class='admin__product-item'>";
+            htmlProductItem += $"        <div class='admin__product-item-input'>";
+            htmlProductItem += $"            <input type='checkbox' class='admin__product-item-input-checkbox'>";
+            htmlProductItem += $"        </div>";
+            htmlProductItem += $"        <div class='admin__product-item-info'>";
+            htmlProductItem += $"           <div class='admin__product-item-img' style='background-image: url(/img/{item.sImageUrl});'></div>";
+            htmlProductItem += $"           <div class='admin__product-item-desc'>";
+            htmlProductItem += $"               <div class='admin__product-item-name'>{item.sProductName}";
+            htmlProductItem += $"                   <div class='cart__body-product-name-progress'>";
+            htmlProductItem += $"                       <div class='cart__body-product-name-progress-line'></div>";
+            htmlProductItem += $"                       <div class='cart__body-product-name-progress-line'></div>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"               </div>";
+            htmlProductItem += $"               <img src='/img/voucher.png' class='admin__product-item-voucher' alt=''>";
+            htmlProductItem += $"           </div>";
+            htmlProductItem += $"       </div>";
+            htmlProductItem += $"       <div class='admin__product-item-type'>{item.sCategoryName}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-cre-time'>{item.dCreateTime.ToString("dd/MM/yyyy")}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-update-time'>{item.dUpdateTime.ToString("dd/MM/yyyy")}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-qnt'>{item.iQuantity}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-operation'>";
+            htmlProductItem += $"           <div class='admin-tool__more'>";
+            htmlProductItem += $"               <i class='uil uil-ellipsis-v admin-tool__more-icon'></i>";
+            htmlProductItem += $"               <div class='admin-tool__more-container'>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openUpdateProduct({item.PK_iProductID})'>";
+            htmlProductItem += $"                       <i class='uil uil-pen admin-tool__more-item-icon'></i>";
+            htmlProductItem += $"                       <span>Chỉnh sửa</span>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openDeleteAccount()'>";
+            htmlProductItem += $"                       <i class='uil uil-trash admin-tool__more-item-icon'></i>";
+            htmlProductItem += $"                       <span>Xoá</span>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"               </div>";
+            htmlProductItem += $"           </div>";
+            htmlProductItem += $"       </div>";
+            htmlProductItem += $"   </div>";
+        }
+        SellerViewModel model = new SellerViewModel {
+            Status = status,
+            Products = products,
+            HtmlProductItem = htmlProductItem
         };
         return Ok(model);
     }

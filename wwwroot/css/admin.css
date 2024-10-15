@@ -1995,6 +1995,20 @@
     border: 1px solid #bbb;
 }
 
+.admin__add-product-table-input-name.err,
+.admin__add-product-table-industry-container.err,
+.admin__add-product-table-desc-textarea.err,
+.admin__add-product-sell-table-price.err,
+.admin__add-product-sell-table-price.err {
+    border: 1px solid var(--primary-color);
+}
+
+.admin__add-product-msg-err {
+    color: var(--primary-color);
+    font-size: 12px;
+    margin-top: 10px;
+}
+
 .admin__add-product-table-industry-container {
     position: relative;
     height: 40px;

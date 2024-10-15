@@ -60,4 +60,33 @@ public class ProductResponsitory : IProductResponsitory {
     {
         return _context.TransportPrices.FromSqlRaw("sp_GetTransportPrice");
     }
+
+    public bool updateProduct(int productID, int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price)
+    {
+        SqlParameter productIDParam = new SqlParameter("@PK_iProductID", productID);
+        SqlParameter categoryIDParam = new SqlParameter("@FK_iCategoryID", categoryID);
+        SqlParameter discountIDParam = new SqlParameter("@FK_iDiscountID", discountID);
+        SqlParameter transportIDParam = new SqlParameter("@FK_iTransportID", transportID);
+        SqlParameter productNameParam = new SqlParameter("@sProductName", productName);
+        SqlParameter quantityParam = new SqlParameter("@iQuantity", quantity);
+        SqlParameter productDescParam = new SqlParameter("@sProductDescription", productDescription);
+        SqlParameter imageUrlParam = new SqlParameter("@sImageUrl", imageUrl);
+        SqlParameter priceParam = new SqlParameter("@dPrice", price);
+        SqlParameter isVisibleParam = new SqlParameter("@iIsVisible", 1);
+        SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
+        _context.Database.ExecuteSqlRaw("sp_UpdateProduct @PK_iProductID, @FK_iCategoryID, @FK_iDiscountID, @FK_iTransportID, @sProductName, @iQuantity, @sProductDescription, @sImageUrl, @dPrice, @iIsVisible, @dUpdateTime",
+            productIDParam,
+            categoryIDParam,
+            discountIDParam,
+            transportIDParam,
+            productNameParam,
+            quantityParam,
+            productDescParam,
+            imageUrlParam,
+            priceParam,
+            isVisibleParam,
+            updateTimeParam
+        );
+        return true;
+    }
 }
