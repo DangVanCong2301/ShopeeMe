@@ -1149,7 +1149,7 @@ function setProductDetail(data) {
 
 }
 
-// Show Add Product
+// ------------------------------ Show Add Product ------------------------------
 function showAddProduct(data) {
     let htmlAddProduct = "";
     htmlAddProduct += 
@@ -1192,7 +1192,7 @@ function showAddProduct(data) {
                                                     </div>
                                                 </div>
                                                 <div class="admin__update-product-pic">
-                                                    <img src="/img/no_img.jpg" class="admin__update-product-pic-value" alt="">
+                                                    <img src="/img/no_img.jpg" class="admin__add-product-pic-value" alt="">
                                                     <label class="admin__add-product-table-add-img-pic">
                                                         <div class="admin__add-product-table-add-img-pic-container">
                                                             <i class="uil uil-image-plus admin__add-product-table-add-img-pic-icon"></i>
@@ -1200,6 +1200,7 @@ function showAddProduct(data) {
                                                                 Thêm hình ảnh (0/9)
                                                             </div>
                                                         </div>
+                                                        <input type="file" accept="image/jpeg, image/png, image/jpg" class="admin__update-product-file" id="input-file-add">
                                                     </label>
                                                 </div>
                                             </div>
@@ -1207,20 +1208,20 @@ function showAddProduct(data) {
                                         <div class="admin__add-product-table-row">
                                             <div class="admin__add-product-table-col-sub admin__add-product-table-col-sub-center">Tên sản phẩm</div>
                                             <div class="admin__add-product-table-col-value">
-                                                <input type="text" class="admin__add-product-table-input-name err" placeholder="Tên sản phẩm + Thương hiệu + Model + Thông số kỹ thuật" onblur="showPropse()">
-                                                <div class="admin__add-product-msg-err">Tên sản phẩm không được trống!</div>
+                                                <input type="text" class="admin__add-product-table-input-name" placeholder="Tên sản phẩm + Thương hiệu + Model + Thông số kỹ thuật">
+                                                <div class="admin__add-product-msg-err admin__add-product-msg-err-name hide-on-destop">Tên sản phẩm không được trống!</div>
                                             </div>
                                         </div>
                                         <div class="admin__add-product-table-row">
                                             <div class="admin__add-product-table-col-sub admin__add-product-table-col-sub-center">Ngành hàng</div>
                                             <div class="admin__add-product-table-col-value">
                                                 <div class="admin__add-product-table-industry">
-                                                    <div class="admin__add-product-table-industry-container err">
+                                                    <div class="admin__add-product-table-industry-container">
                                                         <input type="text" class="admin__add-product-table-industry-input" placeholder="Chọn ngành hàng" readonly>
                                                         <i class="uil uil-pen admin__add-product-table-industry-icon"></i>
                                                     </div>
-                                                    <div class="admin__add-product-msg-err">Bạn chưa chọn ngành hàng!</div>
-                                                    <div class="admin__add-product-table-industry-propose">
+                                                    <div class="admin__add-product-msg-err admin__add-product-msg-err-category hide-on-destop">Bạn chưa chọn ngành hàng!</div>
+                                                    <div class="admin__add-product-table-industry-propose hide-on-destop">
                                                         <div class="admin__add-product-table-industry-propose-title">Ngành hàng được đề xuất</div>
                                                         <div class="admin__add-product-table-industry-list">`;
                                                         data.categories.forEach(element => {
@@ -1241,8 +1242,8 @@ function showAddProduct(data) {
                                         <div class="admin__add-product-table-row">
                                             <div class="admin__add-product-table-col-sub">Mô tả sản phẩm</div>
                                             <div class="admin__add-product-table-col-value">
-                                                <textarea name="" id="" class="admin__add-product-table-desc-textarea err"></textarea>
-                                                <div class="admin__add-product-msg-err">Mô tả sản phẩm không được trống!</div>
+                                                <textarea name="" id="" class="admin__add-product-table-desc-textarea"></textarea>
+                                                <div class="admin__add-product-msg-err admin__add-product-msg-err-desc hide-on-destop">Mô tả sản phẩm không được trống!</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1259,11 +1260,11 @@ function showAddProduct(data) {
                                         <div class="admin__add-product-table-row">
                                             <div class="admin__add-product-table-col-sub admin__add-product-table-col-sub-center">Giá</div>
                                             <div class="admin__add-product-table-col-value">
-                                                <div class="admin__add-product-sell-table-price err l-4">
+                                                <div class="admin__add-product-sell-table-price l-4">
                                                     <div class="admin__add-product-sell-table-price-unit">đ</div>
                                                     <input type="text" class="admin__add-product-sell-table-price-input" placeholder="Nhập vào">
                                                 </div>
-                                                <div class="admin__add-product-msg-err">Giá sản phẩm không được trống!</div>
+                                                <div class="admin__add-product-msg-err admin__add-product-msg-err-price hide-on-destop">Giá sản phẩm không được trống!</div>
                                             </div>
                                         </div>
                                         <div class="admin__add-product-table-row">
@@ -1271,9 +1272,9 @@ function showAddProduct(data) {
                                             <div class="admin__add-product-table-col-value">
                                                 <div class="admin__add-product-sell-table-discount">
                                                     <div class="admin__update-product-discount">
-                                                        <div class="admin__add-product-sell-table-price err">
+                                                        <div class="admin__add-product-sell-table-price admin__add-product-discount-container">
                                                             <div class="admin__add-product-sell-table-price-unit">%</div>
-                                                            <input type="text" value="0" readonly class="admin__add-product-sell-table-price-input admin__update-product-discount-input" placeholder="Nhập vào">
+                                                            <input type="text" value="0" readonly class="admin__add-product-sell-table-price-input admin__add-product-discount-input" placeholder="Nhập vào">
                                                         </div>
                                                         <div class="admin__add-product-sell-table-type l-4">
                                                             <i class="uil uil-plus admin__add-product-sell-table-type-icon"></i>
@@ -1283,8 +1284,8 @@ function showAddProduct(data) {
                                                     <div class="admin__add-product-sell-table-discount-sub">
                                                         Mua nhiều giảm giá sẽ bị ẩn khi sản phẩm đang tham gia Mua Kèm Deal Sốc hay Combo Khuyến Mãi 
                                                     </div>
-                                                    <div class="admin__add-product-msg-err">Bạn chưa chọn giảm giá!</div>
-                                                    <div class="admin__add-product-table-industry-propose">
+                                                    <div class="admin__add-product-msg-err admin__add-product-msg-err-discount hide-on-destop">Bạn chưa chọn giảm giá!</div>
+                                                    <div class="admin__add-product-table-industry-propose admin__add-product-discount-choose hide-on-destop">
                                                         <div class="admin__add-product-table-industry-propose-title">Giảm giá được đề xuất</div>
                                                         <div class="admin__add-product-table-industry-list">`;
                                                         data.discounts.forEach(element => {
@@ -1293,17 +1294,18 @@ function showAddProduct(data) {
                                                             `
                                                             <div class="admin__add-product-table-industry-propose-item">
                                                                 <input type="radio" name="discount" value="${element.pK_iDiscountID}" class="admin__add-product-table-industry-propose-item-input">
-                                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label admin__update-product-discount-label">0%</label>
+                                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label admin__add-product-discount-label">0%</label>
+                                                            </div>
+                                                                `;
+                                                            } else {
+                                                            htmlAddProduct += 
+                                                                `
+                                                            <div class="admin__add-product-table-industry-propose-item">
+                                                                <input type="radio" name="discount" value="${element.pK_iDiscountID}" class="admin__add-product-table-industry-propose-item-input">
+                                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label admin__add-product-discount-label">${Math.floor(element.dPerDiscount * 100) }%</label>
                                                             </div>
                                                                 `;
                                                             }
-                                                            htmlAddProduct += 
-                                                            `
-                                                            <div class="admin__add-product-table-industry-propose-item">
-                                                                <input type="radio" name="discount" class="admin__add-product-table-industry-propose-item-input">
-                                                                <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">${Math.floor(element.dPerDiscount * 100)}%</label>
-                                                            </div>
-                                                            `;
                                                         });
                                                         htmlAddProduct += `
                                                         </div>
@@ -1325,22 +1327,24 @@ function showAddProduct(data) {
                                         <div class="admin__add-product-table-row">
                                             <div class="admin__add-product-table-col-sub admin__add-product-table-col-sub-center">Giá vận chuyển</div>
                                             <div class="admin__add-product-table-col-value">
-                                                <div class="admin__add-product-table-industry-container err">
+                                                <div class="admin__add-product-table-industry-container">
                                                     <input type="text" class="admin__add-product-table-industry-input admin__update-product-transport-input" readonly placeholder="Chọn giá vận chuyển">
                                                     <i class="uil uil-pen admin__add-product-table-industry-icon admin__update-product-transport-icon"></i>
                                                 </div>
-                                                <div class="admin__add-product-msg-err">Bạn chưa chọn giá vận chuyển cho sản phẩm!</div>
-                                                <div class="admin__add-product-table-industry-propose">
+                                                <div class="admin__add-product-msg-err admin__add-product-msg-err-transport hide-on-destop">Bạn chưa chọn giá vận chuyển cho sản phẩm!</div>
+                                                <div class="admin__add-product-table-industry-propose hide-on-destop">
                                                     <div class="admin__add-product-table-industry-propose-title">Giá vận chuyển được đề xuất</div>
-                                                    <div class="admin__add-product-table-industry-list">
+                                                    <div class="admin__add-product-table-industry-list">`;
+                                                    data.transportPrices.forEach(element => {
+                                                        htmlAddProduct +=
+                                                        `
                                                         <div class="admin__add-product-table-industry-propose-item">
-                                                            <input type="radio" class="admin__add-product-table-industry-propose-item-input">
-                                                            <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">Sắc đẹp > Trang điểm mắt </label>
+                                                            <input type="radio" name="transport" value="${element.pK_iTransportID}" class="admin__add-product-table-industry-propose-item-input">
+                                                            <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label admin__update-product-transport-label">${element.sTransportName} (${element.sTransportPriceSub})</label>
                                                         </div>
-                                                        <div class="admin__add-product-table-industry-propose-item">
-                                                            <input type="radio" class="admin__add-product-table-industry-propose-item-input">
-                                                            <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label">Sắc đẹp > Kem trị mụn </label>
-                                                        </div>
+                                                        `;
+                                                    });
+                                                    htmlAddProduct += `
                                                     </div>
                                                 </div>
                                             </div>
@@ -1357,7 +1361,166 @@ function showAddProduct(data) {
                     </div>
     `;
     document.querySelector(".admin__container").innerHTML = htmlAddProduct;
+
+    let productImgAdd = document.querySelector(".admin__add-product-pic-value");
+    let inputImageAdd = document.getElementById("input-file-add");
+
+    inputImageAdd.onchange = () => {
+        productImgAdd.src = URL.createObjectURL(inputImageAdd.files[0]);
+    };
+
+    const categoryAdd = document.getElementsByName("category");
+    let categoryCheck = "";
+    for (let i = 0; i < categoryAdd.length; i++) {
+        if (categoryAdd.item(i).checked) {
+            categoryCheck = categoryAdd.item(i).value;
+        }
+        categoryAdd.item(i).onchange = () => {
+            const categoryItem = categoryAdd.item(i).parentNode;
+            document.querySelector(".admin__add-product-table-industry-input").value = categoryItem.querySelector(".admin__add-product-table-industry-propose-item-label").innerText;
+            document.querySelector(".admin__add-product-table-industry-propose").classList.add("hide-on-destop");
+            removeErrStyles(document.querySelector(".admin__add-product-table-industry-container"), document.querySelector(".admin__add-product-msg-err-category"))
+            categoryCheck = categoryAdd.item(i).value;
+        }
+    }
+
+    const discountAdd = document.getElementsByName("discount");
+    let discountCheck = "";
+    for (let i = 0; i < discountAdd.length; i++) {
+        if (discountAdd.item(i).checked) {
+            discountCheck = discountAdd.item(i).value;
+        }
+        discountAdd.item(i).onchange = () => {
+            const discountItem = discountAdd.item(i).parentNode;
+            document.querySelector(".admin__add-product-discount-input").value = discountItem.querySelector(".admin__add-product-discount-label").innerText[0];
+            document.querySelector(".admin__add-product-discount-choose").classList.add("hide-on-destop");
+            removeErrStyles(document.querySelector(".admin__add-product-discount-container"), document.querySelector(".admin__add-product-msg-err-discount"))
+            discountCheck = discountAdd.item(i).value;
+        }
+    }
+
+    addEvent();
+
+    document.querySelector(".admin__add-product-btn-save-show").addEventListener("click", () => {
+        productNameAddValidation();
+        categoryNameAddValidation();
+        productDiscountAddValidation();
+    });
 }
+
+function showErrStyles(input, msg) {
+    input.classList.add("err");
+    msg.classList.remove("hide-on-destop");
+}
+
+function removeErrStyles(input, msg) {
+    input.classList.remove("err");
+    msg.classList.add("hide-on-destop");
+}
+
+let isValidate = true;
+function productNameAddValidation() {
+    const productNameAddInput = document.querySelector(".admin__add-product-table-input-name");
+    const productNameAddMsg = document.querySelector(".admin__add-product-msg-err-name");
+    let productNameAdd = productNameAddInput.value;
+
+    if (productNameAdd === "") {
+        showErrStyles(productNameAddInput, productNameAddMsg);
+        productNameAddMsg.innerHTML = "Tên sản phẩm không được trống!";
+        isValidate = false;
+    } else {
+        removeErrStyles(productNameAddInput, productNameAddMsg);
+        productNameAddMsg.innerHTML = "";
+        isValidate = true;
+    }
+    return isValidate;
+}
+
+function categoryNameAddValidation() {
+    const categoryNameAddInput = document.querySelector(".admin__add-product-table-industry-container");
+    const categoryNameAddMsg = document.querySelector(".admin__add-product-msg-err-category");
+    let categoryNameAdd = document.querySelector(".admin__add-product-table-industry-input").value;
+
+    if (categoryNameAdd === "") {
+        showErrStyles(categoryNameAddInput, categoryNameAddMsg);
+        categoryNameAddMsg.innerHTML = "Bạn chưa chọn ngành hàng!";
+        document.querySelector(".admin__add-product-table-industry-propose").classList.remove("hide-on-destop");
+        isValidate = false;
+    } else {
+        removeErrStyles(categoryNameAddInput, categoryNameAddMsg);
+        categoryNameAddMsg.innerHTML = "";
+        isValidate = true;
+    }
+    return isValidate;
+}
+
+function productDescAddValidation() {
+    const productDescAddInput = document.querySelector(".admin__add-product-table-desc-textarea");
+    const productDescAddMsg = document.querySelector(".admin__add-product-msg-err-desc");
+    let productDescAdd = productDescAddInput.innerText;
+
+    if (productDescAdd === "") {
+        showErrStyles(productDescAddInput, productDescAddMsg);
+        productDescAddMsg.innerHTML = "Mô tả sản phẩm không được trống!";
+        isValidate = false;
+    } else {
+        removeErrStyles(productDescAddInput, productDescAddMsg);
+        productDescAddMsg.innerHTML = "";
+        isValidate = true;
+    }
+    return isValidate;
+}
+
+function productPriceAddValidation() {
+    const productPriceAddInput = document.querySelector(".admin__add-product-sell-table-price");
+    const productPriceAddMsg = document.querySelector(".admin__add-product-msg-err-price");
+    let productPriceAdd = document.querySelector(".admin__add-product-sell-table-price-input").value;
+
+    if (productPriceAdd === "") {
+        showErrStyles(productPriceAddInput, productPriceAddMsg);
+        productPriceAddMsg.innerHTML = "Giá sản phẩm không được trống!";
+        isValidate = false;
+    } else {
+        removeErrStyles(productPriceAddInput, productPriceAddMsg);
+        productPriceAddMsg.innerHTML = "";
+        isValidate = true; 
+    }
+    return isValidate;
+}
+
+function productDiscountAddValidation() {
+    const productDiscountAddInput = document.querySelector(".admin__add-product-discount-container");
+    const productDiscountAddMsg = document.querySelector(".admin__add-product-msg-err-discount");
+    let productDiscountAdd = document.querySelector(".admin__add-product-discount-input").value;
+    
+    if (parseInt(productDiscountAdd) === 0) {
+        showErrStyles(productDiscountAddInput, productDiscountAddMsg);
+        productDiscountAddMsg.innerHTML = "Bạn chưa chọn giảm giá sản phẩm!";
+        document.querySelector(".admin__add-product-discount-choose").classList.remove("hide-on-destop");
+        isValidate = false;
+    } else {
+        removeErrStyles(productDiscountAddInput, productDiscountAddMsg);
+        productDiscountAddMsg.innerHTML = "";
+        isValidate = true;
+    }
+    return isValidate;
+}
+
+function addEvent() {
+    document.querySelector(".admin__add-product-table-input-name").addEventListener('blur', () => {
+        productNameAddValidation();
+    });
+
+    document.querySelector(".admin__add-product-table-desc-textarea").addEventListener('blur', () => {
+        productDescAddValidation();
+    });
+
+    document.querySelector(".admin__add-product-sell-table-price-input").addEventListener('blur', () => {
+        productPriceAddValidation();
+    });
+}
+
+// -----------------------------------------------------------------------------------
 
 // Show Chat Management
 function showChatManagement(data) {

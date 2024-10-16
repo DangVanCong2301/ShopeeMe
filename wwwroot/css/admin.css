@@ -1959,6 +1959,12 @@
     cursor: pointer;
 }
 
+.admin__add-product-pic-value {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+}
+
 .admin__update-product-file {
     display: none;
 }
@@ -1997,6 +2003,7 @@
 
 .admin__add-product-table-input-name.err,
 .admin__add-product-table-industry-container.err,
+.admin__add-product-discount-container.err,
 .admin__add-product-table-desc-textarea.err,
 .admin__add-product-sell-table-price.err,
 .admin__add-product-sell-table-price.err {
