@@ -1260,9 +1260,9 @@ function showAddProduct(data) {
                                         <div class="admin__add-product-table-row">
                                             <div class="admin__add-product-table-col-sub admin__add-product-table-col-sub-center">Giá</div>
                                             <div class="admin__add-product-table-col-value">
-                                                <div class="admin__add-product-sell-table-price l-4">
+                                                <div class="admin__add-product-sell-table-price admin__add-product-price-container l-4">
                                                     <div class="admin__add-product-sell-table-price-unit">đ</div>
-                                                    <input type="text" class="admin__add-product-sell-table-price-input" placeholder="Nhập vào">
+                                                    <input type="text" class="admin__add-product-sell-table-price-input admin__add-product-price-input" placeholder="Nhập vào">
                                                 </div>
                                                 <div class="admin__add-product-msg-err admin__add-product-msg-err-price hide-on-destop">Giá sản phẩm không được trống!</div>
                                             </div>
@@ -1313,6 +1313,15 @@ function showAddProduct(data) {
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="admin__add-product-table-row">
+                                            <div class="admin__add-product-table-col-sub admin__add-product-table-col-sub-center">Số lượng</div>
+                                            <div class="admin__add-product-table-col-value">
+                                                <div class="admin__add-product-sell-table-price admin__add-product-quantity l-4">
+                                                    <input type="text" class="admin__add-product-sell-table-price-input admin__add-product-quantity-input" placeholder="Nhập vào số lượng">
+                                                </div>
+                                                <div class="admin__add-product-msg-err admin__add-product-msg-err-quantity hide-on-destop">Giá sản phẩm không được trống!</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1327,12 +1336,12 @@ function showAddProduct(data) {
                                         <div class="admin__add-product-table-row">
                                             <div class="admin__add-product-table-col-sub admin__add-product-table-col-sub-center">Giá vận chuyển</div>
                                             <div class="admin__add-product-table-col-value">
-                                                <div class="admin__add-product-table-industry-container">
-                                                    <input type="text" class="admin__add-product-table-industry-input admin__update-product-transport-input" readonly placeholder="Chọn giá vận chuyển">
-                                                    <i class="uil uil-pen admin__add-product-table-industry-icon admin__update-product-transport-icon"></i>
+                                                <div class="admin__add-product-table-industry-container admin__add-product-transport-container">
+                                                    <input type="text" class="admin__add-product-table-industry-input admin__add-product-transport-input" readonly placeholder="Chọn giá vận chuyển">
+                                                    <i class="uil uil-pen admin__add-product-table-industry-icon admin__add-product-transport-icon"></i>
                                                 </div>
                                                 <div class="admin__add-product-msg-err admin__add-product-msg-err-transport hide-on-destop">Bạn chưa chọn giá vận chuyển cho sản phẩm!</div>
-                                                <div class="admin__add-product-table-industry-propose hide-on-destop">
+                                                <div class="admin__add-product-table-industry-propose admin__add-product-transport-choose hide-on-destop">
                                                     <div class="admin__add-product-table-industry-propose-title">Giá vận chuyển được đề xuất</div>
                                                     <div class="admin__add-product-table-industry-list">`;
                                                     data.transportPrices.forEach(element => {
@@ -1340,7 +1349,7 @@ function showAddProduct(data) {
                                                         `
                                                         <div class="admin__add-product-table-industry-propose-item">
                                                             <input type="radio" name="transport" value="${element.pK_iTransportID}" class="admin__add-product-table-industry-propose-item-input">
-                                                            <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label admin__update-product-transport-label">${element.sTransportName} (${element.sTransportPriceSub})</label>
+                                                            <label for="admin__add-product-table-industry-propose-item-input" class="admin__add-product-table-industry-propose-item-label admin__add-product-transport-label">${element.sTransportName} (${element.sTransportPriceSub})</label>
                                                         </div>
                                                         `;
                                                     });
@@ -1367,6 +1376,18 @@ function showAddProduct(data) {
 
     inputImageAdd.onchange = () => {
         productImgAdd.src = URL.createObjectURL(inputImageAdd.files[0]);
+    };
+
+    document.querySelector(".admin__add-product-table-industry-icon").onclick = () => {
+        document.querySelector(".admin__add-product-table-industry-propose").classList.toggle("hide-on-destop");
+    };
+
+    document.querySelector(".admin__add-product-sell-table-type").onclick = () => {
+        document.querySelector(".admin__add-product-discount-choose").classList.toggle("hide-on-destop");
+    };
+
+    document.querySelector(".admin__add-product-transport-icon").onclick = () => {
+        document.querySelector(".admin__add-product-transport-choose").classList.toggle("hide-on-destop");
     };
 
     const categoryAdd = document.getElementsByName("category");
@@ -1399,12 +1420,53 @@ function showAddProduct(data) {
         }
     }
 
+    const transportAdd = document.getElementsByName("transport");
+    let transportCheck = "";
+    for (let i = 0; i < transportAdd.length; i++) {
+        if (transportAdd.item(i).checked) {
+            transportCheck = transportAdd.item(i).value;
+        }
+        transportAdd.item(i).onchange = () => {
+            const transportItem = transportAdd.item(i).parentNode;
+            document.querySelector(".admin__add-product-transport-input").value = transportItem.querySelector(".admin__add-product-transport-label").innerText;
+            document.querySelector(".admin__add-product-transport-choose").classList.add("hide-on-destop");
+            removeErrStyles(document.querySelector(".admin__add-product-transport-container"), document.querySelector(".admin__add-product-msg-err-transport"))
+            transportCheck = transportAdd.item(i).value;
+        }
+    }
+
     addEvent();
 
     document.querySelector(".admin__add-product-btn-save-show").addEventListener("click", () => {
         productNameAddValidation();
         categoryNameAddValidation();
+        productPriceAddValidation();
         productDiscountAddValidation();
+        productQuantityAddValidation();
+        productTransportAddValidation();
+        if (productNameAddValidation() && categoryNameAddValidation() && productDiscountAddValidation() && productTransportAddValidation()) {
+            const productName = document.querySelector(".admin__add-product-table-input-name").value;
+            const productPrice = document.querySelector(".admin__add-product-price-input").value;
+            const productDesc = document.querySelector(".admin__add-product-table-desc-textarea").value;
+            const productQuantity = document.querySelector(".admin__add-product-quantity-input").value;
+            let imageUrl = "";
+            if (data.sellerID == 1) {
+                imageUrl = "f4shop/product/dong_ho/dong_ho_1.jpg";
+            } else if (data.sellerID == 2) {
+                imageUrl = "vietmark/product/am_sieu_toc/am_sieu_toc_9.jpg";
+            } else if (data.sellerID == 3) {
+                imageUrl = "laneige/product/kem_chong_nang/kem_chong_nang_1.jpg";
+            } else {
+                imageUrl = "cocolux/product/cham_soc_gia_mat/cham_soc_da_mat_1.jpg";
+            }
+            const categoryID = parseInt(categoryCheck);
+            const price = parseInt(productPrice);
+            const discountID = parseInt(discountCheck);
+            const quantity = parseInt(productQuantity);
+            const transportID = parseInt(transportCheck);
+            console.log({imageUrl, productName, categoryID, productDesc, price, discountID, quantity, transportID});
+            
+        }
     });
 }
 
@@ -1472,13 +1534,28 @@ function productDescAddValidation() {
 }
 
 function productPriceAddValidation() {
-    const productPriceAddInput = document.querySelector(".admin__add-product-sell-table-price");
+    const productPriceAddInput = document.querySelector(".admin__add-product-price-container");
     const productPriceAddMsg = document.querySelector(".admin__add-product-msg-err-price");
-    let productPriceAdd = document.querySelector(".admin__add-product-sell-table-price-input").value;
+    let productPriceAdd = document.querySelector(".admin__add-product-price-input").value;
+    console.log('a');
+        
+    const constainsNumber = () => {
+        for (let i = 0; i < productPriceAdd.length; i++) {
+            if (isNaN(parseInt(productPriceAdd[i]))) {
+                return true;
+                break;
+            }
+        }
+        return false;
+    }; 
 
     if (productPriceAdd === "") {
         showErrStyles(productPriceAddInput, productPriceAddMsg);
         productPriceAddMsg.innerHTML = "Giá sản phẩm không được trống!";
+        isValidate = false;
+    } else if (constainsNumber()) {
+        showErrStyles(productPriceAddInput, productPriceAddMsg);
+        productPriceAddMsg.innerHTML = "Giá sản phẩm phải là số!";
         isValidate = false;
     } else {
         removeErrStyles(productPriceAddInput, productPriceAddMsg);
@@ -1506,17 +1583,66 @@ function productDiscountAddValidation() {
     return isValidate;
 }
 
+function productQuantityAddValidation() {
+    const productQuantityAddInput = document.querySelector(".admin__add-product-quantity");
+    const productQuantityAddMsg = document.querySelector(".admin__add-product-msg-err-quantity");
+    let productQuantityAdd = document.querySelector(".admin__add-product-quantity-input").value;
+    
+    const constainsNumber = () => {
+        for (let i = 0; i < productQuantityAdd.length; i++) {
+            if (isNaN(parseInt(productQuantityAdd[i]))) {
+                return true;
+                break;
+            }
+        }
+        return false;
+    }; 
+
+    if (productQuantityAdd === "") {
+        showErrStyles(productQuantityAddInput, productQuantityAddMsg);
+        productQuantityAddMsg.innerHTML = "Bạn chưa nhập số lượng sản phẩm!";
+        isValidate = false;
+    } else if (constainsNumber()) {
+        showErrStyles(productQuantityAddInput, productQuantityAddMsg);
+        productQuantityAddMsg.innerHTML = "Số lượng sản phẩm phải là số!";
+        isValidate = false;
+    } else {
+        removeErrStyles(productQuantityAddInput, productQuantityAddMsg);
+        productQuantityAddMsg.innerHTML = "";
+        isValidate = true;
+    }
+    return isValidate;
+}
+
+function productTransportAddValidation() {
+    const productTransportAddInput = document.querySelector(".admin__add-product-transport-container");
+    const productTransportAddMsg = document.querySelector(".admin__add-product-msg-err-transport");
+    let productTransportAdd = document.querySelector(".admin__add-product-transport-input").value;
+
+    if (productTransportAdd === "") {
+        showErrStyles(productTransportAddInput, productTransportAddMsg);
+        productTransportAddMsg.innerHTML = "Bạn chưa chọn giá vận chuyển sản phẩm!";
+        document.querySelector(".admin__add-product-transport-choose").classList.remove("hide-on-destop");
+        isValidate = false;
+    } else {
+        removeErrStyles(productTransportAddInput, productTransportAddMsg);
+        productTransportAddMsg.innerHTML = "";
+        isValidate = true;
+    }
+    return isValidate;
+}
+
 function addEvent() {
     document.querySelector(".admin__add-product-table-input-name").addEventListener('blur', () => {
         productNameAddValidation();
     });
 
-    document.querySelector(".admin__add-product-table-desc-textarea").addEventListener('blur', () => {
-        productDescAddValidation();
+    document.querySelector(".admin__add-product-price-input").addEventListener('blur', () => {
+        productPriceAddValidation();
     });
 
-    document.querySelector(".admin__add-product-sell-table-price-input").addEventListener('blur', () => {
-        productPriceAddValidation();
+    document.querySelector(".admin__add-product-quantity-input").addEventListener('blur', () => {
+        productQuantityAddValidation();
     });
 }
 

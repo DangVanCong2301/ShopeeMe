@@ -2005,8 +2005,9 @@
 .admin__add-product-table-industry-container.err,
 .admin__add-product-discount-container.err,
 .admin__add-product-table-desc-textarea.err,
-.admin__add-product-sell-table-price.err,
-.admin__add-product-sell-table-price.err {
+.admin__add-product-price-container.err,
+.admin__add-product-discount-container.err,
+.admin__add-product-quantity.err {
     border: 1px solid var(--primary-color);
 }
 
