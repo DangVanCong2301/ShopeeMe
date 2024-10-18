@@ -1,4 +1,94 @@
 /* Screen Container */
+/* Tool Bar */
+.phone-toolbar {
+    height: 30px;
+    background-color: var(--white-color);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+}
+
+.phone-toolbar__time {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.phone-toolbar__right {
+    display: flex;
+    column-gap: 8px;
+    margin-top: 4px;
+}
+
+.phone-toolbar__wave {
+   display: flex;
+   align-items: end;
+   column-gap: 2px;
+}
+
+.phone-toolbar__wave-1 {
+    display: block;
+    width: 4px;
+    height: 4px;
+    background-color: #000;
+    border-radius: 1px;
+}
+
+.phone-toolbar__wave-2 {
+    display: block;
+    width: 4px;
+    height: 6px;
+    background-color: #000;
+    border-radius: 1px;
+}
+
+.phone-toolbar__wave-3 {
+    display: block;
+    width: 4px;
+    height: 8px;
+    background-color: #000;
+    border-radius: 1px;
+}
+
+.phone-toolbar__wave-4 {
+    display: block;
+    width: 4px;
+    height: 11px;
+    background-color: #ccc;
+    border-radius: 1px;
+}
+
+.phone-toolbar__battery {
+    position: relative;
+    height: 12px;
+    width: 24px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+}
+
+.phone-toolbar__battery-percent {
+    height: 9px;
+    width: 20px;
+    background-color: #000;
+    border-radius: 2px;
+    margin-left: .5px;
+}
+
+.phone-toolbar__battery::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 6px;
+    background-color: #ccc;
+    right: -3px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 1px;
+}
+
 /* Header */
 .phone-header {
     position: sticky;
@@ -447,6 +537,9 @@
     top: 0;
     right: 0;
     left: 0;
+}
+
+.phone-pickup__order-header-container {
     height: 50px;
     display: flex;
     align-items: center;
