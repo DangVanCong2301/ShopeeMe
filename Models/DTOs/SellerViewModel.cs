@@ -21,4 +21,5 @@ public class SellerViewModel
     public IEnumerable<Discount> Discounts { get; set; }
     public IEnumerable<TransportPrice> TransportPrices { get; set; }
     public IEnumerable<Product> Products { get; set; }
+    public int NewCreatedProductID { get; set; }
 }

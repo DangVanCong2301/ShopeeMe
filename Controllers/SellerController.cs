@@ -142,7 +142,7 @@ public class SellerController : Controller
             htmlProductItem += $"                       <i class='uil uil-pen admin-tool__more-item-icon'></i>";
             htmlProductItem += $"                       <span>Chỉnh sửa</span>";
             htmlProductItem += $"                   </div>";
-            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openDeleteAccount()'>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openDeleteProduct({item.PK_iProductID})'>";
             htmlProductItem += $"                       <i class='uil uil-trash admin-tool__more-item-icon'></i>";
             htmlProductItem += $"                       <span>Xoá</span>";
             htmlProductItem += $"                   </div>";
@@ -229,7 +229,133 @@ public class SellerController : Controller
             htmlProductItem += $"                       <i class='uil uil-pen admin-tool__more-item-icon'></i>";
             htmlProductItem += $"                       <span>Chỉnh sửa</span>";
             htmlProductItem += $"                   </div>";
-            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openDeleteAccount()'>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openDeleteProduct({item.PK_iProductID})'>";
+            htmlProductItem += $"                       <i class='uil uil-trash admin-tool__more-item-icon'></i>";
+            htmlProductItem += $"                       <span>Xoá</span>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"               </div>";
+            htmlProductItem += $"           </div>";
+            htmlProductItem += $"       </div>";
+            htmlProductItem += $"   </div>";
+        }
+        SellerViewModel model = new SellerViewModel {
+            Status = status,
+            Products = products,
+            HtmlProductItem = htmlProductItem
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/seller/add-product")]
+    public IActionResult AddProduct(int categoryID = 0, int discountID = 0, int transportID = 0, string productName = "", int quantity = 0, string productDesc = "", string imageUrl = "", double price = 0) {
+        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
+        _productResponsitory.insertProduct(categoryID, discountID, transportID, productName, quantity, productDesc, imageUrl, price);
+        Status status = new Status {
+            StatusCode = 1,
+            Message = "Thêm sản phẩm thành công!"
+        };
+        List<Product> product = _productResponsitory.searchProductByKeyword(productName).ToList();
+        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionShopID));
+        string htmlProductItem = "";
+        foreach (var item in products) {
+            htmlProductItem += $"    <div class='admin__product-item'>";
+            htmlProductItem += $"        <div class='admin__product-item-input'>";
+            htmlProductItem += $"            <input type='checkbox' class='admin__product-item-input-checkbox'>";
+            htmlProductItem += $"        </div>";
+            htmlProductItem += $"        <div class='admin__product-item-info'>";
+            htmlProductItem += $"           <div class='admin__product-item-img' style='background-image: url(/img/{item.sImageUrl});'></div>";
+            htmlProductItem += $"           <div class='admin__product-item-desc'>";
+            htmlProductItem += $"               <div class='admin__product-item-name'>{item.sProductName}";
+            htmlProductItem += $"                   <div class='cart__body-product-name-progress'>";
+            htmlProductItem += $"                       <div class='cart__body-product-name-progress-line'></div>";
+            htmlProductItem += $"                       <div class='cart__body-product-name-progress-line'></div>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"               </div>";
+            htmlProductItem += $"               <img src='/img/voucher.png' class='admin__product-item-voucher' alt=''>";
+            htmlProductItem += $"           </div>";
+            htmlProductItem += $"       </div>";
+            htmlProductItem += $"       <div class='admin__product-item-type'>{item.sCategoryName}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-cre-time'>{item.dCreateTime.ToString("dd/MM/yyyy")}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-update-time'>{item.dUpdateTime.ToString("dd/MM/yyyy")}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-qnt'>{item.iQuantity}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-operation'>";
+            htmlProductItem += $"           <div class='admin-tool__more'>";
+            htmlProductItem += $"               <i class='uil uil-ellipsis-v admin-tool__more-icon'></i>";
+            htmlProductItem += $"               <div class='admin-tool__more-container'>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openUpdateProduct({item.PK_iProductID})'>";
+            htmlProductItem += $"                       <i class='uil uil-pen admin-tool__more-item-icon'></i>";
+            htmlProductItem += $"                       <span>Chỉnh sửa</span>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openDeleteProduct({item.PK_iProductID})'>";
+            htmlProductItem += $"                       <i class='uil uil-trash admin-tool__more-item-icon'></i>";
+            htmlProductItem += $"                       <span>Xoá</span>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"               </div>";
+            htmlProductItem += $"           </div>";
+            htmlProductItem += $"       </div>";
+            htmlProductItem += $"   </div>";
+        }
+        SellerViewModel model = new SellerViewModel {
+            Status = status,
+            Products = products,
+            HtmlProductItem = htmlProductItem,
+            NewCreatedProductID = product[0].PK_iProductID
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/seller/delete-product")]
+    public IActionResult DeleteProduct(int productID = 0) {
+        Status status;
+        List<Product> checkProductInCart = _productResponsitory.checkProductInCart(productID).ToList();
+        List<Product> checkProductInOrder = _productResponsitory.checkProductInOrder(productID).ToList();
+        if (checkProductInCart.Count() != 0 || checkProductInOrder.Count() != 0) {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Sản phẩm đang liên quan tới dữ liệu khác, không thể xoá!"
+            };
+        } else {
+            _productResponsitory.deleteProductByID(productID);
+            status = new Status {
+                StatusCode = 1,
+                Message = "Xoá sản phẩm thành công"
+            };
+        }
+        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
+        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionShopID));
+        string htmlProductItem = "";
+        foreach (var item in products) {
+            htmlProductItem += $"    <div class='admin__product-item'>";
+            htmlProductItem += $"        <div class='admin__product-item-input'>";
+            htmlProductItem += $"            <input type='checkbox' class='admin__product-item-input-checkbox'>";
+            htmlProductItem += $"        </div>";
+            htmlProductItem += $"        <div class='admin__product-item-info'>";
+            htmlProductItem += $"           <div class='admin__product-item-img' style='background-image: url(/img/{item.sImageUrl});'></div>";
+            htmlProductItem += $"           <div class='admin__product-item-desc'>";
+            htmlProductItem += $"               <div class='admin__product-item-name'>{item.sProductName}";
+            htmlProductItem += $"                   <div class='cart__body-product-name-progress'>";
+            htmlProductItem += $"                       <div class='cart__body-product-name-progress-line'></div>";
+            htmlProductItem += $"                       <div class='cart__body-product-name-progress-line'></div>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"               </div>";
+            htmlProductItem += $"               <img src='/img/voucher.png' class='admin__product-item-voucher' alt=''>";
+            htmlProductItem += $"           </div>";
+            htmlProductItem += $"       </div>";
+            htmlProductItem += $"       <div class='admin__product-item-type'>{item.sCategoryName}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-cre-time'>{item.dCreateTime.ToString("dd/MM/yyyy")}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-update-time'>{item.dUpdateTime.ToString("dd/MM/yyyy")}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-qnt'>{item.iQuantity}</div>";
+            htmlProductItem += $"       <div class='admin__product-item-operation'>";
+            htmlProductItem += $"           <div class='admin-tool__more'>";
+            htmlProductItem += $"               <i class='uil uil-ellipsis-v admin-tool__more-icon'></i>";
+            htmlProductItem += $"               <div class='admin-tool__more-container'>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openUpdateProduct({item.PK_iProductID})'>";
+            htmlProductItem += $"                       <i class='uil uil-pen admin-tool__more-item-icon'></i>";
+            htmlProductItem += $"                       <span>Chỉnh sửa</span>";
+            htmlProductItem += $"                   </div>";
+            htmlProductItem += $"                   <div class='admin-tool__more-item' onclick='openDeleteProduct({item.PK_iProductID})'>";
             htmlProductItem += $"                       <i class='uil uil-trash admin-tool__more-item-icon'></i>";
             htmlProductItem += $"                       <span>Xoá</span>";
             htmlProductItem += $"                   </div>";

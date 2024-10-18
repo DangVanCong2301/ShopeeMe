@@ -1096,7 +1096,7 @@ function setProductDetail(data) {
     document.querySelector(".admin__update-product-btn-submit").addEventListener("click", () => {
         const productName = document.querySelector(".admin__update-product-input-name").value;
         const productQuantity = document.querySelector(".admin__update-product-input-qnt").value;
-        const productDesc = document.querySelector(".admin__update-product-input-desc").textContent;
+        const productDesc = document.querySelector(".admin__update-product-input-desc").value;
         const productPrice = document.querySelector(".admin__update-product-input-price").value;
 
         const productID = data.products[0].pK_iProductID;
@@ -1274,7 +1274,7 @@ function showAddProduct(data) {
                                                     <div class="admin__update-product-discount">
                                                         <div class="admin__add-product-sell-table-price admin__add-product-discount-container">
                                                             <div class="admin__add-product-sell-table-price-unit">%</div>
-                                                            <input type="text" value="0" readonly class="admin__add-product-sell-table-price-input admin__add-product-discount-input" placeholder="Nhập vào">
+                                                            <input type="text" value="" readonly class="admin__add-product-sell-table-price-input admin__add-product-discount-input" placeholder="Nhập vào">
                                                         </div>
                                                         <div class="admin__add-product-sell-table-type l-4">
                                                             <i class="uil uil-plus admin__add-product-sell-table-type-icon"></i>
@@ -1440,32 +1440,69 @@ function showAddProduct(data) {
     document.querySelector(".admin__add-product-btn-save-show").addEventListener("click", () => {
         productNameAddValidation();
         categoryNameAddValidation();
+        productDescAddValidation();
         productPriceAddValidation();
         productDiscountAddValidation();
         productQuantityAddValidation();
         productTransportAddValidation();
-        if (productNameAddValidation() && categoryNameAddValidation() && productDiscountAddValidation() && productTransportAddValidation()) {
+        if (productNameAddValidation() && categoryNameAddValidation() && productDescAddValidation() && productDiscountAddValidation() && productTransportAddValidation()) {
             const productName = document.querySelector(".admin__add-product-table-input-name").value;
             const productPrice = document.querySelector(".admin__add-product-price-input").value;
             const productDesc = document.querySelector(".admin__add-product-table-desc-textarea").value;
             const productQuantity = document.querySelector(".admin__add-product-quantity-input").value;
             let imageUrl = "";
             if (data.sellerID == 1) {
-                imageUrl = "f4shop/product/dong_ho/dong_ho_1.jpg";
+                imageUrl = "shop/f4shop/product/dong_ho/dong_ho_1.jpg";
             } else if (data.sellerID == 2) {
-                imageUrl = "vietmark/product/am_sieu_toc/am_sieu_toc_9.jpg";
+                imageUrl = "shop/vietmark/product/am_sieu_toc/am_sieu_toc_9.jpg";
             } else if (data.sellerID == 3) {
-                imageUrl = "laneige/product/kem_chong_nang/kem_chong_nang_1.jpg";
+                imageUrl = "shop/laneige/product/kem_chong_nang/kem_chong_nang_1.jpg";
             } else {
-                imageUrl = "cocolux/product/cham_soc_gia_mat/cham_soc_da_mat_1.jpg";
+                imageUrl = "shop/cocolux/product/cham_soc_gia_mat/cham_soc_da_mat_1.jpg";
             }
             const categoryID = parseInt(categoryCheck);
             const price = parseInt(productPrice);
             const discountID = parseInt(discountCheck);
             const quantity = parseInt(productQuantity);
             const transportID = parseInt(transportCheck);
-            console.log({imageUrl, productName, categoryID, productDesc, price, discountID, quantity, transportID});
             
+            openModal();
+            document.querySelector(".modal__body").innerHTML =
+            `
+                <div class="spinner"></div>
+            `;
+            var formData = new FormData();
+            formData.append("categoryID", categoryID);
+            formData.append("discountID", discountID);
+            formData.append("transportID", transportID);
+            formData.append("productName", productName);
+            formData.append("quantity", quantity);
+            formData.append("productDesc", productDesc);
+            formData.append("imageUrl", imageUrl);
+            formData.append("price", price);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', '/seller/add-product', true);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    const data = JSON.parse(xhr.responseText);
+
+                    console.log(data);
+
+                    if (data.status.statusCode == 1) {
+                        setTimeout(() => {
+                            closeModal();
+                            toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                            document.querySelector(".modal__body").innerHTML = "";
+                            setTimeout(() => {
+                                window.location.assign("/product/detail/" + data.newCreatedProductID + "");
+                            }, 1000)
+                        }, 2000);
+                    }
+                    
+                }
+            };
+            xhr.send(formData);
         }
     });
 }
@@ -1519,7 +1556,7 @@ function categoryNameAddValidation() {
 function productDescAddValidation() {
     const productDescAddInput = document.querySelector(".admin__add-product-table-desc-textarea");
     const productDescAddMsg = document.querySelector(".admin__add-product-msg-err-desc");
-    let productDescAdd = productDescAddInput.innerText;
+    let productDescAdd = productDescAddInput.value;
 
     if (productDescAdd === "") {
         showErrStyles(productDescAddInput, productDescAddMsg);
@@ -1537,7 +1574,6 @@ function productPriceAddValidation() {
     const productPriceAddInput = document.querySelector(".admin__add-product-price-container");
     const productPriceAddMsg = document.querySelector(".admin__add-product-msg-err-price");
     let productPriceAdd = document.querySelector(".admin__add-product-price-input").value;
-    console.log('a');
         
     const constainsNumber = () => {
         for (let i = 0; i < productPriceAdd.length; i++) {
@@ -1570,7 +1606,7 @@ function productDiscountAddValidation() {
     const productDiscountAddMsg = document.querySelector(".admin__add-product-msg-err-discount");
     let productDiscountAdd = document.querySelector(".admin__add-product-discount-input").value;
     
-    if (parseInt(productDiscountAdd) === 0) {
+    if (productDiscountAdd === "") {
         showErrStyles(productDiscountAddInput, productDiscountAddMsg);
         productDiscountAddMsg.innerHTML = "Bạn chưa chọn giảm giá sản phẩm!";
         document.querySelector(".admin__add-product-discount-choose").classList.remove("hide-on-destop");
@@ -1644,6 +1680,69 @@ function addEvent() {
     document.querySelector(".admin__add-product-quantity-input").addEventListener('blur', () => {
         productQuantityAddValidation();
     });
+}
+
+// ------------------------------ Show Delete Product ------------------------------
+function openDeleteProduct(productID) {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = 
+            `
+                <div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        Bạn có chắc muốn xoá sản phẩm này?
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                        <div class="modal__confirm-btn-send"onclick="deleteProduct(${productID})">Đồng ý</div>
+                    </div>
+                </div>
+            `;
+}
+
+function deleteProduct(productID) {
+    document.querySelector(".modal__body").innerHTML = 
+    `
+        <div class="spinner"></div>
+    `;
+    var formData = new FormData();
+    formData.append("productID", productID);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/seller/delete-product', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            if (data.status.statusCode == -1) {
+                setTimeout(() => {
+                    closeModal();
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "err", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        showAllProduct(data);
+                    }, 1000)
+                }, 2000);
+            } 
+
+            if (data.status.statusCode == 1) {
+                setTimeout(() => {
+                    closeModal();
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        showAllProduct(data);
+                    }, 1000)
+                }, 2000);
+            }
+            
+        }
+    };
+    xhr.send(formData);
 }
 
 // -----------------------------------------------------------------------------------

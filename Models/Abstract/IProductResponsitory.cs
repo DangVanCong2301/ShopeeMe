@@ -8,7 +8,12 @@ public interface IProductResponsitory {
     IEnumerable<Product> getProductByID(int productID);
     IEnumerable<Product> getProductsByCategoryIDAndSortIncre(int categoryID);
     IEnumerable<Product> getProductsByCategoryIDAndSortReduce(int categoryID);
+    IEnumerable<Product> searchProductByKeyword(string keyword);
+    IEnumerable<Product> checkProductInCart(int productID);
+    IEnumerable<Product> checkProductInOrder(int productID);
+    bool insertProduct(int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price);
     bool updateProduct(int productID, int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price);
+    bool deleteProductByID(int productID);
     // product discount
     IEnumerable<Discount> getDiscounts();
     IEnumerable<TransportPrice> getTransportPrice();
