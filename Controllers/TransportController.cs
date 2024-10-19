@@ -44,14 +44,14 @@ public class TransportController : Controller
     [HttpGet]
     [Route("/picker-api/{orderID?}")]
     public IActionResult PickerAPI(int orderID = 0) {
-        IEnumerable<Order> ordersWaitPickup = _transportRepository.getOrdersWaitPickup();
-        IEnumerable<Order> ordersPickingUp = _transportRepository.getOrderWaitPickingUp();
+        IEnumerable<ShippingOrder> ordersWaitPickup = _transportRepository.getShippingOrdersWaitPickup();
+        IEnumerable<ShippingPicker> ordersPickingUp = _transportRepository.getShippingPickerPickingUp();
         string htmlOrdersWaitPickupItem = "";
         foreach (var item in ordersWaitPickup) {
             htmlOrdersWaitPickupItem += $"  <div class='phone-pickup__work'>";
             htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
             htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'>Mã đơn hàng</div>";
-            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.PK_iOrderID}</div>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.FK_iOrderID}</div>";
             htmlOrdersWaitPickupItem += $"      </div>";
             htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
             htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'>Khách hàng</div>";
@@ -76,7 +76,7 @@ public class TransportController : Controller
             htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
             htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'></div>";
             htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>";
-            htmlOrdersWaitPickupItem += $"              <a href='javascript:openOrderDetail({item.PK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
+            htmlOrdersWaitPickupItem += $"              <a href='javascript:openOrderDetail({item.FK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
             htmlOrdersWaitPickupItem += $"          </div>";
             htmlOrdersWaitPickupItem += $"      </div>";
             htmlOrdersWaitPickupItem += $"  </div>";
@@ -86,7 +86,7 @@ public class TransportController : Controller
             htmlOrderPickingUpItem += $"  <div class='phone-pickup__work'>";
             htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
             htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'>Mã đơn hàng</div>";
-            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.PK_iOrderID}</div>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.FK_iOrderID}</div>";
             htmlOrderPickingUpItem += $"      </div>";
             htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
             htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'>Khách hàng</div>";
@@ -111,7 +111,7 @@ public class TransportController : Controller
             htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
             htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'></div>";
             htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>";
-            htmlOrderPickingUpItem += $"              <a href='javascript:openOrderDetail({item.PK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
+            htmlOrderPickingUpItem += $"              <a href='javascript:openOrderDetail({item.FK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
             htmlOrderPickingUpItem += $"          </div>";
             htmlOrderPickingUpItem += $"      </div>";
             htmlOrderPickingUpItem += $"  </div>";
@@ -121,6 +121,7 @@ public class TransportController : Controller
         IEnumerable<OrderDetail> orderDetailsPickingUp = _transportRepository.getOrderDetailPickingUpByOrderID(orderID);
         IEnumerable<Payment> payments = _transportRepository.getPaymentsTypeByOrderID(orderID);
         IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByOrderID(orderID);
+        IEnumerable<ShippingPicker> shippingPickers = _shippingOrderRepository.getShippingPickerByOrderID(orderID);
         TransportViewModel model = new TransportViewModel {
             OrdersWaitPickup = ordersWaitPickup,
             OrdersPickingUp = ordersPickingUp,
@@ -130,7 +131,8 @@ public class TransportController : Controller
             OrderDetails = orderDetails,
             orderDetailsPickingUp = orderDetailsPickingUp,
             Payments = payments,
-            ShippingOrders = shippingOrders
+            ShippingOrders = shippingOrders,
+            ShippingPickers = shippingPickers
         };
         return Ok(model);
     }  
@@ -144,8 +146,8 @@ public class TransportController : Controller
         _transportRepository.confirmOrderAboutPickingUp(order[0].PK_iOrderID);
         // Thêm đơn hàng lấy
         _transportRepository.insertShippingPicker(shippingOrderID, Convert.ToInt32(sessionUserID));
-        IEnumerable<Order> ordersWaitPickup = _transportRepository.getOrdersWaitPickup();
-        IEnumerable<Order> ordersPickingUp = _transportRepository.getOrderWaitPickingUp();
+        IEnumerable<ShippingOrder> ordersWaitPickup = _transportRepository.getShippingOrdersWaitPickup();
+        IEnumerable<ShippingPicker> ordersPickingUp = _transportRepository.getShippingPickerPickingUp();
         Status status = new Status {
             StatusCode = 1,
             Message = "Nhận đơn thành công!"
@@ -157,6 +159,48 @@ public class TransportController : Controller
         };
         return Ok(model);
     }
+
+    [HttpPost]
+    [Route("/picker-api/taken")]
+    public IActionResult PickerAPITakenOrder(int shippingPickerID = 0, int shippingOrderID = 0, int orderID = 0, string shippingPickerImg = "") {
+        System.Console.WriteLine("orderID: " + orderID);
+        Status status;
+        if (
+            _transportRepository.confirmShippingPickerAboutTaken(shippingPickerID) && 
+            _transportRepository.confirmShippingOrderAboutDelivered(shippingOrderID) && 
+            _transportRepository.updatePickerImage(shippingPickerID, shippingPickerImg)
+        ) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Cập nhật trạng thái thành công!"
+            };
+        }
+        else
+        {
+            status = new Status
+            {
+                StatusCode = -1,
+                Message = "Cập nhật trạng thái thất bại!"
+            };
+        }
+
+        IEnumerable<SellerInfo> sellerInfos = _transportRepository.getSellerInfoByOrderID(orderID);
+        IEnumerable<OrderDetail> orderDetails = _transportRepository.getOrderDetailWaitPickupByOrderID(orderID);
+        IEnumerable<OrderDetail> orderDetailsPickingUp = _transportRepository.getOrderDetailPickingUpByOrderID(orderID);
+        IEnumerable<Payment> payments = _transportRepository.getPaymentsTypeByOrderID(orderID);
+        IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByOrderID(orderID);
+        IEnumerable<ShippingPicker> shippingPickers = _shippingOrderRepository.getShippingPickerByOrderID(orderID);
+        TransportViewModel model = new TransportViewModel {
+            Status = status,
+            SellerInfos = sellerInfos,
+            OrderDetails = orderDetails,
+            orderDetailsPickingUp = orderDetailsPickingUp,
+            Payments = payments,
+            ShippingOrders = shippingOrders,
+            ShippingPickers = shippingPickers
+        };
+        return Ok(model);
+    } 
 
     [Route("/delivery")]
     [HttpGet]

@@ -1,6 +1,7 @@
 public class ShippingPicker
 {
     public int PK_iShippingPickerID { get; set; }
+    public int FK_iOrderStatusID { get; set; }
     public int FK_iShippingOrderID { get; set; }
     public int FK_iShippingUnitID { get; set; }
     public int FK_iOrderID { get; set; }

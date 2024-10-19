@@ -81,27 +81,29 @@ function openOrderListTab(data) {
     htmlOrderList += 
     `
                         <div class="phone-pickup__order-list">
-                            <div class="phone-toolbar">
-                                <div class="phone-toolbar__time">
-                                    9:12
-                                </div>
-                                <div class="phone-toolbar__right">
-                                    <div class="phone-toolbar__wave">
-                                        <span class="phone-toolbar__wave-1"></span>
-                                        <span class="phone-toolbar__wave-2"></span>
-                                        <span class="phone-toolbar__wave-3"></span>
-                                        <span class="phone-toolbar__wave-4"></span>
-                                    </div>
-                                    <div class="phone-toolbar__battery">
-                                        <div class="phone-toolbar__battery-percent"></div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="phone-pickup__order-header">
-                                <div class="phone-header__pickup-order-arrow phone-header__pickup-order-list-arrow">
-                                    <i class="uil uil-arrow-left phone-header__pickup-order-arrow-icon"></i>
+                                <div class="phone-toolbar">
+                                    <div class="phone-toolbar__time">
+                                        9:12
+                                    </div>
+                                    <div class="phone-toolbar__right">
+                                        <div class="phone-toolbar__wave">
+                                            <span class="phone-toolbar__wave-1"></span>
+                                            <span class="phone-toolbar__wave-2"></span>
+                                            <span class="phone-toolbar__wave-3"></span>
+                                            <span class="phone-toolbar__wave-4"></span>
+                                        </div>
+                                        <div class="phone-toolbar__battery">
+                                            <div class="phone-toolbar__battery-percent"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="phone-header__pickup-order-title">Chờ lấy hàng</div>
+                                <div class="phone-pickup__order-header-container">
+                                    <div class="phone-header__pickup-order-arrow phone-header__pickup-order-list-arrow">
+                                        <i class="uil uil-arrow-left phone-header__pickup-order-arrow-icon"></i>
+                                    </div>
+                                    <div class="phone-header__pickup-order-title">Chờ lấy hàng</div>
+                                </div>
                             </div>
                             <div class="phone-pickup__order-list-title">${data.ordersWaitPickup.length} đơn hàng</div>
                             <div class="phone-pickup__works">`;
@@ -167,9 +169,17 @@ function openOrderDetail(orderID) {
 
             console.log(data);
 
-            hideHeader();
-            hideBottomNav();
-            let htmlOrderDetail = "";
+            setDataOrderDetail(data);
+
+        }
+    }
+    xhr.send(null);
+}
+
+function setDataOrderDetail(data) {
+    hideHeader();
+    hideBottomNav();
+    let htmlOrderDetail = "";
             if (data.orderDetails.length != 0) {
                                     
                 htmlOrderDetail += 
@@ -309,7 +319,7 @@ function openOrderDetail(orderID) {
                                     <div class="phone-header__pickup-order-footer-title">Nhận đơn</div>
                                 </div>
                             </div>
-                 `;
+                 `;                    
             } else {
                 htmlOrderDetail += 
                 `
@@ -332,7 +342,7 @@ function openOrderDetail(orderID) {
                                         </div>
                                     </div>
                                     <div class="phone-pickup__order-header-container">
-                                        <div class="phone-header__pickup-order-arrow phone-header__pickup-order-detail-arrow">
+                                        <div class="phone-header__pickup-order-arrow phone-header__pickingup-order-detail-arrow">
                                             <i class="uil uil-arrow-left phone-header__pickup-order-arrow-icon"></i>
                                         </div>
                                         <div class="phone-header__pickup-order-title">Đơn hàng 01</div>
@@ -444,19 +454,33 @@ function openOrderDetail(orderID) {
                                         <div class="phone-pickup__order-detail-bottom-price">${money_2(totalItemPrice + totalTransportPrice)}</div>
                                     </div>
                                 </div>
-                                <div class="phone-pickup__order-footer" onclick="openReceiveOrderModal(${data.shippingOrders[0].pK_iShippingOrderID})">
-                                    <div class="phone-header__pickup-order-footer-title">Xác nhận lấy hàng</div>
+                                <div class="phone-pickup__order-footer">`;
+                                if (data.shippingPickers[0].fK_iOrderStatusID == 7) {
+                                    htmlOrderDetail +=
+                                    `
+                                    <div class="phone-header__pickup-order-footer-btn phone-pickup__got-good-btn" onclick="openGotGood(${data.shippingPickers[0].pK_iShippingPickerID}, ${data.shippingPickers[0].fK_iShippingOrderID}, ${data.shippingPickers[0].fK_iOrderID})">Xác nhận đã lấy hàng</div>
+                                    `;
+                                } else {
+                                    htmlOrderDetail += 
+                                    `
+                                    <div class="phone-header__pickup-order-footer-btn phone-pickup__about-warehouse-btn" onclick="openAboutWarehouse(${data.shippingPickers[0].pK_iShippingPickerID}, ${data.shippingPickers[0].fK_iShippingOrderID})">Đang về tổng kho ... </div>
+                                    `;
+                                }
+                                htmlOrderDetail += `
                                 </div>
                             </div>
                  `;
             }
             document.querySelector(".app__container").innerHTML = htmlOrderDetail;
-            document.querySelector(".phone-header__pickup-order-detail-arrow").addEventListener('click', () => {
-                openOrderListTab(data);
-            });
-        }
-    }
-    xhr.send(null);
+            if (data.orderDetails.length != 0) {
+                document.querySelector(".phone-header__pickup-order-detail-arrow").addEventListener('click', () => {
+                    openOrderListTab(data);
+                }); 
+            } else {
+                document.querySelector(".phone-header__pickingup-order-detail-arrow").addEventListener('click', () => {
+                    openPickingOrderListTab(data)
+                });
+            }
 }
 
 function openReceiveOrderModal(shippingOrderID) {
@@ -474,6 +498,7 @@ function openReceiveOrderModal(shippingOrderID) {
 }
 
 function confirmTakeOrder(shippingOrderID) {
+    
     document.querySelector(".phone-modal__body").innerHTML = 
     `
         <div class="phone-spinner"></div>
@@ -504,3 +529,127 @@ function confirmTakeOrder(shippingOrderID) {
     };
     xhr.send(formData);
 }
+
+// Confirmation of receipt of goods
+function openGotGood(shippingPickerID, shippingOrderID, orderID) {
+    openModal();
+    document.querySelector(".phone-modal__body").innerHTML = 
+    `
+                            <div class="phone-modal__confirm">
+                                <div class="phone-modal__confirm-msg">Bạn đã lấy được đơn hàng này?</div>
+                                <div class="phone-modal__confirm-btns">
+                                    <div class="phone-modal__confirm-btn-no" onclick="closeModal()">Không</div>
+                                    <div class="phone-modal__confirm-btn-agree" onclick="openAddImgPicker(${shippingPickerID}, ${shippingOrderID}, ${orderID})">Đồng ý</div>
+                                </div>
+                            </div>
+    `;
+}
+
+function openAddImgPicker(shippingPickerID, shippingOrderID, orderID) {
+    document.querySelector(".phone-modal__body").innerHTML = 
+    `
+                            <div class="phone-modal__add-img">
+                                <div class="phone-modal__add-img-title">Thêm ảnh lấy hàng</div>
+                                <div class="phone-modal__add-img-check">
+                                    <div class="phone-modal__add-img-rb">
+                                        <input type="radio" name="ratio-img" id="" class="phone-modal__add-img-input">
+                                        <label for="phone-modal__add-img-input" class="phone-modal__add-img-label">Hình ảnh tỉ lệ 1:1</label>
+                                    </div>
+                                    <div class="phone-modal__add-img-rb">
+                                        <input type="radio" name="ratio-img" id="" class="phone-modal__add-img-input">
+                                        <label for="phone-modal__add-img-input" class="phone-modal__add-img-label">Hình ảnh tỉ lệ 3:4</label>
+                                    </div>
+                                </div>
+                                <div class="phone-modal__add-img-pic">
+                                    <img src="/img/no_img.jpg" class="phone-modal__add-img-value" alt="">
+                                    <label class="phone-modal__add-img-pick">
+                                        <div class="phone-modal__add-img-pick-container">
+                                            <i class="uil uil-image-plus phone-modal__add-img-pick-icon"></i>
+                                            <div class="phone-modal__add-img-pick-sub">
+                                                Thêm hình ảnh (0/9)
+                                            </div>
+                                        </div>
+                                        <input type="file" accept="image/jpeg, image/png, image/jpg" class="phone-modal__add-img-pick-file" id="input-file">
+                                    </label>
+                                </div>
+                                <div class="phone-modal__add-img-btn">Xác nhận</div>
+                            </div>
+    `;
+
+    let orderImage = document.querySelector(".phone-modal__add-img-value");
+    let inputImage = document.getElementById("input-file");
+
+    inputImage.onchange = () => {
+        orderImage.src = URL.createObjectURL(inputImage.files[0]);
+    };
+
+    document.querySelector(".phone-modal__add-img-btn").addEventListener('click', () => {
+        document.querySelector(".phone-modal__body").innerHTML = `<div class="phone-spinner"></div>`;
+        
+        let shippingPickerImg = "shipping_img.jpg"
+        var formData = new FormData();
+        formData.append("shippingPickerID", shippingPickerID);
+        formData.append("shippingPickerImg", shippingPickerImg)
+        formData.append("shippingOrderID", shippingOrderID);
+        formData.append("orderID", orderID);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/picker-api/taken', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+
+                console.log(data);
+
+                if (data.status.statusCode == -1) {
+                    setTimeout(() => {
+                        closeModal();
+                        toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                        document.querySelector(".phone-modal__body").innerHTML = "";
+                    }, 2000);
+                }
+
+                if (data.status.statusCode == 1) {
+                    setTimeout(() => {
+                        closeModal();
+                        toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                        document.querySelector(".phone-modal__body").innerHTML = "";
+                        setTimeout(() => {
+                            setDataOrderDetail(data);
+                        }, 1000)
+                    }, 2000);
+                }
+            }
+        };
+        xhr.send(formData);
+    });
+}
+
+function openAboutWarehouse() {
+    openModal();
+    document.querySelector(".phone-modal__body").innerHTML = 
+    `
+                            <div class="phone-modal__confirm">
+                                <div class="phone-modal__confirm-msg">Bạn đã gửi đơn hàng tại tổng kho?</div>
+                                <div class="phone-modal__confirm-btns">
+                                    <div class="phone-modal__confirm-btn-no" onclick="closeModal()">Không</div>
+                                    <div class="phone-modal__confirm-btn-agree" onclick="openCompleteJob()">Đồng ý</div>
+                                </div>
+                            </div>
+    `;
+}
+
+function openCompleteJob() {
+    openModal();
+    document.querySelector(".phone-modal__body").innerHTML = `<div class="phone-spinner"></div>`;
+    setTimeout(() => {
+        closeModal();
+        toast({ title: "Thông báo", msg: `Đơn hàng đã xong`, type: "success", duration: 5000 });
+        document.querySelector(".phone-modal__body").innerHTML = "";
+        setTimeout(() => {
+            backMainTab();
+        }, 1000)
+    }, 2000);
+}
+
+
