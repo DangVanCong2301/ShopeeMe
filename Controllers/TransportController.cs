@@ -46,6 +46,7 @@ public class TransportController : Controller
     public IActionResult PickerAPI(int orderID = 0) {
         IEnumerable<ShippingOrder> ordersWaitPickup = _transportRepository.getShippingOrdersWaitPickup();
         IEnumerable<ShippingPicker> ordersPickingUp = _transportRepository.getShippingPickerPickingUp();
+        IEnumerable<ShippingPicker> ordersAboutedWarehouse = _shippingOrderRepository.getShippingPickerAboutedWarehouse();
         string htmlOrdersWaitPickupItem = "";
         foreach (var item in ordersWaitPickup) {
             htmlOrdersWaitPickupItem += $"  <div class='phone-pickup__work'>";
@@ -116,6 +117,42 @@ public class TransportController : Controller
             htmlOrderPickingUpItem += $"      </div>";
             htmlOrderPickingUpItem += $"  </div>";
         }
+
+        string htmlOrderAboutedWarehouseItem = "";
+        foreach (var item in ordersAboutedWarehouse) {
+            htmlOrderAboutedWarehouseItem += $"  <div class='phone-pickup__work'>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Mã đơn hàng</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.FK_iOrderID}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Khách hàng</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.sFullName}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Ngày đặt</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Tổng tiền</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.fTotalPrice.ToString("#,##0.00")} VNĐ</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Trạng thái</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.sOrderStatusName}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Thanh toán</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.sPaymentName}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'></div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>";
+            htmlOrderAboutedWarehouseItem += $"              <a href='javascript:openOrderDetail({item.FK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
+            htmlOrderAboutedWarehouseItem += $"          </div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"  </div>";
+        }
         IEnumerable<SellerInfo> sellerInfos = _transportRepository.getSellerInfoByOrderID(orderID);
         IEnumerable<OrderDetail> orderDetails = _transportRepository.getOrderDetailWaitPickupByOrderID(orderID);
         IEnumerable<OrderDetail> orderDetailsPickingUp = _transportRepository.getOrderDetailPickingUpByOrderID(orderID);
@@ -125,8 +162,10 @@ public class TransportController : Controller
         TransportViewModel model = new TransportViewModel {
             OrdersWaitPickup = ordersWaitPickup,
             OrdersPickingUp = ordersPickingUp,
+            OrdersAboutedWarehouse = ordersAboutedWarehouse,
             HtmlOrdersWaitPickupItem = htmlOrdersWaitPickupItem,
             HtmlOrderPickingUpItem = htmlOrderPickingUpItem,
+            HtmlOrderAboutedWarehouseItem = htmlOrderAboutedWarehouseItem,
             SellerInfos = sellerInfos,
             OrderDetails = orderDetails,
             orderDetailsPickingUp = orderDetailsPickingUp,
@@ -168,7 +207,8 @@ public class TransportController : Controller
         if (
             _transportRepository.confirmShippingPickerAboutTaken(shippingPickerID) && 
             _transportRepository.confirmShippingOrderAboutDelivered(shippingOrderID) && 
-            _transportRepository.updatePickerImage(shippingPickerID, shippingPickerImg)
+            _transportRepository.updatePickerImage(shippingPickerID, shippingPickerImg) && 
+            _transportRepository.confirmShippingPickerAboutingWarehouse(shippingPickerID)
         ) {
             status = new Status {
                 StatusCode = 1,
@@ -201,6 +241,143 @@ public class TransportController : Controller
         };
         return Ok(model);
     } 
+
+    [HttpPost]
+    [Route("/picker-api/complete")]
+    public IActionResult PickerAPIComplete(int shippingPickerID) {
+        Status status;
+        if (_transportRepository.confirmShippingPickerAboutedWarehouse(shippingPickerID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Đơn hàng đã xong!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Cập nhật trạng thái thất bại!"
+            };
+        }
+
+        IEnumerable<ShippingOrder> ordersWaitPickup = _transportRepository.getShippingOrdersWaitPickup();
+        IEnumerable<ShippingPicker> ordersPickingUp = _transportRepository.getShippingPickerPickingUp();
+        IEnumerable<ShippingPicker> ordersAboutedWarehouse = _shippingOrderRepository.getShippingPickerAboutedWarehouse();
+        string htmlOrdersWaitPickupItem = "";
+        foreach (var item in ordersWaitPickup) {
+            htmlOrdersWaitPickupItem += $"  <div class='phone-pickup__work'>";
+            htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'>Mã đơn hàng</div>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.FK_iOrderID}</div>";
+            htmlOrdersWaitPickupItem += $"      </div>";
+            htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'>Khách hàng</div>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>{item.sFullName}</div>";
+            htmlOrdersWaitPickupItem += $"      </div>";
+            htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'>Ngày đặt</div>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlOrdersWaitPickupItem += $"      </div>";
+            htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'>Tổng tiền</div>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>{item.fTotalPrice.ToString("#,##0.00")} VNĐ</div>";
+            htmlOrdersWaitPickupItem += $"      </div>";
+            htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'>Trạng thái</div>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>{item.sOrderStatusName}</div>";
+            htmlOrdersWaitPickupItem += $"      </div>";
+            htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'>Thanh toán</div>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>{item.sPaymentName}</div>";
+            htmlOrdersWaitPickupItem += $"      </div>";
+            htmlOrdersWaitPickupItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-1'></div>";
+            htmlOrdersWaitPickupItem += $"          <div class='phone-pickup__work-col-2'>";
+            htmlOrdersWaitPickupItem += $"              <a href='javascript:openOrderDetail({item.FK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
+            htmlOrdersWaitPickupItem += $"          </div>";
+            htmlOrdersWaitPickupItem += $"      </div>";
+            htmlOrdersWaitPickupItem += $"  </div>";
+        }
+        string htmlOrderPickingUpItem = "";
+        foreach (var item in ordersPickingUp) {
+            htmlOrderPickingUpItem += $"  <div class='phone-pickup__work'>";
+            htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'>Mã đơn hàng</div>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.FK_iOrderID}</div>";
+            htmlOrderPickingUpItem += $"      </div>";
+            htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'>Khách hàng</div>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>{item.sFullName}</div>";
+            htmlOrderPickingUpItem += $"      </div>";
+            htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'>Ngày đặt</div>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlOrderPickingUpItem += $"      </div>";
+            htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'>Tổng tiền</div>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>{item.fTotalPrice.ToString("#,##0.00")} VNĐ</div>";
+            htmlOrderPickingUpItem += $"      </div>";
+            htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'>Trạng thái</div>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>{item.sOrderStatusName}</div>";
+            htmlOrderPickingUpItem += $"      </div>";
+            htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'>Thanh toán</div>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>{item.sPaymentName}</div>";
+            htmlOrderPickingUpItem += $"      </div>";
+            htmlOrderPickingUpItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-1'></div>";
+            htmlOrderPickingUpItem += $"          <div class='phone-pickup__work-col-2'>";
+            htmlOrderPickingUpItem += $"              <a href='javascript:openOrderDetail({item.FK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
+            htmlOrderPickingUpItem += $"          </div>";
+            htmlOrderPickingUpItem += $"      </div>";
+            htmlOrderPickingUpItem += $"  </div>";
+        }
+
+        string htmlOrderAboutedWarehouseItem = "";
+        foreach (var item in ordersAboutedWarehouse) {
+            htmlOrderAboutedWarehouseItem += $"  <div class='phone-pickup__work'>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Mã đơn hàng</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.FK_iOrderID}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Khách hàng</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.sFullName}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Ngày đặt</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Tổng tiền</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.fTotalPrice.ToString("#,##0.00")} VNĐ</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Trạng thái</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.sOrderStatusName}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'>Thanh toán</div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>{item.sPaymentName}</div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-1'></div>";
+            htmlOrderAboutedWarehouseItem += $"          <div class='phone-pickup__work-col-2'>";
+            htmlOrderAboutedWarehouseItem += $"              <a href='javascript:openOrderDetail({item.FK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
+            htmlOrderAboutedWarehouseItem += $"          </div>";
+            htmlOrderAboutedWarehouseItem += $"      </div>";
+            htmlOrderAboutedWarehouseItem += $"  </div>";
+        }
+        TransportViewModel model = new TransportViewModel {
+            OrdersWaitPickup = ordersWaitPickup,
+            OrdersPickingUp = ordersPickingUp,
+            OrdersAboutedWarehouse = ordersAboutedWarehouse,
+            HtmlOrdersWaitPickupItem = htmlOrdersWaitPickupItem,
+            HtmlOrderPickingUpItem = htmlOrdersWaitPickupItem,
+            HtmlOrderAboutedWarehouseItem = htmlOrderAboutedWarehouseItem,
+            Status = status
+        };
+        return Ok(model);
+    }
 
     [Route("/delivery")]
     [HttpGet]

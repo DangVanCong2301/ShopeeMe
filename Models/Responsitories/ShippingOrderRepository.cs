@@ -34,6 +34,11 @@ public class ShippingOrderRepository : IShippingOrderRepository
         return _context.ShippingOrders.FromSqlRaw("EXEC sp_GetShippingOrders");
     }
 
+    public IEnumerable<ShippingPicker> getShippingPickerAboutedWarehouse()
+    {
+        return _context.ShippingPickers.FromSqlRaw("EXEC sp_GetShippingPickerAboutedWarehouse");
+    }
+
     public IEnumerable<ShippingPicker> getShippingPickerByID(int shippingPickerID)
     {
         SqlParameter shippingPickerParam = new SqlParameter("@PK_iShippingPicker", shippingPickerID);

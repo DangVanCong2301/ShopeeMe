@@ -1,7 +1,7 @@
 public class AdminViewModel
 {
     public IEnumerable<Order> OrdersWaitSettlment { get; set; }
-    public IEnumerable<Order> OrdersWaitPickup { get; set; }
+    public IEnumerable<ShippingOrder> OrdersWaitPickup { get; set; }
     public IEnumerable<Order> OrdersPickingUp { get; set; }
     public IEnumerable<ShippingOrder> ShippingOrders { get; set; }
     public IEnumerable<SellerInfo> SellerInfos { get; set; }

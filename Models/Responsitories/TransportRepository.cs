@@ -88,4 +88,18 @@ public class TransportRepository : ITransportRepository
         _context.Database.ExecuteSqlRaw("EXEC sp_UpdatePickerImage @PK_iShippingPickerID, @sPickerImage", shippingPickerIDParam, pickerImageParam);
         return true;
     }
+
+    public bool confirmShippingPickerAboutingWarehouse(int shippingPickerID)
+    {
+        SqlParameter shippingPickerIDParam = new SqlParameter("@PK_iShippingPickerID", shippingPickerID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingPickerAboutingWarehouse @PK_iShippingPickerID", shippingPickerIDParam);
+        return true;
+    }
+
+    public bool confirmShippingPickerAboutedWarehouse(int shippingPickerID)
+    {
+        SqlParameter shippingPickerIDParam = new SqlParameter("@PK_iShippingPickerID", shippingPickerID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingPickerAboutedWarehouse @PK_iShippingPickerID", shippingPickerIDParam);
+        return true;
+    }
 }

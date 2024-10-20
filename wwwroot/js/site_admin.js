@@ -69,12 +69,12 @@ function setSidebar(data) {
                                 <div class="admin__aside-sidebar-colappse-item">
                                     <div class="admin__aside-sidebar-symb">
                                     </div>
-                                    <a href="javascript:showAll(event)" class="admin__aside-sidebar-sub">Tất cả</a>
+                                    <div class="admin__aside-sidebar-sub admin__sidebar-all">Tất cả</div>
                                 </div>
                                 <div class="admin__aside-sidebar-colappse-item">
                                     <div class="admin__aside-sidebar-symb">
                                     </div>
-                                    <div class="admin__aside-sidebar-sub">Giao hàng loạt</div>
+                                    <div class="admin__aside-sidebar-sub admin__sidebar-bulk-delivery">Giao hàng loạt</div>
                                 </div>
                                 <div class="admin__aside-sidebar-colappse-item">
                                     <div class="admin__aside-sidebar-symb">
@@ -225,9 +225,22 @@ function setSidebar(data) {
     `;
     document.querySelector(".admin__aside").innerHTML = htmlSidebar;
 
+    document.querySelector(".admin__sidebar-all").addEventListener('click', () => {
+        showAll(data);
+    });
+
+    document.querySelector(".admin__sidebar-bulk-delivery").addEventListener('click', () => {
+        showBulkDelivery(data);
+    });
+
     document.querySelector(".admin__aside-sidebar-sub-account-all").addEventListener('click', () => {
         showAccountAll(data);
     });
+}
+
+// Show Bulk delivery
+function showBulkDelivery(data) {
+    noticeIncompleteFunc();
 }
 
 function showAccountAll(data) {
@@ -280,6 +293,35 @@ function showAccountAll(data) {
 function showAccountTool(event) {
     const parentElement = event.target.parentNode;
     parentElement.querySelector(".admin-account__more-container").classList.toggle("show");
+}
+
+// Notice Incomplete Function
+function noticeIncompleteFunc() {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = 
+            `
+                <div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        Chức năng này chưa được hoàn thiện!
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                        <div class="modal__confirm-btn-send"onclick="closeModal()">Đồng ý</div>
+                    </div>
+                </div>
+            `;
+}
+
+// Modal
+function openModal() {
+    document.querySelector(".modal").classList.add("open");
+}
+
+function closeModal() {
+    document.querySelector(".modal").classList.remove("open");
 }
 
 // Tách lấy chữ số

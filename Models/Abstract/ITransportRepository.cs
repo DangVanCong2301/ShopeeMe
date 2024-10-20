@@ -12,4 +12,6 @@ public interface ITransportRepository
     public bool confirmOrderAboutPickingUp(int orderID);
     public bool confirmShippingOrderAboutDelivered(int shippingOrderID);
     public bool confirmShippingPickerAboutTaken(int shippingPickerID);
+    public bool confirmShippingPickerAboutingWarehouse(int shippingPickerID);
+    public bool confirmShippingPickerAboutedWarehouse(int shippingPickerID);
 }
