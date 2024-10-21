@@ -100,7 +100,18 @@ const addEvent = (() => {
                                 passwordSellerInput.value = "";
                             }, 1000)
                         }, 2000);
-                    } 
+                    }
+                    
+                    if (result.status.statusCode == -2) {
+                        setTimeout(() => {
+                            closeModal();
+                            toast({ title: "Thông báo", msg: `${result.status.message}`, type: "err", duration: 5000 });
+                            document.querySelector(".modal__body").innerHTML = "";
+                            setTimeout(() => {
+                                window.location.assign("/seller/portal");
+                            }, 1000)
+                        }, 2000);
+                    }
                     
                     if (result.status.statusCode == 1) {
                         setTimeout(() => {

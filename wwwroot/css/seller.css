@@ -114,6 +114,7 @@
 .seller-auth__input-password.err,
 .seller-auth__regis-input-phone.err,
 .seller-confirm__method-body-input-password.err,
+.seller-confirm__method-body-input-username.err,
 .seller-auth__input-old-password.err,
 .seller-auth__input-new-password.err,
 .seller-auth__input-re-new-password.err {
@@ -531,6 +532,19 @@
 .seller-confirm__method-btn:hover {
     opacity: .9;
     cursor: pointer;
+}
+
+.seller-confirm__method-body-input-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+.seller-confirm__method-body-input-username {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 100%;
 }
 
 .seller-confirm__method-body-input-password {

@@ -38,6 +38,12 @@ public class SellerResponsitory : ISellerResponsitory
         return _context.Sellers.FromSqlRaw("EXEC sp_GetSellerAccountByID @PK_iSellerID", sellerIDParam);
     }
 
+    public IEnumerable<SellerInfo> getSellerInfoByPhone(string phone)
+    {
+        SqlParameter phoneParam = new SqlParameter("@sSellerPhone", phone);
+        return _context.SellerInfos.FromSqlRaw("EXEC sp_GetSellerInfoByPhone @sSellerPhone", phoneParam);
+    }
+
     public IEnumerable<SellerInfo> getSellerInfoBySellerID(int sellerID)
     {
         SqlParameter sellerIDParam = new SqlParameter("@PK_iSellerID", sellerID);
@@ -55,5 +61,14 @@ public class SellerResponsitory : ISellerResponsitory
         SqlParameter phoneParam = new SqlParameter("@sSellerPhone", phone);
         SqlParameter passwordParam = new SqlParameter("@sSellerPassword", password);
         return _context.Sellers.FromSqlRaw("EXEC sp_LoginAccountSeller @sSellerPhone, @sSellerPassword", phoneParam, passwordParam);
+    }
+
+    public bool registerAccountSeller(string phone, string username, string password)
+    {
+        SqlParameter phoneParam = new SqlParameter("@sSellerPhone", phone);
+        SqlParameter usernameParam = new SqlParameter("@sSellerUsername", username);
+        SqlParameter passwordParam = new SqlParameter("@sSellerPassword", password);
+        _context.Database.ExecuteSqlRaw("EXEC sp_RegisterAccountSeller @sSellerPhone, @sSellerUsername, @sSellerPassword", phoneParam, usernameParam, passwordParam);
+        return true;
     }
 }

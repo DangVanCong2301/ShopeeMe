@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopeeMe - Cổng thông tin</title>
+    <link rel="sortcut icon" href="~/img/shopee_logo.png">
+    <link rel="stylesheet" href="~/css/base.css">
+    <link rel="stylesheet" href="~/css/grid.css">
+    <link rel="stylesheet" href="~/css/seller_portal.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!--=============== ICONSCOUT ===============-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/solid.css" />
+</head>
+
+<body>
+    <div class="app hight">
+        <header class="header hide-on-table">
+            <div class="header__container grid wide">
+                <div class="header__text hide-on-mobile">
+                    <div class=" header__text-logo">
+                        <a href="index.html" class="header__text-link">
+                            <img class="header__logo-img" src="~/img/shopeeme_logo_primary.png" alt="ShopeeMe Logo">
+                        </a>
+                    </div>
+                    <div class="header__text-name">@ViewData["Title"]</div>
+                </div>
+                <div class="header__account">
+                    
+                </div>
+            </div>
+        </header>
+        <div class="table hide-on-mobile hide-on-destop">
+            Sản phẩm chưa được tối ưu trên máy tính bảng, vui lòng sử dụng điện thoại và laptop 
+            để có trả nghiệm tốt hơn!
+        </div>
+        <div class="mobile hide-on-table hide-on-destop">
+            Sản phẩm chưa được tối ưu trên máy tính bảng, vui lòng sử dụng điện thoại và laptop 
+            để có trả nghiệm tốt hơn!
+        </div>
+        <div class="container">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+<div class="modal">
+    <div class="modal__overlay">
+
+    </div>
+    <div class="modal__body">
+    
+    </div>
+</div>
+<div id="toast">
+    
+</div>
+<script src="~/js/seller_portal.js"></script>
+</body>

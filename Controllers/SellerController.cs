@@ -40,11 +40,12 @@ public class SellerController : Controller
         // Lấy Cookie trên trình duyệt
         var sellerID = Request.Cookies["SellerID"];
         List<Store> store = _shopResponsitory.getShopBySellerID(Convert.ToInt32(sellerID)).ToList();
-        if (sellerID != null) {
+        List<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoBySellerID(Convert.ToInt32(sellerID)).ToList();
+        if (sellerID != null && sellerInfos.Count() != 0) {
             _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
             _accessor?.HttpContext?.Session.SetInt32("SellerShopID", store[0].PK_iStoreID);
         } else {
-            return Redirect("/seller/login");
+            return Redirect("/seller/portal");
         }
         var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
         List<Seller> seller = _sellerResponsitory.getSellerAccountByID(Convert.ToInt32(sessionSellerID)).ToList();
@@ -389,12 +390,32 @@ public class SellerController : Controller
     public IActionResult Login(string phone = "", string password = "") {
         password = _userResponsitory.encrypt(password);
         List<Seller> sellerLogin = _sellerResponsitory.loginAccount(phone, password).ToList();
+        List<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoByPhone(phone).ToList();
         Status status;
         if (sellerLogin.Count() == 0) {
             status = new Status {
                 StatusCode = -1,
                 Message = "Tên đăng nhập hoặc mật khẩu không chính xác!"
             };
+        } else if (sellerInfos.Count() == 0) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Tài khoản người bán chưa đầy đủ thông tin!"
+            };
+            string sellerUsername = sellerLogin[0].sSellerUsername;
+            string value = sellerLogin[0].PK_iSellerID.ToString();
+            // Tạo cookies cho tài khoản người bán
+            CookieOptions options = new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(1),
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Path = "/",
+                IsEssential = true
+            };
+            Response.Cookies.Append("SellerID", value, options);
+            _accessor?.HttpContext?.Session.SetString("SellerUsername", sellerUsername);
         } else {
             status = new Status {
                 StatusCode = 1,
@@ -425,6 +446,88 @@ public class SellerController : Controller
     [Route("/seller/register")]
     public IActionResult Register() {
         return View();
+    }
+
+    [HttpPost]
+    [Route("/seller/register")]
+    public IActionResult Register(string phone = "", string username = "", string password = "") {
+        // phone = "0" + phone;
+        Status status;
+        if (_sellerResponsitory.registerAccountSeller(phone, username, _userResponsitory.encrypt(password))) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Đăng ký tài khoản người bán thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Đăng ký tài khoản người bán thất bại!"
+            };
+        }
+        List<Seller> sellers = _sellerResponsitory.getPasswordSellerAccountByPhone(phone).ToList();
+        string value = sellers[0].PK_iSellerID.ToString();
+        // Tạo cookies cho tài khoản người bán
+        CookieOptions options = new CookieOptions
+        {
+            Expires = DateTime.Now.AddDays(1),
+            Secure = true,
+            HttpOnly = true,
+            SameSite = SameSiteMode.None,
+            Path = "/",
+            IsEssential = true
+        };
+        Response.Cookies.Append("SellerID", value, options);
+        SellerViewModel model = new SellerViewModel {
+            Status = status
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/seller/check-phone-regis")]
+    public IActionResult PhoneRegis(string phone) {
+        List<Seller> sellers = _sellerResponsitory.getPasswordSellerAccountByPhone(phone).ToList();
+        Status status;
+        if (sellers.Count() != 0) {
+            status = new Status {
+                StatusCode = 0,
+                Message = "Số điện thoại này đã được đăng ký!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Số điện thoại này chưa được đăng ký!"
+            };
+        }
+        return Ok(status);
+    }
+
+    [HttpGet]
+    [Route("/seller/portal")]
+    public IActionResult Portal() {
+        // Lấy Cookie trên trình duyệt
+        var sellerID = Request.Cookies["SellerID"];
+        if (sellerID != null) {
+            _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
+        } else {
+            return Redirect("/seller/login");
+        }
+        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
+        List<Seller> seller = _sellerResponsitory.getSellerAccountByID(Convert.ToInt32(sessionSellerID)).ToList();
+        _accessor?.HttpContext?.Session.SetString("SellerUsername", seller[0].sSellerUsername);
+        return View();
+    }
+
+    [HttpPost]
+    [Route("/seller/portal-api")]
+    public IActionResult PortalAPI() {
+        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
+        var sessionSellerUsername = _accessor?.HttpContext?.Session.GetString("SellerUsername");
+        SellerViewModel model = new SellerViewModel {
+            SellerID = Convert.ToInt32(sessionSellerID),
+            SellerUsername = sessionSellerUsername
+        };
+        return Ok(model);
     }
 
     [HttpGet]

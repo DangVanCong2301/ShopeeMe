@@ -19,7 +19,7 @@ function setSellerAccount(data) {
     let htmlSellerAccount = "";
     htmlSellerAccount += 
     `
-                    <div class="header__account-avatar">
+                        <div class="header__account-avatar">
                             <img src="/img/no_user.jpg" class="header__account-avatar-img" alt="">
                         </div>
                         <div class="header__account-info">
