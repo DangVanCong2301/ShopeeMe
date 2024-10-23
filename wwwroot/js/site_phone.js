@@ -6,6 +6,15 @@ function money_2(number) {
     return formattedAmount;
 }
 
+// Modal
+function openModal() {
+    document.querySelector(".phone-modal").classList.add("open");
+}
+
+function closeModal() {
+    document.querySelector(".phone-modal").classList.remove("open");
+}
+
 // Toast
 function toast({ title = "", msg = "", type = "", duration = 3000}) {
     const main = document.getElementById('phone-toast');

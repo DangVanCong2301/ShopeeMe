@@ -14,5 +14,7 @@ namespace Project.Models
         [Required(ErrorMessage = "Bạn chưa nhập mật khẩu")]
         public string sPassword { get; set; }
         public DateTime dCreateTime { get; set; }
+        public string sRoleName { get; set; }
+        public string sRoleDescription { get; set; }
     }
 }

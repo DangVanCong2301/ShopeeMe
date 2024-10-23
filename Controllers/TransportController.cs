@@ -16,27 +16,100 @@ public class TransportController : Controller
         _shippingOrderRepository = shippingOrderRepository;
     }
 
+    [HttpGet]
+    [Route("/transport/login")]
+    public IActionResult Login() {
+        return View();
+    }
+
+    [HttpPost]
+    [Route("/transport/login")]
+    public IActionResult Login(string email = "", string password = "") {
+        password = _userResponsitory.encrypt(password);
+        Status status;
+        List<User> users = _userResponsitory.login(email, password).ToList();
+        if (users.Count() == 0)
+        {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Tên đăng nhập hoặc mật khẩu không chính xác!"
+            };
+        }
+        else if (users[0].sRoleName != "picker")
+        {
+            status = new Status
+            {
+                StatusCode = 0,
+                Message = "Tài khoản không thuộc kênh vận chuyển!"
+            };
+        } else if (users[0].sRoleName == "picker") {
+            status = new Status
+            {
+                StatusCode = 1,
+                Message = "Đăng nhập tài khoản người lấy thành công!"
+            };
+            string transportUsername = users[0].sUserName;
+            string value = users[0].PK_iUserID.ToString();
+            // Tạo cookies cho tài khoản người bán
+            CookieOptions options = new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(1),
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Path = "/",
+                IsEssential = true
+            };
+            Response.Cookies.Append("TransportPickerID", value, options);
+            _accessor?.HttpContext?.Session.SetString("TransportPickerUsername", transportUsername);
+        } else {
+            status = new Status
+            {
+                StatusCode = 2,
+                Message = "Đăng nhập tài khoản người giao thành công!"
+            };
+            string transportUsername = users[0].sUserName;
+            string value = users[0].PK_iUserID.ToString();
+            // Tạo cookies cho tài khoản người bán
+            CookieOptions options = new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(1),
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Path = "/",
+                IsEssential = true
+            };
+            Response.Cookies.Append("TransportDeleveryID", value, options);
+            _accessor?.HttpContext?.Session.SetString("TransportDeleveryUsername", transportUsername);
+        }
+        TransportViewModel model = new TransportViewModel {
+            Status = status
+        };
+        return Ok(model);
+    }
+
     [Route("/picker")]
     [HttpGet]
     public IActionResult Picker() {
-        // Lấy Cookies trên trình duyệt
-        var userID = Request.Cookies["UserID"];
-        if (userID != null)
+        // Lấy Cookies Người lấy hàng trên trình duyệt
+        var pickerID = Request.Cookies["TransportPickerID"];
+        if (pickerID != null)
         {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+            _accessor?.HttpContext?.Session.SetInt32("TransportPickerID", Convert.ToInt32(pickerID));
         } else {
-            return Redirect("/user/login");
+            return Redirect("/transport/login");
         }
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        if (sessionUserID != null)
+        var sessionPickerID = _accessor?.HttpContext?.Session.GetInt32("TransportPickerID");
+        if (sessionPickerID != null)
         {
-            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
+            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionPickerID)).ToList();
+            _accessor?.HttpContext?.Session.SetString("TransportPickerUsername", users[0].sUserName);
             _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
         }
         else
         {
-            _accessor?.HttpContext?.Session.SetString("UserName", "");
+            _accessor?.HttpContext?.Session.SetString("TransportPickerUsername", "");
         }
         return View();
     }  

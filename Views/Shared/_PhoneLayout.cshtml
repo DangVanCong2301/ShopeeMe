@@ -51,7 +51,7 @@
                                 <img src="~/img/SPX_express_logo.png" class="phone-header__logo-img" alt="">
                                 <div class="phone-header__title">@ViewData["Title"]</div>
                             </div>
-                            <div class="phone-header__user">
+                            <div class="phone-header__user hide-on-login">
                                 <div class="phone-header__user-avatar">
                                     <div class="phone-header__mobile-user-avatar-img" style="background-image: url(/img/profile_avatar.jpg);"></div>
                                     <div class="phone-header__user-avatar-menu">
@@ -77,7 +77,7 @@
                     <div class="container">
                         @RenderBody()
                     </div>
-                    <div class="phone-bottom__navigation">
+                    <div class="phone-bottom__navigation hide-on-login">
                         <div class="phone-bottom__navigation-list">
                             <div class="phone-bottom__navigation-item">
                                 <i class="uil uil-clipboard-alt phone-bottom__navigation-item-icon"></i>

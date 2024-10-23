@@ -1,0 +1,222 @@
+/* Header */
+.phone-header {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    background-image: linear-gradient(#fff, #fff);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.phone-header__with-search {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 8px;
+}
+
+.phone-header__logo {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.phone-header__title {
+    margin-top: 14px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.phone-header__logo-img {
+    height: 26px;
+}
+
+/* Container */
+.phone__screen-bg {
+    background-color: #fff;
+}
+
+.phone-auth__logo {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 20px;
+}
+
+.phone-auth__logo-img {
+    width: 60px;
+    height: 60px;
+}
+
+.phone-auth__form {
+    font-size: 12px;
+    width: 100%;
+    padding: 0 12px 20px 12px;
+}
+
+.phone-auth__form-div {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.phone-auth__form-div-email.err,
+.phone-auth__form-div-password.err {
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.phone-auth__form-icon {
+    font-size: 16px;
+    margin-right: 20px;
+    color: rgba(0, 0, 0, .54);
+}
+
+.phone-auth__form-input {
+    padding: 10px 0;
+    width: 100%;
+    border: none;
+    outline: none;
+    background: none;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+}
+
+.phone-auth__form-password {
+    display: flex;
+    align-items: center;
+}
+
+.phone-auth__form-password-show {
+    position: relative;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.phone-auth__form-password-show::before {
+    position: absolute;
+    content: '';
+    width: 1px;
+    height: 20px;
+    background-color: var(--border-color);
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.phone-auth__form-password-show-icon {
+    font-size: 16;
+    color: rgba(0, 0, 0, .54);
+}
+
+.phone-auth__form-password-forgot {
+    text-decoration: none;
+    color: #5c84cc;
+    font-size: 11px;
+}
+
+.phone-auth__form-msg {
+    color: var(--primary-color);
+    margin-top: 6px;
+    font-size: 11px;
+}
+
+.phone-auth__form-btn {
+    border: none;
+    margin-top: 16px;
+    width: 100%;
+    text-align: center;
+    background-color: #e8e8e8;
+    padding: 12px 0;
+    color: #ababab;
+    border-radius: 4px;
+}
+
+.phone-auth__form-btn:hover {
+    background-color: #ddd8d8;
+}
+
+.phone-auth__form-link {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+.phone-auth__form-link-register, 
+.phone-auth__form-link-sms {
+    text-decoration: none;
+    color: #5c84cc;
+}
+
+.phone-auth__or {
+    display: flex;
+    justify-content: center;
+}
+
+.phone-auth__or-title {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+    color: #707070;
+}
+
+.phone-auth__or-title-text {
+    font-size: 12px;
+}
+
+.phone-auth__or-title span {
+    display: inline-block;
+    height: 1px;
+    width: 100px;
+    background-color: #dfdfdf;
+}
+
+.phone-auth__bottom-btns {
+    margin-top: 20px;
+    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+    font-size: 12px;
+}
+
+.phone-auth__bottom-btn {
+    position: relative;
+    text-decoration: none;
+    color: var(--text-color);
+    text-align: center;
+    width: 100%;
+    padding: 12px 0;
+    border: 1px solid #b9b9b9;
+    border-radius: 4px;
+}
+
+.phone-auth__bottom-btn-icon {
+    font-size: 16px;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(0, 0, 0, .54);
+}
+
+.phone-auth__bottom-btn-facebook-icon {
+    color: #2473ea;
+}
+
+@media screen and (min-width: 992px) {  
+    .hide-on-destop {
+        display: none;
+    }
+
+    .hide-on-login {
+        display: none;
+    }
+
+    .phone-header__search {
+        display: none;
+    }
+}

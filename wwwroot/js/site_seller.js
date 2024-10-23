@@ -1457,8 +1457,10 @@ function showAddProduct(data) {
                 imageUrl = "shop/vietmark/product/am_sieu_toc/am_sieu_toc_9.jpg";
             } else if (data.sellerID == 3) {
                 imageUrl = "shop/laneige/product/kem_chong_nang/kem_chong_nang_1.jpg";
-            } else {
+            } else if (data.sellerID == 4) {
                 imageUrl = "shop/cocolux/product/cham_soc_gia_mat/cham_soc_da_mat_1.jpg";
+            } else {
+                imageUrl = "shop/legendary/product/quan_nu/quan_nu_1.png";
             }
             const categoryID = parseInt(categoryCheck);
             const price = parseInt(productPrice);
