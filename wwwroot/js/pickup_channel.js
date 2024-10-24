@@ -54,30 +54,6 @@ function setData(data) {
     });
 }
 
-function openModal() {
-    document.querySelector(".phone-modal").classList.add("open");
-}
-
-function closeModal() {
-    document.querySelector(".phone-modal").classList.remove("open");
-}
-
-function hideHeader() {
-    document.querySelector(".phone-header").classList.add("hide-on-destop");
-}
-
-function showHeader() {
-    document.querySelector(".phone-header").classList.remove("hide-on-destop");
-}
-
-function hideBottomNav() {
-    document.querySelector(".phone-bottom__navigation").classList.add("hide-on-destop");
-}
-
-function showBottomNav() {
-    document.querySelector(".phone-bottom__navigation").classList.remove("hide-on-destop");
-}
-
 function openOrderListTab(data) {
     hideHeader();
     hideBottomNav();
@@ -363,7 +339,7 @@ function setDataOrderDetail(data) {
                                     </div>
                                 </div>
                                 <div class="phone-pickup__order-footer" onclick="openReceiveOrderModal(${data.shippingOrders[0].pK_iShippingOrderID})">
-                                    <div class="phone-header__pickup-order-footer-title">Nhận đơn</div>
+                                    <div class="phone-header__pickup-order-footer-btn">Nhận đơn</div>
                                 </div>
                             </div>
                  `;                    

@@ -33,6 +33,7 @@ namespace Project.Models
         public DbSet<AddressChoose> AddressChooses { get; set; }
         public DbSet<ShippingOrder> ShippingOrders { get; set; }
         public DbSet<ShippingPicker> ShippingPickers { get; set; }
+        public DbSet<ShippingDelivery> ShippingDeliveries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -135,6 +136,10 @@ namespace Project.Models
 
             modelBuilder.Entity<ShippingPicker>(entity => {
                 entity.HasKey(e => e.PK_iShippingPickerID);
+            });
+
+            modelBuilder.Entity<ShippingDelivery>(entity => {
+                entity.HasKey(e => e.PK_iShippingDeliveryID);
             });
         }
     }

@@ -200,7 +200,7 @@ function addEvent() {
                             toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
                             document.querySelector(".phone-modal__body").innerHTML = "";
                             setTimeout(() => {
-                                // window.location.assign('/seller');
+                                window.location.assign('/delivery');
                             }, 1000)
                         }, 2000);
                     }

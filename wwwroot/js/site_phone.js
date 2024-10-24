@@ -15,6 +15,24 @@ function closeModal() {
     document.querySelector(".phone-modal").classList.remove("open");
 }
 
+// Header
+function hideHeader() {
+    document.querySelector(".phone-header").classList.add("hide-on-destop");
+}
+
+function showHeader() {
+    document.querySelector(".phone-header").classList.remove("hide-on-destop");
+}
+
+// Bottom Nav
+function hideBottomNav() {
+    document.querySelector(".phone-bottom__navigation").classList.add("hide-on-destop");
+}
+
+function showBottomNav() {
+    document.querySelector(".phone-bottom__navigation").classList.remove("hide-on-destop");
+}
+
 // Toast
 function toast({ title = "", msg = "", type = "", duration = 3000}) {
     const main = document.getElementById('phone-toast');

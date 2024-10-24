@@ -7,13 +7,21 @@ public class TransportController : Controller
     private readonly IUserResponsitory _userResponsitory;
     private readonly ITransportRepository _transportRepository;
     private readonly IShippingOrderRepository _shippingOrderRepository;
+    private readonly ICheckoutResponsitory _checkoutResponsitory;
 
-    public TransportController(IHttpContextAccessor accessor, IUserResponsitory userResponsitory, ITransportRepository transportRepository, IShippingOrderRepository shippingOrderRepository)
+    public TransportController(
+        IHttpContextAccessor accessor, 
+        IUserResponsitory userResponsitory, 
+        ITransportRepository transportRepository, 
+        IShippingOrderRepository shippingOrderRepository,
+        ICheckoutResponsitory checkoutResponsitory
+    )
     {
         _accessor = accessor;
         _userResponsitory = userResponsitory;
         _transportRepository = transportRepository;
         _shippingOrderRepository = shippingOrderRepository;
+        _checkoutResponsitory = checkoutResponsitory;
     }
 
     [HttpGet]
@@ -35,7 +43,7 @@ public class TransportController : Controller
                 Message = "Tên đăng nhập hoặc mật khẩu không chính xác!"
             };
         }
-        else if (users[0].sRoleName != "picker")
+        else if (users[0].sRoleName != "picker" && users[0].sRoleName != "delivery")
         {
             status = new Status
             {
@@ -80,8 +88,8 @@ public class TransportController : Controller
                 Path = "/",
                 IsEssential = true
             };
-            Response.Cookies.Append("TransportDeleveryID", value, options);
-            _accessor?.HttpContext?.Session.SetString("TransportDeleveryUsername", transportUsername);
+            Response.Cookies.Append("TransportDeliveryID", value, options);
+            _accessor?.HttpContext?.Session.SetString("TransportDeliveryUsername", transportUsername);
         }
         TransportViewModel model = new TransportViewModel {
             Status = status
@@ -241,7 +249,7 @@ public class TransportController : Controller
             HtmlOrderAboutedWarehouseItem = htmlOrderAboutedWarehouseItem,
             SellerInfos = sellerInfos,
             OrderDetails = orderDetails,
-            orderDetailsPickingUp = orderDetailsPickingUp,
+            OrderDetailsPickingUp = orderDetailsPickingUp,
             Payments = payments,
             ShippingOrders = shippingOrders,
             ShippingPickers = shippingPickers
@@ -307,7 +315,7 @@ public class TransportController : Controller
             Status = status,
             SellerInfos = sellerInfos,
             OrderDetails = orderDetails,
-            orderDetailsPickingUp = orderDetailsPickingUp,
+            OrderDetailsPickingUp = orderDetailsPickingUp,
             Payments = payments,
             ShippingOrders = shippingOrders,
             ShippingPickers = shippingPickers
@@ -455,6 +463,194 @@ public class TransportController : Controller
     [Route("/delivery")]
     [HttpGet]
     public IActionResult Delivery() {
+        // Lấy cookie người lấy hàng trên trình duyệt
+        var deliveryID = Request.Cookies["TransportDeliveryID"];
+        if (deliveryID != null) {
+            _accessor?.HttpContext?.Session.SetInt32("TransportDeliveryID", Convert.ToInt32(deliveryID));
+        } else {
+            return Redirect("/transport/login");
+        }
+        var sessionDeliveryID = _accessor?.HttpContext?.Session.GetInt32("TransportDeliveryID");
+        if (sessionDeliveryID != null) {
+            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionDeliveryID)).ToList();
+            _accessor?.HttpContext?.Session.SetString("TransportDeliveryUsername", users[0].sUserName);
+            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
+        } else {
+            _accessor?.HttpContext?.Session.SetString("TransportDeliveryUsername", "");
+        }
         return View();
+    }
+
+    [HttpPost]
+    [Route("/delivery-api")]
+    public IActionResult DeliveryAPI(int orderID = 0) {
+        var sessionDeliveryID = _accessor?.HttpContext?.Session.GetInt32("TransportDeliveryID");
+        IEnumerable<ShippingPicker> ordersWaitDelivery = _shippingOrderRepository.getShippingPickerAboutedWarehouse();
+        IEnumerable<ShippingDelivery> ordersDelivering = _shippingOrderRepository.getShippingDeliveryByDeliverID(Convert.ToInt32(sessionDeliveryID));
+        string htmlOrdersWaitDeliveryItem = "";
+        foreach (var item in ordersWaitDelivery) {
+            htmlOrdersWaitDeliveryItem += $"  <div class='phone-pickup__work'>";
+            htmlOrdersWaitDeliveryItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-1'>Mã đơn hàng</div>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.FK_iOrderID}</div>";
+            htmlOrdersWaitDeliveryItem += $"      </div>";
+            htmlOrdersWaitDeliveryItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-1'>Khách hàng</div>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-2'>{item.sFullName}</div>";
+            htmlOrdersWaitDeliveryItem += $"      </div>";
+            htmlOrdersWaitDeliveryItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-1'>Ngày đặt</div>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-2'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlOrdersWaitDeliveryItem += $"      </div>";
+            htmlOrdersWaitDeliveryItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-1'>Tổng tiền</div>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-2'>{item.fTotalPrice.ToString("#,##0.00")} VNĐ</div>";
+            htmlOrdersWaitDeliveryItem += $"      </div>";
+            htmlOrdersWaitDeliveryItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-1'>Trạng thái</div>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-2'>{item.sOrderStatusName}</div>";
+            htmlOrdersWaitDeliveryItem += $"      </div>";
+            htmlOrdersWaitDeliveryItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-1'>Thanh toán</div>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-2'>{item.sPaymentName}</div>";
+            htmlOrdersWaitDeliveryItem += $"      </div>";
+            htmlOrdersWaitDeliveryItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-1'></div>";
+            htmlOrdersWaitDeliveryItem += $"          <div class='phone-pickup__work-col-2'>";
+            htmlOrdersWaitDeliveryItem += $"              <a href='javascript:openOrderDetail({item.FK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
+            htmlOrdersWaitDeliveryItem += $"          </div>";
+            htmlOrdersWaitDeliveryItem += $"      </div>";
+            htmlOrdersWaitDeliveryItem += $"  </div>";
+        }
+
+        string htmlOrdersDeliveringItem = "";
+        foreach (var item in ordersDelivering) {
+            htmlOrdersDeliveringItem += $"  <div class='phone-pickup__work'>";
+            htmlOrdersDeliveringItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-1'>Mã đơn hàng</div>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-2'>ĐH{item.FK_iOrderID}</div>";
+            htmlOrdersDeliveringItem += $"      </div>";
+            htmlOrdersDeliveringItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-1'>Khách hàng</div>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-2'>{item.sBuyerName}</div>";
+            htmlOrdersDeliveringItem += $"      </div>";
+            htmlOrdersDeliveringItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-1'>Ngày đặt</div>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-2'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlOrdersDeliveringItem += $"      </div>";
+            htmlOrdersDeliveringItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-1'>Tổng tiền</div>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-2'>{item.fTotalPrice.ToString("#,##0.00")} VNĐ</div>";
+            htmlOrdersDeliveringItem += $"      </div>";
+            htmlOrdersDeliveringItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-1'>Trạng thái</div>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-2'>{item.sOrderStatusName}</div>";
+            htmlOrdersDeliveringItem += $"      </div>";
+            htmlOrdersDeliveringItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-1'>Thanh toán</div>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-2'>{item.sPaymentName}</div>";
+            htmlOrdersDeliveringItem += $"      </div>";
+            htmlOrdersDeliveringItem += $"      <div class='phone-pickup__work-row'>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-1'></div>";
+            htmlOrdersDeliveringItem += $"          <div class='phone-pickup__work-col-2'>";
+            htmlOrdersDeliveringItem += $"              <a href='javascript:openOrderDetail({item.FK_iOrderID})' class='phone-pickup__work-link'>Chi tiết đơn</a>";
+            htmlOrdersDeliveringItem += $"          </div>";
+            htmlOrdersDeliveringItem += $"      </div>";
+            htmlOrdersDeliveringItem += $"  </div>";
+        }
+        IEnumerable<Address> deliveryAddresses = _checkoutResponsitory.getAddressAccountByOrderID(orderID);
+        IEnumerable<OrderDetail> orderDetails = _transportRepository.getOrderDetailShippingDeliveryByOrderID(orderID);
+        IEnumerable<Payment> payments = _transportRepository.getPaymentsTypeByOrderID(orderID);
+        TransportViewModel model = new TransportViewModel {
+            OrdersWaitDelivery = ordersWaitDelivery,
+            OrdersDelivering = ordersDelivering,
+            HtmlOrdersWaitDeliveryItem = htmlOrdersWaitDeliveryItem,
+            HtmlOrdersDeliveringItem = htmlOrdersDeliveringItem,
+            DeliveryAddresses = deliveryAddresses,
+            OrderDetails = orderDetails,
+            Payments = payments
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/delivery-api/take")]
+    public IActionResult DeliveryAPITakeOrder(int shippingOrderID = 0, int orderStatusID = 0, string deliveryImage = "") {
+        var sessionDeliveryID = _accessor?.HttpContext?.Session.GetInt32("TransportDeliveryID");
+        // Thêm đơn hàng giao và xác nhận đơn vận lấy về chờ người giao đến lấy hàng
+        Status status;
+        if (
+            _transportRepository.insertShippingDelivery(shippingOrderID, Convert.ToInt32(sessionDeliveryID), orderStatusID, deliveryImage) && 
+            _transportRepository.confirmShippingPickerAboutedWaitDeliveryTake(shippingOrderID)
+            ) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Thêm đơn thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Thêm đơn thất bại!"
+            };
+        }
+        IEnumerable<ShippingPicker> ordersWaitDelivery = _shippingOrderRepository.getShippingPickerAboutedWarehouse();
+        IEnumerable<ShippingDelivery> ordersDelivering = _shippingOrderRepository.getShippingDeliveryByDeliverID(Convert.ToInt32(sessionDeliveryID));
+        TransportViewModel model = new TransportViewModel {
+            Status = status,
+            OrdersWaitDelivery = ordersWaitDelivery,
+            OrdersDelivering = ordersDelivering
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/delivery-api/taken")]
+    public IActionResult DeliveryAPITakenOrder(int shippingDeliveryID = 0, int shippingOrderID = 0, int orderID = 0) {
+        var sessionDeliveryID = _accessor?.HttpContext?.Session.GetInt32("TransportDeliveryID");
+        Status status;
+        if (
+            _transportRepository.confirmShippingPickerAboutedDeliveryTaken(shippingOrderID) &&
+            _transportRepository.confirmShippingDeliveryAboutedDelivering(shippingDeliveryID)
+        ) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Cập nhật trạng thái thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Cập nhật trạng thái thất bại!"
+            };
+        }
+        IEnumerable<ShippingDelivery> ordersDelivering = _shippingOrderRepository.getShippingDeliveryByDeliverID(Convert.ToInt32(sessionDeliveryID));
+        IEnumerable<Address> deliveryAddresses = _checkoutResponsitory.getAddressAccountByOrderID(orderID);
+        IEnumerable<OrderDetail> orderDetails = _transportRepository.getOrderDetailShippingDeliveryByOrderID(orderID);
+        IEnumerable<Payment> payments = _transportRepository.getPaymentsTypeByOrderID(orderID);
+        TransportViewModel model = new TransportViewModel {
+            Status = status,
+            OrdersDelivering = ordersDelivering,
+            DeliveryAddresses = deliveryAddresses,
+            OrderDetails = orderDetails,
+            Payments = payments
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/delivery-api/complete")]
+    public IActionResult DeliveryAPIComplete(int shippingDeliveryID = 0) {
+        Status status;
+        if (_transportRepository.confirmShippingDeliveryAboutedDeliveredToBuyer(shippingDeliveryID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Đơn hàng đã xong!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Cập nhật trạng thái thất bại!"
+            };
+        }
+        return Ok();
     }
 }

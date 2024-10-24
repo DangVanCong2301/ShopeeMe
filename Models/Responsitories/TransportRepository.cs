@@ -102,4 +102,49 @@ public class TransportRepository : ITransportRepository
         _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingPickerAboutedWarehouse @PK_iShippingPickerID", shippingPickerIDParam);
         return true;
     }
+
+    public IEnumerable<OrderDetail> getOrderDetailShippingDeliveryByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetOrderDetailShippingDeliveryByOrderID @PK_iOrderID", orderIDParam);
+    }
+
+    public bool insertShippingDelivery(int shippingOrderID, int userID, int orderStatusID, string deliveryImage)
+    {
+        SqlParameter shippingOrderIDParam = new SqlParameter("@FK_iShippingOrderID", shippingOrderID);
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        SqlParameter orderStatusIDParam = new SqlParameter("@FK_iOrderStatusID", orderStatusID);
+        SqlParameter deliveryImageParam = new SqlParameter("@sDeliveryImage", deliveryImage);
+        SqlParameter deliveryTimeParam = new SqlParameter("@dDeliveryTime", DateTime.Now);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertShippingDelivery @FK_iShippingOrderID, @FK_iUserID, @FK_iOrderStatusID, @sDeliveryImage, @dDeliveryTime", shippingOrderIDParam, userIDParam, orderStatusIDParam, deliveryImageParam, deliveryTimeParam);
+        return true;
+    }
+
+    public bool confirmShippingPickerAboutedWaitDeliveryTake(int shippingOrderID)
+    {
+        SqlParameter shippingOrderIDParam = new SqlParameter("@FK_iShippingOrderID", shippingOrderID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingPickerAboutedWaitDeliveryTake @FK_iShippingOrderID", shippingOrderIDParam);
+        return true;
+    }
+
+    public bool confirmShippingPickerAboutedDeliveryTaken(int shippingOrderID)
+    {
+        SqlParameter shippingOrderIDParam = new SqlParameter("@FK_iShippingOrderID", shippingOrderID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingPickerAboutedDeliveryTaken @FK_iShippingOrderID", shippingOrderIDParam);
+        return true;
+    }
+
+    public bool confirmShippingDeliveryAboutedDelivering(int shippingDeliveryID)
+    {
+        SqlParameter shippingDeliveryIDParam = new SqlParameter("@PK_iShippingDeliveryID", shippingDeliveryID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingDeliveryAboutedDelivering @PK_iShippingDeliveryID", shippingDeliveryIDParam);
+        return true;
+    }
+
+    public bool confirmShippingDeliveryAboutedDeliveredToBuyer(int shippingDeliveryID)
+    {
+        SqlParameter shippingDeliveryIDParam = new SqlParameter("@PK_iShippingDeliveryID", shippingDeliveryID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingDeliveryAboutedDeliveredToBuyer @PK_iShippingDeliveryID", shippingDeliveryIDParam);
+        return true;
+    }
 }
