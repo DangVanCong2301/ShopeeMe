@@ -11,8 +11,10 @@ public interface ITransportRepository
     public bool insertShippingPicker(int shippingOrderID, int userID);
     public bool insertShippingDelivery(int shippingOrderID, int userID, int orderStatusID, string deliveryImage);
     public bool updatePickerImage(int shippingPickerID, string pickerImage);
+    public bool updateDeliveryImage(int shippingDeliveryID, string deliveryImage);
     public bool confirmOrderAboutPickingUp(int orderID);
     public bool confirmShippingOrderAboutDelivered(int shippingOrderID);
+    public bool confirmShippingOrderAboutDeliveredBuyer(int shippingOrderID);
     public bool confirmShippingPickerAboutTaken(int shippingPickerID);
     public bool confirmShippingPickerAboutingWarehouse(int shippingPickerID);
     public bool confirmShippingPickerAboutedWarehouse(int shippingPickerID);

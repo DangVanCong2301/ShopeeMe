@@ -5,11 +5,13 @@ public class TransportViewModel
     public IEnumerable<ShippingPicker> OrdersAboutedWarehouse { get; set; }
     public IEnumerable<ShippingPicker> OrdersWaitDelivery { get; set; }
     public IEnumerable<ShippingDelivery> OrdersDelivering { get; set; }
+    public IEnumerable<ShippingDelivery> OrdersDelivered { get; set; }
     public string HtmlOrdersWaitPickupItem { get; set; }
     public string HtmlOrderPickingUpItem { get; set; }
     public string HtmlOrderAboutedWarehouseItem { get; set; }
     public string HtmlOrdersWaitDeliveryItem { get; set; }
     public string HtmlOrdersDeliveringItem { get; set; }
+    public string HtmlOrdersDeliveredItem { get; set; }
     public IEnumerable<SellerInfo> SellerInfos { get; set; }
     public IEnumerable<OrderDetail> OrderDetails { get; set; }
     public IEnumerable<OrderDetail> OrderDetailsPickingUp { get; set; }

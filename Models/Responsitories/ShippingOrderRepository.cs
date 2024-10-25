@@ -17,6 +17,12 @@ public class ShippingOrderRepository : IShippingOrderRepository
         return _context.ShippingDeliveries.FromSqlRaw("EXEC sp_GetShippingDeliveryByDeliverID @FK_iUserID", deliverIDParam);
     }
 
+    public IEnumerable<ShippingDelivery> getShippingDeliveryCompleteByDeliverID(int deliverID)
+    {
+        SqlParameter deliverIDParam = new SqlParameter("@FK_iUserID", deliverID);
+        return _context.ShippingDeliveries.FromSqlRaw("EXEC sp_GetShippingDeliveryCompleteByDeliverID @FK_iUserID", deliverIDParam);
+    }
+
     public IEnumerable<ShippingOrder> getShippingOrderByID(int shippingOrderID)
     {
         SqlParameter shippingOrderIDParam = new SqlParameter("@PK_iShippingOrderID", shippingOrderID);

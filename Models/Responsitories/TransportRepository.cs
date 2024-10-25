@@ -147,4 +147,19 @@ public class TransportRepository : ITransportRepository
         _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingDeliveryAboutedDeliveredToBuyer @PK_iShippingDeliveryID", shippingDeliveryIDParam);
         return true;
     }
+
+    public bool updateDeliveryImage(int shippingDeliveryID, string deliveryImage)
+    {
+        SqlParameter shippingDeliveryIDParam = new SqlParameter("@PK_iShippingDeliveryID", shippingDeliveryID);
+        SqlParameter deliveryImageParam = new SqlParameter("@sDeliveryImage", deliveryImage);
+        _context.Database.ExecuteSqlRaw("EXEC sp_UpdateDeliveryImage @PK_iShippingDeliveryID, @sDeliveryImage", shippingDeliveryIDParam, deliveryImageParam);
+        return true;
+    }
+
+    public bool confirmShippingOrderAboutDeliveredBuyer(int shippingOrderID)
+    {
+        SqlParameter shippingOrderIDParam = new SqlParameter("@PK_iShippingOrderID", shippingOrderID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingOrderAboutDeliveredBuyer @PK_iShippingOrderID", shippingOrderIDParam);
+        return true;
+    }
 }

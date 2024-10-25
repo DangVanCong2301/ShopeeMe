@@ -250,10 +250,18 @@ public class UserController : Controller {
         IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getProductsOrderByUserID(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrdersByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
         IEnumerable<OrderDetail> orderDetailsWaitSettlement = _orderResponsitory.getProductsOrderByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
+        IEnumerable<Order> ordersTransiting = _orderResponsitory.getOrderByUserIDTransiting(Convert.ToInt32(sessionUserID));
+        IEnumerable<Order> ordersWaitDelivery = _orderResponsitory.getOrderByUserIDWaitDelivery(Convert.ToInt32(sessionUserID));
+        IEnumerable<Order> ordersDelivered = _orderResponsitory.getOrderByUserIDDeliverd(Convert.ToInt32(sessionUserID));
+        IEnumerable<OrderDetail> orderDetailsDelivered = _orderResponsitory.getProductsOrderByUserIDDelivered(Convert.ToInt32(sessionUserID));
         OrderViewModel model = new OrderViewModel {
             OrderDetails = orderDetails,
             OrdersWaitSettlement = ordersWaitSettlement,
-            OrderDetailsWaitSettlement = orderDetailsWaitSettlement
+            OrderDetailsWaitSettlement = orderDetailsWaitSettlement,
+            OrdersTransiting = ordersTransiting,
+            OrdersWaitDelivery = ordersWaitDelivery,
+            OrdersDelivered = ordersDelivered,
+            OrderDetailsDelivered = orderDetailsDelivered
         };
         return Ok(model);
     }
