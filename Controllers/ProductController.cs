@@ -170,4 +170,26 @@ public class ProductController : Controller {
         };
         return Ok(model);
     }
+
+    [HttpPost]
+    [Route("/product/reviewer")]
+    public IActionResult Reviewer(int productID = 0, string comment = "", int star = 0, string image = "") {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        Status status;
+        if (_productResponsitory.insertProductReviewer(Convert.ToInt32(sessionUserID), productID, star, comment, image)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Thêm đánh giá thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Thêm đánh giá thất bại!"
+            };
+        }
+        ProductViewModel model = new ProductViewModel {
+            Status = status
+        };
+        return Ok(model);
+    }
 }

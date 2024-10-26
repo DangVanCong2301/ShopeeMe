@@ -9,4 +9,5 @@ public class OrderViewModel {
     public IEnumerable<OrderDetail> OrderDetailsWaitSettlement { get; set; }
     public IEnumerable<OrderDetail> OrderDetailsDelivered { get; set; }
     public int CartCount { get; set; }
+    public Status Status { get; set; }
 }

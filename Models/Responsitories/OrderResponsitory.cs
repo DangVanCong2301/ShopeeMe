@@ -26,6 +26,13 @@ public class OrderResponsitory : IOrderResponsitory
         return true;
     }
 
+    public bool confirmOrderAboutReceived(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmOrderAboutReceived @PK_iOrderID", orderIDParam);
+        return true;
+    }
+
     public bool confirmOrderAboutWaitDelivery(int orderID, int userID)
     {
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);

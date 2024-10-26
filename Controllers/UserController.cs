@@ -234,11 +234,19 @@ public class UserController : Controller {
         if (userID != null)
         {
             _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        } else {
+            return Redirect("/user/login");
         }
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        if (sessionUserID == null)
+        if (sessionUserID != null)
         {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", 0);
+            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
+            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
+            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
+        }
+        else
+        {
+            _accessor?.HttpContext?.Session.SetString("UserName", "");
         }
         return View();
     }

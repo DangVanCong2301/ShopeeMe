@@ -143,4 +143,25 @@ public class ProductResponsitory : IProductResponsitory {
         _context.Database.ExecuteSqlRaw("EXEC sp_DeleteProductByID @PK_iProductID", productIDParam);
         return true;
     }
+
+    public bool insertProductReviewer(int userID, int productID, int star, string comment, string image)
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        SqlParameter productIDParam = new SqlParameter("@FK_iProductID", productID);
+        SqlParameter starParam = new SqlParameter("@iStar", star);
+        SqlParameter commentParam = new SqlParameter("@sComment", comment);
+        SqlParameter imageParam = new SqlParameter("@sReviewerImage", image);
+        SqlParameter createTimeParam = new SqlParameter("@dCreateTime", DateTime.Now);
+        SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertProductReviewer @FK_iUserID, @FK_iProductID, @iStar, @sComment, @sReviewerImage, @dCreateTime, @dUpdateTime", 
+            userIDParam,
+            productIDParam,
+            starParam,
+            commentParam,
+            imageParam,
+            createTimeParam,
+            updateTimeParam
+        );
+        return true;
+    }
 }

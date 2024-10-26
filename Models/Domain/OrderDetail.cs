@@ -1,5 +1,6 @@
 public class OrderDetail
 {
+    public int PK_iOrderID { get; set; }
     public int PK_iProductID { get; set; }
     public string sImageUrl { get; set; }
     public string sProductName { get; set; }

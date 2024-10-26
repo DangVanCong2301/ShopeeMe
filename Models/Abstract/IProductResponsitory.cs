@@ -14,6 +14,7 @@ public interface IProductResponsitory {
     bool insertProduct(int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price);
     bool updateProduct(int productID, int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price);
     bool deleteProductByID(int productID);
+    bool insertProductReviewer(int userID, int productID, int star, string comment, string image);
     // product discount
     IEnumerable<Discount> getDiscounts();
     IEnumerable<TransportPrice> getTransportPrice();

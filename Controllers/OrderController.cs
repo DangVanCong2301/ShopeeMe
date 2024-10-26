@@ -54,4 +54,30 @@ public class OrderController : Controller {
         };
         return Json(model); 
     }
+
+    [HttpPost]
+    [Route("/order/confirm-deliverd")]
+    public IActionResult Delivered(int orderID = 0) {
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        Status status;
+        if (_orderResponsitory.confirmOrderAboutReceived(orderID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Xác nhận thành công"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Xác nhận thất bại"
+            };
+        }
+        IEnumerable<Order> ordersDelivered = _orderResponsitory.getOrderByUserIDDeliverd(Convert.ToInt32(sessionUserID));
+        IEnumerable<OrderDetail> orderDetailsDelivered = _orderResponsitory.getProductsOrderByUserIDDelivered(Convert.ToInt32(sessionUserID));
+        OrderViewModel model = new OrderViewModel {
+            Status = status,
+            OrdersDelivered = ordersDelivered,
+            OrderDetailsDelivered = orderDetailsDelivered
+        };
+        return Ok(model);
+    }
 }

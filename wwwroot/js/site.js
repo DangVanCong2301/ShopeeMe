@@ -362,6 +362,26 @@ window.onclick = (event) => {
     }
 }
 
+// Modal
+function openModal() {
+    document.querySelector(".modal").classList.add("open");
+}
+
+function closeModal() {
+    document.querySelector(".modal").classList.remove("open");
+}
+
+// Validate Styles
+function showErrStyles(input, msg) {
+    input.classList.add("err");
+    msg.classList.remove("hide-on-destop");
+}
+
+function removeErrStyles(input, msg) {
+    input.classList.remove("err");
+    msg.classList.add("hide-on-destop");
+}
+
 // Toast
 function toast({ title = "", msg = "", type = "", duration = 3000}) {
     const main = document.getElementById('toast');
