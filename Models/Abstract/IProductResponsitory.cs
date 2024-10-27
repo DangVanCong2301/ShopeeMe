@@ -18,4 +18,6 @@ public interface IProductResponsitory {
     // product discount
     IEnumerable<Discount> getDiscounts();
     IEnumerable<TransportPrice> getTransportPrice();
+    // Reviewer
+    IEnumerable<Reviewer> getReviewerByProductID(int productID);
 }

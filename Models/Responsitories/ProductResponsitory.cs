@@ -164,4 +164,10 @@ public class ProductResponsitory : IProductResponsitory {
         );
         return true;
     }
+
+    public IEnumerable<Reviewer> getReviewerByProductID(int productID)
+    {
+        SqlParameter productIDParam = new SqlParameter("@FK_iProductID", productID);
+        return _context.Reviewers.FromSqlRaw("EXEC sp_GetReviewerByProductID @FK_iProductID", productIDParam);
+    }
 }

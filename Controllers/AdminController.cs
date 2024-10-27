@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
 
@@ -83,7 +84,9 @@ public class AdminController : Controller {
             htmlWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
             htmlWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
             htmlWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
-            htmlWaitSettlmentItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
+            htmlWaitSettlmentItem += $"     <div class='admin__order-table-body-col payment'>";
+            htmlWaitSettlmentItem += $"            <div class='admin__order-table-body-col-payment-name'>{item.sPaymentName}</div>";
+            htmlWaitSettlmentItem += $"     </div>";
             htmlWaitSettlmentItem += $"     <div class='admin__order-table-body-col primary'>";
             htmlWaitSettlmentItem += $"         <a href='/admin/order/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
             htmlWaitSettlmentItem += $"     </div>";
@@ -198,12 +201,19 @@ public class AdminController : Controller {
     [Route("/admin/confirm-order")]
     public IActionResult ConfirmOrder() {
         var sessionOrderID = _accessor?.HttpContext?.Session.GetInt32("CurrentOrderID");
+        Status status;
         List<Order> order = _orderResponsitory.getOrderWaitSettlementByOrderID(Convert.ToInt32(sessionOrderID)).ToList();
-        _orderResponsitory.confirmOrderAboutPickup(Convert.ToInt32(sessionOrderID), order[0].PK_iUserID);
-        Status status = new Status {
-            StatusCode = 1,
-            Message = "Xác nhận đơn hàng thành công!"
-        };
+        if (_orderResponsitory.confirmOrderAboutWaitPickup(Convert.ToInt32(sessionOrderID), order[0].PK_iUserID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Xác nhận đơn hàng thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Xác nhận đơn hàng thất bại!"
+            };
+        }
         return Ok(status);
     }
 

@@ -8,7 +8,7 @@ public interface ITransportRepository
     public IEnumerable<SellerInfo> getSellerInfoByOrderID(int orderID);
     public IEnumerable<Payment> getPaymentsTypeByOrderID(int orderID);
     public IEnumerable<Order> getOrderWaitPickupByShippingOrderID(int shippingOrderID);
-    public bool insertShippingPicker(int shippingOrderID, int userID);
+    public bool insertShippingPicker(int shippingOrderID, string pickerName, string pickerImage);
     public bool insertShippingDelivery(int shippingOrderID, int userID, int orderStatusID, string deliveryImage);
     public bool updatePickerImage(int shippingPickerID, string pickerImage);
     public bool updateDeliveryImage(int shippingDeliveryID, string deliveryImage);
@@ -22,4 +22,5 @@ public interface ITransportRepository
     public bool confirmShippingPickerAboutedDeliveryTaken(int shippingOrderID);
     public bool confirmShippingDeliveryAboutedDelivering(int shippingDeliveryID);
     public bool confirmShippingDeliveryAboutedDeliveredToBuyer(int shippingDeliveryID);
+    public bool confirmShippingOrderAboutWaitPickerTake(int shippingOrderID);
 }

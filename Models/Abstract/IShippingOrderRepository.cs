@@ -10,5 +10,7 @@ public interface IShippingOrderRepository
     IEnumerable<ShippingPicker> getShippingPickerByID(int shippingPickerID);
     IEnumerable<ShippingOrder> getShippingOrderByShopID(int shopID);
     IEnumerable<ShippingDelivery> getShippingDeliveryByDeliverID(int deliverID);
+    IEnumerable<ShippingDelivery> getShippingDeliveryByOrderID(int orderID);
+    IEnumerable<ShippingDelivery> getShippingDeliveredByOrderID(int orderID);
     IEnumerable<ShippingDelivery> getShippingDeliveryCompleteByDeliverID(int deliverID);
 }

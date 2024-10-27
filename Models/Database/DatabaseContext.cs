@@ -22,6 +22,7 @@ namespace Project.Models
         public DbSet<TransportPrice> TransportPrices { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Reviewer> Reviewers { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetail> CartDetails { get; set; }
         public DbSet<Payment> PaymentTypes { get; set; }
@@ -88,6 +89,10 @@ namespace Project.Models
 
             modelBuilder.Entity<Favorite>(entity => {
                 entity.HasKey(e => e.PK_iFavoriteID);
+            });
+
+            modelBuilder.Entity<Reviewer>(entity => {
+                entity.HasKey(e => e.PK_iReviewID);
             });
 
             modelBuilder.Entity<User>(entity => {

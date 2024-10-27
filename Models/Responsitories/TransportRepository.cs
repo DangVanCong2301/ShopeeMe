@@ -72,12 +72,14 @@ public class TransportRepository : ITransportRepository
         return _context.SellerInfos.FromSqlRaw("EXEC sp_GetSellerInfoByOrderID @PK_iOrderID", orderIDParam);
     }
 
-    public bool insertShippingPicker(int shippingOrderID, int userID)
+    public bool insertShippingPicker(int shippingOrderID, string pickerName, string pickerImage)
     {
         SqlParameter shippingOrderIDParam = new SqlParameter("@FK_iShippingOrderID", shippingOrderID);
-        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        SqlParameter orderStatusIDParam = new SqlParameter("@FK_iOrderStatusID", 7);
+        SqlParameter pickerNameParam = new SqlParameter("@sPickerName", pickerName);
+        SqlParameter pickerImageParam = new SqlParameter("@sPickerImage", pickerImage);
         SqlParameter timeParam = new SqlParameter("@dShippingPickerTime", DateTime.Now);
-        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertShippingPicker @FK_iShippingOrderID, @FK_iUserID, @dShippingPickerTime", shippingOrderIDParam, userIDParam, timeParam);
+        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertShippingPicker @FK_iShippingOrderID, @FK_iOrderStatusID, @sPickerName, @sPickerImage, @dShippingPickerTime", shippingOrderIDParam, orderStatusIDParam, pickerNameParam, pickerImageParam, timeParam);
         return true;
     }
 
@@ -160,6 +162,13 @@ public class TransportRepository : ITransportRepository
     {
         SqlParameter shippingOrderIDParam = new SqlParameter("@PK_iShippingOrderID", shippingOrderID);
         _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingOrderAboutDeliveredBuyer @PK_iShippingOrderID", shippingOrderIDParam);
+        return true;
+    }
+
+    public bool confirmShippingOrderAboutWaitPickerTake(int shippingOrderID)
+    {
+        SqlParameter shippingOrderIDParam = new SqlParameter("@PK_iShippingOrderID", shippingOrderID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingOrderAboutWaitPickerTake @PK_iShippingOrderID", shippingOrderIDParam);
         return true;
     }
 }

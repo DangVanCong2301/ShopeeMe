@@ -259,6 +259,7 @@ public class UserController : Controller {
         IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrdersByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
         IEnumerable<OrderDetail> orderDetailsWaitSettlement = _orderResponsitory.getProductsOrderByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersTransiting = _orderResponsitory.getOrderByUserIDTransiting(Convert.ToInt32(sessionUserID));
+        IEnumerable<OrderDetail> orderDetailsTransiting = _orderResponsitory.getProductsOrderByUserIDTransiting(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersWaitDelivery = _orderResponsitory.getOrderByUserIDWaitDelivery(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersDelivered = _orderResponsitory.getOrderByUserIDDeliverd(Convert.ToInt32(sessionUserID));
         IEnumerable<OrderDetail> orderDetailsDelivered = _orderResponsitory.getProductsOrderByUserIDDelivered(Convert.ToInt32(sessionUserID));
@@ -267,6 +268,7 @@ public class UserController : Controller {
             OrdersWaitSettlement = ordersWaitSettlement,
             OrderDetailsWaitSettlement = orderDetailsWaitSettlement,
             OrdersTransiting = ordersTransiting,
+            OrderDetailsTransiting = orderDetailsTransiting,
             OrdersWaitDelivery = ordersWaitDelivery,
             OrdersDelivered = ordersDelivered,
             OrderDetailsDelivered = orderDetailsDelivered

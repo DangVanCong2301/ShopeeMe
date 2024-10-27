@@ -36,7 +36,7 @@ function setOrderCode(data) {
                                 Mã vận đơn: SPXVN${data.shippingOrders[0].pK_iShippingOrderID}
                             </div>
                             <div class="order-code__header-id-order">
-                                Mã đơn hàng: VP1C4PQP${data.ordersWaitDelivery[0].pK_iOrderID}
+                                Mã đơn hàng: VP1C4PQP${data.shippingOrders[0].fK_iOrderID}
                             </div>
                         </div>
                     </div>

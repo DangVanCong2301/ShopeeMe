@@ -11,10 +11,22 @@ public class ShippingOrderRepository : IShippingOrderRepository
         _context = context;
     }
 
+    public IEnumerable<ShippingDelivery> getShippingDeliveredByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@FK_iOrderID", orderID);
+        return _context.ShippingDeliveries.FromSqlRaw("EXEC sp_GetShippingDeliveredByOrderID @FK_iOrderID", orderIDParam);
+    }
+
     public IEnumerable<ShippingDelivery> getShippingDeliveryByDeliverID(int deliverID)
     {
         SqlParameter deliverIDParam = new SqlParameter("@FK_iUserID", deliverID);
         return _context.ShippingDeliveries.FromSqlRaw("EXEC sp_GetShippingDeliveryByDeliverID @FK_iUserID", deliverIDParam);
+    }
+
+    public IEnumerable<ShippingDelivery> getShippingDeliveryByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@FK_iOrderID", orderID);
+        return _context.ShippingDeliveries.FromSqlRaw("EXEC sp_GetShippingDeliveryByOrderID @FK_iOrderID", orderIDParam);
     }
 
     public IEnumerable<ShippingDelivery> getShippingDeliveryCompleteByDeliverID(int deliverID)
@@ -72,8 +84,9 @@ public class ShippingOrderRepository : IShippingOrderRepository
     {
         SqlParameter shippingUnitIDParam = new SqlParameter("@FK_iShippingUnitID", shippingUnitID);
         SqlParameter orderIDParam = new SqlParameter("@FK_iOrderID", orderID);
+        SqlParameter orderStatusIDParam = new SqlParameter("@FK_iOrderStatusID", 6);
         SqlParameter shippingTimeParam = new SqlParameter("@ShippingTime", DateTime.Now);
-        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertShippingOrder @FK_iShippingUnitID, @FK_iOrderID, @ShippingTime", shippingUnitIDParam, orderIDParam, shippingTimeParam);
+        _context.Database.ExecuteSqlRaw("SET DATEFORMAT dmy EXEC sp_InsertShippingOrder @FK_iShippingUnitID, @FK_iOrderID, @FK_iOrderStatusID, @ShippingTime", shippingUnitIDParam, orderIDParam, orderStatusIDParam, shippingTimeParam);
         return true;
     }
 }

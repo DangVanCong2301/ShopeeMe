@@ -255,17 +255,17 @@ function setDataOrderDetail(data) {
                         </div>
                     </div>
                     <div class="phone-pickup__order-footer">`;
-                    if (data.ordersDelivering.length != 0 && data.ordersDelivering[0].fK_iOrderStatusID == 7) {
+                    if (data.shippingDeliveries.length != 0 && data.shippingDeliveries[0].fK_iOrderStatusID == 7) {
                         htmlOrderDetail += 
                         `
                         <div class="phone-header__pickup-order-footer-btn" onclick="openGotGood(${data.ordersDelivering[0].pK_iShippingDeliveryID}, ${data.ordersDelivering[0].fK_iShippingOrderID}, ${data.ordersDelivering[0].fK_iOrderID})">Xác nhận đã lấy hàng</div>
                         `;    
-                    } else if (data.ordersDelivering.length != 0 && data.ordersDelivering[0].fK_iOrderStatusID == 8) {
+                    } else if (data.shippingDeliveries.length != 0 && data.shippingDeliveries[0].fK_iOrderStatusID == 8) {
                         htmlOrderDetail += 
                         `
                         <div class="phone-header__pickup-order-footer-btn" onclick="openCompleteJob(${data.ordersDelivering[0].pK_iShippingDeliveryID}, ${data.ordersDelivering[0].fK_iShippingOrderID}, ${data.ordersDelivering[0].fK_iOrderID})">Đang giao hàng...</div>
                         `; 
-                    } else if (data.ordersDelivered[0].fK_iOrderStatusID == 15) {
+                    } else if (data.shippingDelivered.length != 0 && data.shippingDelivered.fK_iOrderStatusID == 15) {
                         htmlOrderDetail += 
                         `
                         <div class="phone-header__pickup-order-footer-btn">Đã giao hàng</div>

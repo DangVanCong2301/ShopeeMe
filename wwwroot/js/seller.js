@@ -683,7 +683,7 @@ function confirmShippingOrder(data, orderID, userID) {
                     toast({ title: "Thông báo", msg: `${result.message}`, type: "success", duration: 5000 });
                     document.querySelector(".modal__body").innerHTML = "";
                     setTimeout(() => {
-                        window.location.assign('/seller/delivery-note');
+                        window.location.assign('/seller/delivery-note/'+ orderID + '');
                     }, 1000)
                 }, 2000);
             }

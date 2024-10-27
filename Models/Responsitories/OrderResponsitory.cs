@@ -18,11 +18,19 @@ public class OrderResponsitory : IOrderResponsitory
         return true;
     }
 
-    public bool confirmOrderAboutPickup(int orderID, int userID)
+    public bool confirmOrderAboutWaitPickup(int orderID, int userID)
     {
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
-        _context.Database.ExecuteSqlRaw("sp_ConfirmOrderAboutPickup @PK_iOrderID, @PK_iUserID", orderIDParam, userIDParam);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmOrderAboutWaitPickup @PK_iOrderID, @PK_iUserID", orderIDParam, userIDParam);
+        return true;
+    }
+
+    public bool confirmOrderAboutTransiting(int orderID, int userID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmOrderAboutTransiting @PK_iOrderID, @PK_iUserID", orderIDParam, userIDParam);
         return true;
     }
 
@@ -77,7 +85,7 @@ public class OrderResponsitory : IOrderResponsitory
     public IEnumerable<OrderDetail> getOrderDetailWaitDeliveyByOrderID(int orderID)
     {
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
-        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetOrderDetailWaitDeliveyByOrderID @PK_iOrderID", orderIDParam);
+        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetOrderDetailShippingOrderByOrderID @PK_iOrderID", orderIDParam);
     }
 
     public IEnumerable<OrderDetail> getOrderDetailWaitSettlementByOrderID(int orderID)
@@ -132,6 +140,12 @@ public class OrderResponsitory : IOrderResponsitory
     {
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
         return _context.OrderDetails.FromSqlRaw("EXEC sp_GetProductsOrderByUserID @PK_iUserID", userIDParam);
+    }
+
+    public IEnumerable<OrderDetail> getProductsOrderByUserIDTransiting(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetProductsOrderByUserIDTransiting @PK_iUserID", userIDParam);
     }
 
     public IEnumerable<OrderDetail> getProductsOrderByUserIDDelivered(int userID)

@@ -627,8 +627,8 @@ public class SellerController : Controller
     [Route("/seller/confirm-shipping-order")]
     public IActionResult ShippingOrder(int orderID = 0, int userID = 0) {
         _shippingOrderRepository.insertShippingOrder(1, orderID);
-        // Cập nhật đơn hàng về trạng thái chờ lấy hàng hàng
-        _orderResponsitory.confirmOrderAboutPickup(orderID, userID);
+        // Cập nhật đơn hàng về trạng thái đang vận chuyển
+        _orderResponsitory.confirmOrderAboutTransiting(orderID, userID);
         // Lấy đơn hàng giao vừa được thêm
         List<ShippingOrder> shippingOrder = _shippingOrderRepository.getShippingOrderByOrderID(orderID).ToList();
         _accessor?.HttpContext?.Session.SetInt32("CurrentShippingOrderID", shippingOrder[0].PK_iShippingOrderID);

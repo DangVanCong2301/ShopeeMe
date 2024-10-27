@@ -10,6 +10,8 @@ function getDataDetail() {
             loadProductNameInHeader(data);
 
             loadDetailInfo(data);
+
+            setDataReviewer(data);
         }
     };
     xhr.send(null);
@@ -525,6 +527,227 @@ window.addEventListener('scroll', () => {
 });
 
 // Comment Add
+function setDataReviewer(data) {
+    let htmlReviewer = "";
+    htmlReviewer += 
+    `
+        <div class="comment__title">ĐÁNH GIÁ VÀ NHẬN XÉT SẢN PHẨM</div>
+            <div class="rate">
+                <div class="rate__header">
+                    <div class="rate__title">
+                        <div class="rate__title-point">4.8</div>
+                        <div class="rate__title-total">/5</div>
+                    </div>
+                    <div class="rate__stars">
+                        <i class="uis uis-star"></i>
+                        <i class="uis uis-star"></i>
+                        <i class="uis uis-star"></i>
+                        <i class="uis uis-star"></i>
+                        <i class="uis uis-star-half-alt"></i>
+                    </div>
+                    <div class="rate__evaluate">300 đánh giá</div>
+                </div>
+                <div class="rate__body">
+                    <div class="rate__star">
+                        <div class="rate__star-5-icon">
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                        </div>
+                        <div class="rate__num-5-percent">
+                            <div class="rate__bar">
+                                <span class="rate__percent-box"></span>
+                            </div>
+                            <div class="rate__percent-count">226</div>
+                        </div>
+                    </div>
+                    <div class="rate__star">
+                        <div class="rate__star-4-icon">
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                        </div>
+                        <div class="rate__num-4-percent">
+                            <div class="rate__bar">
+                                <span class="rate__percent-box"></span>
+                            </div>
+                            <div class="rate__percent-count">226</div>
+                        </div>
+                    </div>
+                    <div class="rate__star">
+                        <div class="rate__star-3-icon">
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                        </div>
+                        <div class="rate__num-3-percent">
+                            <div class="rate__bar">
+                                <span class="rate__percent-box"></span>
+                            </div>
+                            <div class="rate__percent-count">226</div>
+                        </div>
+                    </div>
+                    <div class="rate__star">
+                        <div class="rate__star-2-icon">
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                        </div>
+                        <div class="rate__num-2-percent">
+                            <div class="rate__bar">
+                                <span class="rate__percent-box"></span>
+                            </div>
+                            <div class="rate__percent-count">226</div>
+                        </div>
+                    </div>
+                    <div class="rate__star">
+                        <div class="rate__star-1-icon">
+                            <i class="uis uis-star rate__icon"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                            <i class="uis uis-star rate__icon-blur"></i>
+                        </div>
+                        <div class="rate__num-1-percent">
+                            <div class="rate__bar">
+                                <span class="rate__percent-box"></span>
+                            </div>
+                            <div class="rate__percent-count">226</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rate__me">
+                    <div class="rate__me-title">Đánh giá của bạn</div>
+                    <div class="rate__me-stars">
+                        <i class="uis uis-star"></i>
+                        <i class="uis uis-star"></i>
+                        <i class="uis uis-star"></i>
+                        <i class="uis uis-star"></i>
+                        <i class="uis uis-star"></i>
+                    </div>
+                    <button class="btn btn--primary btn-evaluate">Gửi đánh giá</button>
+                </div>
+            </div>
+            <div class="comment__body">
+                <div class="comment__body-header">
+                    <div class="comment__body-header-quantity">${data.reviewers.length} bình luận</div>
+                    <div class="comment__body-header-sort">
+                        <i class="uil uil-list-ui-alt comment__body-header-sort-icon"></i>
+                        <div class="comment__body-header-sort-sub">Sắp xếp theo</div>
+                        <div class="comment__body-header-sort-container">
+                            <div class="comment__body-header-sort-item">Bình luận hàng đầu</div>
+                            <div class="comment__body-header-sort-item">Mới nhất xếp trước</div>
+                        </div>
+                    </div>
+                </div>`;
+                if (data.userInfos.length != 0) {
+                    htmlReviewer += `
+                    <div class="comment__add">
+                        <div class="comment__add-avatar" style="background-image: url(/img/profile_avatar.jpg);">
+                        </div>
+                        <div class="comment__add-desc">
+                            <div class="comment__add-control">
+                                <input type="text" placeholder="Phản hồi..." class="comment__add-input"
+                                    onclick="showCommentAddBtn()" onkeyup="changeCommentAddBtn(this)">
+                            </div>
+                            <div class="comment__add-btns">
+                                <div class="comment__add-btn-felling">
+                                    <i class="uil uil-smile-beam comment__add-btn-felling-icon"></i>
+                                </div>
+                                <div class="comment__add-btn">
+                                    <div class="comment__add-btn-destroy" onclick="hideCommentAddBtn()">Huỷ</div>
+                                    <div class="comment__add-btn-reply">Phản hồi</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                } 
+                htmlReviewer += `
+                <div class="comment__body-list">`;
+                if (data.reviewers.length == 0) {
+                    htmlReviewer += 
+                    `
+                    <div class="comment__no-list">
+                        Chưa có bình luận
+                    </div>
+                    `;
+                } else {
+                    data.reviewers.forEach(element => {
+                        htmlReviewer += `
+                        <div class="comment__body-item">
+                            <div class="comment__container">
+                                <div class="comment__user">
+                                    <img src="/img/${element.sImageProfile}" alt="" class="comment__user-img">
+                                    <p class="comment__username">${element.sUserName}</p>
+                                    <p class="comment__at">2 tuần trước</p>
+                                </div>
+                                <div class="comment__more">
+                                    <i class="uil uil-ellipsis-v comment__more-icon"></i>
+                                    <div class="comment__more-container">
+                                        <div class="comment__more-item">
+                                            <i class="uil uil-pen comment__more-item-icon"></i>
+                                            <span>Chỉnh sửa</span>
+                                        </div>
+                                        <div class="comment__more-item">
+                                            <i class="uil uil-trash comment__more-item-icon"></i>
+                                            <span>Xoá</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="comment__controls">
+                                    <div class="comment__like">
+                                        <i class="uil uil-thumbs-up comment__like-icon"></i>
+                                        <div class="comment__like-quantity">12</div>
+                                    </div>
+                                    <div class="comment__dislike">
+                                        <i class="uil uil-thumbs-down comment__dislike-icon"></i>
+                                        <div class="comment__dislike-quantity">12</div>
+                                    </div>
+                                    <div class="comment__reply">
+                                        Phản hồi
+                                    </div>
+                                </div>
+                                <div class="comment__text">
+                                    <span class="comment__reply-to"></span>
+                                    <div class="comment__reviewer-stars">`;
+                                    for (let i = 0; i < element.iStars; i++) {
+                                        htmlReviewer += `
+                                        <i class="uis uis-star"></i>`;
+                                    }
+                                    htmlReviewer += `
+                                    </div>
+                                    <div class="comment__rate-time">
+                                        ${formatDate(element.dCreateTime)} | Phân loại hàng: ${element.sCategoryName}
+                                    </div>
+                                    <div class="comment__text-body">
+                                        <span class="comment__reply-to">@${element.sUserName}</span>
+                                        ${element.sComment}
+                                    </div>`;
+                                    if (element.sReviewerImage != "no_img.jpg") {
+                                        htmlReviewer += `
+                                    <img src="/img/${element.sReviewerImage}" class="comment__reviewer-img" alt="">`;
+                                    }
+                                    htmlReviewer += `
+                                </div>
+                            </div>
+                        </div>`;   
+                    });
+                }
+                    htmlReviewer += `
+                </div>
+            </div>
+    `;
+    document.querySelector(".comment").innerHTML = htmlReviewer;
+}
+
 function showCommentAddBtn() {
     document.querySelector(".comment__add-btns").classList.add("show");
 }

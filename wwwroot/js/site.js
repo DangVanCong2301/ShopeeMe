@@ -546,3 +546,9 @@ function money_2(number) {
 function backHistory() {
     window.history.back();
 }
+
+// Format Date
+function formatDate(date) {
+    const dateFormat = new Date(date);
+    return dateFormat.toLocaleDateString('en-GB'); // 24/04/2023
+}

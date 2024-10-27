@@ -318,7 +318,89 @@ function setProductsOrderWaitSettlement(data) {
 
 // Transiting
 function setProductsOrderTransiting(data) {
-    if (data.ordersTransiting.length == 0) {
+    if (data.ordersTransiting.length != 0) {
+        document.querySelector(".purchase__header-item-transiting-count").innerText = `(${data.ordersTransiting.length})`;
+    } else {
+        document.querySelector(".purchase__header-item-transiting-count").innerText = "";
+    }
+    let htmlProductOrder = "";
+    data.orderDetailsTransiting.forEach(e => {
+        htmlProductOrder += 
+        `
+                        <div class="purchase__item">
+                            <div class="purchase__body">
+                                <div class="purchase__body-header-wait">
+                                    <div class="purchase__body-header-btns">
+                                        <div class="purchase__body-header-shop">${e.sStoreName}</div>
+                                        <button class="purchase__body-header-btn"><i
+                                                class="uil uil-chat"></i><span>Chat</span></button>
+                                        <a class="purchase__body-header-btn-link"><i class="uil uil-shop"></i><span>Xem
+                                                Shop</span></a>
+                                    </div>
+                                    <div class="purchase__body-title">
+                                        <div class="purchase__body-header-subwait">Chờ thanh toán</div>
+                                    </div>
+                                </div>
+                                <div class="purchase__body-container">
+                                    <ul class="purchase__body-list">
+                                        <li class="purchase__body-item">
+                                            <a class="purchase__body-item-link">
+                                                <div class="purchase__body-item-img">
+                                                    <img src="/img/${e.sImageUrl}" alt="">
+                                                </div>
+                                                <div class="purchase__body-item-info">
+                                                    <div class="purchase__body-item-info-left">
+                                                        <div class="purchase__body-item-title">
+                                                            ${e.sProductName}
+                                                        </div>
+                                                        <div class="purchase__body-item-sub">
+                                                            <div class="purchase__body-item-desc">Phân loại hàng: Bạc
+                                                            </div>
+                                                            <span class="purchase__body-item-qnt">x ${e.iQuantity}</span> <br>
+                                                            <span class="purchase__body-item-return">Trả hàng miễn phí
+                                                                15 ngày</span>
+                                                        </div>
+                                                    </div>`;
+                                                    if (e.dPerDiscount != 1) {
+                                                        htmlProductOrder += 
+                                                    `<div class="purchase__body-item-info-right">
+                                                        <div class="purchase__body-item-old-price">${e.dUnitPrice} đ</div>
+                                                        <div class="purchase__body-item-price">${money(e.dUnitPrice * (1 - e.dPerDiscount))} đ</div>
+                                                    </div>`;
+                                                    } else {
+                                                        htmlProductOrder += 
+                                                    `<div class="purchase__body-item-info-right">
+                                                        <div class="purchase__body-item-price">${money(e.dUnitPrice)} đ</div>
+                                                    </div>`;
+                                                    }
+                                                    htmlProductOrder +=
+                                                `</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="purchase__prevent">
+                                <div class="purchase__prevent-box purchase__prevent-box-left"></div>
+                                <div class="purchase__prevent-box purchase__prevent-box-right"></div>
+                            </div>
+                            <div class="purchase__bottom">
+                                <div class="purchase__bottom-head">
+                                    <div class="purchase__bottom-head-sub-price">
+                                        <i class="uil uil-shield-check"></i>
+                                        <span>Thành tiền:</span>
+                                    </div>
+                                    <div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>
+                                </div>
+                                <div class="purchase__bottom-btns">
+                                    <a href="javascript:openCofirmModal(${e.pK_iOrderID}, ${e.pK_iProductID})" class="btn btn--primary purchase__bottom-btn hide-on-mobile">Liên hệ người bán</a>
+                                    <a href="" class="btn purchase__bottom-link hide-on-mobile">Huỷ đơn hàng</a>
+                                </div>
+                            </div>
+                        </div>
+        `;
+    });
+    if (data.ordersTransiting.length == 0 && data.orderDetailsTransiting.length == 0) {
         document.querySelector(".purchase__transport").innerHTML = 
         `
                         <div class="purchase__wait-settlement">
@@ -328,6 +410,8 @@ function setProductsOrderTransiting(data) {
                             </div>
                         </div>
         `;
+    } else {
+        document.querySelector(".purchase__transport").innerHTML = htmlProductOrder;
     }
 }
 

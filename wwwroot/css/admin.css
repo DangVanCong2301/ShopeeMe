@@ -1360,6 +1360,12 @@
 }
 
 .admin__order-table-body-col.payment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin__order-table-body-col-payment-name {
     height: 20px;
     line-height: 20px;
     display: -webkit-box;
