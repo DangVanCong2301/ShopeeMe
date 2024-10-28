@@ -626,17 +626,24 @@ public class SellerController : Controller
     [HttpPost]
     [Route("/seller/confirm-shipping-order")]
     public IActionResult ShippingOrder(int orderID = 0, int userID = 0) {
-        _shippingOrderRepository.insertShippingOrder(1, orderID);
+        Status status;
         // Cập nhật đơn hàng về trạng thái đang vận chuyển
-        _orderResponsitory.confirmOrderAboutTransiting(orderID, userID);
+        if (_shippingOrderRepository.insertShippingOrder(1, orderID) && _orderResponsitory.confirmOrderAboutTransiting(orderID, userID)) {
+            status = new Status
+            {
+                StatusCode = 1,
+                Message = "Phiếu đã được tạo thành công!"
+            };
+        } else {
+            status = new Status
+            {
+                StatusCode = 1,
+                Message = "Phiếu đã được tạo thành công!"
+            };
+        }
         // Lấy đơn hàng giao vừa được thêm
         List<ShippingOrder> shippingOrder = _shippingOrderRepository.getShippingOrderByOrderID(orderID).ToList();
         _accessor?.HttpContext?.Session.SetInt32("CurrentShippingOrderID", shippingOrder[0].PK_iShippingOrderID);
-        
-        Status status = new Status {
-            StatusCode = 1,
-            Message = "Phiếu đã được tạo thành công!"
-        };
         return Ok(status);
     }
 

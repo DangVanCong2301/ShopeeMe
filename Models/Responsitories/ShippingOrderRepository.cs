@@ -80,6 +80,12 @@ public class ShippingOrderRepository : IShippingOrderRepository
         return _context.ShippingPickers.FromSqlRaw("EXEC sp_GetShippingPickers");
     }
 
+    public IEnumerable<ShippingPicker> getShippingPickersAboutWarehouseByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@FK_iOrderID", orderID);
+        return _context.ShippingPickers.FromSqlRaw("EXEC sp_GetShippingPickersAboutWarehouseByOrderID @FK_iOrderID", orderIDParam);
+    }
+
     public bool insertShippingOrder(int shippingUnitID, int orderID)
     {
         SqlParameter shippingUnitIDParam = new SqlParameter("@FK_iShippingUnitID", shippingUnitID);

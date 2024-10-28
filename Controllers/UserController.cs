@@ -260,7 +260,8 @@ public class UserController : Controller {
         IEnumerable<OrderDetail> orderDetailsWaitSettlement = _orderResponsitory.getProductsOrderByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersTransiting = _orderResponsitory.getOrderByUserIDTransiting(Convert.ToInt32(sessionUserID));
         IEnumerable<OrderDetail> orderDetailsTransiting = _orderResponsitory.getProductsOrderByUserIDTransiting(Convert.ToInt32(sessionUserID));
-        IEnumerable<Order> ordersWaitDelivery = _orderResponsitory.getOrderByUserIDWaitDelivery(Convert.ToInt32(sessionUserID));
+        IEnumerable<Order> ordersDelivering = _orderResponsitory.getOrderByUserIDWaitDelivery(Convert.ToInt32(sessionUserID));
+        IEnumerable<OrderDetail> orderDetailsDelivering = _orderResponsitory.getProductsOrderByUserIDDelivering(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersDelivered = _orderResponsitory.getOrderByUserIDDeliverd(Convert.ToInt32(sessionUserID));
         IEnumerable<OrderDetail> orderDetailsDelivered = _orderResponsitory.getProductsOrderByUserIDDelivered(Convert.ToInt32(sessionUserID));
         OrderViewModel model = new OrderViewModel {
@@ -269,7 +270,8 @@ public class UserController : Controller {
             OrderDetailsWaitSettlement = orderDetailsWaitSettlement,
             OrdersTransiting = ordersTransiting,
             OrderDetailsTransiting = orderDetailsTransiting,
-            OrdersWaitDelivery = ordersWaitDelivery,
+            OrdersDelivering = ordersDelivering,
+            OrderDetailsDelivering = orderDetailsDelivering,
             OrdersDelivered = ordersDelivered,
             OrderDetailsDelivered = orderDetailsDelivered
         };

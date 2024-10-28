@@ -111,14 +111,15 @@ public class TransportRepository : ITransportRepository
         return _context.OrderDetails.FromSqlRaw("EXEC sp_GetOrderDetailShippingDeliveryByOrderID @PK_iOrderID", orderIDParam);
     }
 
-    public bool insertShippingDelivery(int shippingOrderID, int userID, int orderStatusID, string deliveryImage)
+    public bool insertShippingDelivery(int shippingOrderID, int userID, int orderStatusID, string deliveryImage, string deliverName)
     {
         SqlParameter shippingOrderIDParam = new SqlParameter("@FK_iShippingOrderID", shippingOrderID);
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
         SqlParameter orderStatusIDParam = new SqlParameter("@FK_iOrderStatusID", orderStatusID);
         SqlParameter deliveryImageParam = new SqlParameter("@sDeliveryImage", deliveryImage);
+        SqlParameter deliverNameParam = new SqlParameter("@sDeliverName", deliverName);
         SqlParameter deliveryTimeParam = new SqlParameter("@dDeliveryTime", DateTime.Now);
-        _context.Database.ExecuteSqlRaw("EXEC sp_InsertShippingDelivery @FK_iShippingOrderID, @FK_iUserID, @FK_iOrderStatusID, @sDeliveryImage, @dDeliveryTime", shippingOrderIDParam, userIDParam, orderStatusIDParam, deliveryImageParam, deliveryTimeParam);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertShippingDelivery @FK_iShippingOrderID, @FK_iUserID, @FK_iOrderStatusID, @sDeliveryImage, @sDeliverName, @dDeliveryTime", shippingOrderIDParam, userIDParam, orderStatusIDParam, deliveryImageParam, deliverNameParam, deliveryTimeParam);
         return true;
     }
 
@@ -169,6 +170,13 @@ public class TransportRepository : ITransportRepository
     {
         SqlParameter shippingOrderIDParam = new SqlParameter("@PK_iShippingOrderID", shippingOrderID);
         _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingOrderAboutWaitPickerTake @PK_iShippingOrderID", shippingOrderIDParam);
+        return true;
+    }
+
+    public bool confirmShippingPickerAboutDelivering(int shippingOrderID)
+    {
+        SqlParameter shippingOrderIDParam = new SqlParameter("@FK_iShippingOrderID", shippingOrderID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmShippingPickerAboutDelivering @FK_iShippingOrderID", shippingOrderIDParam);
         return true;
     }
 }

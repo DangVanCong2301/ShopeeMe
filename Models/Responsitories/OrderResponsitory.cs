@@ -188,4 +188,17 @@ public class OrderResponsitory : IOrderResponsitory
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
         return _context.Orders.FromSqlRaw("sp_TotalMoneyProductInCart @PK_iUserID", userIDParam);
     }
+
+    public bool confirmOrderAboutWaitDelivering(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmOrderAboutWaitDelivering @PK_iOrderID", orderIDParam);
+        return true;
+    }
+
+    public IEnumerable<OrderDetail> getProductsOrderByUserIDDelivering(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetProductsOrderByUserIDDelivering @PK_iUserID", userIDParam);
+    }
 }

@@ -255,15 +255,15 @@ function setDataOrderDetail(data) {
                         </div>
                     </div>
                     <div class="phone-pickup__order-footer">`;
-                    if (data.shippingDeliveries.length != 0 && data.shippingDeliveries[0].fK_iOrderStatusID == 7) {
+                    if (data.shippingDelivering.length != 0 && data.shippingDelivering[0].fK_iOrderStatusID == 18) {
                         htmlOrderDetail += 
                         `
                         <div class="phone-header__pickup-order-footer-btn" onclick="openGotGood(${data.ordersDelivering[0].pK_iShippingDeliveryID}, ${data.ordersDelivering[0].fK_iShippingOrderID}, ${data.ordersDelivering[0].fK_iOrderID})">Xác nhận đã lấy hàng</div>
                         `;    
-                    } else if (data.shippingDeliveries.length != 0 && data.shippingDeliveries[0].fK_iOrderStatusID == 8) {
+                    } else if (data.shippingDelivering.length != 0 && data.shippingDelivering[0].fK_iOrderStatusID == 8) {
                         htmlOrderDetail += 
                         `
-                        <div class="phone-header__pickup-order-footer-btn" onclick="openCompleteJob(${data.ordersDelivering[0].pK_iShippingDeliveryID}, ${data.ordersDelivering[0].fK_iShippingOrderID}, ${data.ordersDelivering[0].fK_iOrderID})">Đang giao hàng...</div>
+                        <div class="phone-header__pickup-order-footer-btn" onclick="openCompleteJob(${data.shippingDelivering[0].pK_iShippingDeliveryID}, ${data.shippingDelivering[0].fK_iShippingOrderID}, ${data.shippingDelivering[0].fK_iOrderID})">Đang giao hàng...</div>
                         `; 
                     } else if (data.shippingDelivered.length != 0 && data.shippingDelivered.fK_iOrderStatusID == 15) {
                         htmlOrderDetail += 
@@ -272,18 +272,18 @@ function setDataOrderDetail(data) {
                         `; 
                     } else {
                         htmlOrderDetail += `
-                        <div class="phone-header__pickup-order-footer-btn" onclick="openReceiveOrderModal(${data.ordersWaitDelivery[0].fK_iShippingOrderID})">Nhận đơn</div>`;
+                        <div class="phone-header__pickup-order-footer-btn" onclick="openReceiveOrderModal(${data.shippingWaitDelivery[0].fK_iShippingOrderID}, ${data.shippingWaitDelivery[0].fK_iOrderID})">Nhận đơn</div>`;
                     }
                     htmlOrderDetail += `
                     </div>
                 </div>
     `;
     document.querySelector(".app__container").innerHTML = htmlOrderDetail;
-    if (data.ordersDelivering.length != 0 && data.ordersDelivering[0].fK_iOrderStatusID == 7) {
+    if (data.shippingDelivering.length != 0 && data.shippingDelivering[0].fK_iOrderStatusID == 7) {
         document.querySelector(".phone-header__delivery-order-detail-arrow").addEventListener('click', () => {
             openDeliveringOrderListTab(data);
         });
-    } else if (data.ordersDelivered[0].fK_iOrderStatusID == 15) {
+    } else if (data.shippingDelivered.length != 0 && data.shippingDelivered.fK_iOrderStatusID == 15) {
         document.querySelector(".phone-header__delivery-order-detail-arrow").addEventListener('click', () => {
             openDeliveredOrderListTab(data);
         });
@@ -294,7 +294,7 @@ function setDataOrderDetail(data) {
     }                   
 }
 
-function openReceiveOrderModal(shippingOrderID) {
+function openReceiveOrderModal(shippingOrderID, orderID) {
     openModal();
     document.querySelector(".phone-modal__body").innerHTML = 
     `
@@ -302,13 +302,13 @@ function openReceiveOrderModal(shippingOrderID) {
                                 <div class="phone-modal__confirm-msg">Bạn có chắc muốn nhận đơn hàng này?</div>
                                 <div class="phone-modal__confirm-btns">
                                     <div class="phone-modal__confirm-btn-no" onclick="closeModal()">Không</div>
-                                    <div class="phone-modal__confirm-btn-agree" onclick="confirmTakeOrder(${shippingOrderID})">Đồng ý</div>
+                                    <div class="phone-modal__confirm-btn-agree" onclick="confirmTakeOrder(${shippingOrderID}, ${orderID})">Đồng ý</div>
                                 </div>
                             </div>
     `;
 }
 
-function confirmTakeOrder(shippingOrderID) {
+function confirmTakeOrder(shippingOrderID, orderID) {
     
     document.querySelector(".phone-modal__body").innerHTML = 
     `
@@ -316,7 +316,8 @@ function confirmTakeOrder(shippingOrderID) {
     `;
     var formData = new FormData();
     formData.append("shippingOrderID", shippingOrderID);
-    formData.append("orderStatusID", 7);
+    formData.append("orderID", orderID);
+    formData.append("orderStatusID", 18);
     formData.append("deliveryImage", "no_img.jpg");
 
     var xhr = new XMLHttpRequest();

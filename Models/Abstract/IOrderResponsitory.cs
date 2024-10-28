@@ -19,11 +19,13 @@ public interface IOrderResponsitory
     IEnumerable<OrderDetail> getOrderDetailWaitSettlementByOrderID(int orderID);
     IEnumerable<OrderDetail> getOrderDetailPickingUpByOrderID(int orderID);
     IEnumerable<OrderDetail> getOrderDetailWaitDeliveyByOrderID(int orderID);
+    IEnumerable<OrderDetail> getProductsOrderByUserIDDelivering(int userID);
     bool confirmOrderAboutWaitPickup(int orderID, int userID);
     bool confirmOrderAboutTransiting(int orderID, int userID);
     bool confirmOrderAboutWaitDelivery(int orderID, int userID);
     bool confirmOrderAboutDelivered(int orderID);
     bool confirmOrderAboutReceived(int orderID);
+    bool confirmOrderAboutWaitDelivering(int orderID);
     bool inserOrder(int userID, int shopID, double totalPrice, int orderStatusID, int paymentID);
     bool inserOrderDetail(int orderID, int productID, int quantity, double unitPrice, double money);
 }

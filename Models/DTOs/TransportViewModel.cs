@@ -20,7 +20,7 @@ public class TransportViewModel
     public IEnumerable<Payment> Payments { get; set; }
     public IEnumerable<ShippingOrder> ShippingOrders { get; set; }
     public IEnumerable<ShippingPicker> ShippingPickers { get; set; }
-    public IEnumerable<ShippingDelivery>  ShippingDeliveries { get; set; }
+    public IEnumerable<ShippingDelivery>  ShippingDelivering { get; set; }
     public IEnumerable<ShippingDelivery> ShippingDelivered { get; set; }
     public Status Status { get; set; }
     public IEnumerable<Address> DeliveryAddresses { get; set; }
