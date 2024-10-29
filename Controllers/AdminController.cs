@@ -72,8 +72,10 @@ public class AdminController : Controller {
         var sellerUsername = _accessor?.HttpContext?.Session.GetString("UserName");
         var sessionRoleID = _accessor?.HttpContext?.Session.GetInt32("RoleID");
         IEnumerable<Order> ordersWaitSettlment = _adminResponsitory.getOrdersWaitSettlment().ToList();
-        IEnumerable<ShippingOrder> ordersWaitPickup = _adminResponsitory.getOrsersWaitPickup();
-        IEnumerable<ShippingPicker> shippingPickers = _shippingOrderRepository.getShippingPickers();
+        IEnumerable<Order> ordersWaitPickup = _adminResponsitory.getOrderWaitPickup();
+        IEnumerable<Order> ordersPicking = _adminResponsitory.getOrdersPicking();
+        IEnumerable<Order> ordersDelivering = _adminResponsitory.getOrderDelivering();
+        IEnumerable<Order> ordersCompleted = _adminResponsitory.getOrderCompleted();
         IEnumerable<UserInfo> userInfos = _userResponsitory.getUsersInfo();
         string htmlWaitSettlmentItem = "";
         foreach (var item in ordersWaitSettlment) {
@@ -92,34 +94,34 @@ public class AdminController : Controller {
             htmlWaitSettlmentItem += $"     </div>";
             htmlWaitSettlmentItem += $" </div>";
         }
-        string htmlWaitPickupItem = "";
-        foreach (var item in ordersWaitPickup) {
-            htmlWaitPickupItem += $" <div class='admin__order-table-body-row'>";
-            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.FK_iOrderID}</div>";
-            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
-            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
-            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
-            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
-            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
-            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
-            htmlWaitPickupItem += $"     <div class='admin__order-table-body-col primary'>";
-            htmlWaitPickupItem += $"         <a href='/admin/bill/{item.FK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
-            htmlWaitPickupItem += $"     </div>";
-            htmlWaitPickupItem += $" </div>";
+        string htmlPickingItem = "";
+        foreach (var item in ordersPicking) {
+            htmlPickingItem += $" <div class='admin__order-table-body-row'>";
+            htmlPickingItem += $"     <div class='admin__order-table-body-col'>{item.PK_iOrderID}</div>";
+            htmlPickingItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
+            htmlPickingItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
+            htmlPickingItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlPickingItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
+            htmlPickingItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
+            htmlPickingItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
+            htmlPickingItem += $"     <div class='admin__order-table-body-col primary'>";
+            htmlPickingItem += $"         <a href='/admin/bill/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
+            htmlPickingItem += $"     </div>";
+            htmlPickingItem += $" </div>";
         }
 
-        string htmlShippingPickerItem = "";
-        foreach (var item in shippingPickers) {
-            htmlShippingPickerItem += $" <div class='admin__order-table-body-row'>";
-            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>ĐH{item.FK_iOrderID}</div>";
-            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
-            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>{item.dShippingPickerTime.ToString("dd/MM/yyyy")}</div>";
-            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
-            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
-            htmlShippingPickerItem += $"     <div class='admin__order-table-body-col primary'>";
-            htmlShippingPickerItem += $"         <a href='/admin/bill/{item.FK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
-            htmlShippingPickerItem += $"     </div>";
-            htmlShippingPickerItem += $" </div>";
+        string htmlDeliveringItem = "";
+        foreach (var item in ordersDelivering) {
+            htmlDeliveringItem += $" <div class='admin__order-table-body-row'>";
+            htmlDeliveringItem += $"     <div class='admin__order-table-body-col'>ĐH{item.PK_iOrderID}</div>";
+            htmlDeliveringItem += $"     <div class='admin__order-table-body-col'>{item.sStoreName}</div>";
+            htmlDeliveringItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
+            htmlDeliveringItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
+            htmlDeliveringItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
+            htmlDeliveringItem += $"     <div class='admin__order-table-body-col primary'>";
+            htmlDeliveringItem += $"         <a href='/admin/bill/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
+            htmlDeliveringItem += $"     </div>";
+            htmlDeliveringItem += $" </div>";
         }
 
         string htmlUsersInfoItem = "";
@@ -161,9 +163,11 @@ public class AdminController : Controller {
             OrdersWaitSettlment = ordersWaitSettlment,
             HtmlWaitSettlmentItem = htmlWaitSettlmentItem,
             OrdersWaitPickup = ordersWaitPickup,
-            HtmlWaitPickupItem = htmlWaitPickupItem,
-            ShippingPickers = shippingPickers,
-            HtmlShippingPickerItem = htmlShippingPickerItem,
+            OrdersPicking = ordersPicking,
+            HtmlPickingItem = htmlPickingItem,
+            OrdersDelivering = ordersDelivering,
+            HtmlDeliveringItem = htmlDeliveringItem,
+            OrdersCompleted = ordersCompleted,
             UserInfos = userInfos,
             HtmlUsersInfoItem = htmlUsersInfoItem,
             RoleID = Convert.ToInt32(sessionRoleID),
@@ -184,10 +188,10 @@ public class AdminController : Controller {
     [Route("/admin/order")]
     public IActionResult Order() {
         var sessionOrderID = _accessor?.HttpContext?.Session.GetInt32("CurrentOrderID");
-        IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getOrderDetailWaitSettlementByOrderID(Convert.ToInt32(sessionOrderID));
-        List<Order> order = _orderResponsitory.getOrderWaitSettlementByOrderID(Convert.ToInt32(sessionOrderID)).ToList();
-        List<Address> addresses = _checkoutResponsitory.checkAddressAccount(order[0].PK_iUserID).ToList();
-        List<Payment> payments = _checkoutResponsitory.checkPaymentsTypeByUserID(Convert.ToInt32(order[0].PK_iUserID)).ToList();
+        IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getOrderDetailByOrderID(Convert.ToInt32(sessionOrderID));
+        List<Order> order = _orderResponsitory.getOrderByOrderID(Convert.ToInt32(sessionOrderID)).ToList();
+        List<Address> addresses = _checkoutResponsitory.checkAddressAccount(order[0].FK_iUserID).ToList();
+        List<Payment> payments = _checkoutResponsitory.checkPaymentsTypeByUserID(Convert.ToInt32(order[0].FK_iUserID)).ToList();
         AdminViewModel model = new AdminViewModel {
             OrdersWaitSettlment = order,
             OrderDetails = orderDetails,
@@ -203,7 +207,7 @@ public class AdminController : Controller {
         var sessionOrderID = _accessor?.HttpContext?.Session.GetInt32("CurrentOrderID");
         Status status;
         List<Order> order = _orderResponsitory.getOrderWaitSettlementByOrderID(Convert.ToInt32(sessionOrderID)).ToList();
-        if (_orderResponsitory.confirmOrderAboutWaitPickup(Convert.ToInt32(sessionOrderID), order[0].PK_iUserID)) {
+        if (_orderResponsitory.confirmOrderAboutWaitPickup(Convert.ToInt32(sessionOrderID), order[0].FK_iUserID)) {
             status = new Status {
                 StatusCode = 1,
                 Message = "Xác nhận đơn hàng thành công!"
@@ -239,13 +243,13 @@ public class AdminController : Controller {
         var sessionShippingOrderID = _accessor?.HttpContext?.Session.GetInt32("CurrentShippingOrderID");
         IEnumerable<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoByShippingOrderID(Convert.ToInt32(sessionShippingOrderID));
         List<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByID(Convert.ToInt32(sessionShippingOrderID)).ToList();
-        IEnumerable<Order> ordersPickingUp = _orderResponsitory.getOrderWaitPickingUpByOrderID(shippingOrders[0].FK_iOrderID);
+        IEnumerable<Order> ordersPicking = _orderResponsitory.getOrderWaitPickingUpByOrderID(shippingOrders[0].FK_iOrderID);
         IEnumerable<OrderDetail> orderDetailsPickingUp = _orderResponsitory.getOrderDetailPickingUpByOrderID(shippingOrders[0].FK_iOrderID);
         List<Address> deliveryAddresses = _checkoutResponsitory.getAddressAccountByOrderID(shippingOrders[0].FK_iOrderID).ToList();
         AdminViewModel model = new AdminViewModel {
             ShippingOrders = shippingOrders,
             SellerInfos = sellerInfos,
-            OrdersPickingUp = ordersPickingUp,
+            OrdersPicking= ordersPicking,
             OrderDetailsPickingUp = orderDetailsPickingUp,
             Addresses = deliveryAddresses
         };

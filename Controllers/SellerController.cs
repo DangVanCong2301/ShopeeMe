@@ -93,7 +93,7 @@ public class SellerController : Controller
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col primary'>";
-            htmlOrdersWaitPickupItem += $"         <a href='javascript:prepareGoodModal({item.PK_iOrderID}, {item.PK_iUserID})' class='admin__order-table-body-col-link'>Chuẩn bị hàng</a>";
+            htmlOrdersWaitPickupItem += $"         <a href='javascript:prepareGoodModal({item.PK_iOrderID}, {item.FK_iUserID})' class='admin__order-table-body-col-link'>Chuẩn bị hàng</a>";
             htmlOrdersWaitPickupItem += $"     </div>";
             htmlOrdersWaitPickupItem += $" </div>";
         }

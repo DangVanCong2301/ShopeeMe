@@ -117,9 +117,9 @@ function showAll(data) {
                                         </div>
                                         <!-- End Of Expenses -->
                                         <div class="admin__main-income">
-                                            <div class="admin__main-to-do-list-item admin__main-to-do-list-item-shipping-picker">
+                                            <div class="admin__main-to-do-list-item admin__item-delivering">
                                                 <div class="admin__main-to-do-list-numb">
-                                                    ${data.shippingPickers.length}
+                                                    ${data.ordersDelivering.length}
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
                                                     Đang lấy hàng
@@ -131,7 +131,7 @@ function showAll(data) {
                                         <div class="admin__main-income">
                                             <div class="admin__main-to-do-list-item">
                                                 <div class="admin__main-to-do-list-numb">
-                                                    0
+                                                    ${data.ordersDelivering.length}
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
                                                     Đang giao hàng
@@ -140,9 +140,9 @@ function showAll(data) {
                                         </div>
                                         <!-- End Of Expenses -->
                                         <div class="admin__main-income">
-                                            <div class="admin__main-to-do-list-item">
+                                            <div class="admin__main-to-do-list-item admin__item-compeleted">
                                                 <div class="admin__main-to-do-list-numb">
-                                                    0
+                                                ${data.ordersCompleted.length}
                                                 </div>
                                                 <div class="admin__main-to-do-list-sub">
                                                     Đã hoàn thành
@@ -181,86 +181,6 @@ function showAll(data) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="admin__main-recent-orders">
-                                    <div class="admin__main-recent-orders-title">Đơn hàng gần đây</div>
-                                    <div class="admin__order-header">
-                                        <ul class="admin__order-header-list">
-                                            <li class="admin__order-header-item active">
-                                                Tất cả
-                                            </li>
-                                            <li class="admin__order-header-item">
-                                                Chờ thanh toán
-                                            </li>
-                                            <li class="admin__order-header-item">
-                                                Vận chuyển (1)
-                                            </li>
-                                            <li class="admin__order-header-item">
-                                                Chờ giao hàng
-                                            </li>
-                                            <li class="admin__order-header-item">
-                                                Hoàn thành
-                                            </li>
-                                            <li class="admin__order-header-item">
-                                                Đã huỷ
-                                            </li>
-                                            <li class="admin__order-header-item">
-                                                Trả hàng/hoàn tiền
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="admin__order-container">
-                                        <div class="admin__order-table">
-                                            <div class="admin__order-table-header">
-                                                <div class="admin__order-table-header-row">
-                                                    <div class="admin__order-table-header-col">Mã đơn hàng</div>
-                                                    <div class="admin__order-table-header-col">Sản phẩm</div>
-                                                    <div class="admin__order-table-header-col">Thanh toán</div>
-                                                    <div class="admin__order-table-header-col">Trạng thái</div>
-                                                    <div class="admin__order-table-header-col"></div>
-                                                </div>
-                                            </div>
-                                            <div class="admin__order-table-body">
-                                                <div class="admin__order-table-body-row">
-                                                    <div class="admin__order-table-body-col">DH123</div>
-                                                    <div class="admin__order-table-body-col">3</div>
-                                                    <div class="admin__order-table-body-col">500.000 đ</div>
-                                                    <div class="admin__order-table-body-col warning">Chờ xác nhận</div>
-                                                    <div class="admin__order-table-body-col primary">
-                                                        <a href="#" class="admin__order-table-body-col-link">Chi tiết</a>
-                                                    </div>
-                                                </div>
-                                                <div class="admin__order-table-body-row">
-                                                    <div class="admin__order-table-body-col">DH435</div>
-                                                    <div class="admin__order-table-body-col">3</div>
-                                                    <div class="admin__order-table-body-col">500.000 đ</div>
-                                                    <div class="admin__order-table-body-col primary">Đã thanh toán</div>
-                                                    <div class="admin__order-table-body-col primary">
-                                                        <a href="#" class="admin__order-table-body-col-link">Chi tiết</a>
-                                                    </div>
-                                                </div>
-                                                <div class="admin__order-table-body-row">
-                                                    <div class="admin__order-table-body-col">DH432</div>
-                                                    <div class="admin__order-table-body-col">3</div>
-                                                    <div class="admin__order-table-body-col">500.000 đ</div>
-                                                    <div class="admin__order-table-body-col success">Đã giao hàng</div>
-                                                    <div class="admin__order-table-body-col primary">
-                                                        <a href="#" class="admin__order-table-body-col-link">Chi tiết</a>
-                                                    </div>
-                                                </div>
-                                                <div class="admin__order-table-body-row">
-                                                    <div class="admin__order-table-body-col">DH987</div>
-                                                    <div class="admin__order-table-body-col">3</div>
-                                                    <div class="admin__order-table-body-col">500.000 đ</div>
-                                                    <div class="admin__order-table-body-col danger">Khách hàng huỷ</div>
-                                                    <div class="admin__order-table-body-col primary">
-                                                        <a href="#" class="admin__order-table-body-col-link">Chi tiết</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="admin__order-more">Xem tất cả</a>
                                 </div>
                             </div>
                             <div class="admin__right">
@@ -364,8 +284,12 @@ function showAll(data) {
         showWaitingPickup(data);
     });
 
-    document.querySelector(".admin__main-to-do-list-item-shipping-picker").addEventListener('click', () => {
-        showShippingPicker(data);
+    document.querySelector(".admin__item-delivering").addEventListener('click', () => {
+        showDelivering(data);
+    });
+
+    document.querySelector(".admin__item-compeleted").addEventListener('click', () => {
+        showCompleted(data);
     });
 
 }
@@ -471,8 +395,25 @@ function showWaitingPickup(data) {
                                             </div>
      
                                             <div class="admin__order-table-body">`;
-    htmlWaitPickup += 
-                                            data.htmlWaitPickupItem;
+                                            data.ordersWaitPickup.forEach(element => {
+                                                htmlWaitPickup += 
+                                                `
+                                                <div class='admin__order-table-body-row'>
+                                                    <div class='admin__order-table-body-col'>${element.pK_iOrderID}</div>
+                                                    <div class='admin__order-table-body-col'>${element.sFullName}</div>
+                                                    <div class='admin__order-table-body-col'>${element.sStoreName}</div>
+                                                    <div class='admin__order-table-body-col'>${formatDate(element.dDate)}</div>
+                                                    <div class='admin__order-table-body-col'>${money_2(element.fTotalPrice)}</div>
+                                                    <div class='admin__order-table-body-col'>${element.sOrderStatusName}</div>
+                                                    <div class='admin__order-table-body-col payment'>
+                                                        <div class='admin__order-table-body-col-payment-name'>${element.sPaymentName}</div>
+                                                    </div>
+                                                    <div class='admin__order-table-body-col primary'>
+                                                        <a href='/admin/order/${element.pK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>
+                                                    </div>
+                                                </div>
+                                                `;
+                                            });
     htmlWaitPickup += 
                                             `</div>
                                         </div>
@@ -486,9 +427,9 @@ function showWaitingPickup(data) {
     document.querySelector(".admin__container").innerHTML = htmlWaitPickup;
 }
 
-function showShippingPicker(data) {
-    let htmlShippingPicker = "";
-    htmlShippingPicker += 
+function showDelivering(data) {
+    let htmlDelivering = "";
+    htmlDelivering += 
     `
     <div class="admin__orders-waiting">
                         <div class="admin__add-product-container">
@@ -510,7 +451,7 @@ function showShippingPicker(data) {
                                 <div class="admin__setup-shop-container">
                                     <div class="admin__profile-shop-body-header">
                                         <div class="admin__add-product-title">
-                                            ${data.shippingPickers.length} Đơn hàng 
+                                            ${data.ordersDelivering.length} Đơn hàng 
                                         </div>
                                     </div>
                                     <div class="admin__order-container">
@@ -527,9 +468,9 @@ function showShippingPicker(data) {
                                             </div>
      
                                             <div class="admin__order-table-body">`;
-    htmlShippingPicker += 
-                                            data.htmlShippingPickerItem;
-    htmlShippingPicker += 
+                                            htmlDelivering += 
+                                            data.htmlDeliveringItem;
+                                            htmlDelivering += 
                                             `</div>
                                         </div>
                                     </div>
@@ -539,7 +480,85 @@ function showShippingPicker(data) {
                         </div>
                     </div>
     `;
-    document.querySelector(".admin__container").innerHTML = htmlShippingPicker;
+    document.querySelector(".admin__container").innerHTML = htmlDelivering;
+}
+
+// Complete
+function showCompleted(data) {
+    let htmlCompleted = "";
+    htmlCompleted += 
+    `
+    <div class="admin__orders-waiting">
+                        <div class="admin__add-product-container">
+                            <div class="admin__add-product-header">
+                                <div class="admin__add-product-header-item active">
+                                    Tất cả
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Chờ xác nhận  
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Đang giao
+                                </div>
+                                <div class="admin__add-product-header-item">
+                                    Đã giao
+                                </div>
+                            </div>
+                            <div class="admin__setup-shop-body">
+                                <div class="admin__setup-shop-container">
+                                    <div class="admin__profile-shop-body-header">
+                                        <div class="admin__add-product-title">
+                                            ${data.ordersCompleted.length} Đơn hàng 
+                                        </div>
+                                    </div>
+                                    <div class="admin__order-container">
+                                        <div class="admin__order-table">
+                                            <div class="admin__order-table-header">
+                                                <div class="admin__order-table-header-row">
+                                                    <div class="admin__order-table-header-col">Mã đơn hàng</div>
+                                                    <div class="admin__order-table-header-col">Khách hàng</div>
+                                                    <div class="admin__order-table-header-col">Cửa hàng</div>
+                                                    <div class="admin__order-table-header-col">Ngày đặt</div>
+                                                    <div class="admin__order-table-header-col">Tổng tiền</div>
+                                                    <div class="admin__order-table-header-col">Trạng thái</div>
+                                                    <div class="admin__order-table-header-col">Thanh toán</div>
+                                                    <div class="admin__order-table-header-col">Xem</div>
+                                                </div>
+                                            </div>
+     
+                                            <div class="admin__order-table-body">`;
+                                            data.ordersCompleted.forEach(element => {
+                                                htmlCompleted += 
+                                                `
+                                                <div class='admin__order-table-body-row'>
+                                                    <div class='admin__order-table-body-col'>${element.pK_iOrderID}</div>
+                                                    <div class='admin__order-table-body-col'>${element.sFullName}</div>
+                                                    <div class='admin__order-table-body-col'>${element.sStoreName}</div>
+                                                    <div class='admin__order-table-body-col'>${formatDate(element.dDate)}</div>
+                                                    <div class='admin__order-table-body-col'>${money_2(element.fTotalPrice)}</div>
+                                                    <div class='admin__order-table-body-col payment'>
+                                                        <div class='admin__order-table-body-col-payment-name'>${element.sOrderStatusName}</div>
+                                                    </div>
+                                                    <div class='admin__order-table-body-col payment'>
+                                                        <div class='admin__order-table-body-col-payment-name'>${element.sPaymentName}</div>
+                                                    </div>
+                                                    <div class='admin__order-table-body-col primary'>
+                                                        <a href='/admin/order/${element.pK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>
+                                                    </div>
+                                                </div>
+                                                `;
+                                            });
+                                            htmlCompleted += 
+                                            `</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="admin__order-more">Xem tất cả</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    `;
+    document.querySelector(".admin__container").innerHTML = htmlCompleted;
 }
 
 // Theme Color

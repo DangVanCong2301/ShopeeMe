@@ -348,3 +348,17 @@ function money(number) {
     }
     return result;
 }
+
+function money_2(number) {
+    const formattedAmount = new Intl.NumberFormat('vi-VI', {
+        style: 'currency',
+        currency: 'VND',
+    }).format(number);
+    return formattedAmount;
+}
+
+// Format Date
+function formatDate(date) {
+    const dateFormat = new Date(date);
+    return dateFormat.toLocaleDateString('en-GB'); // 24/04/2023
+}

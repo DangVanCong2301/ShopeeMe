@@ -7,13 +7,19 @@ function getAPIAdminOrder() {
 
             console.log(data);
 
+            setTimesConfirm(data);
+
             setDataAddressDesc(data);
 
             setDataOrderDetails(data);
 
             setPaymentsType(data);
 
+            setOrderStatus(data);
+
             setTotalPrice(data);
+
+            setConfirmOrderBtn(data);
             
         }
     };
@@ -117,6 +123,16 @@ function setPaymentsType(data) {
     document.querySelector(".checkout__payment-header-name").innerHTML = htmlPaymentType;
 }
 
+function setOrderStatus(data) {
+    let htmlOrderStatus = "";
+    htmlOrderStatus += 
+    `
+        <div class="checkout__payment-header-sub">Trạng thái đơn hàng</div>
+        <div class="checkout__payment-header-name">${data.ordersWaitSettlment[0].sOrderStatusName}</div>
+    `;
+    document.querySelector(".admin-order__status").innerHTML = htmlOrderStatus;
+}
+
 function setTotalPrice(data) {
     var totalItemPrice = data.orderDetails.reduce((total, item) => {
         return total + item.dUnitPrice;
@@ -154,16 +170,43 @@ function setTotalPrice(data) {
 const startingMinutes = 30;
 let time = startingMinutes * 60;
 
-setInterval(updateCountdown, 1000);
+function setTimesConfirm(data) {
+    if (data.ordersWaitSettlment[0].fK_iOrderStatusID == 2) { 
+        setInterval(updateCountdown, 1000);
+    }
+}
 
 function updateCountdown() {
     const minutes = Math.floor(time / 60);
     let seconds = time % 60;
     seconds = seconds < 10 ? '0' + seconds : seconds;
-    document.querySelector(".admin-order__times-value").innerText = `${minutes}:${seconds}`
+    let htmlSetTime = "";
+    htmlSetTime +=
+    `
+                <div class="admin-order__times-container">
+                    <div class="admin-order__times-title">Đơn hàng sẽ được xác nhận sau: </div>
+                    <div class="admin-order__times-value">${minutes}:${seconds}</div>
+                </div>
+    `;
+    document.querySelector(".admin-order__times").innerHTML = htmlSetTime;
     time--;
     if (seconds == 40) {
         
+    }
+}
+
+function setConfirmOrderBtn(data) {
+    let htmlConfirmOrder = "";
+    if (data.ordersWaitSettlment[0].fK_iOrderStatusID == 2) { 
+        htmlConfirmOrder += 
+        `
+                    <div class="checkout__payment-order-btn">
+                        <button type="button" class="btn btn--primary checkout__payment-order-btn-container" onclick="confirmOrder()">
+                            <div class="checkout__payment-order-btn-spinner hide-on-destop"></div>
+                            Xác nhận đơn
+                        </button>
+                    </div>
+        `;
     }
 }
 

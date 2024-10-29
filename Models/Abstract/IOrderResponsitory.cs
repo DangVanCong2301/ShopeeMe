@@ -2,6 +2,7 @@ public interface IOrderResponsitory
 {
     IEnumerable<Order> totalMoneyProductInCart(int userID);
     IEnumerable<Order> getOrderByID(int userID, int shopID);
+    IEnumerable<Order> getOrderByOrderID(int orderID);
     IEnumerable<Order> getOrdersByUserIDWaitSettlement(int userID);
     IEnumerable<Order> getOrderByUserIDTransiting(int userID);
     IEnumerable<Order> getOrderByUserIDWaitDelivery(int userID);
@@ -16,7 +17,7 @@ public interface IOrderResponsitory
     IEnumerable<OrderDetail> getProductsOrderByUserIDTransiting(int userID);
     IEnumerable<OrderDetail> getProductsOrderByUserIDDelivered(int userID);
     IEnumerable<OrderDetail> getProductsOrderByUserID(int userID);
-    IEnumerable<OrderDetail> getOrderDetailWaitSettlementByOrderID(int orderID);
+    IEnumerable<OrderDetail> getOrderDetailByOrderID(int orderID);
     IEnumerable<OrderDetail> getOrderDetailPickingUpByOrderID(int orderID);
     IEnumerable<OrderDetail> getOrderDetailWaitDeliveyByOrderID(int orderID);
     IEnumerable<OrderDetail> getProductsOrderByUserIDDelivering(int userID);

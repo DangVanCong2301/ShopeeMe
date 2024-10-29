@@ -823,11 +823,9 @@ function openReviewerModal(productID, image) {
                 }
                 rateValidate(rateCheck);
                 commentValidate();
-                console.log(imageUrl);
-                
-                // if (rateValidate(rateCheck) && commentValidate()) {
-                //     addReviewer(productID, rateCheck, comment, imageUrl);
-                // }
+                if (rateValidate(rateCheck) && commentValidate()) {
+                    addReviewer(productID, rateCheck, comment, imageUrl);
+                }
             });
             
         }

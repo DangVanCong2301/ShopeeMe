@@ -15,7 +15,7 @@
     border-top: 1px dotted var(--border-color);
 }
 
-.admin-order__times {
+.admin-order__times-container {
     background-color: var(--white-color);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
     padding: 28px 30px 24px 30px;
@@ -23,7 +23,7 @@
     margin-bottom: 12px;
     display: flex;
     column-gap: 10px;
-    color: var(--primary-color);
+    color: var(--primary-color); 
 }
 
 .admin-order__times-title {

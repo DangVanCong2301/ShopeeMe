@@ -88,10 +88,10 @@ public class OrderResponsitory : IOrderResponsitory
         return _context.OrderDetails.FromSqlRaw("EXEC sp_GetOrderDetailShippingOrderByOrderID @PK_iOrderID", orderIDParam);
     }
 
-    public IEnumerable<OrderDetail> getOrderDetailWaitSettlementByOrderID(int orderID)
+    public IEnumerable<OrderDetail> getOrderDetailByOrderID(int orderID)
     {
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
-        return _context.OrderDetails.FromSqlRaw("sp_GetOrderDetailWaitSettlementByOrderID @PK_iOrderID", orderIDParam);
+        return _context.OrderDetails.FromSqlRaw("sp_GetOrderDetailByOrderID @PK_iOrderID", orderIDParam);
     }
 
     public IEnumerable<Order> getOrderProcessedByShopID(int shopID)
@@ -200,5 +200,11 @@ public class OrderResponsitory : IOrderResponsitory
     {
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
         return _context.OrderDetails.FromSqlRaw("EXEC sp_GetProductsOrderByUserIDDelivering @PK_iUserID", userIDParam);
+    }
+
+    public IEnumerable<Order> getOrderByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderByOrderID @PK_iOrderID", orderIDParam);
     }
 }

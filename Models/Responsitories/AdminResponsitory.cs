@@ -14,8 +14,23 @@ public class AdminResponsitory : IAdminResponsitory
         return _context.Orders.FromSqlRaw("EXEC sp_GetOrderWaitSettlement");
     }
 
-    public IEnumerable<ShippingOrder> getOrsersWaitPickup()
+    public IEnumerable<Order> getOrdersPicking()
     {
-        return _context.ShippingOrders.FromSqlRaw("EXEC sp_GetShippingOrderWaitPickup");
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderPickingUp");
+    }
+
+    public IEnumerable<Order> getOrderDelivering()
+    {
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderDelivering");
+    }
+
+    public IEnumerable<Order> getOrderCompleted()
+    {
+        return _context.Orders.FromSqlRaw("sp_GetOrderCompleted");
+    }
+
+    public IEnumerable<Order> getOrderWaitPickup()
+    {
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderWaitPickup");
     }
 }
