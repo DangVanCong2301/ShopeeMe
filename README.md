@@ -1,4 +1,4 @@
-# Sàn TMĐT ShopeeMe(Shopee) (Đồ án tốt nghiệp)
+# Sàn TMĐT ShopeeMe(Shopee) (Đồ án tốt nghiệp) (v2.0.1)
 # Công nghệ: ASP.NET Core MVC  7.0
 - Luồng sử lý dữ liệu cơ bản: 
 ![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/380752c3-aafb-47ed-a503-971c3e655532)
@@ -30,20 +30,48 @@
  - ...
 ## Kết quả thực hiện
 ### Trang chủ
-![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/699968b6-b840-4492-b95f-4a4906111570)
+![image](https://github.com/user-attachments/assets/eb06a394-b0ed-4570-bcb8-45f8e745fd63)
+![image](https://github.com/user-attachments/assets/1cd4f0a6-0858-4344-a288-956671d47b4f)
+![image](https://github.com/user-attachments/assets/5ff66ac7-e7e1-4d55-90d1-05fdfbca763b)
+### Trang gợi ý
+![image](https://github.com/user-attachments/assets/d65e204f-f6eb-460a-9474-bff4341ee124)
+### Trang sản phẩm tương tự
+![image](https://github.com/user-attachments/assets/fdb3fbc0-7f50-4dbf-b9c6-441d5061aebe)
 ### Trang sản phẩm
-![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/910aaa41-4def-4061-a89e-c098ff4b78dd)
-![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/99323383-235a-4952-b122-2c5690a38866)
+![image](https://github.com/user-attachments/assets/36781f9f-c2f7-4400-9d6c-90cf147400e2)
+![image](https://github.com/user-attachments/assets/ba9e0646-d0a3-4858-87d5-df3d0c62dcc7)
+### Trang cửa hàng
+![image](https://github.com/user-attachments/assets/22da4dad-30e7-48e8-b229-652f06a0c0af)
+![image](https://github.com/user-attachments/assets/7ae8e03e-8cf0-4f54-b682-9599475933bc)
 ### Chi tiết sản phẩm
-![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/5e6b66ea-711c-476b-84fa-6718f7cbd220)
+![image](https://github.com/user-attachments/assets/5e4b3e4f-5d63-4b39-a626-c11df3d01db1)
+![image](https://github.com/user-attachments/assets/8e5175c0-1441-47ef-be3e-5e6c12cc964d)
 ### Bình luận, đánh giá sản phẩm
-![image](https://github.com/DangVanCong2301/Shopee/assets/111124018/a0ba7b83-b26f-40d9-9171-422402bfa703)
+![image](https://github.com/user-attachments/assets/98af65e6-b4b5-4be1-bbc9-ee21637a61bd)
+![image](https://github.com/user-attachments/assets/0a17ec32-d067-4a57-980a-5e67cb23eac2)
 ### Giỏ hàng
-![image](https://github.com/user-attachments/assets/5d90efef-4d4f-4442-90d5-653f77c01465)
-### Quản lý thông tin tài khoản
-![image](https://github.com/user-attachments/assets/9a416472-aa78-44b5-9d96-25b5c85f947d)
+![image](https://github.com/user-attachments/assets/a6c856b1-3982-4768-b432-0f95de7b5271)
+![image](https://github.com/user-attachments/assets/7f609383-7b89-4666-852b-804b629dd700)
+### Trạng thái đơn hàng
+![image](https://github.com/user-attachments/assets/37ef7700-8ea7-4218-8c29-1796e4306f65)
+![image](https://github.com/user-attachments/assets/7bf21a29-a781-44a6-933d-3535515946ac)
 ### Đơn mua
-![image](https://github.com/user-attachments/assets/fd216ade-27c0-4b5d-9c9f-593fa1b5ded5)
+![image](https://github.com/user-attachments/assets/cfb3d74c-5037-4621-a277-1d1959bae48b)
+### Kênh Sàn TMĐT
+![image](https://github.com/user-attachments/assets/618f19b2-acfb-49a2-94c2-2870303803f4)
+### Kênh người bán
+![image](https://github.com/user-attachments/assets/414ed5a5-8e36-4e4c-b1bc-96d7897405c5)
+### Kênh vận chuyển
+![image](https://github.com/user-attachments/assets/57f5e4c1-e31c-45e8-8e7c-2f1432b45427)
+![image](https://github.com/user-attachments/assets/646d0fb5-4030-4b81-bcc4-8d72456302c2)
+![image](https://github.com/user-attachments/assets/02cad0c9-e2e3-4461-981b-cd18cc955e09)
+![image](https://github.com/user-attachments/assets/aa972d6c-f0a6-4c47-b2e0-f9aac96c70d7)
+
+
+
+
+
+
 
 
 
