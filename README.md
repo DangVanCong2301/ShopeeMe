@@ -28,6 +28,8 @@
  - Tên bảng: tbl_ (Ví dụ tbl_Categories)
  - Tên thủ tục: sp_ (Ví dụL sp_GetCategories)
  - ...
+## Unit Testing (Kiểm thử đơn vị)
+https://docs.google.com/spreadsheets/d/1ZXDqi9M9C59Rs9ZT_QM6zz7HuXFDN4jg/edit?gid=1570539229#gid=1570539229
 ## Kết quả thực hiện
 ### Trang chủ
 ![image](https://github.com/user-attachments/assets/eb06a394-b0ed-4570-bcb8-45f8e745fd63)
