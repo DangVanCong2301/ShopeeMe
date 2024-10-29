@@ -30,6 +30,8 @@
  - ...
 ## Unit Testing (Kiểm thử đơn vị)
 https://docs.google.com/spreadsheets/d/1ZXDqi9M9C59Rs9ZT_QM6zz7HuXFDN4jg/edit?gid=1570539229#gid=1570539229
+## Kiến trúc phần mềm
+![image](https://github.com/user-attachments/assets/f969828e-7788-44e0-822a-a66520dfd8a6)
 ## Kết quả thực hiện
 ### Trang chủ
 ![image](https://github.com/user-attachments/assets/eb06a394-b0ed-4570-bcb8-45f8e745fd63)
