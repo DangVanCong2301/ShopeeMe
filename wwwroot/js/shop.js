@@ -66,16 +66,24 @@ function getData() {
 
             getShopTab(data);
 
+            setCategories(data);
+
             getProducts(data);
 
             getCategoriesTab(data);
 
             getPagination(data);
+
+            setDataMobile(data);
         }
     };
     xhr.send(null);
 }
 getData();
+
+function setDataMobile(data) {
+    
+}
 
 function getShopInfo(data) {
     let htmlShopMobile = "";
@@ -442,7 +450,63 @@ function getShopTab(data) {
             `).join('');
     document.querySelector(".shop__mobile-shop-view-more-modal-body-product-good-price").innerHTML = htmlTop10GoodPrice;
 }
+// Set Category
+function setCategories(data) {
+    let htmlCategory = "";
+    htmlCategory += data.categories.map(obj =>
+        `
+        <li class="category-item">
+            <a href="javascript:filterProductByCategoryID(${obj.pK_iCategoryID})" class="category-item__link">${obj.sCategoryName}</a>
+        </li>
+    `
+    ).join('');
+    document.querySelector(".category-list").innerHTML = htmlCategory;
+}
 
+// Lọc sản phẩm theo mã danh mục con
+function filterProductByCategoryID(categoryID) {
+    var formData = new FormData();
+    formData.append("categoryID", categoryID);
+    var xhr = new XMLHttpRequest();
+    xhr.open("post", "/shop/get-data", true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+
+            setActiveCategories(data);
+
+            getProducts(data);
+
+            getPagination(data);
+        }
+    };
+    xhr.send(formData);
+}
+
+function setActiveCategories(data) {
+    let htmlCategory = "";
+    data.categories.forEach(e => {
+        if (e.pK_iCategoryID == data.currentCategoryID) {
+            htmlCategory +=
+                `
+                <li class="category-item category-item--active">
+                    <a href="javascript:filterProductByCategoryID(${e.pK_iCategoryID})" class="category-item__link">${e.sCategoryName}</a>
+                </li>
+                `;
+        } else {
+            htmlCategory +=
+                `
+                <li class="category-item">
+                    <a href="javascript:filterProductByCategoryID(${e.pK_iCategoryID})" class="category-item__link">${e.sCategoryName}</a>
+                </li>
+                `;
+        }
+    });
+    document.querySelector(".category-list").innerHTML = htmlCategory;
+}
+
+// Set Product
 function getProducts(data) {
     let htmlProducts = "";
     for (let i = 0; i < data.products.length; i++) {

@@ -16,4 +16,5 @@ public class ShopViewModel
     public int UserID { get; set; }
     public string Username { get; set; }
     public int CartCount { get; set; }
+    public int CurrentCategoryID { get; set; }
 }
