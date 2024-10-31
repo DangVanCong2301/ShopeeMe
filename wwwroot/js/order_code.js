@@ -22,7 +22,7 @@ function setOrderCode(data) {
                     <div class="order-code__header">
                         <div class="order-code__header-logo">
                             <div class="order-code__header-logo-shopeeme">
-                                <img src="/img/shopeeme_logo_primary.png" class="order-code__header-logo-shopeeme-img" alt="">
+                                <img src="/img/sme_logo_primary.png" class="order-code__header-logo-shopeeme-img" alt="">
                             </div>
                             <div class="order-code__header-logo-spx">
                                 <img src="/img/SPX_express_logo.png" class="order-code__header-logo-spx-img" alt="">

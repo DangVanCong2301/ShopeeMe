@@ -131,7 +131,7 @@ function getCartItemsDestop(data) {
             <div class="cart__body-product-type">Phân loại hàng: Bạc</div>
             <div class="cart__body-product-cost">
                 <div class="cart__body-product-cost-old">189.000 đ</div>
-                <div class="cart__body-product-cost-new">${money(obj.dUnitPrice)} đ</div>
+                <div class="cart__body-product-cost-new">${money_2(obj.dUnitPrice)}</div>
             </div>
             <div class="cart__body-product-quantity">
                 <div class="cart__count-btns">
@@ -140,7 +140,7 @@ function getCartItemsDestop(data) {
                     <button type="button" class="cart__btn-sub" onclick="cong(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">+</button>
                 </div>
             </div>
-            <div class="cart__body-product-money">${money(obj.dMoney)} đ</div>
+            <div class="cart__body-product-money">${money_2(obj.dMoney)}</div>
             <div class="cart__body-product-operation">
                 <div class='btn-tools'>
                     <a class='btn-tool btn-tool__del' href='javascript:deleteProduct(${obj.pK_iProductID})' title='Xoá sản phẩm'><i class='uil uil-trash'></i></a>
@@ -274,7 +274,7 @@ function getCartItemsMobile(data) {
                                         </div>
                                         <div class="cart__mobile-item-product-price">
                                             <div class="cart__mobile-item-product-price-old">189.000đ</div>
-                                            <div class="cart__mobile-item-product-price-new">${money(obj.dMoney)}đ</div>
+                                            <div class="cart__mobile-item-product-price-new">${money_2(obj.dMoney)}</div>
                                         </div>
                                         <div class="cart__mobile-item-product-quantity">
                                             <div class="cart__mobile-item-product-quantity-btn-plus" onclick="plusMobile(event)">+</div>
@@ -465,7 +465,7 @@ function getProductsLike(data) {
                         <div class="home-product-item__price-old-loading"></div>
                     </span>
                     <span class="home-product-item__price-current">
-                        ${money(data.get12ProductsAndSortAsc[i].dPrice)} đ
+                        ${money_2(data.get12ProductsAndSortAsc[i].dPrice)}
                         <div class="home-product-item__price-current-loading"></div>
                     </span>
                 </div>
@@ -574,13 +574,13 @@ function cong(event, productID, unitPrice) {
         formData.append('productID', productID);
         formData.append('unitPrice', unitPrice)
         var xhr = new XMLHttpRequest();
-        xhr.open('post', '/Cart/Quantity', true);
+        xhr.open('post', '/cart/quantity', true);
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
                 const trParent = parentElement.parentNode.parentNode;
-                //console.log(trParent);
-                trParent.querySelector(".cart__body-product-money").innerText = `${money(data.money)} đ`;
+                console.log(data);
+                trParent.querySelector(".cart__body-product-money").innerText = `${money_2(data.money)}`;
             }
         }
         xhr.send(formData);
@@ -599,12 +599,12 @@ function tru(event, productID, unitPrice) {
         formData.append('productID', productID);
         formData.append('unitPrice', unitPrice);
         var xhr = new XMLHttpRequest();
-        xhr.open('post', '/Cart/Quantity', true);
+        xhr.open('post', '/cart/quantity', true);
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
                 const trParent = parentElement.parentNode.parentNode;
-                trParent.querySelector(".cart__body-product-money").innerText = `${money(data.money)} đ`;
+                trParent.querySelector(".cart__body-product-money").innerText = `${money_2(data.money)}`;
             }
         };
         xhr.send(formData);

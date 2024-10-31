@@ -130,6 +130,7 @@ public class CartController : Controller {
 
     // Hàm lấy số lượng sản phẩm trong giỏ hàng
     [HttpPost]
+    [Route("/cart/quantity")]
     public IActionResult Quantity(int productID, int quantity, double unitPrice) {
         double money = quantity * unitPrice;
         _cartResponsitory.changeQuantity(Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID")), productID, quantity, money);

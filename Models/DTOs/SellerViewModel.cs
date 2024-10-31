@@ -12,7 +12,7 @@ public class SellerViewModel
     public IEnumerable<Order> OrdersWaitSettlement { get; set; }
     public IEnumerable<Order> OrdersWaitPickup { get; set; }
     public IEnumerable<Order> OrdersWaitDelivery { get; set; }
-    public IEnumerable<Order> OrdersProcessed { get; set; }
+    public IEnumerable<ShippingOrder> OrdersProcessed { get; set; }
     public IEnumerable<OrderDetail> OrderDetailsWaitDelivery { get; set; }
     public IEnumerable<SellerInfo> SellerInfos { get; set; }
     public IEnumerable<ShippingOrder> ShippingOrders { get; set; }

@@ -62,7 +62,6 @@ public class SellerController : Controller
         IEnumerable<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoBySellerID(Convert.ToInt32(sessionSellerID));
         IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrderWaitSettlementByShopID(Convert.ToInt32(sessionShopID));
         IEnumerable<Order> ordersWaitPickup = _orderResponsitory.getOrderWaitPickupByShopID(Convert.ToInt32(sessionShopID));
-        IEnumerable<Order> ordersProcessed = _orderResponsitory.getOrderProcessedByShopID(Convert.ToInt32(sessionShopID));
         IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByShopID(Convert.ToInt32(sessionShopID));
         IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategoriesByShopID(Convert.ToInt32(sessionShopID));
         IEnumerable<Discount> discounts = _productResponsitory.getDiscounts();
@@ -99,17 +98,17 @@ public class SellerController : Controller
         }
 
         string htmlOrdersProcessedItem = "";
-        foreach (var item in ordersProcessed)
+        foreach (var item in shippingOrders)
         {
             htmlOrdersProcessedItem += $" <div class='admin__order-table-body-row'>";
-            htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.PK_iOrderID}</div>";
+            htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.FK_iOrderID}</div>";
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.sFullName}</div>";
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col primary'>";
-            htmlOrdersProcessedItem += $"         <a href='/seller/delivery-note/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Xem phiếu giao</a>";
+            htmlOrdersProcessedItem += $"         <a href='/seller/delivery-note/{item.FK_iOrderID}' class='admin__order-table-body-col-link'>Xem phiếu giao</a>";
             htmlOrdersProcessedItem += $"     </div>";
             htmlOrdersProcessedItem += $" </div>";
         }
@@ -159,7 +158,7 @@ public class SellerController : Controller
             SellerInfos = sellerInfos,
             OrdersWaitSettlement = ordersWaitSettlement,
             OrdersWaitPickup = ordersWaitPickup,
-            OrdersProcessed = ordersProcessed,
+            OrdersProcessed = shippingOrders,
             HtmlOrdersWaitSettlementItem = htmlOrdersWaitSettlmentItem,
             HtmlOrdersWaitPickupItem = htmlOrdersWaitPickupItem,
             HtmlOrdersProcessedItem = htmlOrdersProcessedItem,
