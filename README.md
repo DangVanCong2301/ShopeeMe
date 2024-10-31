@@ -1,7 +1,7 @@
 # Sàn TMĐT ShopeeMe(Shopee) (Đồ án tốt nghiệp) (v2.0.1)
 # Công nghệ: ASP.NET Core MVC  7.0
 - Luồng sử lý dữ liệu cơ bản: 
-![ShopeeMe-SequenceDiagram-Software_Architecture drawio](https://github.com/user-attachments/assets/8cb6d829-59d5-48b3-b1ea-abf8b4032358)
+![ShopeeMe-SequenceDiagram-Software_Architecture drawio](https://github.com/user-attachments/assets/fd93c90b-e2d6-4118-b80e-6d50222115ce)
 ## Thành phần chính
 ### Routing
 - Dựa vào các request Để gọi các Controller
