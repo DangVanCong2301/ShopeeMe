@@ -76,7 +76,9 @@ public class SellerController : Controller
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
-            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
+            htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col payment'>";
+            htmlOrdersWaitSettlmentItem += $"            <div class='admin__order-table-body-col-payment-name'>{item.sPaymentName}</div>";
+            htmlOrdersWaitSettlmentItem += $"     </div>";
             htmlOrdersWaitSettlmentItem += $"     <div class='admin__order-table-body-col primary'>";
             htmlOrdersWaitSettlmentItem += $"         30:00";
             htmlOrdersWaitSettlmentItem += $"     </div>";
@@ -90,7 +92,9 @@ public class SellerController : Controller
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
-            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
+            htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col payment'>";
+            htmlOrdersWaitPickupItem += $"            <div class='admin__order-table-body-col-payment-name'>{item.sPaymentName}</div>";
+            htmlOrdersWaitPickupItem += $"     </div>";
             htmlOrdersWaitPickupItem += $"     <div class='admin__order-table-body-col primary'>";
             htmlOrdersWaitPickupItem += $"         <a href='javascript:prepareGoodModal({item.PK_iOrderID}, {item.FK_iUserID})' class='admin__order-table-body-col-link'>Chuẩn bị hàng</a>";
             htmlOrdersWaitPickupItem += $"     </div>";
@@ -106,7 +110,9 @@ public class SellerController : Controller
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.dDate.ToString("dd/MM/yyyy")}</div>";
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.fTotalPrice.ToString("#,##0.00")}VND</div>"; // Đặt tiền: https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col'>{item.sOrderStatusName}</div>";
-            htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col payment'>{item.sPaymentName}</div>";
+            htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col payment'>";
+            htmlOrdersProcessedItem += $"            <div class='admin__order-table-body-col-payment-name'>{item.sPaymentName}</div>";
+            htmlOrdersProcessedItem += $"     </div>";
             htmlOrdersProcessedItem += $"     <div class='admin__order-table-body-col primary'>";
             htmlOrdersProcessedItem += $"         <a href='/seller/delivery-note/{item.FK_iOrderID}' class='admin__order-table-body-col-link'>Xem phiếu giao</a>";
             htmlOrdersProcessedItem += $"     </div>";

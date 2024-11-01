@@ -1870,15 +1870,6 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
     }
 }
 
-// Modal
-function openModal() {
-    document.querySelector(".modal").classList.add('open');
-}
-
-function closeModal() {
-    document.querySelector(".modal").classList.remove('open');
-}
-
 function money_2(number) {
     const formattedAmount = new Intl.NumberFormat('vi-VI', {
         style: 'currency',

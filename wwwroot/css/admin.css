@@ -878,6 +878,7 @@
     max-height: 372px;
     overflow-y: auto;
     scroll-behavior: smooth;
+    padding-bottom: 60px;
 }
 
 .admin__product-list::-webkit-scrollbar {
@@ -961,6 +962,8 @@
 
 /* Tool More */
 .admin-tool__more {
+    display: flex;
+    justify-content: center;
     position: relative;
 }
 
@@ -970,7 +973,6 @@
     height: 30px;
     width: 50px;
     top: 10px;
-    right: 62px;
     /* background-color: var(--primary-color); */
     z-index: 2;
 }
@@ -984,7 +986,6 @@
 .admin-tool__more-container {
     position: absolute;
     top: 28px;
-    right: 0;
     width: 150px;
     background-color: var(--white-color);
     padding: 8px 0;

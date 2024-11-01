@@ -15,6 +15,7 @@ namespace Project.Models
         public DbSet<SellerInfo> SellerInfos { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<SliderShop> SliderShops { get; set; }
+        public DbSet<Industry> Industries { get; set; }
         public DbSet<ParentCategory> ParentCategories { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryModel> CategoryModels { get; set; }
@@ -60,6 +61,10 @@ namespace Project.Models
 
             modelBuilder.Entity<SliderShop>(entity => {
                 entity.HasKey(e => e.PK_iSliderShopID);
+            });
+
+            modelBuilder.Entity<Industry>(entity => {
+                entity.HasKey(e => e.PK_iParentCategoryID);
             });
 
             modelBuilder.Entity<ParentCategory>(entity => {
