@@ -2014,7 +2014,9 @@
 .admin__add-product-table-desc-textarea.err,
 .admin__add-product-price-container.err,
 .admin__add-product-discount-container.err,
-.admin__add-product-quantity.err {
+.admin__add-product-quantity.err,
+.admin__add-category-input-name.err,
+.admin__add-category-textarea-desc.err {
     border: 1px solid var(--primary-color);
 }
 

@@ -10,6 +10,13 @@ public class CategoryResponsitory : ICategoryResponsitory
         _context = context;
     }
 
+    public bool delelteCategory(int categoryID)
+    {
+        SqlParameter categoryIDParam = new SqlParameter("@PK_iCategoryID", categoryID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_DelelteCategoryByID @PK_iCategoryID", categoryIDParam);
+        return true;
+    }
+
     public bool deleteIndustryByID(int industryID)
     {
         SqlParameter industryIDParam = new SqlParameter("@PK_iIndustryID", industryID);
@@ -39,6 +46,12 @@ public class CategoryResponsitory : ICategoryResponsitory
         return _context.CategoryModels.FromSqlRaw("EXEC sp_GetCategoriesByIndustryID @FK_iIndustryID", industryIDParam);
     }
 
+    public IEnumerable<CategoryModel> getCategoryByID(int categoryID)
+    {
+        SqlParameter categoryIDParam = new SqlParameter("@PK_iCategoryID", categoryID);
+        return _context.CategoryModels.FromSqlRaw("EXEC sp_GetCategoryByID @PK_iCategoryID", categoryIDParam);
+    }
+
     public IEnumerable<Industry> getIndustries()
     {
         return _context.Industries.FromSqlRaw("EXEC sp_GetIndustries");
@@ -65,6 +78,25 @@ public class CategoryResponsitory : ICategoryResponsitory
         SqlParameter createTimeParam = new SqlParameter("@dCreateTime", DateTime.Now);
         SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
         _context.Database.ExecuteSqlRaw("EXEC sp_InsertIndustry @sIndustryName, @sIndustryImage, @dCreateTime, @dUpdateTime", industryNameParam, industryImageParam, createTimeParam, updateTimeParam);
+        return true;
+    }
+
+    public bool updateCategory(int categoryID, int industryID, string categoryName, string categoryDesc, string categoryImage)
+    {
+        SqlParameter categoryIDParam = new SqlParameter("@PK_iCategoryID", categoryID);
+        SqlParameter industryIDParam = new SqlParameter("@FK_iParentCategoryID", industryID);
+        SqlParameter categoryNameParam = new SqlParameter("@sCategoryName", categoryName);
+        SqlParameter categoryDescParam = new SqlParameter("@sCategoryDescription", categoryDesc);
+        SqlParameter categryImageParam = new SqlParameter("@sCategoryImage", categoryImage);
+        SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
+        _context.Database.ExecuteSqlRaw("EXEC sp_UpdateCategoryByID @PK_iCategoryID, @FK_iParentCategoryID, @sCategoryName, @sCategoryImage, @sCategoryDescription, @dUpdateTime", 
+            categoryIDParam,
+            industryIDParam,
+            categoryNameParam,
+            categryImageParam,
+            categoryDescParam,
+            updateTimeParam
+        );
         return true;
     }
 

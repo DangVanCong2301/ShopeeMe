@@ -7,6 +7,7 @@ public class AdminController : Controller {
     private readonly DatabaseContext _context;
     private readonly IHomeResponsitory _homeResponsitory;
     private readonly ICategoryResponsitory _categoryResponsitory;
+    private readonly IProductResponsitory _productResponsitory;
     private readonly IUserResponsitory _userResponsitory;
     private readonly IAdminResponsitory _adminResponsitory;
     private readonly IHttpContextAccessor _accessor;
@@ -19,6 +20,7 @@ public class AdminController : Controller {
         IAdminResponsitory adminResponsitory, 
         IHomeResponsitory homeResponsitory,
         ICategoryResponsitory categoryResponsitory,
+        IProductResponsitory productResponsitory,
         IHttpContextAccessor accessor, 
         IOrderResponsitory orderResponsitory, 
         ICheckoutResponsitory checkoutResponsitory, 
@@ -30,6 +32,7 @@ public class AdminController : Controller {
         _adminResponsitory = adminResponsitory;
         _homeResponsitory = homeResponsitory;
         _categoryResponsitory = categoryResponsitory;
+        _productResponsitory = productResponsitory;
         _accessor = accessor;
         _orderResponsitory = orderResponsitory;
         _checkoutResponsitory = checkoutResponsitory;
@@ -189,9 +192,13 @@ public class AdminController : Controller {
 
     [HttpPost]
     [Route("/admin/detail-api")]
-    public IActionResult IndustryDetail(int industryID = 0) {
-        IEnumerable<Industry> industries = _categoryResponsitory.getIndustryByID(industryID);
+    public IActionResult Detail(int industryID = 0, int categoryID = 0) {
+        IEnumerable<Industry> industry = _categoryResponsitory.getIndustryByID(industryID);
+        IEnumerable<CategoryModel> category = _categoryResponsitory.getCategoryByID(categoryID);
+        IEnumerable<Industry> industries = _categoryResponsitory.getIndustries();
         AdminViewModel model = new AdminViewModel {
+            Industry = industry,
+            Category = category,
             Industries = industries
         };
         return Ok(model);
@@ -264,6 +271,54 @@ public class AdminController : Controller {
         AdminViewModel model = new AdminViewModel {
             Status = status,
             Industries = industries
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/admin/update-category")]
+    public IActionResult UpdateCategory(int categoryID = 0, int industryID = 0, string categoryName = "", string categoryDesc = "", string categoryImage = "") {
+        Status status;
+        if (_categoryResponsitory.updateCategory(categoryID, industryID, categoryName, categoryDesc, categoryImage)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Cập nhật danh mục thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -11,
+                Message = "Cập nhật danh mục thất bại!"
+            };
+        }
+        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategories();
+        AdminViewModel model = new AdminViewModel {
+            Status = status,
+            Categories = categories
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/admin/delete-category")]
+    public IActionResult DeleteCategory(int categoryID = 0) {
+        Status status;
+        List<Product> products = _productResponsitory.getProductsByCategoryID(categoryID).ToList();
+        if (products.Count() != 0) {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Thể loại này đang liên quan tới dữ liệu khác, không thể xoá!"
+            };
+        } else {
+            _categoryResponsitory.delelteCategory(categoryID);
+            status = new Status {
+                StatusCode = 11,
+                Message = "Xoá thể loại thành công!"
+            };
+        }
+        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategories();
+        AdminViewModel model = new AdminViewModel {
+            Status = status,
+            Categories = categories
         };
         return Ok(model);
     }

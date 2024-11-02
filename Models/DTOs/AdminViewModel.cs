@@ -16,8 +16,10 @@ public class AdminViewModel
     public List<Address> Addresses { get; set; }
     public List<Payment> Payments { get; set; }
     public IEnumerable<Industry> Industries { get; set; }
+    public IEnumerable<Industry> Industry { get; set; }
     public IEnumerable<ParentCategory> ParentCategories { get; set; }
     public IEnumerable<CategoryModel> Categories { get; set; }
+    public IEnumerable<CategoryModel> Category { get; set; }
     public IEnumerable<UserInfo> UserInfos { get; set; }
     public int RoleID { get; set; }
     public int UserID { get; set; }
