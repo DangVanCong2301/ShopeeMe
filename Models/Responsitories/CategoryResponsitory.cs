@@ -63,11 +63,24 @@ public class CategoryResponsitory : ICategoryResponsitory
         return _context.Industries.FromSqlRaw("EXEC sp_GetIndustryByID @PK_iIndustryID", industryIDParam);
     }
 
-    public bool inserCategory(Category category)
+    public bool inserCategory(int industryID, string categoryName, string categoryImage, string categoryDesc)
     {
-        SqlParameter categoryNameParam = new SqlParameter("@sCategoryName", category.sCategoryName);
-        SqlParameter categoryDescParam = new SqlParameter("@sCategoryDescription", category.sCategoryDescription);
-        _context.Database.ExecuteSqlRaw("sp_InsertCategory @sCategoryName, @sCategoryDescription", categoryNameParam, categoryDescParam);
+        SqlParameter industryIDParam = new SqlParameter("@FK_iParentCategoryID", industryID);
+        SqlParameter categoryNameParam = new SqlParameter("@sCategoryName", categoryName);
+        SqlParameter categoryImageParam = new SqlParameter("@sCategoryImage", categoryImage);
+        SqlParameter categoryDescParam = new SqlParameter("@sCategoryDescription", categoryDesc);
+        SqlParameter isVisibleParam = new SqlParameter("@iIsVisible", 1);
+        SqlParameter createTimeParam = new SqlParameter("@dCreateTime", DateTime.Now);
+        SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertCategory @FK_iParentCategoryID, @sCategoryName, @sCategoryImage, @sCategoryDescription, @iIsVisible, @dCreateTime, @dUpdateTime", 
+            industryIDParam,
+            categoryNameParam, 
+            categoryImageParam,
+            categoryDescParam,
+            isVisibleParam,
+            createTimeParam,
+            updateTimeParam
+        );
         return true;
     }
 

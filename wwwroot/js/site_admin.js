@@ -1292,7 +1292,7 @@ function showCategoryAdd(data) {
     let categoryImage = "";
     inputImageAdd.onchange = () => {
         categoryImgAdd.src = URL.createObjectURL(inputImageAdd.files[0]);
-        categoryImage = inputImageAdd.files[0].name;
+        categoryImage = "category/no_img.jpg";
     };
 
     document.querySelector(".admin__add-product-table-industry-icon").onclick = () => {
@@ -1327,6 +1327,48 @@ function showCategoryAdd(data) {
             `
                 <div class="spinner"></div>
             `;
+            const categoryName = document.querySelector(".admin__add-product-table-input-name").value;
+            const industryID = parseInt(industryCheck);
+            const categoryDesc = document.querySelector(".admin__add-category-textarea-desc").value;
+            console.log({categoryImage, categoryName, industryID, categoryDesc});
+            
+            var formData = new FormData();
+            formData.append("industryID", industryID);
+            formData.append("categoryName", categoryName);
+            formData.append("categoryImage", categoryImage);
+            formData.append("categoryDesc", categoryDesc);
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', '/admin/add-category', true);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    const data = JSON.parse(xhr.responseText);
+
+                    console.log(data);
+
+                    if (data.status.statusCode == 1) {
+                        setTimeout(() => {
+                            closeModal();
+                            toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                            document.querySelector(".modal__body").innerHTML = "";
+                            setTimeout(() => {
+                                showCategories(data);
+                            }, 1000)
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            closeModal();
+                            toast({ title: "Thông báo", msg: `${data.status.message}`, type: "err", duration: 5000 });
+                            document.querySelector(".modal__body").innerHTML = "";
+                            setTimeout(() => {
+                                showCategories(data);
+                            }, 1000)
+                        }, 2000);
+                    }
+                    
+                }
+            };
+            xhr.send(formData);
         }
     });
 }

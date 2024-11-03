@@ -199,7 +199,7 @@ public class SellerController : Controller
     [Route("/seller/update-product")]
     public IActionResult UpdateProduct(int productID = 0, int categoryID = 0, int discountID = 0, int transportID = 0, string productName = "", int quantity = 0, string productDesc = "", string imageUrl = "", double price = 0) {
         var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
-        _productResponsitory.updateProduct(productID, categoryID, discountID, transportID, productName, quantity, productDesc, imageUrl, price);
+        _productResponsitory.updateProduct(productID, Convert.ToInt32(sessionShopID), categoryID, discountID, transportID, productName, quantity, productDesc, imageUrl, price);
         Status status = new Status {
             StatusCode = 1,
             Message = "Cập nhật sản phẩm thành công"
@@ -256,7 +256,7 @@ public class SellerController : Controller
     [Route("/seller/add-product")]
     public IActionResult AddProduct(int categoryID = 0, int discountID = 0, int transportID = 0, string productName = "", int quantity = 0, string productDesc = "", string imageUrl = "", double price = 0) {
         var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
-        _productResponsitory.insertProduct(categoryID, discountID, transportID, productName, quantity, productDesc, imageUrl, price);
+        _productResponsitory.insertProduct(Convert.ToInt32(sessionShopID), categoryID, discountID, transportID, productName, quantity, productDesc, imageUrl, price);
         Status status = new Status {
             StatusCode = 1,
             Message = "Thêm sản phẩm thành công!"

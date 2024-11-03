@@ -276,6 +276,29 @@ public class AdminController : Controller {
     }
 
     [HttpPost]
+    [Route("/admin/add-category")]
+    public IActionResult AddCategory(int industryID = 0, string categoryName = "", string categoryImage = "", string categoryDesc = "") {
+        Status status;
+        if (_categoryResponsitory.inserCategory(industryID, categoryName, categoryImage, categoryDesc)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Thêm danh mục thành công!"
+            }; 
+        } else {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Thêm danh mục thất bại!"
+            };
+        }
+        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategories();
+        AdminViewModel model = new AdminViewModel {
+            Status = status,
+            Categories = categories
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
     [Route("/admin/update-category")]
     public IActionResult UpdateCategory(int categoryID = 0, int industryID = 0, string categoryName = "", string categoryDesc = "", string categoryImage = "") {
         Status status;

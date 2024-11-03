@@ -208,6 +208,7 @@ function setConfirmOrderBtn(data) {
                     </div>
         `;
     }
+    document.querySelector(".checkout__payment-order").innerHTML = htmlConfirmOrder;
 }
 
 // Confirm Order

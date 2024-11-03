@@ -61,9 +61,10 @@ public class ProductResponsitory : IProductResponsitory {
         return _context.TransportPrices.FromSqlRaw("sp_GetTransportPrice");
     }
 
-    public bool updateProduct(int productID, int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price)
+    public bool updateProduct(int productID, int storeID, int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price)
     {
         SqlParameter productIDParam = new SqlParameter("@PK_iProductID", productID);
+        SqlParameter storeIDParam = new SqlParameter("@FK_iStoreID", storeID);
         SqlParameter categoryIDParam = new SqlParameter("@FK_iCategoryID", categoryID);
         SqlParameter discountIDParam = new SqlParameter("@FK_iDiscountID", discountID);
         SqlParameter transportIDParam = new SqlParameter("@FK_iTransportID", transportID);
@@ -74,8 +75,9 @@ public class ProductResponsitory : IProductResponsitory {
         SqlParameter priceParam = new SqlParameter("@dPrice", price);
         SqlParameter isVisibleParam = new SqlParameter("@iIsVisible", 1);
         SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
-        _context.Database.ExecuteSqlRaw("sp_UpdateProduct @PK_iProductID, @FK_iCategoryID, @FK_iDiscountID, @FK_iTransportID, @sProductName, @iQuantity, @sProductDescription, @sImageUrl, @dPrice, @iIsVisible, @dUpdateTime",
+        _context.Database.ExecuteSqlRaw("sp_UpdateProduct @PK_iProductID, @FK_iStoreID, @FK_iCategoryID, @FK_iDiscountID, @FK_iTransportID, @sProductName, @iQuantity, @sProductDescription, @sImageUrl, @dPrice, @iIsVisible, @dUpdateTime",
             productIDParam,
+            storeIDParam,
             categoryIDParam,
             discountIDParam,
             transportIDParam,
@@ -90,8 +92,9 @@ public class ProductResponsitory : IProductResponsitory {
         return true;
     }
 
-    public bool insertProduct(int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price)
+    public bool insertProduct(int storeID, int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price)
     {
+        SqlParameter storeIDParam = new SqlParameter("@FK_iStoreID", storeID);
         SqlParameter categoryIDParam = new SqlParameter("@FK_iCategoryID", categoryID);
         SqlParameter discountIDParam = new SqlParameter("@FK_iDiscountID", discountID);
         SqlParameter transportIDParam = new SqlParameter("@FK_iTransportID", discountID);
@@ -103,7 +106,8 @@ public class ProductResponsitory : IProductResponsitory {
         SqlParameter isVisibleParam = new SqlParameter("@iIsVisible", 1);
         SqlParameter createTimeParam = new SqlParameter("@dCreateTime", DateTime.Now);
         SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
-        _context.Database.ExecuteSqlRaw("EXEC sp_InsertProduct @FK_iCategoryID, @FK_iDiscountID, @FK_iTransportID, @sProductName, @iQuantity, @sProductDescription, @sImageUrl, @dPrice, @iIsVisible, @dCreateTime, @dUpdateTime", 
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertProduct @FK_iStoreID, @FK_iCategoryID, @FK_iDiscountID, @FK_iTransportID, @sProductName, @iQuantity, @sProductDescription, @sImageUrl, @dPrice, @iIsVisible, @dCreateTime, @dUpdateTime", 
+            storeIDParam,
             categoryIDParam,
             discountIDParam,
             transportIDParam,
