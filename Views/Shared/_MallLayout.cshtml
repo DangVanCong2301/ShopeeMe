@@ -134,7 +134,7 @@
     
                     <div class="header__search">
                         <div class="header__search-input-wrap">
-                            <input type="text" class="header__search-input" onkeyup="searchProducts(this)"
+                            <input type="text" class="header__search-input"
                                 placeholder="Tìm kiếm trong Shop này">
     
                             <!--Search history-->
@@ -164,7 +164,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <button class="header__search-btn hide-on-mobile">
+                        <button class="header__search-btn hide-on-mobile" onclick="searchProducts()">
                             <i class="header__search-btn-icon uil uil-search"></i>
                         </button>
                     </div>
@@ -295,6 +295,17 @@
                 </div>
             </div>
         </footer>
+    </div>
+    <div class="modal">
+        <div class="modal__overlay">
+
+        </div>
+        <div class="modal__body">
+            
+        </div>
+    </div>
+    <div class="" id="toast">
+        
     </div>
 </body>
 <script src="~/js/site_shop.js"></script>

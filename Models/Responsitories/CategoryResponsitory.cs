@@ -40,6 +40,11 @@ public class CategoryResponsitory : ICategoryResponsitory
         return _context.Categories.FromSqlRaw("EXEC sp_SelectCategories");
     }
 
+    public IEnumerable<Category> searchCategoriesByKeyword(string keyword) {
+        SqlParameter keywordParam = new SqlParameter("@sKeyword", keyword);
+        return _context.Categories.FromSqlRaw("EXEC sp_SearchCategoryByKeyword @sKeyword", keywordParam);
+    }
+
     public IEnumerable<CategoryModel> getCategoriesByIndustryID(int industryID)
     {
         SqlParameter industryIDParam = new SqlParameter("@FK_iIndustryID", industryID);
@@ -92,6 +97,12 @@ public class CategoryResponsitory : ICategoryResponsitory
         SqlParameter updateTimeParam = new SqlParameter("@dUpdateTime", DateTime.Now);
         _context.Database.ExecuteSqlRaw("EXEC sp_InsertIndustry @sIndustryName, @sIndustryImage, @dCreateTime, @dUpdateTime", industryNameParam, industryImageParam, createTimeParam, updateTimeParam);
         return true;
+    }
+
+    public IEnumerable<ParentCategory> searchParentCategoriesByKeyword(string keyword)
+    {
+        SqlParameter keywordParam = new SqlParameter("@sKeyword", keyword);
+        return _context.ParentCategories.FromSqlRaw("EXEC sp_SearchParentCategoriesByKeyword @sKeyword", keywordParam);
     }
 
     public bool updateCategory(int categoryID, int industryID, string categoryName, string categoryDesc, string categoryImage)

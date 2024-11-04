@@ -24,11 +24,6 @@ public class HomeResponsitory : IHomeResponsitory
         return _context.Products.FromSqlRaw("EXEC sp_PaginationProducts @PageSize, @PageNumber", pageSizeParam, pageNumberParam);
     }
 
-    public IEnumerable<Category> searchProductsByKeyword(string keyword) {
-        SqlParameter keywordParam = new SqlParameter("@sKeyword", keyword);
-        return _context.Categories.FromSqlRaw("EXEC sp_SearchCategoryByKeyword @sKeyword", keywordParam);
-    }
-
     public IEnumerable<Store> getStores()
     {
         return _context.Stores.FromSqlRaw("EXEC sp_GetStores");

@@ -14,8 +14,17 @@ namespace Project.Controllers
         private readonly IHomeResponsitory _homeResponsitory;
         private readonly ICartReponsitory _cartResponsitory;
         private readonly IUserResponsitory _userResponsitory;
+        private readonly ICategoryResponsitory _categoryResponsitory;
 
-        public HomeController(ILogger<HomeController> logger, DatabaseContext context, IHttpContextAccessor accessor, IHomeResponsitory homeResponsitory, ICartReponsitory cartReponsitory, IUserResponsitory userResponsitory)
+        public HomeController(
+            ILogger<HomeController> logger, 
+            DatabaseContext context, 
+            IHttpContextAccessor accessor, 
+            IHomeResponsitory homeResponsitory, 
+            ICartReponsitory cartReponsitory, 
+            IUserResponsitory userResponsitory,
+            ICategoryResponsitory categoryResponsitory
+        )
         {
             _logger = logger;
             _context = context;
@@ -23,6 +32,7 @@ namespace Project.Controllers
             _homeResponsitory = homeResponsitory;
             _cartResponsitory = cartReponsitory;
             _userResponsitory = userResponsitory;
+            _categoryResponsitory = categoryResponsitory;
         }
 
         /// <summary>
@@ -101,9 +111,15 @@ namespace Project.Controllers
         }
 
         [HttpPost]
+        [Route("/home/search")]
         public IActionResult Search(string keyword = "") {
-            IEnumerable<Category> products = _homeResponsitory.searchProductsByKeyword(keyword).ToList();
-            return Ok(products);
+            IEnumerable<ParentCategory> parentCategories = _categoryResponsitory.searchParentCategoriesByKeyword(keyword);
+            IEnumerable<Category> categories = _categoryResponsitory.searchCategoriesByKeyword(keyword).ToList();
+            ShopeeViewModel model = new ShopeeViewModel {
+                ParentCategories = parentCategories,
+                Categories = categories
+            };
+            return Ok(model);
         }
 
         public IActionResult Privacy()

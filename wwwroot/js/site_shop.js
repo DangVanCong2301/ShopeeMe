@@ -207,6 +207,31 @@ function setCartItems(data) {
     }
 }
 
+// Search Product
+function searchProducts() {
+    noticeIncompleteFunc();
+}
+
+// Notice Incomplete Function
+function noticeIncompleteFunc() {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = 
+            `
+                <div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        Chức năng này chưa được hoàn thiện!
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                        <div class="modal__confirm-btn-send"onclick="closeModal()">Đồng ý</div>
+                    </div>
+                </div>
+            `;
+}
+
 // Load Product
 function loadingProducts() {
     const loadingProductImage = document.querySelectorAll(".home-product-item__img-loading");
@@ -248,6 +273,15 @@ function loadingProducts() {
             loadingProductOrigin[i].style.display = 'none';
         }
     }, 1000);
+}
+
+// Modal
+function openModal() {
+    document.querySelector(".modal").classList.add("open");
+}
+
+function closeModal() {
+    document.querySelector(".modal").classList.remove("open");
 }
 
 // Toast

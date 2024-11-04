@@ -1,6 +1,8 @@
 public interface ICategoryResponsitory
 {
+    IEnumerable<ParentCategory> searchParentCategoriesByKeyword(string keyword);
     IEnumerable<Category> getCategories();
+    IEnumerable<Category> searchCategoriesByKeyword(string keyword);
     IEnumerable<CategoryModel> getAllCategories();
     IEnumerable<CategoryModel> getAllCategoriesByShopID(int shopID);
     IEnumerable<CategoryModel> getCategoriesByIndustryID(int industryID);

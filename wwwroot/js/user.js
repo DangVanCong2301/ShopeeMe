@@ -34,4 +34,20 @@ function getDataUser() {
     }
     xhr.send(null);
 }
+
+function loginWithFacebook() {
+    noticeIncompleteFunc();
+}
+
+function loginWithGoogle() {
+    noticeIncompleteFunc();
+}
+
+function registerWithFacebook() {
+    noticeIncompleteFunc();
+}
+
+function registerWithGoogle() {
+    noticeIncompleteFunc();
+}
 //getDataUser();

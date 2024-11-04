@@ -333,33 +333,55 @@ function getShopsItem(data) {
 
 // Tìm kiếm danh mục
 function searchProducts(input) {
-    document.querySelector('.header__search-history').style.display = 'block';
+    document.querySelector('.header__search-bar').classList.remove("hide-on-destop");
     var formData = new FormData();
     if (input.value != "") {
         formData.append("keyword", input.value);
     }
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Home/Search', true);
+    xhr.open('post', '/home/search', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
-            let html = "";
-            html +=     "<ul class='header__search-history-list'>";
-            html += data.map(obj => `
-                            <li class="header__search-history-item">
-                                <a href="/Product/Index?categoryID=${obj.pK_iCategoryID}">${obj.sCategoryName}</a>
-                            </li>`).join('');
-            html +=     "</ul>";
-            document.querySelector('.header__search-history').innerHTML = html;
+            let htmlSearch = "";
+            htmlSearch += 
+            `
+                            <div class="header__search-history">
+                                <ul class="header__search-history-list">`;
+                                if (data.parentCategories.length != 0) {
+                                    data.parentCategories.forEach(element => {
+            htmlSearch +=
+                                    `
+                                    <li class="header__search-history-item">
+                                        <a href="/product/${element.pK_iParentCategoryID}">${element.sParentCategoryName}</a>
+                                    </li>
+                                    `;
+                                    });
+                                } else {
+                                    data.categories.forEach(element => {
+            htmlSearch +=
+                                    `
+                                    <li class="header__search-history-item">
+                                        <a href="/product/${element.fK_iParentCategoryID}/${element.pK_iCategoryID}">${element.sCategoryName}</a>
+                                    </li>
+                                    `;
+                                    });
+                                }
+            htmlSearch += `     </ul>
+                            </div>
+            `;
+            if (data.parentCategories.length != 0 || data.categories.length != 0) {
+                document.querySelector('.header__search-bar').innerHTML = htmlSearch;
+            }
         } 
     };
     xhr.send(formData);
 }
-const searchHistory = document.querySelector('.header__search-history');
-window.onclick = (event) => {
-    if (event.target == searchHistory) {
-        searchHistory.style.display = 'none';
-    }
+
+const searchInput = document.querySelector('.header__search-input');
+searchInput.onclick = () => {
+    searchInput.value = "";
+    document.querySelector('.header__search-bar').classList.toggle("hide-on-destop");
 }
 
 // Modal

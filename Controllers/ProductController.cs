@@ -20,10 +20,11 @@ public class ProductController : Controller {
         _shopResponsitory = shopResponsitory;
     }
 
-    [Route("{parentCategoryID}")]
+    [Route("{parentCategoryID?}/{categoryID?}")]
     [HttpGet]
-    public IActionResult Index(int parentCategoryID) {
+    public IActionResult Index(int parentCategoryID = 0, int categoryID = 0) {
         _accessor?.HttpContext?.Session.SetInt32("CurrentParentCategoryID", parentCategoryID);
+        _accessor?.HttpContext?.Session.SetInt32("CurrentCategoryID", categoryID);
         // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
         return View();
     }
@@ -33,19 +34,21 @@ public class ProductController : Controller {
     public IActionResult GetData(int categoryID = 0, int currentPage = 1) {
         IEnumerable<Product> products;
         IEnumerable<Product> productsByCategoryID;
+        int currentCategory = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentCategoryID"));
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         var sessionParentCategoryID = _accessor?.HttpContext?.Session.GetInt32("CurrentParentCategoryID");
         List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-        if (users.Count() == 0) {
+        if (users.Count() == 0 && currentCategory == null) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        } else if (users[0].FK_iRoleID == 2) {
+        } else if (users.Count() != 0 && users[0].FK_iRoleID == 2 && currentCategory == null) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
+        } else if (users.Count() != 0 && users[0].FK_iRoleID == 1 && currentCategory == null) {
+            products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
+        } else if (categoryID != 0) {
+            currentCategory = categoryID;
+            products = _productResponsitory.getProductsByCategoryID(currentCategory);
         } else {
-            products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        }
-        if (categoryID != 0)
-        {
-            products = _productResponsitory.getProductsByCategoryID(Convert.ToInt32(categoryID));
+            products = _productResponsitory.getProductsByCategoryID(currentCategory);
         }
         int totalRecord = products.Count();
         int pageSize = 10;
@@ -60,7 +63,7 @@ public class ProductController : Controller {
             Stores = stores,
             Categories = categories,
             CartDetails = cartDetails,
-            CurrentCategoryID = categoryID,
+            CurrentCategoryID = currentCategory,
             TotalPage = totalPage,
             PageSize = pageSize,
             CurrentPage = currentPage,
