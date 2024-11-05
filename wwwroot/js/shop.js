@@ -52,7 +52,7 @@ btnPrevSliderShop.addEventListener('click', () => {
     document.getElementById(index).classList.add("slider-shop-cirle-fill");
 });
 
-function getData() {
+function getAPIShop() {
     var xhr = new XMLHttpRequest();
     xhr.open('post', '/shop/get-data', true);
     xhr.onreadystatechange = () => {
@@ -79,7 +79,7 @@ function getData() {
     };
     xhr.send(null);
 }
-getData();
+getAPIShop();
 
 function setDataMobile(data) {
     
@@ -145,15 +145,99 @@ function getShopInfo(data) {
                                 <div class="shop__header-store-btn">
                                     <i class="uil uil-plus shop__header-store-btn-icon"></i>
                                     <span>Theo dõi</span>
-                                </div>
+                                </div>`;
+                                if (data.makeNotices.length != 0) {
+                                htmlShopDestop += `
                                 <div class="shop__header-store-btn">
                                     <i class="uil uil-chat shop__header-store-btn-icon"></i>
+                                    <span>Đã gửi kết bạn</span>
+                                </div>`;
+                                } else {
+                                    htmlShopDestop += `
+                                <div class="shop__header-store-btn shop__header-store-btn-chat">
+                                    <i class="uil uil-chat shop__header-store-btn-icon"></i>
                                     <span>Chat</span>
-                                </div>
+                                </div>`;
+                                }
+                            htmlShopDestop += `    
                             </div>
                         </div>
     `;
     document.querySelector(".shop__header-detail").innerHTML = htmlShopDestop;
+
+    if (data.makeNotices.length == 0) {
+        document.querySelector(".shop__header-store-btn-chat").addEventListener("click", () => {
+            sendMakeFriendModal(data);
+        });
+    }
+}
+
+// Send Make Friend
+function sendMakeFriendModal(data) {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = 
+            `
+                <div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        Bạn chưa kết bạn với shop này, gửi lời kết bạn tới <b>${data.stores[0].sStoreName}</b>?
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                        <div class="modal__confirm-btn-send"onclick="sendMakeFriend(${data.stores[0].fK_iSellerID})">Đồng ý</div>
+                    </div>
+                </div>
+            `;
+}
+
+function sendMakeFriend(sellerID) {
+    document.querySelector(".modal__body").innerHTML = 
+            `
+                <div class="spinner"></div>
+            `;
+    var formData = new FormData();
+    formData.append("sellerID", sellerID);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/shop/send-make-friend', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            if (data.status.statusCode == -1) {
+                document.querySelector(".modal__body").innerHTML = 
+                `
+                <div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        ${data.status.message}
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                        <a href="/user/login" class="modal__confirm-btn-send">Đăng nhập</a>
+                    </div>
+                </div>
+                `;
+            } else {
+                setTimeout(() => {
+                    closeModal();
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        
+                    }, 1000)
+                }, 2000);
+            }
+            
+        };
+    };
+    xhr.send(formData);
 }
 
 function getSlidersShop(data) {
@@ -648,6 +732,7 @@ function pageNumber(currentPage) {
             console.log(data);
 
             getProducts(data);
+            
             getPagination(data);
         }
     };

@@ -20,4 +20,5 @@ public class ShopeeViewModel
     public int CurrentProductID { get; set; }
     public int CartCount { get; set; }
     public int RoleID { get; set; }
+    public Status Status { get; set; }
 }

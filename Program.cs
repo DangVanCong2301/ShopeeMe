@@ -27,6 +27,7 @@ builder.Services.AddTransient<ICheckoutResponsitory, CheckoutResponsitory>();
 builder.Services.AddTransient<IAdminResponsitory, AdminResponsitory>();
 builder.Services.AddTransient<IShippingOrderRepository, ShippingOrderRepository>();
 builder.Services.AddTransient<ITransportRepository, TransportRepository>();
+builder.Services.AddTransient<IChatRepository, ChatRepository>();
 
 var app = builder.Build();
 
