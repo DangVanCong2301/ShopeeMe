@@ -185,7 +185,7 @@
 .auth-form__btn {
     padding: 12px 0;
     text-align: center;
-    background-color: var(--primary-color);
+    background-color: var(--second-color);
     border-radius: 2px;
     width: 100%;
     color: var(--white-color);
@@ -285,7 +285,7 @@
 }
 
 .seller-auth__left {
-    color: var(--primary-color);
+    color: var(--second-color);
     flex: 1;
     display: flex;
     justify-content: center;

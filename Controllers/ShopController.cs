@@ -66,7 +66,7 @@ public class ShopController : Controller
         var sessionCurrentShopUsername = _accessor?.HttpContext?.Session.GetString("CurrentShopUsername");
         var sessionCurrentShopID = _accessor?.HttpContext?.Session.GetInt32("CurrentShopID");
         var shop = _shopResponsitory.getShopByUsername(sessionCurrentShopUsername);
-        IEnumerable<MakeNotice> makeNotices = _chatRepository.getMakeNoticeByUserIDAndShopID(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionCurrentShopID));
+        IEnumerable<MakeFriend> makeFriends = _chatRepository.getMakeFriendByUserIDAndShopID(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> products;
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
         IEnumerable<SliderShop> slidersShop = _shopResponsitory.getSlidersShopByShopID(Convert.ToInt32(sessionCurrentShopID));
@@ -86,7 +86,7 @@ public class ShopController : Controller
         products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         ShopViewModel model = new ShopViewModel {
             Stores = shop,
-            MakeNotices = makeNotices,
+            MakeFriends = makeFriends,
             SlidersShop = slidersShop,
             Categories = categories,
             Products = products,
@@ -122,13 +122,40 @@ public class ShopController : Controller
                 Message = "Bạn phải đăng nhập thì mới kết bạn được!"
             };
         } else {
-            _chatRepository.insertMakeNoice(Convert.ToInt32(sessionUserID), sellerID);
+            _chatRepository.insertMakeFriend(Convert.ToInt32(sessionUserID), sellerID);
             status = new Status {
                 StatusCode = 1,
                 Message = "Gửi lời kết bạn thành công!"
             };
         }
         ShopeeViewModel model = new ShopeeViewModel {
+            Status = status
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/shop/acept-friend")]
+    public IActionResult AceptFriend(int makeFriendID = 0, int sellerID = 0) {
+        Status status;
+        List<Store> store = _shopResponsitory.getShopBySellerID(sellerID).ToList();
+        if (_chatRepository.updateMakeFriendAboutAcept(makeFriendID)) {
+            string automatedChat = "Chào bạn, hiện tại bộ phận CSKH của " + store[0].sStoreName + " đã hết giờ làm việc." 
+                                 + " Bạn vui lòng liên hệ vào khung giờ <b>8:00 - 17:00 (T2 - T6) & 8:00 - 14:00 Thứ 7</b> "
+                                 + " hoặc để lại lời nhắn, chúng mình sẽ phản hồi ngay với bạn vào giờ làm việc kế tiếp."
+                                 + " " + store[0].sStoreName + " Shop xin cảm ơn ❤️";
+            _chatRepository.insertChat(makeFriendID, sellerID, automatedChat);
+            status = new Status {
+                StatusCode = 1,
+                Message = "Chấp nhận kết bạn thành công!"
+            }; 
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Chấp nhận kết bạn thất bại!"
+            };
+        }
+        ShopViewModel model = new ShopViewModel {
             Status = status
         };
         return Ok(model);

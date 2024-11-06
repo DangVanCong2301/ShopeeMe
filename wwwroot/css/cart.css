@@ -5,7 +5,7 @@
 
 /* Header */
 .header {
-    background-color: var(--primary-color);
+    background-color: var(--second-color);
 }
 
 .header__container {
@@ -357,9 +357,9 @@
     margin-top: 10px;
     font-size: 20px;
     text-transform: capitalize;
-    color: var(--primary-color);
+    color: var(--second-color);
     padding-left: 16px;
-    border-left: 1px solid var(--primary-color);
+    border-left: 1px solid var(--second-color);
 }
 
 .header__search {
@@ -367,7 +367,7 @@
     display: flex;
     align-items: center;
     height: 40px;
-    border: 2px solid var(--primary-color);
+    border: 2px solid var(--second-color);
     border-radius: 2px;
 }
 
@@ -378,7 +378,7 @@
 }
 
 .header__search-input::placeholder {
-    color: var(--primary-color);
+    color: var(--second-color);
     font-family: var(--body-font);
 }
 
@@ -388,7 +388,7 @@
     justify-content: center;
     display: flex;
     align-items: center;
-    background-color: var(--primary-color);
+    background-color: var(--second-color);
     color: var(--white-color);
 }
 

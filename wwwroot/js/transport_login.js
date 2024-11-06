@@ -7,7 +7,7 @@ function setForm() {
     document.querySelector(".app__container").innerHTML = 
     `
     <div class="phone-auth__logo">
-        <img src="/img/shopee_logo.png" class="phone-auth__logo-img" alt="">
+        <img src="/img/sme_icon_primary.png" class="phone-auth__logo-img" alt="">
     </div>
     <div class="phone-auth__form">
         <div class="phone-auth__form-div phone-auth__form-div-email">

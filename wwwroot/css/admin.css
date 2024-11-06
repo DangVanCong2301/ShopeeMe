@@ -1497,6 +1497,7 @@
     grid-template-columns: 2.6rem auto;
     gap: 1rem;
     margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 .admin__right-recent-updates-item-message-time,
@@ -1543,13 +1544,11 @@
 }
 
 /* Sales Analytics */
-.admin__right-sales-analytics {
-    margin-top: 2rem;
-}
 
 .admin__right-sales-analytics-title {
     font-size: 20px;
     margin-bottom: .8rem;
+    font-weight: bold;
 }
 
 .admin__right-sales-analytics-container {

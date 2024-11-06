@@ -818,7 +818,7 @@
     font-size: 12px;
     padding: 1px 4px;
     border-radius: 2px;
-    background-color: var(--primary-color);
+    background-color: var(--second-color);
 }
 
 .shop__header-store-info-desc {
@@ -865,7 +865,7 @@
 }
 
 .shop__header-row span {
-    color: var(--primary-color);
+    color: var(--second-color);
 }
 
 .shop__info {

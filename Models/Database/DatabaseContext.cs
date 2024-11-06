@@ -36,7 +36,8 @@ namespace Project.Models
         public DbSet<ShippingOrder> ShippingOrders { get; set; }
         public DbSet<ShippingPicker> ShippingPickers { get; set; }
         public DbSet<ShippingDelivery> ShippingDeliveries { get; set; }
-        public DbSet<MakeNotice> MakeNotices { get; set; }
+        public DbSet<MakeFriend> MakeFriends { get; set; }
+        public DbSet<Chat> Chats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -153,8 +154,12 @@ namespace Project.Models
                 entity.HasKey(e => e.PK_iShippingDeliveryID);
             });
 
-            modelBuilder.Entity<MakeNotice>(entity => {
-                entity.HasKey(e => e.PK_iMakeNoticeID);
+            modelBuilder.Entity<MakeFriend>(entity => {
+                entity.HasKey(e => e.PK_iMakeFriendID);
+            });
+
+            modelBuilder.Entity<Chat>(entity => {
+                entity.HasNoKey();
             });
         }
     }

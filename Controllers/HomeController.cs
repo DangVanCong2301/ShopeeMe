@@ -15,6 +15,7 @@ namespace Project.Controllers
         private readonly ICartReponsitory _cartResponsitory;
         private readonly IUserResponsitory _userResponsitory;
         private readonly ICategoryResponsitory _categoryResponsitory;
+        private readonly IChatRepository _chatRepository;
 
         public HomeController(
             ILogger<HomeController> logger, 
@@ -23,7 +24,8 @@ namespace Project.Controllers
             IHomeResponsitory homeResponsitory, 
             ICartReponsitory cartReponsitory, 
             IUserResponsitory userResponsitory,
-            ICategoryResponsitory categoryResponsitory
+            ICategoryResponsitory categoryResponsitory,
+            IChatRepository chatRepository
         )
         {
             _logger = logger;
@@ -33,6 +35,7 @@ namespace Project.Controllers
             _cartResponsitory = cartReponsitory;
             _userResponsitory = userResponsitory;
             _categoryResponsitory = categoryResponsitory;
+            _chatRepository = chatRepository;
         }
 
         /// <summary>
@@ -91,6 +94,7 @@ namespace Project.Controllers
             IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(Convert.ToInt32(sessionUserID));
             IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
             IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
+            IEnumerable<Chat> chats = _chatRepository.getChatByUserID(Convert.ToInt32(sessionUserID));
             int cartCount = carts.Count();
             ShopeeViewModel model = new ShopeeViewModel {
                 Stores = stores,
@@ -105,7 +109,8 @@ namespace Project.Controllers
                 RoleID = Convert.ToInt32(sessionRoleID),
                 UserID = Convert.ToInt32(sessionUserID),
                 Username = sessionUsername,
-                CartCount = cartCount
+                CartCount = cartCount,
+                Chats = chats
             };
             return Ok(model);
         }

@@ -12,6 +12,7 @@ public class SellerController : Controller
     private readonly IHttpContextAccessor _accessor;
     private readonly ICategoryResponsitory _categoryResponsitory;
     private readonly IProductResponsitory _productResponsitory;
+    private readonly IChatRepository _chatRepository;
     public SellerController(
         IHttpContextAccessor accessor, 
         IUserResponsitory userResponsitory, 
@@ -21,7 +22,9 @@ public class SellerController : Controller
         IShippingOrderRepository shippingOrderRepository, 
         ICheckoutResponsitory checkoutResponsitory,
         ICategoryResponsitory categoryResponsitory,
-        IProductResponsitory productResponsitory)
+        IProductResponsitory productResponsitory,
+        IChatRepository chatRepository
+        )
     {
         _accessor = accessor;
         _userResponsitory = userResponsitory;
@@ -32,6 +35,7 @@ public class SellerController : Controller
         _checkoutResponsitory = checkoutResponsitory;
         _categoryResponsitory = categoryResponsitory;
         _productResponsitory = productResponsitory;
+        _chatRepository = chatRepository;
     }
 
     [HttpGet]
@@ -67,6 +71,7 @@ public class SellerController : Controller
         IEnumerable<Discount> discounts = _productResponsitory.getDiscounts();
         IEnumerable<TransportPrice> transportPrices = _productResponsitory.getTransportPrice();
         IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionShopID));
+        IEnumerable<MakeFriend> makeFriends = _chatRepository.getMakeFriendBySellerID(Convert.ToInt32(sessionSellerID));
         string htmlOrdersWaitSettlmentItem = "";
         string htmlOrdersWaitPickupItem = "";
         foreach (var item in ordersWaitSettlement) {
@@ -173,7 +178,8 @@ public class SellerController : Controller
             Discounts = discounts,
             TransportPrices = transportPrices,
             Products = products,
-            HtmlProductItem = htmlProductItem
+            HtmlProductItem = htmlProductItem,
+            MakeFriends = makeFriends
         };
         return Ok(model);
     }

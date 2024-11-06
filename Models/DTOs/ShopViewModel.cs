@@ -1,7 +1,7 @@
 public class ShopViewModel
 {
     public IEnumerable<Store> Stores { get; set; }
-    public IEnumerable<MakeNotice> MakeNotices { get; set; }
+    public IEnumerable<MakeFriend> MakeFriends { get; set; }
     public IEnumerable<SliderShop> SlidersShop { get; set; }
     public IEnumerable<Category> Categories { get; set;}
     public IEnumerable<Product> Products { get; set; }
@@ -18,4 +18,5 @@ public class ShopViewModel
     public string Username { get; set; }
     public int CartCount { get; set; }
     public int CurrentCategoryID { get; set; }
+    public Status Status { get; set; }
 }

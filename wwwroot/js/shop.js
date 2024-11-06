@@ -146,7 +146,7 @@ function getShopInfo(data) {
                                     <i class="uil uil-plus shop__header-store-btn-icon"></i>
                                     <span>Theo dõi</span>
                                 </div>`;
-                                if (data.makeNotices.length != 0) {
+                                if (data.makeFriends.length != 0 && data.makeFriends[0].iMakeStatusCode == 0) {
                                 htmlShopDestop += `
                                 <div class="shop__header-store-btn">
                                     <i class="uil uil-chat shop__header-store-btn-icon"></i>
@@ -165,7 +165,7 @@ function getShopInfo(data) {
     `;
     document.querySelector(".shop__header-detail").innerHTML = htmlShopDestop;
 
-    if (data.makeNotices.length == 0) {
+    if (data.makeFriends.length == 0) {
         document.querySelector(".shop__header-store-btn-chat").addEventListener("click", () => {
             sendMakeFriendModal(data);
         });

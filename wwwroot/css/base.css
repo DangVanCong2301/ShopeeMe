@@ -191,7 +191,7 @@ input, textarea, button {
     color: var(--white-color);
     border-radius: 3px;
     line-height: 1.5;
-    background-color: var(--primary-color);
+    background-color: var(--second-color);
     cursor: pointer;
 }
 
@@ -229,7 +229,7 @@ input, textarea, button {
 
 .btn.btn--primary {
     color: var(--white-color);
-    background-color: var(--primary-color);
+    background-color: var(--second-color);
 }
 
 .btn.btn--primary:hover {
@@ -629,7 +629,7 @@ input, textarea, button {
 
 .home-product-item__price-current {
     position: relative;
-    color: var(--primary-color);
+    color: var(--second-color);
 }
 
 .home-product-item__action {
@@ -701,7 +701,7 @@ i.home-product-item__like-icon-empty {
     position: absolute;
     top: 10px;
     left: -4px;
-    color: var(--primary-color);
+    color: var(--second-color);
     background-color: currentColor; /*Ăn theo màu chủ đạo*/
     font-weight: 500;
     padding: 2px 3px;
@@ -752,7 +752,7 @@ i.home-product-item__like-icon-empty {
     }
 
 .home-product-item__sale-off-percent {
-    color: #ee4d2d;
+    color: var(--second-color);
     font-weight: 600;
     font-size: 12px;
     position: relative;
@@ -781,8 +781,8 @@ i.home-product-item__like-icon-empty {
     color: var(--white-color);
     font-size: var(--normal-font-size);
     text-align: center;
-    background-color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+    background-color: var(--second-color);
+    border: 1px solid var(--second-color);
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
     opacity: 0;
@@ -790,7 +790,7 @@ i.home-product-item__like-icon-empty {
 }
 
 .home-item:hover .home-product-item {
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--second-color);
 }
 
 .home-item:hover .home-product-item__find-similar-link {
@@ -1208,7 +1208,7 @@ i.home-product-item__like-icon-empty {
 }
 
 .pagination-item--active .pagination-item__link {
-    background-color: var(--primary-color);
+    background-color: var(--second-color);
     color: var(--white-color);
 }
 
@@ -1254,7 +1254,7 @@ i.home-product-item__like-icon-empty {
     align-items: center;
     column-gap: 8px;
     font-size: 22px;
-    color: var(--primary-color);
+    color: var(--second-color);
     background-color: var(--white-color);
     border-radius: 4px 4px 0 0;
     box-shadow: 0 4px 20px 0 rgba(28, 28, 51, .16);
@@ -1278,7 +1278,7 @@ i.home-product-item__like-icon-empty {
 
 .chat__header-title {
     font-size: 22px;
-    color: var(--primary-color);
+    color: var(--second-color);
 }
 
 .chat__header-btns {
@@ -2470,7 +2470,7 @@ i.home-product-item__like-icon-empty {
 
 /*Footer*/
 .footer {
-    border-top: 4px solid var(--primary-color);
+    border-top: 4px solid var(--second-color);
     padding-top: 12px;
 }
 

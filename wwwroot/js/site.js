@@ -19,6 +19,8 @@ function getDataSite() {
             getCartsItem(data);
 
             getShopsItem(data);
+
+            setChatBtn(data);
         }
     }
     xhr.send(null);
@@ -384,6 +386,15 @@ searchInput.onclick = () => {
     document.querySelector('.header__search-bar').classList.toggle("hide-on-destop");
 }
 
+// Set Chat
+function setChatBtn(data) {
+    if (data.userID == 0) {
+        document.querySelector(".chat__btn").classList.add("hide-on-destop");
+    } else {
+        document.querySelector(".chat__btn").classList.remove("hide-on-destop");
+    }
+}
+
 // Modal
 function openModal() {
     document.querySelector(".modal").classList.add("open");
@@ -573,4 +584,41 @@ function backHistory() {
 function formatDate(date) {
     const dateFormat = new Date(date);
     return dateFormat.toLocaleDateString('en-GB'); // 24/04/2023
+}
+
+// Lấy tên thứ
+function getDate(date) {
+    // Khai báo đối tượng Date
+    var date = new Date(date);
+
+    // Lấy số thứ tự của ngày hiện tại
+    var current_day = date.getDay();
+
+    // Biến lưu tên của thứ
+    var day_name = '';
+
+    // Lấy tên thứ của ngày hiện tại
+    switch (current_day) {
+        case 0:
+            day_name = "CN";
+            break;
+        case 1:
+            day_name = "Thứ 2";
+            break;
+        case 2:
+            day_name = "Thứ 3";
+            break;
+        case 3:
+            day_name = "Thứ 4";
+            break;
+        case 4:
+            day_name = "Thứ 5";
+            break;
+        case 5:
+            day_name = "Thứ 6";
+            break;
+        case 6:
+            day_name = "Thứ 7";
+    }
+    return day_name;
 }
