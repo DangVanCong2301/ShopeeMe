@@ -21,6 +21,8 @@ function getDataSite() {
             getShopsItem(data);
 
             setChatBtn(data);
+
+            setDataChat(data);
         }
     }
     xhr.send(null);
@@ -395,6 +397,334 @@ function setChatBtn(data) {
     }
 }
 
+function setDataChat(data) {
+    let htmlChat = "";
+    htmlChat += 
+    `
+        <div class="chat__container">
+            <div class="chat__mobile-window hide-on-destop">
+                <div class="chat__body-search">
+                    <div class="chat__body-search-box">
+                        <i class="uil uil-search chat__body-search-icon"></i>
+                        <input type="text" class="chat__body-search-input" onblur="displaySearchSub()"
+                            onclick="hideSearchSub()" placeholder="Tìm kiếm">
+                    </div>
+                    <div class="chat__body-search-sub" onclick="displaySubList()">
+                        <span>Tất cả</span>
+                        <i class="uil uil-angle-down chat__body-search-sub-icon"></i>
+                        <ul class="chat__body-search-sub-list">
+                            <li class="chat__body-search-sub-item">
+                                Tất cả
+                            </li>
+                            <li class="chat__body-search-sub-item">
+                                Chưa đọc
+                            </li>
+                            <li class="chat__body-search-sub-item">
+                                Đã ghim
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chat__body-shop">`;
+                if (data.chats.length == 0) {
+                    htmlChat += 
+                    `
+                    <div class="chat__body-shop-no">
+                        Không tìm thấy <br> cuộc hội thoại nào
+                    </div>
+                    `;
+                } else {
+                    htmlChat += `
+                    <ul class="chat__shop-list">`;
+                    data.chats.forEach(element => {
+                        htmlChat += 
+                        `
+                        <li class="chat__shop-item">
+                            <div class="chat__shop-item-img" style="background-image: url(/img/${element.sImageAvatar});"></div>
+                            <div class="chat__shop-item-info">
+                                <div class="chat__shop-item-info-top">
+                                    <div class="chat__shop-item-title">${element.sStoreName}</div>
+                                    <div class="chat__shop-item-time">${getDate(element.dTime)}</div>
+                                </div>
+                                <div class="chat__shop-item-info-bottom">
+                                    ${element.sChat}
+                                </div>
+                            </div>
+                        </li>
+                        `;
+                    });
+                    htmlChat += `
+                    </ul>`;
+                }
+                htmlChat += `
+                </div>
+            </div>
+            <div class="chat__header">
+                <div class="chat__header-title">Chat</div>
+                <div class="chat__header-btns">
+                    <div class="chat__header-btn hide-on-mobile" onclick="hideChatWindow()">
+                        <i class="uil uil-arrow-right chat__header-btn-arrow"></i>
+                    </div>
+                    <div class="chat__header-menu-bar hide-on-destop" onclick="showChatWindowMobile()">
+                        <span></span>
+                    </div>
+                    <div class="chat__header-btn">
+                        <i class="uil uil-angle-down chat__header-btn-down" onclick="hideChat()"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="chat__body">
+                <div class="chat__body-left">
+                    <div class="chat__body-search">
+                        <div class="chat__body-search-box">
+                            <i class="uil uil-search chat__body-search-icon"></i>
+                            <input type="text" class="chat__body-search-input" onblur="displaySearchSub()"
+                                onclick="hideSearchSub()" placeholder="Tìm kiếm">
+                        </div>
+                        <div class="chat__body-search-sub" onclick="displaySubList()">
+                            <span>Tất cả</span>
+                            <i class="uil uil-angle-down chat__body-search-sub-icon"></i>
+                            <ul class="chat__body-search-sub-list">
+                                <li class="chat__body-search-sub-item">
+                                    Tất cả
+                                </li>
+                                <li class="chat__body-search-sub-item">
+                                    Chưa đọc
+                                </li>
+                                <li class="chat__body-search-sub-item">
+                                    Đã ghim
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chat__body-shop">`;
+                        if (data.chats.length == 0) {
+                        htmlChat += 
+                        `
+                        <div class="chat__body-shop-no">
+                            Không tìm thấy <br> cuộc hội thoại nào
+                        </div>
+                        `;
+                    } else {
+                        htmlChat += `
+                        <ul class="chat__shop-list">`;
+                        data.chats.forEach(element => {
+                            htmlChat += 
+                            `
+                            <li class="chat__shop-item" onclick=showChatDetail(${element.pK_iChatID})>
+                                <div class="chat__shop-item-img" style="background-image: url(/img/${element.sImageAvatar});"></div>
+                                <div class="chat__shop-item-info">
+                                    <div class="chat__shop-item-info-top">
+                                        <div class="chat__shop-item-title">${element.sStoreName}</div>
+                                        <div class="chat__shop-item-time">${getDate(element.dTime)}</div>
+                                    </div>
+                                    <div class="chat__shop-item-info-bottom">
+                                        ${element.sLastChat}
+                                    </div>
+                                </div>
+                            </li>
+                            `;
+                        });
+                        htmlChat += `
+                        </ul>`;
+                    }
+                    htmlChat += `
+                    </div>
+                </div>
+                <div class="chat__body-right">
+                    <div class="chat__body-shop-name">
+                        
+                    </div>
+                    <div class="chat__body-message">
+                        <div class="chat__body-message-welcome">
+                            <img src="/img/sme_chat.png" class="chat__body-message-welcome-img" alt="">
+                            <div class="chat__body-message-welcome-title">Chào mừng bạn đến với SMe Chat</div>
+                            <div class="chat__body-message-welcome-sub">
+                                Bắt đầu trả lời người mua
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.querySelector(".chat").innerHTML = htmlChat;
+}
+
+function showChatDetail(chatID) {
+    let htmlShopName = "";
+    htmlShopName += 
+    `
+                        <div class="chat__body-shop-name-container">
+                            <span>vietmark_store</span>
+                            <i class="uil uil-angle-down chat__body-shop-name-icon"></i>
+                            <div class="chat__body-shop-name-sub">
+                                <div class="chat__body-shop-name-sub-header">
+                                    <div class="chat__body-shop-name-sub-header-img" style="background-image: url(./assets/img/vietmark_logo.png);"></div>
+                                    <div class="chat__body-shop-name-sub-header-title">Viet Mark</div>
+                                </div>
+                                <ul class="chat__body-shop-name-sub-list">
+                                    <li class="chat__body-shop-name-sub-item">
+                                        <span>Tắt thông báo</span>
+                                        <div class="chat__body-shop-name-sub-control">
+                                            <div class="chat__body-shop-name-sub-control-circle"></div>
+                                        </div>
+                                    </li>
+                                    <li class="chat__body-shop-name-sub-item">
+                                        <span>Chặn người dùng</span>
+                                        <div class="chat__body-shop-name-sub-control">
+                                            <div class="chat__body-shop-name-sub-control-circle"></div>
+                                        </div>
+                                    </li>
+                                    <li class="chat__body-shop-name-sub-item">
+                                        <a href="#" class="chat__body-shop-name-sub-item-link">
+                                            <span>Tố cáo người dùng</span>
+                                            <i class="uil uil-angle-right-b chat__body-shop-name-sub-item-icon"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="chat__body-shop-name-sub-bottom">
+                                    <a href="#" class="chat__body-shop-name-sub-bottm-link">
+                                        <span>Xem thông tin cá nhân</span>
+                                        <i class="uil uil-angle-right-b chat__body-shop-name-sub-item-icon"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+    `;
+    document.querySelector(".chat__body-shop-name").innerHTML = htmlShopName;
+    let htmlMessage = "";
+    htmlMessage += 
+    `
+                        <div class="chat__body-message-container">
+                            <div class="chat__message-time">
+                                <span>23 Th05</span>
+                            </div>
+                            <div class="chat__message-node">
+                                <div class="chat__message-node-text">
+                                    <i class="uil uil-exclamation-octagon chat__message-node-icon"></i>
+                                    LƯU Ý: Shopee KHÔNG cho phép các hành vi: Đặt cọc/chuyển khoản riêng
+                                    cho người bán/Giao dịch ngoài hệ thống Shopee/Cung cấp thông tin liên hiệ
+                                    cho người bán/Các hoạt động tuyển CTV/Tặng quà miễn phí,... Vui lòng chỉ
+                                    mua bán hàng trực tiếp trên ứng dụng Shopee để tránh nguy cơ bị lừa đảo bạn nhé!
+                                    <a href="#" class="chat__message-node-link">Tìm hiểu thêm</a>
+                                </div>
+                            </div>
+                            <div class="chat__message-shop">
+                                <div class="chat__message-shop-msg">
+                                    <div class="chat__message-shop-remind">
+                                        <div class="chat__message-remind-title">Nhắc nhở đánh giá đơn hàng</div>
+                                        <a href="#" class="chat__message-remind-product-link">
+                                            <div class="chat__message-remind-product">
+                                                <div class="chat__message-remind-product-img"
+                                                    style="background-image: url(/img/tai_nghe.png);"></div>
+                                                <div class="chat__message-remind-product-info">
+                                                    <div class="chat__message-remind-product-name">
+                                                        Bút Laze Trình Chiếu PowerPoint Kèm Remote Điều Khiển Không Dây
+                                                        Cho
+                                                        Laptop RF 2.4GHz
+                                                    </div>
+                                                    <div class="chat__message-remind-product-status">Hoàn tất</div>
+                                                    <div class="chat__message-remind-product-numb">
+                                                        1 sản phẩm, Tổng cộng: 81.000 đ
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="chat__message-remind-rate-now">
+                                            <span>Đánh giá ngay</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="chat__message-shop-time">13:28</div>
+                            </div>
+                            <div class="chat__message-time">
+                                <span>23 Th05</span>
+                            </div>
+                            <div class="chat__message-customer">
+                                <div class="chat__message-customer-msg">
+                                    <span>Đồ dùng tốt Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima,
+                                        adipisci, voluptatum omnis maiores odit aut fugit iure sunt, doloremque iste
+                                        illum.
+                                        Dicta tenetur maiores assumenda rem soluta facere adipisci quas?</span>
+                                </div>
+                                <div class="chat__message-customer-time">13:28</div>
+                            </div>
+                            <div class="chat__message-shop">
+                                <div class="chat__message-shop-msg">
+                                    <div class="chat__message-shop-msg-text">
+                                        Chào bạn, hiện tại bộ phận CSKH của VietMark đã hết giờ làm việc.
+                                        Bạn vui lòng liên hệ vào khung giờ <b>8:00 - 17:00 (T2 - T6) & 8:00 - 14:00 Thứ
+                                            7</b>
+                                        hoặc để lại lời nhắn, chúng mình sẽ phản hồi ngay với bạn vào giờ làm việc kế
+                                        tiếp.
+                                        VietMark Shop xin cảm ơn ❤️
+                                    </div>
+                                    <div class="chat__message-shop-after-hour">Tin nhắn Tự động Ngoài giờ làm việc</div>
+                                </div>
+                                <div class="chat__message-shop-time">13:28</div>
+                            </div>
+                            <div class="chat__message-customer">
+                                <div class="chat__message-customer-msg">
+                                    <span>Giao hàng nhanh!</span>
+                                </div>
+                                <div class="chat__message-customer-time-short">13:28</div>
+                            </div>
+                            <div class="chat__message-shop">
+                                <div class="chat__message-shop-msg-text">
+                                    <div class="chat__message-shop-felling">😘</div>
+                                </div>
+                                <div class="chat__message-shop-time-short">13:28</div>
+                            </div>
+                            <div class="chat__message-customer">
+                                <div class="chat__message-customer-msg">
+                                    <span>Chất lượng đó Shop!</span>
+                                </div>
+                                <div class="chat__message-customer-time-short">13:28</div>
+                            </div>
+                            <div class="chat__message-shop">
+                                <div class="chat__message-shop-msg-short">
+                                    <span>VietMark Shop xin cảm ơn ❤️</span>
+                                </div>
+                                <div class="chat__message-shop-time-short">13:28</div>
+                            </div>
+                        </div>
+                        <div class="chat__body-message-bottom">
+                            <div class="chat__body-message-bottom-box">
+                                <textarea type="text" class="chat__body-message-bottom-input"
+                                    placeholder="Nhập nội dung tin nhắn"></textarea>
+                            </div>
+                            <div class="chat__body-message-bottom-btns">
+                                <div class="chat__body-message-bottom-btns-left">
+                                    <ul class="chat__body-message-bottom-list">
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-grin chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-image-plus chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-youtube chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-shopping-bag chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-clipboard chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="chat__body-message-bottom-btns-right">
+                                    <div class="chat__body-message-bottom-item">
+                                        <i class="uil uil-message chat__body-message-bottom-item-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    `;
+    document.querySelector(".chat__body-message").innerHTML = htmlMessage;
+}
+
 // Modal
 function openModal() {
     document.querySelector(".modal").classList.add("open");
@@ -460,7 +790,7 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
 // Chat JS
 
 function hideChatWindow() {
-    document.querySelector(".chat").classList.toggle("hide-chat-window");
+    document.querySelector(".chat__container").classList.toggle("hide-chat-window");
     document.querySelector(".chat__body-right").classList.toggle("hide-chat-window");
     document.querySelector(".chat__header-btn-arrow").classList.toggle("transform");
 }
@@ -485,12 +815,12 @@ document.querySelectorAll(".chat__body-shop-name-sub-control").forEach(e => {
 });
 
 function hideChat() {
-    document.querySelector(".chat").style.display = 'none';
+    document.querySelector(".chat__container").style.display = 'none';
     document.querySelector(".chat__btn").style.display = "flex";
 }
 
 function displayChat() {
-    document.querySelector(".chat").style.display = 'block';
+    document.querySelector(".chat__container").style.display = 'block';
     document.querySelector(".chat__btn").style.display = "none";
 }
 

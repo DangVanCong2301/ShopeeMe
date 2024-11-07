@@ -337,11 +337,11 @@ function loadDetailInfo(data) {
                             <div class="detail__shop">
                                 <div class="detail__shop-left">
                                     <div class="detail__shop-avatar">
-                                        <img src="/img/${data.store.sImageAvatar}" class="detail__shop-avatar-img" alt="">
+                                        <img src="/img/${data.store[0].sImageAvatar}" class="detail__shop-avatar-img" alt="">
                                         <span class="detail__shop-avatar-favorite">Yêu thích</span>
                                     </div>
                                     <div class="detail__shop-info">
-                                        <div class="detail__shop-info-name">${data.store.sStoreName}</div>
+                                        <div class="detail__shop-info-name">${data.store[0].sStoreName}</div>
                                         <div class="detail__shop-info-active">Online 33 phút trước</div>
                                         <div class="detail__shop-info-direction hide-on-destop">
                                             <i class="uil uil-map-marker detail__shop-info-direction-icon"></i>

@@ -72,6 +72,7 @@ public class SellerController : Controller
         IEnumerable<TransportPrice> transportPrices = _productResponsitory.getTransportPrice();
         IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionShopID));
         IEnumerable<MakeFriend> makeFriends = _chatRepository.getMakeFriendBySellerID(Convert.ToInt32(sessionSellerID));
+        IEnumerable<Chat> chats = _chatRepository.getChatBySellerID(Convert.ToInt32(sessionSellerID));
         string htmlOrdersWaitSettlmentItem = "";
         string htmlOrdersWaitPickupItem = "";
         foreach (var item in ordersWaitSettlement) {
@@ -179,7 +180,8 @@ public class SellerController : Controller
             TransportPrices = transportPrices,
             Products = products,
             HtmlProductItem = htmlProductItem,
-            MakeFriends = makeFriends
+            MakeFriends = makeFriends,
+            Chats = chats
         };
         return Ok(model);
     }

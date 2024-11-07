@@ -266,7 +266,7 @@ function getProducts(data) {
             `
                             <div class="col l-2 c-6 m-4">
                                 <div class="home-item">
-                                    <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
+                                    <a class="home-product-item" href="/product/detail?id=${data.products[i].pK_iProductID}">
                                         <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl});">
                                             <div class="home-product-item__img-loading">
                                                 <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
@@ -330,7 +330,7 @@ function getProducts(data) {
             `
                             <div class="col l-2 c-6 m-4">
                                 <div class="home-item">
-                                    <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
+                                    <a class="home-product-item" href="/product/detail?id=${data.products[i].pK_iProductID}">
                                         <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl});">
                                             <div class="home-product-item__img-loading">
                                                 <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>

@@ -159,7 +159,7 @@ namespace Project.Models
             });
 
             modelBuilder.Entity<Chat>(entity => {
-                entity.HasNoKey();
+                entity.HasKey(e => e.PK_iChatID);
             });
         }
     }

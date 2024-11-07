@@ -144,7 +144,9 @@ public class ShopController : Controller
                                  + " Bạn vui lòng liên hệ vào khung giờ <b>8:00 - 17:00 (T2 - T6) & 8:00 - 14:00 Thứ 7</b> "
                                  + " hoặc để lại lời nhắn, chúng mình sẽ phản hồi ngay với bạn vào giờ làm việc kế tiếp."
                                  + " " + store[0].sStoreName + " Shop xin cảm ơn ❤️";
-            _chatRepository.insertChat(makeFriendID, sellerID, automatedChat);
+            _chatRepository.insertChat(makeFriendID, automatedChat);
+            List<Chat> chat = _chatRepository.getChatByMakeFriendID(makeFriendID).ToList();
+            _chatRepository.insertChatDetail(chat[0].PK_iChatID, sellerID, automatedChat);
             status = new Status {
                 StatusCode = 1,
                 Message = "Chấp nhận kết bạn thành công!"

@@ -1406,7 +1406,199 @@ function deleteProduct(productID) {
 
 // Show Chat Management
 function showChatManagement(data) {
-    noticeIncompleteFunc();
+    let htmlChat = "";
+    htmlChat += 
+    `
+                    <div class="admin__chat">
+                        <div class="admin__chat-container">
+                            <div class="admin__chat-account">
+                                <div class="admin__chat-account-header">
+                                    <div class="admin__chat-account-header-text">Đoạn chat</div>
+                                    <div class="admin__chat-account-header-note">
+                                        <i class="uil uil-edit admin__chat-account-header-note-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="admin__chat-account-search">
+                                    <i class="uil uil-search admin__chat-account-search-icon"></i>
+                                    <input type="text" class="admin__chat-account-search-input" placeholder="Tìm kiếm trên SMe Chat">
+                                </div>`;
+                                if (data.chats.length == 0) {
+                                    htmlChat += 
+                                    `
+                                    <div class="admin__chat-account-no">Không tìm thấy cuộc trò chuyện nào</div>
+                                    `;
+                                } else {
+                                    htmlChat += `
+                                    <div class="admin__chat-account-list">`;
+                                    data.chats.forEach(element => {
+                                        htmlChat += 
+                                        `
+                                        <div class="admin__chat-account-item">
+                                            <div class="admin__chat-account-item-img" style="background-image: url(/img/${element.sImageProfile});"></div>
+                                            <div class="admin__chat-account-item-desc">
+                                                <div class="admin__chat-account-item-desc-name">${element.sUserName}</div>
+                                                <div class="admin__chat-account-item-desc-msg">
+                                                    <div class="admin__chat-account-item-desc-msg-content">${element.sLastChat}</div>
+                                                    <div class="admin__chat-account-item-desc-msg-day">${getDate(element.dTime)}</div>
+                                                </div>
+                                            </div>
+                                            <div class="admin__chat-account-item-more">
+                                                <i class="uil uil-ellipsis-h admin__chat-account-item-more-icon"></i>
+                                            </div>
+                                        </div>
+                                        `;
+                                    });
+                                htmlChat += `
+                                </div>`;
+                                }
+                            htmlChat += `    
+                            </div>
+                            <div class="admin__chat-msg">
+                                <div class="admin__chat-msg-welcome">
+                                    <img src="/img/sme_chat.png" class="admin__chat-msg-welcome-img" alt="">
+                                    <div class="admin__chat-msg-welcome-title">Chào mừng bạn đến với SMe Chat</div>
+                                    <div class="admin__chat-msg-welcome-sub">
+                                        Bắt đầu trả lời người mua!
+                                    </div>
+                                </div>
+                                <div class="admin__chat-msg-container hide-on-destop">
+                                    <div class="admin__chat-msg-header">
+                                        <div class="admin__chat-msg-header-account">
+                                            <div class="admin__chat-msg-header-account-img" style="background-image: url(./assets/img/profile_avatar.jpg);">
+                                                <div class="admin__chat-msg-header-account-img-active"></div>
+                                            </div>
+                                            <div class="admin__chat-msg-header-account-info">
+                                                <div class="admin__chat-msg-header-account-name">Công Đặng</div>
+                                                <div class="admin__chat-msg-header-account-active">Hoạt động 13 phút trước</div>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-header-btns">
+                                            <div class="admin__chat-msg-header-btn">
+                                                <i class="uil uil-phone admin__chat-msg-header-btn-icon"></i>
+                                            </div>
+                                            <div class="admin__chat-msg-header-btn">
+                                                <i class="uil uil-video admin__chat-msg-header-btn-icon"></i>
+                                            </div>
+                                            <div class="admin__chat-msg-header-btn">
+                                                <i class="uil uil-ellipsis-h admin__chat-msg-header-btn-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="admin__chat-msg-body">
+                                        <div class="admin__chat-msg-time">
+                                            <span>23 Th05</span>
+                                        </div>
+                                        <div class="admin__chat-msg-body-me">
+                                            <div class="admin__chat-msg-body-me-container">
+                                                <span class="admin__chat-msg-body-me-content">
+                                                    Chào bạn, hiện tại bộ phận CSKH của VietMark đã hết giờ làm việc.
+                                                    Bạn vui lòng liên hệ vào khung giờ <b>8:00 - 17:00 (T2 - T6) &amp; 8:00 - 14:00 Thứ 7</b>
+                                                    hoặc để lại lời nhắn, chúng mình sẽ phản hồi ngay với bạn vào giờ làm việc kế tiếp.
+                                                    VietMark Shop xin cảm ơn ❤️ <br>
+                                                    <span class="admin__chat-msg-body-me-after-hour">Tin nhắn Tự động Ngoài giờ làm việc</span>
+                                                </span>
+                                                <div class="admin__chat-msg-body-me-time">13:28</div>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-body-me">
+                                            <div class="admin__chat-msg-body-me-container">
+                                                <span class="admin__chat-msg-body-me-content">
+                                                    <div class="chat__message-shop-remind">
+                                                        <div class="chat__message-remind-title">Nhắc nhở đánh giá đơn hàng</div>
+                                                        <a href="#" class="chat__message-remind-product-link">
+                                                            <div class="chat__message-remind-product">
+                                                                <div class="chat__message-remind-product-img" style="background-image: url(./assets/img/tai_nghe_5.jpg);"></div>
+                                                                <div class="chat__message-remind-product-info">
+                                                                    <div class="chat__message-remind-product-name">
+                                                                        Bút Laze Trình Chiếu PowerPoint Kèm Remote Điều Khiển Không Dây Cho Laptop RF 2.4GHz
+                                                                    </div>
+                                                                    <div class="chat__message-remind-product-status">Hoàn tất</div>
+                                                                    <div class="chat__message-remind-product-numb">
+                                                                        1 sản phẩm, Tổng cộng: 81.000 đ
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </span>
+                                                <div class="admin__chat-msg-body-me-time">13:28</div>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-body-texted">
+                                            <div class="admin__chat-msg-body-texted-container">
+                                                <div class="admin__chat-msg-body-texted-content">
+                                                    Đồ dùng tốt Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                                                    Minima, adipisci, voluptatum omnis maiores odit aut fugit iure sunt, 
+                                                    doloremque iste illum. Dicta tenetur maiores assumenda rem soluta 
+                                                    facere adipisci quas?
+                                                </div>
+                                                <div class="admin__chat-msg-body-texted-time">13:28</div>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-body-texted">
+                                            <div class="admin__chat-msg-body-texted-container">
+                                                <span class="admin__chat-msg-body-texted-content">
+                                                    Giao hàng nhanh!
+                                                </span>
+                                                <div class="admin__chat-msg-body-texted-time">13:28</div>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-body-me">
+                                            <div class="admin__chat-msg-body-me-container">
+                                                <span class="admin__chat-msg-body-me-content">
+                                                    ❤️
+                                                </span>
+                                                <div class="admin__chat-msg-body-me-time">13:28</div>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-body-texted">
+                                            <div class="admin__chat-msg-body-texted-container">
+                                                <span class="admin__chat-msg-body-texted-content">
+                                                    Chất lượng đó Shop!
+                                                </span>
+                                                <div class="admin__chat-msg-body-texted-time">13:28</div>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-body-me">
+                                            <div class="admin__chat-msg-body-me-container">
+                                                <span class="admin__chat-msg-body-me-content">
+                                                    VietMark Shop xin cảm ơn ❤️
+                                                </span>
+                                                <div class="admin__chat-msg-body-me-time">13:28</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="admin__chat-msg-footer">
+                                        <div class="admin__chat-msg-footer-btns">
+                                            <div class="admin__chat-msg-footer-btn">
+                                                <i class="uil uil-plus-circle admin__chat-msg-footer-icon"></i>
+                                            </div>
+                                            <div class="admin__chat-msg-footer-btn">
+                                                <i class="uil uil-image admin__chat-msg-footer-icon"></i>
+                                            </div>
+                                            <div class="admin__chat-msg-footer-btn">
+                                                <i class="uil uil-file admin__chat-msg-footer-icon"></i>
+                                            </div>
+                                            <div class="admin__chat-msg-footer-btn">
+                                                <i class="uil uil-grin admin__chat-msg-footer-icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-footer-reply">
+                                            <input type="text" class="admin__chat-msg-footer-reply-input" placeholder="Nhập nội dung tin nhắn...">
+                                            <div class="admin__chat-msg-footer-reply-send">
+                                                <i class="uil uil-message admin__chat-msg-footer-icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="admin__chat-msg-footer-symbol">
+                                            <i class="uil uil-thumbs-up admin__chat-msg-footer-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    `;
+    document.querySelector(".admin__container").innerHTML = htmlChat;
 }
 
 // Show AssessmentManagement
@@ -1531,4 +1723,41 @@ function money_2(number) {
         currency: 'VND',
     }).format(number);
     return formattedAmount;
+}
+
+// Lấy tên thứ
+function getDate(date) {
+    // Khai báo đối tượng Date
+    var date = new Date(date);
+
+    // Lấy số thứ tự của ngày hiện tại
+    var current_day = date.getDay();
+
+    // Biến lưu tên của thứ
+    var day_name = '';
+
+    // Lấy tên thứ của ngày hiện tại
+    switch (current_day) {
+        case 0:
+            day_name = "CN";
+            break;
+        case 1:
+            day_name = "Thứ 2";
+            break;
+        case 2:
+            day_name = "Thứ 3";
+            break;
+        case 3:
+            day_name = "Thứ 4";
+            break;
+        case 4:
+            day_name = "Thứ 5";
+            break;
+        case 5:
+            day_name = "Thứ 6";
+            break;
+        case 6:
+            day_name = "Thứ 7";
+    }
+    return day_name;
 }

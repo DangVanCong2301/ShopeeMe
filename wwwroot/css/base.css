@@ -1217,7 +1217,7 @@ i.home-product-item__like-icon-empty {
     }
 
 /* Chat */
-.chat {
+.chat__container {
     position: fixed;
     bottom: 0;
     right: 8px;
@@ -1406,6 +1406,15 @@ i.home-product-item__like-icon-empty {
     font-size: var(--normal-font-size);
 }
 
+.chat__body-shop-no {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: rgba(0, 0, 0, .54);
+}
+
 .chat__shop-list {
     list-style: none;
 }
@@ -1417,6 +1426,11 @@ i.home-product-item__like-icon-empty {
     align-items: center;
     padding: 12px;
     column-gap: 8px;
+    cursor: pointer;
+}
+
+.chat__shop-item:hover {
+    background-color: #ebebeb;
 }
 
 .chat__shop-item.active {
@@ -1465,6 +1479,7 @@ i.home-product-item__like-icon-empty {
     font-weight: 400;
     line-height: 16px;
     height: 16px;
+    font-size: 12px;
     margin-top: 4px;
     overflow: hidden;
     display: -webkit-box;
@@ -1472,7 +1487,7 @@ i.home-product-item__like-icon-empty {
     -webkit-line-clamp: 1;
 }
 
-.chat__body-shop-name {
+.chat__body-shop-name-container {
     position: relative;
     height: 40px;
     display: flex;
@@ -1591,7 +1606,6 @@ i.home-product-item__like-icon-empty {
 
 .chat__body-message-container {
     height: calc(100% - 130px);
-    background-color: #f3f3f3;
     padding: 16px;
     overflow-y: auto;
     scroll-behavior: smooth;
@@ -1604,10 +1618,28 @@ i.home-product-item__like-icon-empty {
 .chat__body-message {
     position: relative;
     display: flex;
+    background-color: #f3f3f3;
     flex-direction: column;
     width: 100%;
     height: 100%;
     border-top: 1px solid var(--border-color);
+}
+
+.chat__body-message-welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto 0;
+}
+
+.chat__body-message-welcome-img {
+    width: 200px;
+}
+
+.chat__body-message-welcome-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0 10px;
 }
 
 .chat__body-message-bottom {
@@ -1617,6 +1649,7 @@ i.home-product-item__like-icon-empty {
     left: 0;
     height: 130px;
     border-top: 1px solid var(--border-color);
+    background-color: var(--white-color);
 }
 
 .chat__body-message-bottom-box {

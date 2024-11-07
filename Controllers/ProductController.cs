@@ -91,17 +91,9 @@ public class ProductController : Controller {
         List<Store> store = _shopResponsitory.getShopByProductID(Convert.ToInt32(sessionCurrentProductID)).ToList();
         IEnumerable<UserInfo> userInfos = _userResponsitory.checkUserInfoByUserID(Convert.ToInt32(sessionUserID));
         IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(Convert.ToInt32(sessionCurrentProductID));
-        Store storeDetail = new Store {
-            PK_iStoreID = store[0].PK_iStoreID,
-            sStoreName = store[0].sStoreName,
-            sImageAvatar = store[0].sImageAvatar,
-            sImageLogo = store[0].sImageLogo,
-            sImageBackground = store[0].sImageBackground,
-            sDesc = store[0].sDesc
-        };
         ProductViewModel model = new ProductViewModel {
             Products = product,
-            Store = storeDetail,
+            Store = store,
             UserInfos = userInfos,
             Reviewers = reviewers
         };
@@ -135,10 +127,7 @@ public class ProductController : Controller {
     {
         _accessor?.HttpContext?.Session.SetInt32("ProductSimilarID", productSimilarID);
         _accessor?.HttpContext?.Session.SetInt32("CategorySimilarID", categorySimilar);
-        ShopeeViewModel model = new ShopeeViewModel {
-            
-        };
-        return View(model);
+        return View();
     }
 
     [HttpPost]
@@ -149,28 +138,13 @@ public class ProductController : Controller {
         List<Product> product = _productResponsitory.getProductByID(Convert.ToInt32(sessionProductSimilarID)).ToList();
         List<Store> store = _shopResponsitory.getShopByProductID(Convert.ToInt32(sessionProductSimilarID)).ToList();
         IEnumerable<Product> products = _productResponsitory.getProductsByCategoryID(Convert.ToInt32(sessionCategorySimilarID));
-        Product productDetail = new Product {
-            PK_iProductID = product[0].PK_iProductID,
-            sProductName = product[0].sProductName,
-            sImageUrl = product[0].sImageUrl,
-            dPrice = product[0].dPrice,
-            dPerDiscount = product[0].dPerDiscount
-        };
-        Store storeDetail = new Store {
-            PK_iStoreID = store[0].PK_iStoreID,
-            sStoreName = store[0].sStoreName,
-            sImageAvatar = store[0].sImageAvatar,
-            sImageLogo = store[0].sImageLogo,
-            sImageBackground = store[0].sImageBackground,
-            sDesc = store[0].sDesc
-        };
         int totalRecord = products.Count();
         int pageSize = 6;
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
         products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         ProductViewModel model = new ProductViewModel {
-            Product = productDetail,
-            Store = storeDetail,
+            Product = product,
+            Store = store,
             Products = products,
             TotalPage = totalPage,
             PageSize = pageSize,

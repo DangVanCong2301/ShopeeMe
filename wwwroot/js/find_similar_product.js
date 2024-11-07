@@ -50,11 +50,11 @@ function setProductDetailSimilar(data) {
             </div>
             <div class="similar-product__header-item">
                 <div class="similar-product__header-item-left">
-                    <img src="/img/${data.product.sImageUrl}" alt="" class="similar-product__header-item-img">`;
-                    if (data.product.dPerDiscount != 1) {
+                    <img src="/img/${data.product[0].sImageUrl}" alt="" class="similar-product__header-item-img">`;
+                    if (data.product[0].dPerDiscount != 1) {
                         htmlProduct += 
                         `<div class="home-product-item__sale-off">
-                            <span class="home-product-item__sale-off-percent">${Math.floor(data.product.dPerDiscount * 100)}%</span>
+                            <span class="home-product-item__sale-off-percent">${Math.floor(data.product[0].dPerDiscount * 100)}%</span>
                             <span class="home-product-item__sale-off-label">GIẢM</span>
                         </div>`;
                     }
@@ -63,7 +63,7 @@ function setProductDetailSimilar(data) {
                 <div class="similar-product__header-item-right">
                     <div class="similar-product__header-item-top">
                         <div class="similar-product__header-item-name">
-                            ${data.product.sProductName}
+                            ${data.product[0].sProductName}
                         </div>
                         <div class="similar-product__header-item-rate">
                             <div class="similar-product__header-item-rate-sub">4.9</div>
@@ -81,15 +81,15 @@ function setProductDetailSimilar(data) {
                     </div>
                     <div class="similar-product__header-item-bottom">
                         <div class="similar-product__header-item-price">`;
-                        if (data.product.dPerDiscount != 1) {
+                        if (data.product[0].dPerDiscount != 1) {
                             htmlProduct += 
                             `
-                            <div class="similar-product__header-item-price-old">${money(data.product.dPrice)} đ</div>
-                            <div class="similar-product__header-item-price-current">${money((data.product.dPrice * (1 - data.product.dPerDiscount)))} đ</div>
+                            <div class="similar-product__header-item-price-old">${money(data.product[0].dPrice)} đ</div>
+                            <div class="similar-product__header-item-price-current">${money((data.product[0].dPrice * (1 - data.product[0].dPerDiscount)))} đ</div>
                             `;
                         } else {
                             htmlProduct += 
-                            `<div class="similar-product__header-item-price-current">${money(data.product.dPrice)} đ</div>`;
+                            `<div class="similar-product__header-item-price-current">${money(data.product[0].dPrice)} đ</div>`;
                         }
     htmlProduct += 
                         `</div>
@@ -100,10 +100,10 @@ function setProductDetailSimilar(data) {
             <div class="similar-product__header-shop">
                 <div class="similar-product__header-shop-info">
                     <div class="similar-product__header-shop-avatar">
-                        <img src="/img/${data.store.sImageAvatar}" alt=""
+                        <img src="/img/${data.store[0].sImageAvatar}" alt=""
                             class="similar-product__header-shop-avatar-img">
                     </div>
-                    <div class="similar-product__header-shop-name">${data.store.sStoreName}</div>
+                    <div class="similar-product__header-shop-name">${data.store[0].sStoreName}</div>
                     <div class="similar-product__header-shop-chat">
                         <i class="uil uil-comments-alt similar-product__header-shop-chat-icon"></i>
                     </div>
