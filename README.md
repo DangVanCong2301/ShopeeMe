@@ -31,34 +31,35 @@
 ## Unit Testing (Kiểm thử đơn vị)
 https://docs.google.com/spreadsheets/d/1ZXDqi9M9C59Rs9ZT_QM6zz7HuXFDN4jg/edit?gid=1570539229#gid=1570539229
 ## Kiến trúc phần mềm
-![shopeeme-archi](https://github.com/user-attachments/assets/c461be70-c30e-4a33-b126-2302a792ae36)
+![ShopeeMe-SequenceDiagram-Class_Diagram drawio](https://github.com/user-attachments/assets/c75c3751-11ea-4107-ad2b-768d7b38ce1f)
 ## Kết quả thực hiện
 ### Trang chủ
-![image](https://github.com/user-attachments/assets/eb06a394-b0ed-4570-bcb8-45f8e745fd63)
-![image](https://github.com/user-attachments/assets/1cd4f0a6-0858-4344-a288-956671d47b4f)
-![image](https://github.com/user-attachments/assets/5ff66ac7-e7e1-4d55-90d1-05fdfbca763b)
+![image](https://github.com/user-attachments/assets/30fe421d-378d-4e08-8a2c-ecc58ec0202a)
+![image](https://github.com/user-attachments/assets/a4f05401-3c55-432e-9a8d-73b5bf4f9772)
+![image](https://github.com/user-attachments/assets/c6a6d62b-1f22-4b19-8a66-a65dcd49a1cf)
+![image](https://github.com/user-attachments/assets/e2c3a6bc-199c-4f90-ab33-6f8711133895)
 ### Trang gợi ý
-![image](https://github.com/user-attachments/assets/d65e204f-f6eb-460a-9474-bff4341ee124)
+![image](https://github.com/user-attachments/assets/01112b14-783e-4b0d-9583-6d4186394270)
 ### Trang sản phẩm tương tự
-![image](https://github.com/user-attachments/assets/fdb3fbc0-7f50-4dbf-b9c6-441d5061aebe)
+![image](https://github.com/user-attachments/assets/78f7eb1f-af99-4ccc-b980-db57efa32a0c)
 ### Trang sản phẩm
-![image](https://github.com/user-attachments/assets/36781f9f-c2f7-4400-9d6c-90cf147400e2)
-![image](https://github.com/user-attachments/assets/ba9e0646-d0a3-4858-87d5-df3d0c62dcc7)
+![image](https://github.com/user-attachments/assets/3277c28e-a6a9-465c-87f6-5644a9578178)
+![image](https://github.com/user-attachments/assets/380a489f-85df-4042-ac73-0732f90b3802)
 ### Trang cửa hàng
 ![image](https://github.com/user-attachments/assets/22da4dad-30e7-48e8-b229-652f06a0c0af)
-![image](https://github.com/user-attachments/assets/7ae8e03e-8cf0-4f54-b682-9599475933bc)
+![image](https://github.com/user-attachments/assets/6fde07b9-0cac-49c7-ad95-c99f060621f5)
 ### Chi tiết sản phẩm
-![image](https://github.com/user-attachments/assets/5e4b3e4f-5d63-4b39-a626-c11df3d01db1)
-![image](https://github.com/user-attachments/assets/8e5175c0-1441-47ef-be3e-5e6c12cc964d)
+![image](https://github.com/user-attachments/assets/cfaa7bb1-68f9-41cd-9128-b7e75d91652c)
+![image](https://github.com/user-attachments/assets/7036bda2-6a70-4d7b-ae95-603935bfd0f4)
 ### Bình luận, đánh giá sản phẩm
-![image](https://github.com/user-attachments/assets/98af65e6-b4b5-4be1-bbc9-ee21637a61bd)
-![image](https://github.com/user-attachments/assets/0a17ec32-d067-4a57-980a-5e67cb23eac2)
+![image](https://github.com/user-attachments/assets/96c17b57-341d-4bd9-84cb-3d37acd72f43)
+![image](https://github.com/user-attachments/assets/b41a4764-54dd-4e31-9a93-c5012c112795)
 ### Giỏ hàng
-![image](https://github.com/user-attachments/assets/a6c856b1-3982-4768-b432-0f95de7b5271)
-![image](https://github.com/user-attachments/assets/7f609383-7b89-4666-852b-804b629dd700)
+![image](https://github.com/user-attachments/assets/3dabb2c3-0c7f-450d-917b-0f89b6e495db)
+![image](https://github.com/user-attachments/assets/b44e8532-64be-48b7-b9c5-94c78f8af912)
 ### Trạng thái đơn hàng
-![image](https://github.com/user-attachments/assets/37ef7700-8ea7-4218-8c29-1796e4306f65)
-![image](https://github.com/user-attachments/assets/7bf21a29-a781-44a6-933d-3535515946ac)
+![image](https://github.com/user-attachments/assets/42d9aeaa-397e-4f17-9139-56286afac590)
+![image](https://github.com/user-attachments/assets/6379ef8c-e61e-479a-bc0a-f0c11002bbbf)
 ### Đơn mua
 ![image](https://github.com/user-attachments/assets/cfb3d74c-5037-4621-a277-1d1959bae48b)
 ### Kênh Sàn TMĐT
