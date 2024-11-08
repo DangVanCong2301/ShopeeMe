@@ -69,7 +69,7 @@ https://docs.google.com/spreadsheets/d/1ZXDqi9M9C59Rs9ZT_QM6zz7HuXFDN4jg/edit?gi
 ### Kênh vận chuyển
 ![image](https://github.com/user-attachments/assets/37d3f3e6-a3ba-4ea8-bdb9-9b202c3af710)
 ![image](https://github.com/user-attachments/assets/b856c8dc-cdd3-4fdc-8830-914747b567c1)
-![image](https://github.com/user-attachments/assets/02cad0c9-e2e3-4461-981b-cd18cc955e09)
+![image](https://github.com/user-attachments/assets/69b7955a-a9c5-4288-8ef0-fcf57303e96c)
 ![image](https://github.com/user-attachments/assets/18b61db6-a712-408f-a582-990c374d7aa4)
 
 
