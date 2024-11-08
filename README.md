@@ -1,4 +1,4 @@
-# Sàn TMĐT SMe(Shopee) (Đồ án tốt nghiệp) (v2.0.1)
+# Sàn TMĐT SMe(Shopee) (Đồ án tốt nghiệp) (v2.0.2)
 # Công nghệ: ASP.NET Core MVC  7.0
 - Luồng sử lý dữ liệu cơ bản: 
 ![ShopeeMe-SequenceDiagram-Software_Architecture drawio](https://github.com/user-attachments/assets/fd93c90b-e2d6-4118-b80e-6d50222115ce)
@@ -55,22 +55,23 @@ https://docs.google.com/spreadsheets/d/1ZXDqi9M9C59Rs9ZT_QM6zz7HuXFDN4jg/edit?gi
 ![image](https://github.com/user-attachments/assets/96c17b57-341d-4bd9-84cb-3d37acd72f43)
 ![image](https://github.com/user-attachments/assets/b41a4764-54dd-4e31-9a93-c5012c112795)
 ### Giỏ hàng
-![image](https://github.com/user-attachments/assets/3dabb2c3-0c7f-450d-917b-0f89b6e495db)
+![image](https://github.com/user-attachments/assets/488fb398-7e8b-4840-bb77-911e5c112c1d)
 ![image](https://github.com/user-attachments/assets/b44e8532-64be-48b7-b9c5-94c78f8af912)
 ### Trạng thái đơn hàng
-![image](https://github.com/user-attachments/assets/42d9aeaa-397e-4f17-9139-56286afac590)
-![image](https://github.com/user-attachments/assets/6379ef8c-e61e-479a-bc0a-f0c11002bbbf)
+![image](https://github.com/user-attachments/assets/8e7aeff2-611c-4ce9-b91c-3731d01a7a11)
+![image](https://github.com/user-attachments/assets/8ba2ee1f-0892-4152-b790-7f20b14d1196)
 ### Đơn mua
-![image](https://github.com/user-attachments/assets/cfb3d74c-5037-4621-a277-1d1959bae48b)
+![image](https://github.com/user-attachments/assets/e3ea36f6-811f-4848-aed2-3ab9d2941213)
 ### Kênh Sàn TMĐT
-![image](https://github.com/user-attachments/assets/618f19b2-acfb-49a2-94c2-2870303803f4)
+![image](https://github.com/user-attachments/assets/9b81316d-9756-4b7b-9a0d-d6656c2a4595)
 ### Kênh người bán
-![image](https://github.com/user-attachments/assets/414ed5a5-8e36-4e4c-b1bc-96d7897405c5)
+![image](https://github.com/user-attachments/assets/0cae4cca-3932-47ad-8776-88cda161895c)
 ### Kênh vận chuyển
-![image](https://github.com/user-attachments/assets/57f5e4c1-e31c-45e8-8e7c-2f1432b45427)
-![image](https://github.com/user-attachments/assets/646d0fb5-4030-4b81-bcc4-8d72456302c2)
+![image](https://github.com/user-attachments/assets/37d3f3e6-a3ba-4ea8-bdb9-9b202c3af710)
+![image](https://github.com/user-attachments/assets/b856c8dc-cdd3-4fdc-8830-914747b567c1)
 ![image](https://github.com/user-attachments/assets/02cad0c9-e2e3-4461-981b-cd18cc955e09)
-![image](https://github.com/user-attachments/assets/aa972d6c-f0a6-4c47-b2e0-f9aac96c70d7)
+![image](https://github.com/user-attachments/assets/18b61db6-a712-408f-a582-990c374d7aa4)
+
 
 
 
