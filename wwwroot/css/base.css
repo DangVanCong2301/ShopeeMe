@@ -3,8 +3,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Lemon&family=Montserrat:wght@400;600&family=Open+Sans:wght@400;600&family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root {
-    --primary-color:#ee4d2d;
-    --second-color: #d0011b;
+    --primary-color: #d0011b;
+    --second-color: #ee4d2d;
     --white-color:#fff;
     --black-color:#000;
     --text-color:#333;
@@ -229,7 +229,7 @@ input, textarea, button {
 
 .btn.btn--primary {
     color: var(--white-color);
-    background-color: var(--second-color);
+    background-color: var(--primary-color);
 }
 
 .btn.btn--primary:hover {
@@ -701,7 +701,7 @@ i.home-product-item__like-icon-empty {
     position: absolute;
     top: 10px;
     left: -4px;
-    color: var(--second-color);
+    color: var(--primary-color);
     background-color: currentColor; /*Ăn theo màu chủ đạo*/
     font-weight: 500;
     padding: 2px 3px;
@@ -752,7 +752,7 @@ i.home-product-item__like-icon-empty {
     }
 
 .home-product-item__sale-off-percent {
-    color: var(--second-color);
+    color: var(--primary-color);
     font-weight: 600;
     font-size: 12px;
     position: relative;
@@ -781,8 +781,8 @@ i.home-product-item__like-icon-empty {
     color: var(--white-color);
     font-size: var(--normal-font-size);
     text-align: center;
-    background-color: var(--second-color);
-    border: 1px solid var(--second-color);
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
     opacity: 0;
@@ -790,7 +790,7 @@ i.home-product-item__like-icon-empty {
 }
 
 .home-item:hover .home-product-item {
-    border: 1px solid var(--second-color);
+    border: 1px solid var(--primary-color);
 }
 
 .home-item:hover .home-product-item__find-similar-link {
@@ -1254,7 +1254,7 @@ i.home-product-item__like-icon-empty {
     align-items: center;
     column-gap: 8px;
     font-size: 22px;
-    color: var(--second-color);
+    color: var(--primary-color);
     background-color: var(--white-color);
     border-radius: 4px 4px 0 0;
     box-shadow: 0 4px 20px 0 rgba(28, 28, 51, .16);
@@ -1278,7 +1278,7 @@ i.home-product-item__like-icon-empty {
 
 .chat__header-title {
     font-size: 22px;
-    color: var(--second-color);
+    color: var(--primary-color);
 }
 
 .chat__header-btns {
@@ -1897,6 +1897,98 @@ i.home-product-item__like-icon-empty {
     margin-top: 4px;
 }
 
+.chat__message-body-texted {
+    position: relative;
+    margin-right: auto;
+    width: 80%;
+    margin-top: 16px;
+}
+
+.chat__message-body-texted-container {
+    position: relative;
+    display: flex;
+}
+
+.chat__message-body-texted::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: -9px;
+    border-style: solid;
+    border-width: 14px 16px 6px;
+    border-color: var(--white-color) transparent transparent transparent;
+}
+
+.chat__message-body-texted-content {
+    background-color: var(--white-color);
+    padding: 8px 10px 26px;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    line-height: 20px;
+}
+
+.chat__message-body-texted-time {
+    position: absolute;
+    bottom: 4px;
+    left: 10px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, .54);
+}
+
+.chat__message-body-me {
+    margin-top: 16px;
+    position: relative;
+    width: 80%;
+    margin-left: auto;
+}
+
+.chat__message-body-me::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    right: -9px;
+    border-style: solid;
+    border-width: 14px 16px 6px;
+    border-color: #d7f7ef transparent transparent transparent;
+}
+
+.chat__message-body-me-container {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chat__message-body-me-content {
+    background-color: #d7f7ef;
+    padding: 8px 10px 26px 16px;
+    border-radius: 4px;
+    margin-left: auto;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    line-height: 20px;
+}
+
+.chat__message-body-me-time {
+    position: absolute;
+    bottom: 4px;
+    right: 10px;
+}
+
+.chat__message-body-me-container,
+.chat__message-body-texted-container{
+    text-align: justify;
+}
+
+.chat__message-body-me-after-hour {
+    font-size: 12px;
+    color: #b7b7b7;
+}
+
+.chat__message-body-me-time {
+    text-align: right;
+    font-size: 12px;
+    color: rgba(0, 0, 0, .54);
+}
+
 /* Address Form */
 .address-form {
     background-color: var(--white-color);
@@ -2503,7 +2595,7 @@ i.home-product-item__like-icon-empty {
 
 /*Footer*/
 .footer {
-    border-top: 4px solid var(--second-color);
+    border-top: 4px solid var(--primary-color);
     padding-top: 12px;
 }
 

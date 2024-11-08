@@ -450,10 +450,10 @@
 .detail__btn-add {
     min-width: 142px;
     height: 36px;
-    border: 1px solid var(--second-color);
+    border: 1px solid var(--primary-color);
     border-radius: 2px;
     padding: 0;
-    color: var(--second-color);
+    color: var(--primary-color);
     cursor: pointer;
     outline: none;
     display: inline-flex;
@@ -544,7 +544,7 @@
     align-items: center;
     padding: 3px 4px;
     font-size: 12px;
-    background-color: var(--second-color);
+    background-color: var(--primary-color);
     border-radius: 2px;
     color: var(--white-color);
 }

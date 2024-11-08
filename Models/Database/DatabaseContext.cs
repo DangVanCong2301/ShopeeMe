@@ -38,6 +38,7 @@ namespace Project.Models
         public DbSet<ShippingDelivery> ShippingDeliveries { get; set; }
         public DbSet<MakeFriend> MakeFriends { get; set; }
         public DbSet<Chat> Chats { get; set; }
+        public DbSet<ChatDetail> ChatDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -160,6 +161,10 @@ namespace Project.Models
 
             modelBuilder.Entity<Chat>(entity => {
                 entity.HasKey(e => e.PK_iChatID);
+            });
+
+            modelBuilder.Entity<ChatDetail>(entity => {
+                entity.HasNoKey();
             });
         }
     }

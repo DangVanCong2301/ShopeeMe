@@ -1433,7 +1433,7 @@ function showChatManagement(data) {
                                     data.chats.forEach(element => {
                                         htmlChat += 
                                         `
-                                        <div class="admin__chat-account-item">
+                                        <div class="admin__chat-account-item" onclick="showChatMessage(${element.pK_iChatID})">
                                             <div class="admin__chat-account-item-img" style="background-image: url(/img/${element.sImageProfile});"></div>
                                             <div class="admin__chat-account-item-desc">
                                                 <div class="admin__chat-account-item-desc-name">${element.sUserName}</div>
@@ -1461,14 +1461,33 @@ function showChatManagement(data) {
                                         Bắt đầu trả lời người mua!
                                     </div>
                                 </div>
-                                <div class="admin__chat-msg-container hide-on-destop">
+                            </div>
+                        </div>
+                    </div>
+    `;
+    document.querySelector(".admin__container").innerHTML = htmlChat;
+}
+
+function showChatMessage(chatID) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/chat/detail?chatID=' + chatID + '', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            let htmlChatMessage = "";
+            htmlChatMessage += 
+                            `
+                                <div class="admin__chat-msg-container">
                                     <div class="admin__chat-msg-header">
                                         <div class="admin__chat-msg-header-account">
-                                            <div class="admin__chat-msg-header-account-img" style="background-image: url(./assets/img/profile_avatar.jpg);">
+                                            <div class="admin__chat-msg-header-account-img" style="background-image: url(/img/${data.chat[0].sImageProfile});">
                                                 <div class="admin__chat-msg-header-account-img-active"></div>
                                             </div>
                                             <div class="admin__chat-msg-header-account-info">
-                                                <div class="admin__chat-msg-header-account-name">Công Đặng</div>
+                                                <div class="admin__chat-msg-header-account-name">${data.chat[0].sUserName}</div>
                                                 <div class="admin__chat-msg-header-account-active">Hoạt động 13 phút trước</div>
                                             </div>
                                         </div>
@@ -1486,87 +1505,37 @@ function showChatManagement(data) {
                                     </div>
                                     <div class="admin__chat-msg-body">
                                         <div class="admin__chat-msg-time">
-                                            <span>23 Th05</span>
-                                        </div>
+                                            <span>${getDate(data.chat[0].dTime)}</span>
+                                        </div>`;
+                                        data.chatDetails.forEach(element => {
+                                            if (element.iChatPersonID == element.fK_iSellerID) {
+                                        htmlChatMessage += 
+                                            `
                                         <div class="admin__chat-msg-body-me">
                                             <div class="admin__chat-msg-body-me-container">
                                                 <span class="admin__chat-msg-body-me-content">
-                                                    Chào bạn, hiện tại bộ phận CSKH của VietMark đã hết giờ làm việc.
-                                                    Bạn vui lòng liên hệ vào khung giờ <b>8:00 - 17:00 (T2 - T6) &amp; 8:00 - 14:00 Thứ 7</b>
-                                                    hoặc để lại lời nhắn, chúng mình sẽ phản hồi ngay với bạn vào giờ làm việc kế tiếp.
-                                                    VietMark Shop xin cảm ơn ❤️ <br>
+                                                    ${element.sChat}<br>
                                                     <span class="admin__chat-msg-body-me-after-hour">Tin nhắn Tự động Ngoài giờ làm việc</span>
                                                 </span>
-                                                <div class="admin__chat-msg-body-me-time">13:28</div>
+                                                <div class="admin__chat-msg-body-me-time">${getTime(element.dTime)}</div>
                                             </div>
                                         </div>
-                                        <div class="admin__chat-msg-body-me">
-                                            <div class="admin__chat-msg-body-me-container">
-                                                <span class="admin__chat-msg-body-me-content">
-                                                    <div class="chat__message-shop-remind">
-                                                        <div class="chat__message-remind-title">Nhắc nhở đánh giá đơn hàng</div>
-                                                        <a href="#" class="chat__message-remind-product-link">
-                                                            <div class="chat__message-remind-product">
-                                                                <div class="chat__message-remind-product-img" style="background-image: url(./assets/img/tai_nghe_5.jpg);"></div>
-                                                                <div class="chat__message-remind-product-info">
-                                                                    <div class="chat__message-remind-product-name">
-                                                                        Bút Laze Trình Chiếu PowerPoint Kèm Remote Điều Khiển Không Dây Cho Laptop RF 2.4GHz
-                                                                    </div>
-                                                                    <div class="chat__message-remind-product-status">Hoàn tất</div>
-                                                                    <div class="chat__message-remind-product-numb">
-                                                                        1 sản phẩm, Tổng cộng: 81.000 đ
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </span>
-                                                <div class="admin__chat-msg-body-me-time">13:28</div>
-                                            </div>
-                                        </div>
+                                        `;
+                                            } else {
+                                        htmlChatMessage += 
+                                        `
                                         <div class="admin__chat-msg-body-texted">
                                             <div class="admin__chat-msg-body-texted-container">
                                                 <div class="admin__chat-msg-body-texted-content">
-                                                    Đồ dùng tốt Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                                                    Minima, adipisci, voluptatum omnis maiores odit aut fugit iure sunt, 
-                                                    doloremque iste illum. Dicta tenetur maiores assumenda rem soluta 
-                                                    facere adipisci quas?
+                                                ${element.sChat}
                                                 </div>
                                                 <div class="admin__chat-msg-body-texted-time">13:28</div>
                                             </div>
                                         </div>
-                                        <div class="admin__chat-msg-body-texted">
-                                            <div class="admin__chat-msg-body-texted-container">
-                                                <span class="admin__chat-msg-body-texted-content">
-                                                    Giao hàng nhanh!
-                                                </span>
-                                                <div class="admin__chat-msg-body-texted-time">13:28</div>
-                                            </div>
-                                        </div>
-                                        <div class="admin__chat-msg-body-me">
-                                            <div class="admin__chat-msg-body-me-container">
-                                                <span class="admin__chat-msg-body-me-content">
-                                                    ❤️
-                                                </span>
-                                                <div class="admin__chat-msg-body-me-time">13:28</div>
-                                            </div>
-                                        </div>
-                                        <div class="admin__chat-msg-body-texted">
-                                            <div class="admin__chat-msg-body-texted-container">
-                                                <span class="admin__chat-msg-body-texted-content">
-                                                    Chất lượng đó Shop!
-                                                </span>
-                                                <div class="admin__chat-msg-body-texted-time">13:28</div>
-                                            </div>
-                                        </div>
-                                        <div class="admin__chat-msg-body-me">
-                                            <div class="admin__chat-msg-body-me-container">
-                                                <span class="admin__chat-msg-body-me-content">
-                                                    VietMark Shop xin cảm ơn ❤️
-                                                </span>
-                                                <div class="admin__chat-msg-body-me-time">13:28</div>
-                                            </div>
-                                        </div>
+                                        `;
+                                            }
+                                        });
+                                    htmlChatMessage += `
                                     </div>
                                     <div class="admin__chat-msg-footer">
                                         <div class="admin__chat-msg-footer-btns">
@@ -1585,7 +1554,7 @@ function showChatManagement(data) {
                                         </div>
                                         <div class="admin__chat-msg-footer-reply">
                                             <input type="text" class="admin__chat-msg-footer-reply-input" placeholder="Nhập nội dung tin nhắn...">
-                                            <div class="admin__chat-msg-footer-reply-send">
+                                            <div class="admin__chat-msg-footer-reply-send hide-on-destop">
                                                 <i class="uil uil-message admin__chat-msg-footer-icon"></i>
                                             </div>
                                         </div>
@@ -1594,11 +1563,19 @@ function showChatManagement(data) {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-    `;
-    document.querySelector(".admin__container").innerHTML = htmlChat;
+            `;
+            document.querySelector(".admin__chat-msg").innerHTML = htmlChatMessage;
+            
+            document.querySelector(".admin__chat-msg-footer-reply-input").addEventListener('keyup', () => {
+                if (document.querySelector(".admin__chat-msg-footer-reply-input").value != "") {
+                    document.querySelector(".admin__chat-msg-footer-reply-send").classList.remove("hide-on-destop");
+                } else {
+                    document.querySelector(".admin__chat-msg-footer-reply-send").classList.add("hide-on-destop");
+                }
+            });
+        }
+    };
+    xhr.send(null);
 }
 
 // Show AssessmentManagement
@@ -1760,4 +1737,14 @@ function getDate(date) {
             day_name = "Thứ 7";
     }
     return day_name;
+}
+
+function getTime(time) {
+    var date = new Date(time);
+    var hours = date.getHours();
+    hours = hours < 10 ? '0' + hours : hours;
+    var minutes = date.getMinutes();
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var current_time = hours + ":" + minutes;
+    return current_time;
 }

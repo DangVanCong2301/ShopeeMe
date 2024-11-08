@@ -10,6 +10,12 @@ public class ChatRepository : IChatRepository
         _context = context;
     }
 
+    public IEnumerable<Chat> getChatByID(int chatID)
+    {
+        SqlParameter chatIDParam = new SqlParameter("@PK_iChatID", chatID);
+        return _context.Chats.FromSqlRaw("EXEC sp_GetChatByID @PK_iChatID", chatIDParam);
+    }
+
     public IEnumerable<Chat> getChatByMakeFriendID(int makeFriendID)
     {
         SqlParameter makeFriendIDParam = new SqlParameter("@FK_iMakeFriendID", makeFriendID);
@@ -26,6 +32,12 @@ public class ChatRepository : IChatRepository
     {
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
         return _context.Chats.FromSqlRaw("EXEC sp_GetChatByUserID @FK_iUserID", userIDParam);
+    }
+
+    public IEnumerable<ChatDetail> getChatDetailByID(int chatID)
+    {
+        SqlParameter chatIDParam = new SqlParameter("@PK_iChatID", chatID);
+        return _context.ChatDetails.FromSqlRaw("EXEC sp_GetChatDetailByID @PK_iChatID", chatIDParam);
     }
 
     public IEnumerable<MakeFriend> getMakeFriendBySellerID(int sellerID)

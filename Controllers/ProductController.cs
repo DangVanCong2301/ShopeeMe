@@ -35,14 +35,15 @@ public class ProductController : Controller {
         IEnumerable<Product> products;
         IEnumerable<Product> productsByCategoryID;
         int currentCategory = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentCategoryID"));
+        System.Console.WriteLine("currentCategory: " + currentCategory);
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         var sessionParentCategoryID = _accessor?.HttpContext?.Session.GetInt32("CurrentParentCategoryID");
-        List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-        if (users.Count() == 0 && currentCategory == null) {
+        List<User> user = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
+        if (user.Count() == 0 && currentCategory == 0) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        } else if (users.Count() != 0 && users[0].FK_iRoleID == 2 && currentCategory == null) {
+        } else if (user.Count() != 0 && user[0].FK_iRoleID == 2 && currentCategory == 0) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        } else if (users.Count() != 0 && users[0].FK_iRoleID == 1 && currentCategory == null) {
+        } else if (user.Count() != 0 && user[0].FK_iRoleID == 1 && currentCategory == 0) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         } else if (categoryID != 0) {
             currentCategory = categoryID;
@@ -67,7 +68,9 @@ public class ProductController : Controller {
             TotalPage = totalPage,
             PageSize = pageSize,
             CurrentPage = currentPage,
-            CartCount = cartDetails.Count()
+            CartCount = cartDetails.Count(),
+            User = user,
+            UserID = Convert.ToInt32(sessionUserID)
         };
         return Ok(model);
     }

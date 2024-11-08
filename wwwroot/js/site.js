@@ -552,16 +552,24 @@ function setDataChat(data) {
 }
 
 function showChatDetail(chatID) {
-    let htmlShopName = "";
-    htmlShopName += 
-    `
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/chat/detail?chatID=' + chatID + '', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            let htmlShopName = "";
+            htmlShopName += 
+            `
                         <div class="chat__body-shop-name-container">
-                            <span>vietmark_store</span>
+                            <span>${data.chat[0].sStoreName}</span>
                             <i class="uil uil-angle-down chat__body-shop-name-icon"></i>
                             <div class="chat__body-shop-name-sub">
                                 <div class="chat__body-shop-name-sub-header">
-                                    <div class="chat__body-shop-name-sub-header-img" style="background-image: url(./assets/img/vietmark_logo.png);"></div>
-                                    <div class="chat__body-shop-name-sub-header-title">Viet Mark</div>
+                                    <div class="chat__body-shop-name-sub-header-img" style="background-image: url(/img/${data.chat[0].sImageAvatar});"></div>
+                                    <div class="chat__body-shop-name-sub-header-title">${data.chat[0].sStoreName}</div>
                                 </div>
                                 <ul class="chat__body-shop-name-sub-list">
                                     <li class="chat__body-shop-name-sub-item">
@@ -591,104 +599,52 @@ function showChatDetail(chatID) {
                                 </div>
                             </div>
                         </div>
-    `;
-    document.querySelector(".chat__body-shop-name").innerHTML = htmlShopName;
-    let htmlMessage = "";
-    htmlMessage += 
-    `
+            `;
+            document.querySelector(".chat__body-shop-name").innerHTML = htmlShopName;
+
+            let htmlMessage = "";
+            htmlMessage += 
+            `
                         <div class="chat__body-message-container">
                             <div class="chat__message-time">
-                                <span>23 Th05</span>
+                                <span>${getDate(data.chat[0].dTime)}</span>
                             </div>
                             <div class="chat__message-node">
                                 <div class="chat__message-node-text">
                                     <i class="uil uil-exclamation-octagon chat__message-node-icon"></i>
-                                    LƯU Ý: Shopee KHÔNG cho phép các hành vi: Đặt cọc/chuyển khoản riêng
-                                    cho người bán/Giao dịch ngoài hệ thống Shopee/Cung cấp thông tin liên hiệ
+                                    LƯU Ý: SMe KHÔNG cho phép các hành vi: Đặt cọc/chuyển khoản riêng
+                                    cho người bán/Giao dịch ngoài hệ thống SMe/Cung cấp thông tin liên hệ
                                     cho người bán/Các hoạt động tuyển CTV/Tặng quà miễn phí,... Vui lòng chỉ
-                                    mua bán hàng trực tiếp trên ứng dụng Shopee để tránh nguy cơ bị lừa đảo bạn nhé!
+                                    mua bán hàng trực tiếp trên ứng dụng SMe để tránh nguy cơ bị lừa đảo bạn nhé!
                                     <a href="#" class="chat__message-node-link">Tìm hiểu thêm</a>
                                 </div>
-                            </div>
-                            <div class="chat__message-shop">
-                                <div class="chat__message-shop-msg">
-                                    <div class="chat__message-shop-remind">
-                                        <div class="chat__message-remind-title">Nhắc nhở đánh giá đơn hàng</div>
-                                        <a href="#" class="chat__message-remind-product-link">
-                                            <div class="chat__message-remind-product">
-                                                <div class="chat__message-remind-product-img"
-                                                    style="background-image: url(/img/tai_nghe.png);"></div>
-                                                <div class="chat__message-remind-product-info">
-                                                    <div class="chat__message-remind-product-name">
-                                                        Bút Laze Trình Chiếu PowerPoint Kèm Remote Điều Khiển Không Dây
-                                                        Cho
-                                                        Laptop RF 2.4GHz
-                                                    </div>
-                                                    <div class="chat__message-remind-product-status">Hoàn tất</div>
-                                                    <div class="chat__message-remind-product-numb">
-                                                        1 sản phẩm, Tổng cộng: 81.000 đ
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="chat__message-remind-rate-now">
-                                            <span>Đánh giá ngay</span>
-                                        </a>
+                            </div>`;
+                            data.chatDetails.forEach(element => {
+                                if (element.iChatPersonID == element.fK_iSellerID) {
+                            htmlMessage += 
+                            `<div class="chat__message-body-texted">
+                                <div class="chat__message-body-texted-container">
+                                    <div class="chat__message-body-texted-content">
+                                    ${element.sChat}
                                     </div>
+                                    <div class="chat__message-body-texted-time">${getTime(element.dTime)}</div>
                                 </div>
-                                <div class="chat__message-shop-time">13:28</div>
-                            </div>
-                            <div class="chat__message-time">
-                                <span>23 Th05</span>
-                            </div>
-                            <div class="chat__message-customer">
-                                <div class="chat__message-customer-msg">
-                                    <span>Đồ dùng tốt Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima,
-                                        adipisci, voluptatum omnis maiores odit aut fugit iure sunt, doloremque iste
-                                        illum.
-                                        Dicta tenetur maiores assumenda rem soluta facere adipisci quas?</span>
+                            </div>`;
+                                    } else {
+                            htmlMessage += 
+                            `<div class="chat__message-body-me">
+                                <div class="chat__message-body-me-container">
+                                    <span class="chat__message-body-me-content">
+                                        ${element.sChat}<br>
+                                        <span class="chat__message-body-me-after-hour">Tin nhắn Tự động Ngoài giờ làm việc</span>
+                                    </span>
+                                    <div class="chat__message-body-me-time">${getTime(element.dTime)}</div>
                                 </div>
-                                <div class="chat__message-customer-time">13:28</div>
-                            </div>
-                            <div class="chat__message-shop">
-                                <div class="chat__message-shop-msg">
-                                    <div class="chat__message-shop-msg-text">
-                                        Chào bạn, hiện tại bộ phận CSKH của VietMark đã hết giờ làm việc.
-                                        Bạn vui lòng liên hệ vào khung giờ <b>8:00 - 17:00 (T2 - T6) & 8:00 - 14:00 Thứ
-                                            7</b>
-                                        hoặc để lại lời nhắn, chúng mình sẽ phản hồi ngay với bạn vào giờ làm việc kế
-                                        tiếp.
-                                        VietMark Shop xin cảm ơn ❤️
-                                    </div>
-                                    <div class="chat__message-shop-after-hour">Tin nhắn Tự động Ngoài giờ làm việc</div>
-                                </div>
-                                <div class="chat__message-shop-time">13:28</div>
-                            </div>
-                            <div class="chat__message-customer">
-                                <div class="chat__message-customer-msg">
-                                    <span>Giao hàng nhanh!</span>
-                                </div>
-                                <div class="chat__message-customer-time-short">13:28</div>
-                            </div>
-                            <div class="chat__message-shop">
-                                <div class="chat__message-shop-msg-text">
-                                    <div class="chat__message-shop-felling">😘</div>
-                                </div>
-                                <div class="chat__message-shop-time-short">13:28</div>
-                            </div>
-                            <div class="chat__message-customer">
-                                <div class="chat__message-customer-msg">
-                                    <span>Chất lượng đó Shop!</span>
-                                </div>
-                                <div class="chat__message-customer-time-short">13:28</div>
-                            </div>
-                            <div class="chat__message-shop">
-                                <div class="chat__message-shop-msg-short">
-                                    <span>VietMark Shop xin cảm ơn ❤️</span>
-                                </div>
-                                <div class="chat__message-shop-time-short">13:28</div>
-                            </div>
-                        </div>
+                            </div>`;
+                                    }
+                                });
+                                htmlMessage += 
+                        `</div>
                         <div class="chat__body-message-bottom">
                             <div class="chat__body-message-bottom-box">
                                 <textarea type="text" class="chat__body-message-bottom-input"
@@ -721,8 +677,12 @@ function showChatDetail(chatID) {
                                 </div>
                             </div>
                         </div>
-    `;
-    document.querySelector(".chat__body-message").innerHTML = htmlMessage;
+            `;
+            document.querySelector(".chat__body-message").innerHTML = htmlMessage;
+            
+        }
+    };
+    xhr.send(null);
 }
 
 // Modal
@@ -951,4 +911,15 @@ function getDate(date) {
             day_name = "Thứ 7";
     }
     return day_name;
+
+}
+
+function getTime(time) {
+    var date = new Date(time);
+    var hours = date.getHours();
+    hours = hours < 10 ? '0' + hours : hours;
+    var minutes = date.getMinutes();
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var current_time = hours + ":" + minutes;
+    return current_time;
 }
