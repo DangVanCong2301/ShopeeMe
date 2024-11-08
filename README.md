@@ -28,8 +28,6 @@
  - Tên bảng: tbl_ (Ví dụ tbl_Categories)
  - Tên thủ tục: sp_ (Ví dụL sp_GetCategories)
  - ...
-## Unit Testing (Kiểm thử đơn vị)
-https://docs.google.com/spreadsheets/d/1ZXDqi9M9C59Rs9ZT_QM6zz7HuXFDN4jg/edit?gid=1570539229#gid=1570539229
 ## Kiến trúc phần mềm
 ![ShopeeMe-SequenceDiagram-Class_Diagram drawio](https://github.com/user-attachments/assets/c75c3751-11ea-4107-ad2b-768d7b38ce1f)
 ## Kết quả thực hiện
