@@ -48,6 +48,7 @@
 ![image](https://github.com/user-attachments/assets/3277c28e-a6a9-465c-87f6-5644a9578178)
 ![image](https://github.com/user-attachments/assets/380a489f-85df-4042-ac73-0732f90b3802)
 ### Trang cửa hàng
+![Screenshot 2024-11-08 174151](https://github.com/user-attachments/assets/0f29dded-b194-4adc-8eca-34ee3c6b2e3e)
 ![image](https://github.com/user-attachments/assets/6fde07b9-0cac-49c7-ad95-c99f060621f5)
 ### Chi tiết sản phẩm
 ![image](https://github.com/user-attachments/assets/cfaa7bb1-68f9-41cd-9128-b7e75d91652c)
