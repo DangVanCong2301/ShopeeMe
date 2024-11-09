@@ -19,7 +19,7 @@ function getDataDetail() {
 getDataDetail();
 
 function loadProductNameInHeader(data) {
-    document.querySelector(".header__mobile-product-name").innerText = data.products[0].sProductName;
+    document.querySelector(".header__mobile-product-name").innerText = data.product[0].sProductName;
 }
 
 function loadDetailInfo(data) {
@@ -27,20 +27,20 @@ function loadDetailInfo(data) {
     htmlProductDetail += `  
                             <div class="detail__product">
                                 <div class="detail__left">
-                                    <img src="/img/${data.products[0].sImageUrl}" alt="product image" class="detail__left-img" />
+                                    <img src="/img/${data.product[0].sImageUrl}" alt="product image" class="detail__left-img" />
                                     <div class="detai__left-progress">
                                         <!-- <div class="spinner detai__left-progress-spinner"></div> -->
                                         <i class="uil uil-shopping-bag detai__left-progress-icon"></i>
                                     </div>
                                 </div>
                                 <div class="detail__right">
-                                    <h2 class="detail__right-title">${data.products[0].sProductName}</h2>
+                                    <h2 class="detail__right-title">${data.product[0].sProductName}</h2>
                                     <div class="detail__price">`;
-                                    if (data.products[0].dPerDiscount != 1) {
-                                        htmlProductDetail += `<p class="detail__price-old"><span>${money(data.products[0].dPrice)} đ</span></p>`;
-                                        htmlProductDetail += `<p class="detail__price-new"><span>${money((data.products[0].dPrice * (1 - data.products[0].dPerDiscount)))} đ</span></p>`;
+                                    if (data.product[0].dPerDiscount != 1) {
+                                        htmlProductDetail += `<p class="detail__price-old"><span>${money(data.product[0].dPrice)} đ</span></p>`;
+                                        htmlProductDetail += `<p class="detail__price-new"><span>${money((data.product[0].dPrice * (1 - data.product[0].dPerDiscount)))} đ</span></p>`;
                                     } else {
-                                        htmlProductDetail += `          <p class="detail__price-new"><span>${money(data.products[0].dPrice)} đ</span></p>`;
+                                        htmlProductDetail += `          <p class="detail__price-new"><span>${money(data.product[0].dPrice)} đ</span></p>`;
                                     }
         htmlProductDetail += `      </div>
                                     <div class="detail__policy-destop-mobile hide-on-destop">
@@ -122,7 +122,7 @@ function loadDetailInfo(data) {
                                     <div class="detail__text">
                                         <h2 class="detail__text-title">về mặt hàng này: </h2>
                                         <p class="detail__text-desc">
-                                            ${data.products[0].sProductDescription}
+                                            ${data.product[0].sProductDescription}
                                         </p>
                                     </div>
                                     <div class="detail__btns hide-on-mobile">
@@ -131,10 +131,10 @@ function loadDetailInfo(data) {
                                             <input type="text" name="quantity" id="qnt" value="0" class="detail__btn-count-input" />
                                             <button type="button" class="detail__btn-count-btn" onclick="increaseProduct(event)">+</button>
                                         </div>
-                                        <button type="button" onclick="addToCart(${data.products[0].pK_iProductID}, ${data.products[0].dPrice})" class="detail__btn-add"> Thêm vào giỏ
+                                        <button type="button" onclick="addToCart(${data.product[0].pK_iProductID}, ${data.product[0].dPrice})" class="detail__btn-add"> Thêm vào giỏ
                                             <i class="fas fa-shopping-cart detail__cart-icon"></i>
                                         </button>
-                                        <button type="button" class="btn btn--primary detail__btn-buy-now">Mua ngay</button>
+                                        <button type="button" class="btn btn--primary detail__btn-buy-now" onclick="noticeIncompleteFunc()">Mua ngay</button>
                                     </div>
                                     <div class="detail__mobile-btns">
                                         <div class="detail__mobile-btn-add" onclick="showBottomSheet()"> Thêm vào giỏ
@@ -352,10 +352,10 @@ function loadDetailInfo(data) {
                                                 <i class="uil uil-comment-alt detail__shop-info-btn-chat-icon"></i>
                                                 <span>Chat ngay</span>
                                             </div>
-                                            <div class="detail__shop-info-btn-view">
+                                            <a href="/shop/${data.store[0].sStoreUsername}" class="detail__shop-info-btn-view">
                                                 <i class="uil uil-store-alt detail__shop-info-btn-view-icon"></i>
                                                 <span>Xem Shop</span>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="detail__shop-info-btn-view-mobile hide-on-destop">
@@ -394,6 +394,33 @@ function loadDetailInfo(data) {
     `;
     document.querySelector(".detail").innerHTML = htmlProductDetail;
     loadingProductDetail();
+
+    document.querySelector(".detail__shop-info-btn-chat").addEventListener("click", () => {
+        showChat(data);
+    });
+}
+
+function showChat(data) {
+    if (data.userInfo.length == 0) {
+        openModal();
+        document.querySelector(".modal__body").innerHTML = 
+                `
+                <div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        Bạn chưa đăng nhập!
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                        <a href="/user/login" class="modal__confirm-btn-send">Đăng nhập</a>
+                    </div>
+                </div>
+                `;
+    } else {
+        displayChat()
+    }
 }
 
 function loadingProductDetail() {
@@ -437,22 +464,25 @@ function addToCart(productID, price) {
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
+
                 console.log(data);
 
                 let htmlCartDetail = "";
-                if (data.model != null) {
-                    htmlCartDetail += data.model.cartDetails.map(obj => `
-                    <li class="header__cart-item">
+                if (data.status.statusCode == 1) {
+                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
+                    data.cartDetails.forEach(element => {
+                    htmlCartDetail +=
+                    `<li class="header__cart-item">
                         <div class="header__cart-item-img">
-                            <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
+                            <img src="/img/${element.sImageUrl}" class="header__cart-item-img" alt="">
                         </div>
                         <div class="header__cart-item-info">
                             <div class="header__cart-item-head">
-                                <h5 class="header__cart-item-name">${obj.sProductName}</h5>
+                                <h5 class="header__cart-item-name">${element.sProductName}</h5>
                                 <div class="header__cart-item-price-wrap">
-                                    <span class="header__cart-item-price">${obj.dUnitPrice} đ</span>
+                                    <span class="header__cart-item-price">${element.dUnitPrice} đ</span>
                                     <span class="header__cart-item-multifly">X</span>
-                                    <span class="header__cart-item-qnt">${obj.iQuantity}</span>
+                                    <span class="header__cart-item-qnt">${element.iQuantity}</span>
                                 </div>
                             </div>
                             <div class="header__cart-item-body">
@@ -462,12 +492,15 @@ function addToCart(productID, price) {
                                 <span class="header__cart-item-remove">Xoá</span>
                             </div>
                         </div>
-                    </li>
-                    `).join('');
-                    document.querySelector(".header__cart-notice").innerText = data.model.cartCount;
-                    //document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
+                    </li>`;
+                    });
+                    document.querySelector(".header__cart-notice").innerText = data.cartCount;
+                    document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
+                } else if (data.status.statusCode == -1) {
+                    window.location.assign("/user/login")
+                } else {
+                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "err", duration: 5000});
                 }
-                toast({title: "Thông báo", msg: `${data.msg}`, type: "success", duration: 5000});
 
             }
         }
@@ -648,7 +681,7 @@ function setDataReviewer(data) {
                         </div>
                     </div>
                 </div>`;
-                if (data.userInfos.length != 0) {
+                if (data.userInfo.length != 0) {
                     htmlReviewer += `
                     <div class="comment__add">
                         <div class="comment__add-avatar" style="background-image: url(/img/profile_avatar.jpg);">

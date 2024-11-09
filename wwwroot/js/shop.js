@@ -75,6 +75,10 @@ function getAPIShop() {
             getPagination(data);
 
             setDataMobile(data);
+
+            setChatBtn(data);
+
+            setDataChat(data);
         }
     };
     xhr.send(null);
@@ -146,15 +150,21 @@ function getShopInfo(data) {
                                     <i class="uil uil-plus shop__header-store-btn-icon"></i>
                                     <span>Theo dõi</span>
                                 </div>`;
-                                if (data.makeFriends.length != 0 && data.makeFriends[0].iMakeStatusCode == 0) {
+                                if (data.makeFriends.length == 0) {
+                                    htmlShopDestop += 
+                                `<div class="shop__header-store-btn shop__header-store-btn-make">
+                                    <i class="uil uil-chat shop__header-store-btn-icon"></i>
+                                    <span>Kết bạn</span>
+                                </div>`;
+                                } else if (data.makeFriends.length != 0 && data.makeFriends[0].iMakeStatusCode == 0) {
                                 htmlShopDestop += `
                                 <div class="shop__header-store-btn">
                                     <i class="uil uil-chat shop__header-store-btn-icon"></i>
                                     <span>Đã gửi kết bạn</span>
                                 </div>`;
                                 } else {
-                                    htmlShopDestop += `
-                                <div class="shop__header-store-btn shop__header-store-btn-chat">
+                                    htmlShopDestop += 
+                                `<div class="shop__header-store-btn shop__header-store-btn-chat">
                                     <i class="uil uil-chat shop__header-store-btn-icon"></i>
                                     <span>Chat</span>
                                 </div>`;
@@ -166,8 +176,14 @@ function getShopInfo(data) {
     document.querySelector(".shop__header-detail").innerHTML = htmlShopDestop;
 
     if (data.makeFriends.length == 0) {
-        document.querySelector(".shop__header-store-btn-chat").addEventListener("click", () => {
+        document.querySelector(".shop__header-store-btn-make").addEventListener("click", () => {
             sendMakeFriendModal(data);
+        });
+    }
+
+    if (data.makeFriends.length != 0) {
+        document.querySelector(".shop__header-store-btn-chat").addEventListener("click", () => {
+            displayChat();
         });
     }
 }
@@ -782,6 +798,345 @@ for (let i = 0; i < shopMobileTitle.length; i++) {
     });
 }
 
+// Set Chat
+function setChatBtn(data) {
+    if (data.userID == 0) {
+        document.querySelector(".chat__btn").classList.add("hide-on-destop");
+    } else {
+        document.querySelector(".chat__btn").classList.remove("hide-on-destop");
+    }
+}
+
+function setDataChat(data) {
+    let htmlChat = "";
+    htmlChat += 
+    `
+        <div class="chat__container">
+            <div class="chat__mobile-window hide-on-destop">
+                <div class="chat__body-search">
+                    <div class="chat__body-search-box">
+                        <i class="uil uil-search chat__body-search-icon"></i>
+                        <input type="text" class="chat__body-search-input" onblur="displaySearchSub()"
+                            onclick="hideSearchSub()" placeholder="Tìm kiếm">
+                    </div>
+                    <div class="chat__body-search-sub" onclick="displaySubList()">
+                        <span>Tất cả</span>
+                        <i class="uil uil-angle-down chat__body-search-sub-icon"></i>
+                        <ul class="chat__body-search-sub-list">
+                            <li class="chat__body-search-sub-item">
+                                Tất cả
+                            </li>
+                            <li class="chat__body-search-sub-item">
+                                Chưa đọc
+                            </li>
+                            <li class="chat__body-search-sub-item">
+                                Đã ghim
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chat__body-shop">`;
+                if (data.chats.length == 0) {
+                    htmlChat += 
+                    `
+                    <div class="chat__body-shop-no">
+                        Không tìm thấy <br> cuộc hội thoại nào
+                    </div>
+                    `;
+                } else {
+                    htmlChat += `
+                    <ul class="chat__shop-list">`;
+                    data.chats.forEach(element => {
+                        htmlChat += 
+                        `
+                        <li class="chat__shop-item">
+                            <div class="chat__shop-item-img" style="background-image: url(/img/${element.sImageAvatar});"></div>
+                            <div class="chat__shop-item-info">
+                                <div class="chat__shop-item-info-top">
+                                    <div class="chat__shop-item-title">${element.sStoreName}</div>
+                                    <div class="chat__shop-item-time">${getDate(element.dTime)}</div>
+                                </div>
+                                <div class="chat__shop-item-info-bottom">
+                                    ${element.sChat}
+                                </div>
+                            </div>
+                        </li>
+                        `;
+                    });
+                    htmlChat += `
+                    </ul>`;
+                }
+                htmlChat += `
+                </div>
+            </div>
+            <div class="chat__header">
+                <div class="chat__header-title">Chat</div>
+                <div class="chat__header-btns">
+                    <div class="chat__header-btn hide-on-mobile" onclick="hideChatWindow()">
+                        <i class="uil uil-arrow-right chat__header-btn-arrow"></i>
+                    </div>
+                    <div class="chat__header-menu-bar hide-on-destop" onclick="showChatWindowMobile()">
+                        <span></span>
+                    </div>
+                    <div class="chat__header-btn">
+                        <i class="uil uil-angle-down chat__header-btn-down" onclick="hideChat()"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="chat__body">
+                <div class="chat__body-left">
+                    <div class="chat__body-search">
+                        <div class="chat__body-search-box">
+                            <i class="uil uil-search chat__body-search-icon"></i>
+                            <input type="text" class="chat__body-search-input" onblur="displaySearchSub()"
+                                onclick="hideSearchSub()" placeholder="Tìm kiếm">
+                        </div>
+                        <div class="chat__body-search-sub" onclick="displaySubList()">
+                            <span>Tất cả</span>
+                            <i class="uil uil-angle-down chat__body-search-sub-icon"></i>
+                            <ul class="chat__body-search-sub-list">
+                                <li class="chat__body-search-sub-item">
+                                    Tất cả
+                                </li>
+                                <li class="chat__body-search-sub-item">
+                                    Chưa đọc
+                                </li>
+                                <li class="chat__body-search-sub-item">
+                                    Đã ghim
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chat__body-shop">`;
+                        if (data.chats.length == 0) {
+                        htmlChat += 
+                        `
+                        <div class="chat__body-shop-no">
+                            Không tìm thấy <br> cuộc hội thoại nào
+                        </div>
+                        `;
+                    } else {
+                        htmlChat += `
+                        <ul class="chat__shop-list">`;
+                        data.chats.forEach(element => {
+                            htmlChat += 
+                            `
+                            <li class="chat__shop-item" onclick=showChatDetail(${element.pK_iChatID})>
+                                <div class="chat__shop-item-img" style="background-image: url(/img/${element.sImageAvatar});"></div>
+                                <div class="chat__shop-item-info">
+                                    <div class="chat__shop-item-info-top">
+                                        <div class="chat__shop-item-title">${element.sStoreName}</div>
+                                        <div class="chat__shop-item-time">${getDate(element.dTime)}</div>
+                                    </div>
+                                    <div class="chat__shop-item-info-bottom">
+                                        ${element.sLastChat}
+                                    </div>
+                                </div>
+                            </li>
+                            `;
+                        });
+                        htmlChat += `
+                        </ul>`;
+                    }
+                    htmlChat += `
+                    </div>
+                </div>
+                <div class="chat__body-right">
+                    <div class="chat__body-shop-name">
+                        
+                    </div>
+                    <div class="chat__body-message">
+                        <div class="chat__body-message-welcome">
+                            <img src="/img/sme_chat.png" class="chat__body-message-welcome-img" alt="">
+                            <div class="chat__body-message-welcome-title">Chào mừng bạn đến với SMe Chat</div>
+                            <div class="chat__body-message-welcome-sub">
+                                Bắt đầu trả lời người mua
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.querySelector(".chat").innerHTML = htmlChat;
+}
+
+function showChatDetail(chatID) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/chat/detail?chatID=' + chatID + '', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            let htmlShopName = "";
+            htmlShopName += 
+            `
+                        <div class="chat__body-shop-name-container">
+                            <span>${data.chat[0].sStoreName}</span>
+                            <i class="uil uil-angle-down chat__body-shop-name-icon"></i>
+                            <div class="chat__body-shop-name-sub">
+                                <div class="chat__body-shop-name-sub-header">
+                                    <div class="chat__body-shop-name-sub-header-img" style="background-image: url(/img/${data.chat[0].sImageAvatar});"></div>
+                                    <div class="chat__body-shop-name-sub-header-title">${data.chat[0].sStoreName}</div>
+                                </div>
+                                <ul class="chat__body-shop-name-sub-list">
+                                    <li class="chat__body-shop-name-sub-item">
+                                        <span>Tắt thông báo</span>
+                                        <div class="chat__body-shop-name-sub-control">
+                                            <div class="chat__body-shop-name-sub-control-circle"></div>
+                                        </div>
+                                    </li>
+                                    <li class="chat__body-shop-name-sub-item">
+                                        <span>Chặn người dùng</span>
+                                        <div class="chat__body-shop-name-sub-control">
+                                            <div class="chat__body-shop-name-sub-control-circle"></div>
+                                        </div>
+                                    </li>
+                                    <li class="chat__body-shop-name-sub-item">
+                                        <a href="#" class="chat__body-shop-name-sub-item-link">
+                                            <span>Tố cáo người dùng</span>
+                                            <i class="uil uil-angle-right-b chat__body-shop-name-sub-item-icon"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="chat__body-shop-name-sub-bottom">
+                                    <a href="#" class="chat__body-shop-name-sub-bottm-link">
+                                        <span>Xem thông tin cá nhân</span>
+                                        <i class="uil uil-angle-right-b chat__body-shop-name-sub-item-icon"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+            `;
+            document.querySelector(".chat__body-shop-name").innerHTML = htmlShopName;
+
+            let htmlMessage = "";
+            htmlMessage += 
+            `
+                        <div class="chat__body-message-container">
+                            <div class="chat__message-time">
+                                <span>${getDate(data.chat[0].dTime)}</span>
+                            </div>
+                            <div class="chat__message-node">
+                                <div class="chat__message-node-text">
+                                    <i class="uil uil-exclamation-octagon chat__message-node-icon"></i>
+                                    LƯU Ý: SMe KHÔNG cho phép các hành vi: Đặt cọc/chuyển khoản riêng
+                                    cho người bán/Giao dịch ngoài hệ thống SMe/Cung cấp thông tin liên hệ
+                                    cho người bán/Các hoạt động tuyển CTV/Tặng quà miễn phí,... Vui lòng chỉ
+                                    mua bán hàng trực tiếp trên ứng dụng SMe để tránh nguy cơ bị lừa đảo bạn nhé!
+                                    <a href="#" class="chat__message-node-link">Tìm hiểu thêm</a>
+                                </div>
+                            </div>`;
+                            data.chatDetails.forEach(element => {
+                                if (element.iChatPersonID == element.fK_iSellerID) {
+                            htmlMessage += 
+                            `<div class="chat__message-body-texted">
+                                <div class="chat__message-body-texted-container">
+                                    <div class="chat__message-body-texted-content">
+                                    ${element.sChat}
+                                    </div>
+                                    <div class="chat__message-body-texted-time">${getTime(element.dTime)}</div>
+                                </div>
+                            </div>`;
+                                    } else {
+                            htmlMessage += 
+                            `<div class="chat__message-body-me">
+                                <div class="chat__message-body-me-container">
+                                    <span class="chat__message-body-me-content">
+                                        ${element.sChat}<br>
+                                        <span class="chat__message-body-me-after-hour">Tin nhắn Tự động Ngoài giờ làm việc</span>
+                                    </span>
+                                    <div class="chat__message-body-me-time">${getTime(element.dTime)}</div>
+                                </div>
+                            </div>`;
+                                    }
+                                });
+                                htmlMessage += 
+                        `</div>
+                        <div class="chat__body-message-bottom">
+                            <div class="chat__body-message-bottom-box">
+                                <textarea type="text" class="chat__body-message-bottom-input"
+                                    placeholder="Nhập nội dung tin nhắn"></textarea>
+                            </div>
+                            <div class="chat__body-message-bottom-btns">
+                                <div class="chat__body-message-bottom-btns-left">
+                                    <ul class="chat__body-message-bottom-list">
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-grin chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-image-plus chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-youtube chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-shopping-bag chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                        <li class="chat__body-message-bottom-item">
+                                            <i class="uil uil-clipboard chat__body-message-bottom-item-icon"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="chat__body-message-bottom-btns-right">
+                                    <div class="chat__body-message-bottom-item">
+                                        <i class="uil uil-message chat__body-message-bottom-item-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            `;
+            document.querySelector(".chat__body-message").innerHTML = htmlMessage;
+            
+        }
+    };
+    xhr.send(null);
+}
+
+// Chat JS
+
+function hideChatWindow() {
+    document.querySelector(".chat__container").classList.toggle("hide-chat-window");
+    document.querySelector(".chat__body-right").classList.toggle("hide-chat-window");
+    document.querySelector(".chat__header-btn-arrow").classList.toggle("transform");
+}
+
+function hideSearchSub() {
+    document.querySelector(".chat__body-search-sub").style.display = 'none';
+}
+
+function displaySearchSub() {
+    document.querySelector(".chat__body-search-sub").style.display = 'flex';
+}
+
+function displaySubList() {
+    document.querySelector(".chat__body-search-sub-list").classList.toggle('active'); 
+}
+
+document.querySelectorAll(".chat__body-shop-name-sub-control").forEach(e => {
+    e.addEventListener('click', () => {
+        e.classList.toggle('active');
+        e.querySelector(".chat__body-shop-name-sub-control-circle").classList.toggle('active');
+    });
+});
+
+function hideChat() {
+    document.querySelector(".chat__container").style.display = 'none';
+    document.querySelector(".chat__btn").style.display = "flex";
+}
+
+function displayChat() {
+    document.querySelector(".chat__container").style.display = 'block';
+    document.querySelector(".chat__btn").style.display = "none";
+}
+
+function showChatWindowMobile() {
+    document.querySelector(".chat__header-menu-bar").classList.toggle("active");
+    document.querySelector(".chat__mobile-window").classList.toggle("show");
+}
+
 function addShopMobileShop(i) {
     shopMobileTitle[i].classList.add("active");
     shopMobileTitle[1].classList.remove("active");
@@ -904,4 +1259,52 @@ for (let i = 0; i < viewModalBodyTitle.length; i++) {
             document.querySelector(".shop__mobile-shop-view-more-modal-body-product-good-price").classList.remove("hide-on-mobile");
         }
     });
+}
+
+// Lấy tên thứ
+function getDate(date) {
+    // Khai báo đối tượng Date
+    var date = new Date(date);
+
+    // Lấy số thứ tự của ngày hiện tại
+    var current_day = date.getDay();
+
+    // Biến lưu tên của thứ
+    var day_name = '';
+
+    // Lấy tên thứ của ngày hiện tại
+    switch (current_day) {
+        case 0:
+            day_name = "CN";
+            break;
+        case 1:
+            day_name = "Thứ 2";
+            break;
+        case 2:
+            day_name = "Thứ 3";
+            break;
+        case 3:
+            day_name = "Thứ 4";
+            break;
+        case 4:
+            day_name = "Thứ 5";
+            break;
+        case 5:
+            day_name = "Thứ 6";
+            break;
+        case 6:
+            day_name = "Thứ 7";
+    }
+    return day_name;
+
+}
+
+function getTime(time) {
+    var date = new Date(time);
+    var hours = date.getHours();
+    hours = hours < 10 ? '0' + hours : hours;
+    var minutes = date.getMinutes();
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var current_time = hours + ":" + minutes;
+    return current_time;
 }

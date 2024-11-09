@@ -8,7 +8,7 @@ public class ProductViewModel {
     public IEnumerable<Category> Categories {get; set;}
     public IEnumerable<CartDetail> CartDetails { get; set; }
     public IEnumerable<User> Users { get; set; }
-    public IEnumerable<UserInfo> UserInfos { get; set; }
+    public IEnumerable<UserInfo> UserInfo { get; set; }
     public IEnumerable<Checkout> Checkouts { get; set; }
     public IEnumerable<Reviewer> Reviewers { get; set; }
     public IEnumerable<Product> Product { get; set; }

@@ -80,6 +80,7 @@ public class ShopController : Controller
         IEnumerable<Product> top10SellingProducts = _shopResponsitory.getTop10SellingProductsShop(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top10GoodPriceProducts = _shopResponsitory.getTop10GoodPriceProductsShop(Convert.ToInt32(sessionCurrentShopID));
         IEnumerable<Product> top10SuggestProducts = _shopResponsitory.getTop10SuggestProductsShop(Convert.ToInt32(sessionCurrentShopID));
+        IEnumerable<Chat> chats = _chatRepository.getChatByUserID(Convert.ToInt32(sessionUserID));
         int totalRecord = products.Count();
         int pageSize = 10;
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
@@ -102,7 +103,8 @@ public class ShopController : Controller
             Username = sessionUsername,
             CartDetails = cartDetails,
             CartCount = cartDetails.Count(),
-            CurrentCategoryID = categoryID
+            CurrentCategoryID = categoryID,
+            Chats = chats
         };
         return Ok(model);
     }

@@ -10,7 +10,16 @@ public class ProductController : Controller {
     private readonly IHomeResponsitory _homeResponsitory;
     private readonly IUserResponsitory _userResponsitory;
     private readonly IShopResponsitory _shopResponsitory;
-    public ProductController(IProductResponsitory productResponsitory, ICartReponsitory cartReponsitoty, IHttpContextAccessor accessor, IHomeResponsitory homeResponsitory, IUserResponsitory userResponsitory, IShopResponsitory shopResponsitory)
+    private readonly IChatRepository _chatRepository;
+    public ProductController(
+        IProductResponsitory productResponsitory, 
+        ICartReponsitory cartReponsitoty, 
+        IHttpContextAccessor accessor, 
+        IHomeResponsitory homeResponsitory, 
+        IUserResponsitory userResponsitory, 
+        IShopResponsitory shopResponsitory,
+        IChatRepository chatRepository
+        )
     {
         _productResponsitory = productResponsitory;
         _cartResponsitory = cartReponsitoty;
@@ -18,6 +27,7 @@ public class ProductController : Controller {
         _homeResponsitory = homeResponsitory;
         _userResponsitory = userResponsitory;
         _shopResponsitory = shopResponsitory;
+        _chatRepository = chatRepository;
     }
 
     [Route("{parentCategoryID?}/{categoryID?}")]
@@ -92,12 +102,12 @@ public class ProductController : Controller {
         var sessionCurrentProductID = _accessor?.HttpContext?.Session.GetInt32("CurrentProductID");
         var product = _productResponsitory.getProductByID(Convert.ToInt32(sessionCurrentProductID));
         List<Store> store = _shopResponsitory.getShopByProductID(Convert.ToInt32(sessionCurrentProductID)).ToList();
-        IEnumerable<UserInfo> userInfos = _userResponsitory.checkUserInfoByUserID(Convert.ToInt32(sessionUserID));
+        IEnumerable<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(Convert.ToInt32(sessionUserID));
         IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(Convert.ToInt32(sessionCurrentProductID));
         ProductViewModel model = new ProductViewModel {
-            Products = product,
+            Product = product,
             Store = store,
-            UserInfos = userInfos,
+            UserInfo = userInfo,
             Reviewers = reviewers
         };
         return Ok(model);
