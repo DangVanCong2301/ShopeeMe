@@ -138,10 +138,16 @@ public class UserController : Controller {
         if (!ModelState.IsValid) {
             return View(model);
         }
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        string passwordEncrypted = _userResponsitory.encrypt(model.sNewPassword);
-        _userResponsitory.changePasswordByUserID(Convert.ToInt32(sessionUserID), passwordEncrypted);
-        TempData["result"] = "Đổi mật khẩu thành công";
+        System.Console.WriteLine("Old password: " + model.sOldPassword);
+        int userID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
+        List<User> user = _userResponsitory.getUserByIDAndPassword(userID, model.sOldPassword).ToList();
+        if (user.Count() == 0) {
+            TempData["result"] = "Mật khẩu cũ không chính xác";
+        } else {
+            string passwordEncrypted = _userResponsitory.encrypt(model.sNewPassword);
+            _userResponsitory.changePasswordByUserID(userID, passwordEncrypted);
+            TempData["result"] = "Đổi mật khẩu thành công";
+        }
         return RedirectToAction("Change");
     }
 

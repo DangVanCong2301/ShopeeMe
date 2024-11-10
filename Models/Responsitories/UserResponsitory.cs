@@ -74,10 +74,26 @@ public class UserResponsitory : IUserResponsitory
         return _context.Users.FromSqlRaw("EXEC sp_GetPasswordAccountByEmail @sEmail", emailParam);
     }
 
+    public IEnumerable<User> getUserByIDAndPassword(int userID, string password)
+    {
+        password = encrypt(password);
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        SqlParameter passwordParam = new SqlParameter("@sPassword", password);
+        return _context.Users.FromSqlRaw("EXEC sp_GetUserByIDAndPassword @PK_iUserID, @sPassword", userIDParam, passwordParam);
+    }
+
     public IEnumerable<User> getUserIDAccountByEmail(string email)
     {
         SqlParameter emailParam = new SqlParameter("@sEmail", email);
         return _context.Users.FromSqlRaw("EXEC sp_GetUserIDAccountByEmail @sEmail", emailParam);
+    }
+
+    public IEnumerable<UserInfo> getUserInfoByEmailAndPassword(string email, string password)
+    {
+        password = encrypt(password);
+        SqlParameter emailParam = new SqlParameter("@sEmail", email);
+        SqlParameter passwordParam = new SqlParameter("@sPassword", password);
+        return _context.UserInfos.FromSqlRaw("EXEC  sp_GetUserInfoByEmailAndPassword @sEmail, @sPassword", emailParam, passwordParam);
     }
 
     public IEnumerable<UserInfo> getUserInfoByID(int userID)

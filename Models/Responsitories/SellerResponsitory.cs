@@ -6,9 +6,11 @@ using Project.Models;
 public class SellerResponsitory : ISellerResponsitory
 {
     private readonly DatabaseContext _context;
-    public SellerResponsitory(DatabaseContext context)
+    private readonly UserResponsitory _userResponsitory;
+    public SellerResponsitory(DatabaseContext context, UserResponsitory userResponsitory)
     {
         _context = context;
+        _userResponsitory = userResponsitory;
     }
 
     public bool changePasswordSellerAccount(int sellerID, string password)
@@ -42,6 +44,14 @@ public class SellerResponsitory : ISellerResponsitory
     {
         SqlParameter phoneParam = new SqlParameter("@sSellerPhone", phone);
         return _context.SellerInfos.FromSqlRaw("EXEC sp_GetSellerInfoByPhone @sSellerPhone", phoneParam);
+    }
+
+    public IEnumerable<SellerInfo> getSellerInfoByPhoneAndPassword(string phone, string password)
+    {
+        password = _userResponsitory.encrypt(password);
+        SqlParameter phoneParam = new SqlParameter("@sSellerPhone", phone);
+        SqlParameter passwordParam = new SqlParameter("@sSellerPassword", password);
+        return _context.SellerInfos.FromSqlRaw("EXEC sp_GetSellerInfoByPhoneAndPassword @sSellerPhone, @sSellerPassword", phoneParam, passwordParam);
     }
 
     public IEnumerable<SellerInfo> getSellerInfoBySellerID(int sellerID)

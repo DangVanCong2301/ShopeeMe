@@ -63,6 +63,9 @@ function setAccount(data) {
                                 <li class="header__navbar-user-item">
                                     <a href="/admin">Quản trị</a>
                                 </li>
+                                <li class="header__navbar-user-item">
+                                    <a href="/user/change">Đổi mật khẩu</a>
+                                </li>
                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
                                     <a href="/user/logout">Đăng xuất</a>
                                 </li>
@@ -146,6 +149,9 @@ function setAccount(data) {
                                                 </li>
                                                 <li class="header__navbar-user-item">
                                                     <a href="/user/purchase">Đơn mua</a>
+                                                </li>
+                                                <li class="header__navbar-user-item">
+                                                    <a href="/user/change">Đổi mật khẩu</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
                                                     <a href="/User/Logout">Đăng xuất</a>

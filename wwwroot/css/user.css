@@ -131,7 +131,7 @@
 }
 
 .auth-form__result {
-    font-size: var(--normal-font-size);
+    font-size: 12px;
     color: var(--primary-color);
 }
 
