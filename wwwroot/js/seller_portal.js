@@ -83,15 +83,35 @@ function showStart() {
             <div class="portal__start-box">
                 <i class="uil uil-clipboard-notes portal__start-box-icon"></i>
             </div>
-            <div class="portal__start-welcome">Chào mừng đến với ShopeeMe!</div>
+            <div class="portal__start-welcome">Chào mừng đến với SMe!</div>
             <div class="portal__start-please">Vui lòng cung cấp thông tin để thành lập tài khoản người <br> bán trên
-                ShopeeMe</div>
+                SMe</div>
             <div class="portal__start-btn">
-                <div class="btn btn--primary" onclick="openShopPortal()">Bắt đầu đăng ký</div>
+                <div class="btn btn--primary" onclick="noticeIncompleteFunc()">Bắt đầu đăng ký</div>
             </div>
         </div>
     </div>
     `;
+}
+
+// Notice Incomplete Function
+function noticeIncompleteFunc() {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = 
+            `
+                <div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        Chức năng này chưa được hoàn thiện!
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                        <div class="modal__confirm-btn-send"onclick="closeModal()">Đồng ý</div>
+                    </div>
+                </div>
+            `;
 }
 
 // Modal

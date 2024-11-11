@@ -2,15 +2,44 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
+using System.Text;
+using System.Security.Cryptography;
 
 public class SellerResponsitory : ISellerResponsitory
 {
     private readonly DatabaseContext _context;
-    private readonly UserResponsitory _userResponsitory;
-    public SellerResponsitory(DatabaseContext context, UserResponsitory userResponsitory)
+    public SellerResponsitory(DatabaseContext context)
     {
         _context = context;
-        _userResponsitory = userResponsitory;
+    }
+
+    // Phương thức giải mã
+    public string decrypt(string encrypted)
+    {
+        string hash = "cong@gmail.com";
+        byte[] data = Convert.FromBase64String(encrypted);
+        MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+        TripleDESCryptoServiceProvider tripDES = new TripleDESCryptoServiceProvider();
+        tripDES.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(hash));
+        tripDES.Mode = CipherMode.ECB;
+        ICryptoTransform transform = tripDES.CreateDecryptor();
+        byte[] result = transform.TransformFinalBlock(data, 0, data.Length);
+        return UTF8Encoding.UTF8.GetString(result);
+    }
+
+    // Phương thức mã hoá
+    public string encrypt(string decryted)
+    {
+        string hash = "cong@gmail.com";
+        byte[] data = UTF8Encoding.UTF8.GetBytes(decryted);
+        MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+        TripleDESCryptoServiceProvider tripDES = new TripleDESCryptoServiceProvider();
+        tripDES.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(hash));
+        tripDES.Mode = CipherMode.ECB;
+        ICryptoTransform transform = tripDES.CreateEncryptor();
+        byte[] result = transform.TransformFinalBlock(data, 0, data.Length);
+
+        return Convert.ToBase64String(result);
     }
 
     public bool changePasswordSellerAccount(int sellerID, string password)
@@ -48,7 +77,7 @@ public class SellerResponsitory : ISellerResponsitory
 
     public IEnumerable<SellerInfo> getSellerInfoByPhoneAndPassword(string phone, string password)
     {
-        password = _userResponsitory.encrypt(password);
+        password = encrypt(password);
         SqlParameter phoneParam = new SqlParameter("@sSellerPhone", phone);
         SqlParameter passwordParam = new SqlParameter("@sSellerPassword", password);
         return _context.SellerInfos.FromSqlRaw("EXEC sp_GetSellerInfoByPhoneAndPassword @sSellerPhone, @sSellerPassword", phoneParam, passwordParam);

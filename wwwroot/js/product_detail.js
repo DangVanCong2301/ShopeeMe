@@ -460,7 +460,7 @@ function addToCart(productID, price) {
         formData.append('unitPrice', price);
         formData.append('quantity', quantity);
         var xhr = new XMLHttpRequest();
-        xhr.open('post', '/Cart/AddToCart', true);
+        xhr.open('post', '/cart/add-to-cart', true);
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
@@ -499,7 +499,33 @@ function addToCart(productID, price) {
                 } else if (data.status.statusCode == -1) {
                     window.location.assign("/user/login")
                 } else {
-                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "err", duration: 5000});
+                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
+                    data.cartDetails.forEach(element => {
+                    htmlCartDetail +=
+                        `<li class="header__cart-item">
+                            <div class="header__cart-item-img">
+                                <img src="/img/${element.sImageUrl}" class="header__cart-item-img" alt="">
+                            </div>
+                            <div class="header__cart-item-info">
+                                <div class="header__cart-item-head">
+                                    <h5 class="header__cart-item-name">${element.sProductName}</h5>
+                                    <div class="header__cart-item-price-wrap">
+                                        <span class="header__cart-item-price">${element.dUnitPrice} đ</span>
+                                        <span class="header__cart-item-multifly">X</span>
+                                        <span class="header__cart-item-qnt">${element.iQuantity}</span>
+                                    </div>
+                                </div>
+                                <div class="header__cart-item-body">
+                                    <span class="header__cart-item-description">
+                                        Phân loại hàng:Bạc
+                                    </span>
+                                    <span class="header__cart-item-remove">Xoá</span>
+                                </div>
+                            </div>
+                        </li>`;
+                        });
+                    document.querySelector(".header__cart-notice").innerText = data.cartCount;
+                    document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
                 }
 
             }

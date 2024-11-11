@@ -507,7 +507,7 @@ function backMainForm() {
     document.querySelector(".modal__body").innerHTML = htmlAddress;
 }
 
-function openNewAddressForm() {
+function openNewAddressForm(data) {
     if (mainForm != null && updateAddressForm != null) {
         mainForm.classList.add("hide")
         updateAddressForm.classList.add("hide")
@@ -598,9 +598,9 @@ function openNewAddressForm() {
             </div>
         </div>
     `;
-    if (data.users.length != 0) {
+    if (data.userInfos.length != 0) {
         document.querySelector(".address-form__new-label-fullname").style.display = 'none';
-        document.querySelector(".address-form__new-input-fullname").value = data.users[0].sFullName;
+        document.querySelector(".address-form__new-input-fullname").value = data.userInfos[0].sFullName;
     }
     setDataAddressNewChoose();
     addEvent();
@@ -1006,19 +1006,9 @@ function changePaymentType() {
                 console.log("Cập nhật thanh toán MOMO");
                 paymentID = 4;
             } else if (i == 2) {
-                paymentItems[i].classList.add("active");
-                paymentItems[0].classList.remove("active");
-                paymentItems[1].classList.remove("active");
-                paymentItems[3].classList.remove("active");
-                paymentID = 2;
-                console.log("Cập nhật thanh toán Paypal");
+                noticeIncompleteFunc()
             } else if (i == 3) {
-                paymentItems[i].classList.add("active");
-                paymentItems[0].classList.remove("active");
-                paymentItems[1].classList.remove("active");
-                paymentItems[2].classList.remove("active");
-                console.log("Cập nhật thanh toán VN Pay");
-                paymentID = 3;
+                noticeIncompleteFunc()
             }
             var formData = new FormData();
             formData.append("paymentID", paymentID);
@@ -1026,52 +1016,11 @@ function changePaymentType() {
             xhr.open('post', '/checkout/update-payment', true);
             xhr.onreadystatechange = () => {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    const result = JSON.parse(xhr.responseText);
-                    console.log(result);
-                    toast({title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000});
+                    const data = JSON.parse(xhr.responseText);
+                    console.log(data);
+                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
                     closeModal();
-                    let htmlPaymentType = "";
-                    let htmlPaymentImage = 
-                        `
-                        <img class="checkout__payment-sub-img" src="/img/${result.paymentTypes[0].sPaymentImage}">
-                        `;
-                    htmlPaymentType += 
-                    `
-                    <div class="checkout__payment-header-sub">Phương thức thanh toán</div>
-                    `;
-                    if (result.paymentTypes[0].pK_iPaymentID == 1) {
-                        htmlPaymentType += 
-                        `
-                        <div class="checkout__payment-header-cod-btn">Thanh toán khi nhận hàng (COD)</div>
-                        `;
-                    } else if (result.paymentTypes[0].pK_iPaymentID == 2) {
-                        htmlPaymentType += 
-                        `
-                        <div class="checkout__payment-header-paypal-btn">
-                            <span>Pay</span> <span>Pal</span>
-                        </div>
-                        `;
-                    } else if (result.paymentTypes[0].pK_iPaymentID == 3) {
-                        htmlPaymentType += 
-                        `
-                        <div class="checkout__payment-header-vnpay-btn">
-                            <span>VN</span><span>PAY</span>
-                        </div>
-                        `;
-                    } else if (result.paymentTypes[0].pK_iPaymentID == 4) {
-                        htmlPaymentType += 
-                        `
-                        <div class="checkout__payment-header-momo-btn">
-                            MOMO
-                        </div>
-                        `;
-                    }
-                    htmlPaymentType += 
-                    `
-                    <a href="javascript:changePaymentType()" class="checkout__payment-header-change">Thay đổi</a>
-                    `;
-                    document.querySelector(".checkout__payment-header").innerHTML = htmlPaymentType;
-                    document.querySelector(".checkout__payment-sub-logo").innerHTML = htmlPaymentImage;
+                    setPaymentsType(data);
                 }
             };
             xhr.send(formData);
@@ -1163,19 +1112,9 @@ function choosePaymentsType() {
                 console.log("Thanh toán MOMO");
                 paymentID = 4;
             } else if (i == 2) {
-                paymentItems[i].classList.add("active");
-                paymentItems[0].classList.remove("active");
-                paymentItems[1].classList.remove("active");
-                paymentItems[3].classList.remove("active");
-                paymentID = 3;
-                console.log("Thanh toán VN Pay");
+                noticeIncompleteFunc()
             } else if (i == 3) {
-                paymentItems[i].classList.add("active");
-                paymentItems[0].classList.remove("active");
-                paymentItems[1].classList.remove("active");
-                paymentItems[2].classList.remove("active");
-                console.log("Thanh toán Paypal");
-                paymentID = 2;
+                noticeIncompleteFunc()
             }
             var formData = new FormData();
             formData.append("paymentID", paymentID);
@@ -1183,52 +1122,11 @@ function choosePaymentsType() {
             xhr.open('post', '/checkout/add-payment', true);
             xhr.onreadystatechange = () => {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    const result = JSON.parse(xhr.responseText);
-                    console.log(result);
-                    toast({title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000});
+                    const data = JSON.parse(xhr.responseText);
+                    console.log(data);
+                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
                     closeModal();
-                    let htmlPaymentType = "";
-                    let htmlPaymentImage = 
-                        `
-                        <img class="checkout__payment-sub-img" src="/img/${result.paymentTypes[0].sPaymentImage}">
-                        `;
-                    htmlPaymentType += 
-                    `
-                    <div class="checkout__payment-header-sub">Phương thức thanh toán</div>
-                    `;
-                    if (result.paymentTypes[0].pK_iPaymentID == 1) {
-                        htmlPaymentType += 
-                        `
-                        <div class="checkout__payment-header-cod-btn">Thanh toán khi nhận hàng (COD)</div>
-                        `;
-                    } else if (result.paymentTypes[0].pK_iPaymentID == 2) {
-                        htmlPaymentType += 
-                        `
-                        <div class="checkout__payment-header-paypal-btn">
-                            <span>Pay</span> <span>Pal</span>
-                        </div>
-                        `;
-                    } else if (result.paymentTypes[0].pK_iPaymentID == 3) {
-                        htmlPaymentType += 
-                        `
-                        <div class="checkout__payment-header-vnpay-btn">
-                            <span>VN</span><span>PAY</span>
-                        </div>
-                        `;
-                    } else if (result.paymentTypes[0].pK_iPaymentID == 4) {
-                        htmlPaymentType += 
-                        `
-                        <div class="checkout__payment-header-momo-btn">
-                            MOMO
-                        </div>
-                        `;
-                    }
-                    htmlPaymentType += 
-                    `
-                    <a href="#" class="checkout__payment-header-change">Thay đổi</a>
-                    `;
-                    document.querySelector(".checkout__payment-header").innerHTML = htmlPaymentType;
-                    document.querySelector(".checkout__payment-sub-logo").innerHTML = htmlPaymentImage;
+                    setPaymentsType(data);
                 }
             };
             xhr.send(formData);

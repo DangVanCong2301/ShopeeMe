@@ -1114,8 +1114,10 @@ function showAddProduct(data) {
                 imageUrl = "shop/laneige/product/no_img.jpg";
             } else if (data.sellerID == 4) {
                 imageUrl = "shop/cocolux/product/no_img.jpg";
-            } else {
+            } else if (data.sellerID == 6) {
                 imageUrl = "shop/legendary/product/no_img.jpg";
+            } else {
+                imageUrl = "shop/levents/product/no_img.jpg";
             }
             const categoryID = parseInt(categoryCheck);
             const price = parseInt(productPrice);

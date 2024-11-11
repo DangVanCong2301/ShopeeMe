@@ -76,6 +76,7 @@ public class CartController : Controller {
     }
 
     [HttpPost]
+    [Route("/cart/add-to-cart")]
     public IActionResult AddToCart(int productID, double unitPrice, int quantity)
     {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
@@ -93,9 +94,12 @@ public class CartController : Controller {
             };
         } else if (checkProduct.Count() != 0) // Kiểm tra sản phẩm bị trùng trong giỏ hàng
         {
+            quantity = checkProduct[0].iQuantity + quantity;
+            double money = quantity * unitPrice;
+            _cartResponsitory.changeQuantity(Convert.ToInt32(sessionUserID), productID, quantity, money);
             status = new Status {
                 StatusCode = 0,
-                Message = "Sản phẩm đã có trong giỏ hàng"
+                Message = "Thêm sản phẩm thành công!"
             };
         }
         else
