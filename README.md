@@ -1,5 +1,5 @@
 # Sàn TMĐT SMe(Shopee) (Đồ án tốt nghiệp) (v2.0.2)
-# Công nghệ: ASP.NET Core MVC  7.0
+# Công nghệ: ASP.NET Core MVC  8.0
 - Luồng sử lý dữ liệu cơ bản: 
 ![ShopeeMe-SequenceDiagram-Software_Architecture drawio](https://github.com/user-attachments/assets/fd93c90b-e2d6-4118-b80e-6d50222115ce)
 ## Thành phần chính
