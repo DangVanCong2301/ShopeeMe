@@ -10,7 +10,9 @@ function getAPICheckout() {
     xhr.open('post', '/checkout/get-data', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
+
             data = JSON.parse(xhr.responseText);
+
             console.log(data);
 
             showAddressForm(data);
@@ -142,7 +144,19 @@ function openAddressModal() {
         document.querySelector(".spinner").classList.add("hide");
     }
     modal.classList.add('open');
-    backMainForm();
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/checkout/get-data', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+            
+            backMainForm(data);
+            
+        }
+    };
+    xhr.send(null);
 }
 
 function closeAddressModal() {
@@ -307,13 +321,16 @@ function openUpdate(addressID, userID) {
                         </div>
                         <div class="address-form__update-footer">
                             <div class="address-form__update-footer-btns">
-                                <button type="button" onclick="backMainForm()" class="btn">Trở lại</button>
+                                <button type="button" onclick="backMainForm()" class="btn btn__address-back">Trở lại</button>
                                 <button class="btn btn--primary" onclick="updateAddressAccount(${detail[0].pK_iAddressID}, ${detail[0].fK_iUserID})">Cập nhật</button>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
+            document.querySelector(".btn__address-back").addEventListener('click', () => {
+                openAddressModal(data);
+            });
         }
     };
     xhr.send(formData);
@@ -340,93 +357,96 @@ function updateAddressAccount(addressID, userID) {
 
             addSpinner();
 
-            setTimeout(() => {
-                document.querySelector(".modal").classList.remove('open');
+            if (result.status.statusCode == 1) {
                 setTimeout(() => {
-                    toast({ title: "Thông báo", msg: `Thêm địa chỉ thành công`, type: "success", duration: 5000 });
-                    document.querySelector(".modal").classList.add('open');
-                    let htmlAddress = "";
-                    htmlAddress +=
-                        `
-                        <div class="address-form">
-                            <div class="address-form__container">
-                                <div class="address-form__title">Địa chỉ của tôi</div>
-                                <div class="address-form__body">
-                                    <ul class="address-form__list">`;
-                                    for (let i = 0; i < result.addresses.length; i++) {
-                                        if (result.addresses[i].iDefault == 1) {
-                                            htmlAddress +=
-                                                `
-                                                                <li class="address-form__item default">
-                                                                    <div class="address-form__item-box">
-                                                                        <input type="radio" name="address" class="address-form__item-input" checked>
-                                                                    </div>
-                                                                    <div class="address-form__item-content">
-                                                                        <div class="address-form__item-header">
-                                                                            <div class="address-form__item-header-info">
-                                                                                <div class="address-form__item-name">${result.addresses[i].sFullName}</div>
-                                                                                <div class="address-form__item-phone">(+84) ${result.addresses[i].sPhone}</div>
-                                                                            </div>
-                                                                            <a href="javascript:openUpdate(${result.addresses[i].pK_iAddressID}, ${result.addresses[i].fK_iUserID})" class="address-form__item-update">Cập nhật</a>
+                    document.querySelector(".modal").classList.remove('open');
+                    setTimeout(() => {
+                        toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
+                        document.querySelector(".modal").classList.add('open');
+                        let htmlAddress = "";
+                        htmlAddress +=
+                            `
+                            <div class="address-form">
+                                <div class="address-form__container">
+                                    <div class="address-form__title">Địa chỉ của tôi</div>
+                                    <div class="address-form__body">
+                                        <ul class="address-form__list">`;
+                                        for (let i = 0; i < result.addresses.length; i++) {
+                                            if (result.addresses[i].iDefault == 1) {
+                                                htmlAddress +=
+                                                    `
+                                                                    <li class="address-form__item default">
+                                                                        <div class="address-form__item-box">
+                                                                            <input type="radio" name="address" class="address-form__item-input" checked>
                                                                         </div>
-                                                                        <div class="address-form__item-body">
-                                                                            <div class="address-form__item-body-row">
-                                                                                ${result.addresses[i].sAddress}
+                                                                        <div class="address-form__item-content">
+                                                                            <div class="address-form__item-header">
+                                                                                <div class="address-form__item-header-info">
+                                                                                    <div class="address-form__item-name">${result.addresses[i].sFullName}</div>
+                                                                                    <div class="address-form__item-phone">(+84) ${result.addresses[i].sPhone}</div>
+                                                                                </div>
+                                                                                <a href="javascript:openUpdate(${result.addresses[i].pK_iAddressID}, ${result.addresses[i].fK_iUserID})" class="address-form__item-update">Cập nhật</a>
                                                                             </div>
-                                                                        </div>
-                                                                        <button class="address-form__item-sub">Mặc định</button>
-                                                                    </div>
-                                                                </li>
-                                            `;
-                                        } else {
-                                            htmlAddress +=
-                                                `
-                                                                <li class="address-form__item">
-                                                                    <div class="address-form__item-box">
-                                                                        <input type="radio" name="address" class="address-form__item-input">
-                                                                    </div>
-                                                                    <div class="address-form__item-content">
-                                                                        <div class="address-form__item-header">
-                                                                            <div class="address-form__item-header-info">
-                                                                                <div class="address-form__item-name">${result.addresses[i].sFullName}</div>
-                                                                                <div class="address-form__item-phone">(+84) ${result.addresses[i].sPhone}</div>
+                                                                            <div class="address-form__item-body">
+                                                                                <div class="address-form__item-body-row">
+                                                                                    ${result.addresses[i].sAddress}
+                                                                                </div>
                                                                             </div>
-                                                                            <a href="javascript:openUpdate(${result.addresses[i].pK_iAddressID}, ${result.addresses[i].fK_iUserID})" class="address-form__item-update">Cập nhật</a>
+                                                                            <button class="address-form__item-sub">Mặc định</button>
                                                                         </div>
-                                                                        <div class="address-form__item-body">
-                                                                            <div class="address-form__item-body-row">
-                                                                                ${result.addresses[i].sAddress}
+                                                                    </li>
+                                                `;
+                                            } else {
+                                                htmlAddress +=
+                                                    `
+                                                                    <li class="address-form__item">
+                                                                        <div class="address-form__item-box">
+                                                                            <input type="radio" name="address" class="address-form__item-input">
+                                                                        </div>
+                                                                        <div class="address-form__item-content">
+                                                                            <div class="address-form__item-header">
+                                                                                <div class="address-form__item-header-info">
+                                                                                    <div class="address-form__item-name">${result.addresses[i].sFullName}</div>
+                                                                                    <div class="address-form__item-phone">(+84) ${result.addresses[i].sPhone}</div>
+                                                                                </div>
+                                                                                <a href="javascript:openUpdate(${result.addresses[i].pK_iAddressID}, ${result.addresses[i].fK_iUserID})" class="address-form__item-update">Cập nhật</a>
                                                                             </div>
+                                                                            <div class="address-form__item-body">
+                                                                                <div class="address-form__item-body-row">
+                                                                                    ${result.addresses[i].sAddress}
+                                                                                </div>
+                                                                            </div>
+                                                                            <button class="address-form__item-sub">Mặc định</button>
                                                                         </div>
-                                                                        <button class="address-form__item-sub">Mặc định</button>
-                                                                    </div>
-                                                                </li>
-                                            `;
+                                                                    </li>
+                                                `;
+                                            }
                                         }
-                                    }
-
-                                    htmlAddress += `</ul>
-                                    <button class="address-form__add-btn" onclick="openNewAddressForm()">
-                                        <i class="uil uil-plus address-form__add-btn-icon"></i>
-                                        <span>Thêm địa chỉ mới</span>
-                                    </button>
-                                </div>
-                                <div class="address-form__footer">
-                                    <button class="btn address-form__btn-destroy" onclick="closeAddressModal()">Huỷ</button>
-                                    <button class="btn btn--primary">Xác nhận</button>
+    
+                                        htmlAddress += `</ul>
+                                        <button class="address-form__add-btn" onclick="openNewAddressForm()">
+                                            <i class="uil uil-plus address-form__add-btn-icon"></i>
+                                            <span>Thêm địa chỉ mới</span>
+                                        </button>
+                                    </div>
+                                    <div class="address-form__footer">
+                                        <button class="btn address-form__btn-destroy" onclick="closeAddressModal()">Huỷ</button>
+                                        <button class="btn btn--primary">Xác nhận</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                    document.querySelector(".modal__body").innerHTML = htmlAddress;
-                }, 1000)
-            }, 2000);
+                        `;
+                        document.querySelector(".modal__body").innerHTML = htmlAddress;
+                        setDataAddressDesc(data);
+                    }, 1000)
+                }, 2000);
+            }
         }
     };
     xhr.send(formData);
 }
 
-function backMainForm() {
+function backMainForm(data) {
     if (updateAddressForm != null && newAddressForm != null) {
         updateAddressForm.classList.add("hide");
         newAddressForm.classList.add("hide");
@@ -837,9 +857,17 @@ function setPaymentsType(data) {
 
 function changePaymentType() {
     openModal();
-    let htmlPayment = "";
-    htmlPayment += 
-    `
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/checkout/get-data', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            let htmlPayment = "";
+            htmlPayment +=
+                `
             <div class="transport-form">
                 <div class="transport-form__header">
                     <div class="transport-form__header-title">Cập nhật phương thức thanh toán</div>
@@ -847,9 +875,9 @@ function changePaymentType() {
                 <div class="transport-form__body">
                     <div class="transport-form__body-list">
     `;
-    if (data.paymentTypes[0].pK_iPaymentID == 1) {
-        htmlPayment += 
-        `
+            if (data.paymentTypes[0].pK_iPaymentID == 1) {
+                htmlPayment +=
+                    `
                         <div class="transport-form__body-item payment-form__body-item active">
                             <div class="transport-form__body-item-left">
                                 <div class="transport-form__body-item-name">
@@ -861,9 +889,9 @@ function changePaymentType() {
                             </div>
                         </div>
         `;
-    } else {
-        htmlPayment += 
-        `
+            } else {
+                htmlPayment +=
+                    `
                         <div class="transport-form__body-item payment-form__body-item">
                             <div class="transport-form__body-item-left">
                                 <div class="transport-form__body-item-name">
@@ -875,10 +903,10 @@ function changePaymentType() {
                             </div>
                         </div>
         `;
-    }
-    if (data.paymentTypes[0].pK_iPaymentID == 4) {
-        htmlPayment += 
-        `
+            }
+            if (data.paymentTypes[0].pK_iPaymentID == 4) {
+                htmlPayment +=
+                    `
                         <div class="transport-form__body-item payment-form__body-item active">
                             <div class="transport-form__body-item-left">
                                 <div class="transport-form__body-item-name">
@@ -892,9 +920,9 @@ function changePaymentType() {
                             </div>
                         </div>
         `;
-    } else {
-        htmlPayment += 
-        `
+            } else {
+                htmlPayment +=
+                    `
                         <div class="transport-form__body-item payment-form__body-item">
                             <div class="transport-form__body-item-left">
                                 <div class="transport-form__body-item-name">
@@ -908,76 +936,9 @@ function changePaymentType() {
                             </div>
                         </div>
         `;
-    }
-
-    if (data.paymentTypes[0].pK_iPaymentID == 2) {
-        htmlPayment += 
-        `
-                        <div class="transport-form__body-item payment-form__body-item active">
-                            <div class="transport-form__body-item-left">
-                                <div class="transport-form__body-item-name">
-                                    <div class="checkout__payment-header-paypal-btn">
-                                        <span>Pay</span> <span>Pal</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="transport-form__body-item-right">
-                                <i class="uil uil-check"></i>
-                            </div>
-                        </div>
-        `;
-    } else {
-        htmlPayment += 
-        `
-                        <div class="transport-form__body-item payment-form__body-item">
-                            <div class="transport-form__body-item-left">
-                                <div class="transport-form__body-item-name">
-                                    <div class="checkout__payment-header-paypal-btn">
-                                        <span>Pay</span> <span>Pal</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="transport-form__body-item-right">
-                                <i class="uil uil-check"></i>
-                            </div>
-                        </div>
-        `;
-    }
-    if (data.paymentTypes[0].pK_iPaymentID == 3) {
-        htmlPayment += 
-        `
-                        <div class="transport-form__body-item payment-form__body-item active">
-                            <div class="transport-form__body-item-left">
-                                <div class="transport-form__body-item-name">
-                                    <div class="checkout__payment-header-vnpay-btn">
-                                        <span>VN</span><span>PAY</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="transport-form__body-item-right">
-                                <i class="uil uil-check"></i>
-                            </div>
-                        </div>
-        `;
-    } else {
-        htmlPayment += 
-        `
-                        <div class="transport-form__body-item payment-form__body-item">
-                            <div class="transport-form__body-item-left">
-                                <div class="transport-form__body-item-name">
-                                    <div class="checkout__payment-header-vnpay-btn">
-                                        <span>VN</span><span>PAY</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="transport-form__body-item-right">
-                                <i class="uil uil-check"></i>
-                            </div>
-                        </div>
-        `;
-    }
-    htmlPayment += 
-    `
+            }
+            htmlPayment +=
+                `
                     </div>
                 </div>
                 <div class="transport-form__footer">
@@ -986,46 +947,47 @@ function changePaymentType() {
                 </div>
             </div>
     `;
-    document.querySelector(".modal__body").innerHTML = htmlPayment;
-    const paymentItems = document.querySelectorAll(".payment-form__body-item");
-    for (let i = 0; i < paymentItems.length; i++) {
-        paymentItems[i].addEventListener('click', () => {
-            var paymentID;
-            if (i == 0) {
-                paymentItems[i].classList.add("active");
-                paymentItems[1].classList.remove("active");
-                paymentItems[2].classList.remove("active");
-                paymentItems[3].classList.remove("active");
-                paymentID = 1;
-                console.log("Cập nhật thanh toán COD");
-            } else if (i == 1) {
-                paymentItems[i].classList.add("active");
-                paymentItems[0].classList.remove("active");
-                paymentItems[2].classList.remove("active");
-                paymentItems[3].classList.remove("active");
-                console.log("Cập nhật thanh toán MOMO");
-                paymentID = 4;
-            } else if (i == 2) {
-                noticeIncompleteFunc()
-            } else if (i == 3) {
-                noticeIncompleteFunc()
+            document.querySelector(".modal__body").innerHTML = htmlPayment;
+            const paymentItems = document.querySelectorAll(".payment-form__body-item");
+            for (let i = 0; i < paymentItems.length; i++) {
+                paymentItems[i].addEventListener('click', () => {
+                    var paymentID;
+                    if (i == 0) {
+                        paymentItems[i].classList.add("active");
+                        paymentItems[1].classList.remove("active");
+                        paymentID = 1;
+                        console.log("Cập nhật thanh toán COD");
+                    } else if (i == 1) {
+                        paymentItems[i].classList.add("active");
+                        paymentItems[0].classList.remove("active");
+                        console.log("Cập nhật thanh toán MOMO");
+                        paymentID = 4;
+                    } else if (i == 2) {
+                        noticeIncompleteFunc()
+                    } else if (i == 3) {
+                        noticeIncompleteFunc()
+                    }
+                    var formData = new FormData();
+                    formData.append("paymentID", paymentID);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('post', '/checkout/update-payment', true);
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            const data = JSON.parse(xhr.responseText);
+                            console.log(data);
+                            toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                            closeModal();
+                            setPaymentsType(data);
+                        }
+                    };
+                    xhr.send(formData);
+                });
             }
-            var formData = new FormData();
-            formData.append("paymentID", paymentID);
-            var xhr = new XMLHttpRequest();
-            xhr.open('post', '/checkout/update-payment', true);
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    const data = JSON.parse(xhr.responseText);
-                    console.log(data);
-                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
-                    closeModal();
-                    setPaymentsType(data);
-                }
-            };
-            xhr.send(formData);
-        });
-    }
+            
+        }
+    };
+    xhr.send(null);
+    
 }
 
 function choosePaymentsType() {

@@ -469,20 +469,25 @@ function addToCart(productID, price) {
 
                 let htmlCartDetail = "";
                 if (data.status.statusCode == 1) {
-                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
-                    data.cartDetails.forEach(element => {
-                    htmlCartDetail +=
-                    `<li class="header__cart-item">
+                toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
+                htmlCartDetail +=
+                `<div class="header__cart-list">
+                    <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
+                    <ul class="header__cart-list-item">
+                `;
+                data.cartDetails.forEach(obj => {
+                    htmlCartDetail += 
+                    `<a href="/product/detail/${obj.pK_iProductID}" class="header__cart-item">
                         <div class="header__cart-item-img">
-                            <img src="/img/${element.sImageUrl}" class="header__cart-item-img" alt="">
+                            <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
                         </div>
                         <div class="header__cart-item-info">
                             <div class="header__cart-item-head">
-                                <h5 class="header__cart-item-name">${element.sProductName}</h5>
+                                <h5 class="header__cart-item-name">${obj.sProductName}</h5>
                                 <div class="header__cart-item-price-wrap">
-                                    <span class="header__cart-item-price">${element.dUnitPrice} đ</span>
+                                    <span class="header__cart-item-price">${obj.dUnitPrice} đ</span>
                                     <span class="header__cart-item-multifly">X</span>
-                                    <span class="header__cart-item-qnt">${element.iQuantity}</span>
+                                    <span class="header__cart-item-qnt">${obj.iQuantity}</span>
                                 </div>
                             </div>
                             <div class="header__cart-item-body">
@@ -492,42 +497,63 @@ function addToCart(productID, price) {
                                 <span class="header__cart-item-remove">Xoá</span>
                             </div>
                         </div>
-                    </li>`;
-                    });
-                    document.querySelector(".header__cart-notice").innerText = data.cartCount;
-                    document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
-                } else if (data.status.statusCode == -1) {
+                    </a>
+                `
+                });
+                    htmlCartDetail +=
+                    `</ul>
+                    <a href="/cart" class="header__cart-btn btn--primary">
+                        Xem giỏ hàng
+                    </a>
+                </div>
+                `;
+                document.querySelector(".header__cart-container").innerHTML = htmlCartDetail;
+                document.querySelector(".header__cart-notice").innerText = data.cartCount;
+                }
+                else if (data.status.statusCode == -1) {
                     window.location.assign("/user/login")
                 } else {
                     toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
-                    data.cartDetails.forEach(element => {
+                htmlCartDetail +=
+                `<div class="header__cart-list">
+                    <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
+                    <ul class="header__cart-list-item">
+                `;
+                data.cartDetails.forEach(obj => {
+                    htmlCartDetail += 
+                    `<a href="/product/detail/${obj.pK_iProductID}" class="header__cart-item">
+                        <div class="header__cart-item-img">
+                            <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
+                        </div>
+                        <div class="header__cart-item-info">
+                            <div class="header__cart-item-head">
+                                <h5 class="header__cart-item-name">${obj.sProductName}</h5>
+                                <div class="header__cart-item-price-wrap">
+                                    <span class="header__cart-item-price">${obj.dUnitPrice} đ</span>
+                                    <span class="header__cart-item-multifly">X</span>
+                                    <span class="header__cart-item-qnt">${obj.iQuantity}</span>
+                                </div>
+                            </div>
+                            <div class="header__cart-item-body">
+                                <span class="header__cart-item-description">
+                                    Phân loại hàng:Bạc
+                                </span>
+                                <span class="header__cart-item-remove">Xoá</span>
+                            </div>
+                        </div>
+                    </a>
+                `
+                });
                     htmlCartDetail +=
-                        `<li class="header__cart-item">
-                            <div class="header__cart-item-img">
-                                <img src="/img/${element.sImageUrl}" class="header__cart-item-img" alt="">
-                            </div>
-                            <div class="header__cart-item-info">
-                                <div class="header__cart-item-head">
-                                    <h5 class="header__cart-item-name">${element.sProductName}</h5>
-                                    <div class="header__cart-item-price-wrap">
-                                        <span class="header__cart-item-price">${element.dUnitPrice} đ</span>
-                                        <span class="header__cart-item-multifly">X</span>
-                                        <span class="header__cart-item-qnt">${element.iQuantity}</span>
-                                    </div>
-                                </div>
-                                <div class="header__cart-item-body">
-                                    <span class="header__cart-item-description">
-                                        Phân loại hàng:Bạc
-                                    </span>
-                                    <span class="header__cart-item-remove">Xoá</span>
-                                </div>
-                            </div>
-                        </li>`;
-                        });
-                    document.querySelector(".header__cart-notice").innerText = data.cartCount;
-                    document.querySelector(".header__cart-list-item").innerHTML = htmlCartDetail;
+                    `</ul>
+                    <a href="/cart" class="header__cart-btn btn--primary">
+                        Xem giỏ hàng
+                    </a>
+                </div>
+                `;
+                document.querySelector(".header__cart-container").innerHTML = htmlCartDetail;
+                document.querySelector(".header__cart-notice").innerText = data.cartCount;
                 }
-
             }
         }
         xhr.send(formData);

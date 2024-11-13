@@ -74,15 +74,15 @@ public class CheckoutResponsitory : ICheckoutResponsitory
         SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
         SqlParameter phoneParam = new SqlParameter("@sPhone", phone);
         SqlParameter addressParam = new SqlParameter("@sAddress", address);
-        _context.Database.ExecuteSqlRaw("sp_UpdateAddressAccountByID @PK_iAddressID, @FK_iUserID, @sPhone, @sAddress", addressIDParam, userIDParam, phoneParam, addressParam);
+        _context.Database.ExecuteSqlRaw("EXEC sp_UpdateAddressAccountByID @PK_iAddressID, @FK_iUserID, @sPhone, @sAddress", addressIDParam, userIDParam, phoneParam, addressParam);
         return true;
     }
 
     public bool updateAddressAccountUserByID(int userID, string fullname = "")
     {
-        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
         SqlParameter fullnameParam = new SqlParameter("@sFullName", fullname);
-        _context.Database.ExecuteSqlRaw("sp_UpdateAddressAccountUserByID @PK_iUserID, @sFullName", userIDParam, fullnameParam);
+        _context.Database.ExecuteSqlRaw("EXEC sp_UpdateAddressAccountUserByID @FK_iUserID, @sFullName", userIDParam, fullnameParam);
         return true;
     }
 

@@ -125,6 +125,12 @@ function setOrderCode(data) {
     document.querySelector(".order-code").innerHTML = htmlOrderCode;
 }
 
+function downloadPdf() {
+    const orderCode = document.querySelector(".order-code");
+    console.log(orderCode);
+    html2pdf().from(orderCode).save();
+}
+
 // Tách lấy chữ số
 // Nguồn: http://vncoding.net/2015/10/30/tach-cac-chu-so-thuoc-hang-tram-hang-chuc-hang-don-vi/
 function money(number) {

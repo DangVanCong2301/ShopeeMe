@@ -83,13 +83,22 @@ public class CheckoutController : Controller {
     [HttpPost]
     [Route("/checkout/address-update")]
     public IActionResult AddressUpdate(int addressID, int userID, string fullname = "", string phone = "", string address = "") {
-        _checkoutResponsitory.updateAddressAccountUserByID(userID, fullname);
-        _checkoutResponsitory.updateAddressAccountByID(addressID, userID, phone, address);
+        Status status;
+        if (_checkoutResponsitory.updateAddressAccountUserByID(userID, fullname) && _checkoutResponsitory.updateAddressAccountByID(addressID, userID, phone, address)) {
+            status = new Status
+            {
+                StatusCode = 1,
+                Message = "Cập nhật thành công!"
+            };
+        } else {
+            status = new Status
+            {
+                StatusCode = -1,
+                Message = "Cập nhật thất bại!"
+            };
+        }
         List<Address> addresses = _checkoutResponsitory.checkAddressAccount(Convert.ToInt32(userID)).ToList();
-        Status status = new Status {
-            StatusCode = 1,
-            Message = "Cập nhật thành công"
-        };
+        
         CheckoutViewModel model = new CheckoutViewModel {
             Addresses = addresses,
             Status = status
