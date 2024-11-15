@@ -96,7 +96,7 @@ namespace Project.Controllers
             IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
             IEnumerable<Chat> chats = _chatRepository.getChatByUserID(Convert.ToInt32(sessionUserID));
             int cartCount = carts.Count();
-            ShopeeViewModel model = new ShopeeViewModel {
+            ShopeeViewModel model = new ShopeeViewModel { // https://shareprogramming.net/dto-la-gi-dung-dto-trong-nhung-truong-hop-nao/
                 Stores = stores,
                 Products = products,
                 ParentCategories = parentCategories,
