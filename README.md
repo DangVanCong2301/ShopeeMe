@@ -45,7 +45,7 @@
 ### Trang sản phẩm tương tự
 ![image](https://github.com/user-attachments/assets/78f7eb1f-af99-4ccc-b980-db57efa32a0c)
 ### Trang sản phẩm
-![image](https://github.com/user-attachments/assets/3277c28e-a6a9-465c-87f6-5644a9578178)
+![image](https://github.com/user-attachments/assets/2d2189be-aba9-4194-a32b-759895bafec1)
 ![image](https://github.com/user-attachments/assets/380a489f-85df-4042-ac73-0732f90b3802)
 ### Trang cửa hàng
 ![Screenshot 2024-11-08 174151](https://github.com/user-attachments/assets/0f29dded-b194-4adc-8eca-34ee3c6b2e3e)
