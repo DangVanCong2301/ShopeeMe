@@ -43,16 +43,7 @@ public class CartController : Controller {
         if (sessionUserID == 0) {
             return Redirect("/user/login");
         }
-        IEnumerable<Store> stores = _homeResponsitory.getStores();
-        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)); 
-        // Lấy số lượng giỏ hàng
-        int cartCount = carts.Count();
-        ShopeeViewModel model = new ShopeeViewModel {
-            Stores = stores,
-            CartDetails = carts,
-            CartCount = cartCount
-        };
-        return View(model); 
+        return View(); 
     }
 
     [HttpPost]

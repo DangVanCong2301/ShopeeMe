@@ -49,11 +49,11 @@ public class ProductController : Controller {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         var sessionParentCategoryID = _accessor?.HttpContext?.Session.GetInt32("CurrentParentCategoryID");
         List<User> user = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-        if (user.Count() == 0 && currentCategory == 0) {
+        if (user.Count() == 0 && currentCategory == 0 && categoryID == 0) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        } else if (user.Count() != 0 && user[0].FK_iRoleID == 2 && currentCategory == 0) {
+        } else if (user.Count() != 0 && user[0].FK_iRoleID == 2 && currentCategory == 0 && categoryID == 0) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        } else if (user.Count() != 0 && user[0].FK_iRoleID == 1 && currentCategory == 0) {
+        } else if (user.Count() != 0 && user[0].FK_iRoleID == 1 && currentCategory == 0 && categoryID == 0) {
             products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
         } else if (categoryID != 0) {
             currentCategory = categoryID;

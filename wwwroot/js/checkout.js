@@ -321,7 +321,7 @@ function openUpdate(addressID, userID) {
                         </div>
                         <div class="address-form__update-footer">
                             <div class="address-form__update-footer-btns">
-                                <button type="button" onclick="backMainForm()" class="btn btn__address-back">Trở lại</button>
+                                <button type="button" onclick="closeModal()" class="btn btn__address-back">Thoát</button>
                                 <button class="btn btn--primary" onclick="updateAddressAccount(${detail[0].pK_iAddressID}, ${detail[0].fK_iUserID})">Cập nhật</button>
                             </div>
                         </div>
