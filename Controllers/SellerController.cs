@@ -386,6 +386,28 @@ public class SellerController : Controller
         return Ok(model);
     }
 
+    [HttpPost]
+    [Route("/seller/add-chat")]
+    public IActionResult AddChat(int chatID = 0, string msg = "") {
+        int personID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("SellerID"));
+        Status status;
+        if (_chatRepository.insertChatDetail(chatID, personID, msg)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Thêm trò chuyện thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Thêm trò chuyện thất bại!"
+            };
+        }
+        DataViewModel model = new DataViewModel {
+            Status = status
+        };
+        return Ok(model);
+    }
+
     [HttpGet]
     [Route("/seller/login")]
     public IActionResult Login() {

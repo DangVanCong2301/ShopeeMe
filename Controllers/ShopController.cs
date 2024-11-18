@@ -164,4 +164,26 @@ public class ShopController : Controller
         };
         return Ok(model);
     }
+
+    [HttpPost]
+    [Route("/shop/add-chat")]
+    public IActionResult AddChat(int chatID = 0, string msg = "") {
+        int personID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
+        Status status;
+        if (_chatRepository.insertChatDetail(chatID, personID, msg)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Thêm trò chuyện thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Thêm trò chuyện thất bại!"
+            };
+        }
+        DataViewModel model = new DataViewModel {
+            Status = status
+        };
+        return Ok(model);
+    }
 }

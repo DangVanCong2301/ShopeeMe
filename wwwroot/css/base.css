@@ -1,5 +1,4 @@
 ﻿/*=============== GOOGLE FONTS ===============*/
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Lemon&family=Montserrat:wght@400;600&family=Open+Sans:wght@400;600&family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root {
@@ -36,7 +35,6 @@
 
 html {
     font-size: var(--normal-font-size);
-    /* line-height: 1.6rem; */
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
 }
@@ -1687,6 +1685,7 @@ i.home-product-item__like-icon-empty {
 .chat__body-message-bottom-item-icon {
     font-size: 18px;
     color: #8ea4d1;
+    cursor: pointer;
 }
 
 .chat__message-time {

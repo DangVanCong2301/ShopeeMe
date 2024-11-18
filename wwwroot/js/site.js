@@ -642,7 +642,6 @@ function showChatDetail(chatID) {
                                 <div class="chat__message-body-me-container">
                                     <span class="chat__message-body-me-content">
                                         ${element.sChat}<br>
-                                        <span class="chat__message-body-me-after-hour">Tin nhắn Tự động Ngoài giờ làm việc</span>
                                     </span>
                                     <div class="chat__message-body-me-time">${getTime(element.dTime)}</div>
                                 </div>
@@ -653,8 +652,8 @@ function showChatDetail(chatID) {
                         `</div>
                         <div class="chat__body-message-bottom">
                             <div class="chat__body-message-bottom-box">
-                                <textarea type="text" class="chat__body-message-bottom-input"
-                                    placeholder="Nhập nội dung tin nhắn"></textarea>
+                                <input type="text" class="chat__body-message-bottom-input"
+                                    placeholder="Nhập nội dung tin nhắn">
                             </div>
                             <div class="chat__body-message-bottom-btns">
                                 <div class="chat__body-message-bottom-btns-left">
@@ -677,7 +676,7 @@ function showChatDetail(chatID) {
                                     </ul>
                                 </div>
                                 <div class="chat__body-message-bottom-btns-right">
-                                    <div class="chat__body-message-bottom-item">
+                                    <div class="chat__body-message-bottom-item chat__body-message-bottom-item-send hide-on-destop">
                                         <i class="uil uil-message chat__body-message-bottom-item-icon"></i>
                                     </div>
                                 </div>
@@ -686,6 +685,34 @@ function showChatDetail(chatID) {
             `;
             document.querySelector(".chat__body-message").innerHTML = htmlMessage;
             
+            document.querySelector(".chat__body-message-bottom-input").addEventListener('keyup', () => {
+                if (document.querySelector(".chat__body-message-bottom-input").value != "") {
+                    document.querySelector(".chat__body-message-bottom-item-send").classList.remove("hide-on-destop");
+                } else {
+                    document.querySelector(".chat__body-message-bottom-item-send").classList.add("hide-on-destop");
+                }
+            });
+
+            document.querySelector(".chat__body-message-bottom-item-send").addEventListener('click', () => {
+                let chat = document.querySelector(".chat__body-message-bottom-input").value;
+                var formData = new FormData();
+                formData.append("chatID", data.chat[0].pK_iChatID);
+                formData.append("msg", chat);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('post', '/shop/add-chat', true);
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        const data = JSON.parse(xhr.responseText);
+
+                        console.log(data);
+
+                        showChatDetail(chatID);
+                        
+                    }
+                };
+                xhr.send(formData);
+            });
         }
     };
     xhr.send(null);

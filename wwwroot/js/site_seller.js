@@ -1517,7 +1517,6 @@ function showChatMessage(chatID) {
                                             <div class="admin__chat-msg-body-me-container">
                                                 <span class="admin__chat-msg-body-me-content">
                                                     ${element.sChat}<br>
-                                                    <span class="admin__chat-msg-body-me-after-hour">Tin nhắn Tự động Ngoài giờ làm việc</span>
                                                 </span>
                                                 <div class="admin__chat-msg-body-me-time">${getTime(element.dTime)}</div>
                                             </div>
@@ -1531,7 +1530,7 @@ function showChatMessage(chatID) {
                                                 <div class="admin__chat-msg-body-texted-content">
                                                 ${element.sChat}
                                                 </div>
-                                                <div class="admin__chat-msg-body-texted-time">13:28</div>
+                                                <div class="admin__chat-msg-body-texted-time">${getTime(element.dTime)}</div>
                                             </div>
                                         </div>
                                         `;
@@ -1574,6 +1573,27 @@ function showChatMessage(chatID) {
                 } else {
                     document.querySelector(".admin__chat-msg-footer-reply-send").classList.add("hide-on-destop");
                 }
+            });
+
+            document.querySelector(".admin__chat-msg-footer-reply-send").addEventListener('click', () => {
+                let chat = document.querySelector(".admin__chat-msg-footer-reply-input").value;
+                var formData = new FormData();
+                formData.append("chatID", data.chat[0].pK_iChatID);
+                formData.append("msg", chat);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('post', '/seller/add-chat', true);
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        const data = JSON.parse(xhr.responseText);
+
+                        console.log(data);
+
+                        showChatMessage(chatID);
+                        
+                    }
+                };
+                xhr.send(formData);
             });
         }
     };

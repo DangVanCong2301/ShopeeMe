@@ -11,5 +11,6 @@ public class OrderDetail
     public double dMoney { get; set; }
     public double dTransportPrice { get; set; }
     public int iOrderStatusCode { get; set; }
+    public string sOrderStatusName { get; set; }
     public DateTime dDate { get; set; }
 }
