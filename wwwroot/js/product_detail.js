@@ -733,28 +733,6 @@ function setDataReviewer(data) {
                         </div>
                     </div>
                 </div>`;
-                if (data.userInfo.length != 0) {
-                    htmlReviewer += `
-                    <div class="comment__add">
-                        <div class="comment__add-avatar" style="background-image: url(/img/profile_avatar.jpg);">
-                        </div>
-                        <div class="comment__add-desc">
-                            <div class="comment__add-control">
-                                <input type="text" placeholder="Phản hồi..." class="comment__add-input"
-                                    onclick="showCommentAddBtn()" onkeyup="changeCommentAddBtn(this)">
-                            </div>
-                            <div class="comment__add-btns">
-                                <div class="comment__add-btn-felling">
-                                    <i class="uil uil-smile-beam comment__add-btn-felling-icon"></i>
-                                </div>
-                                <div class="comment__add-btn">
-                                    <div class="comment__add-btn-destroy" onclick="hideCommentAddBtn()">Huỷ</div>
-                                    <div class="comment__add-btn-reply">Phản hồi</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-                } 
                 htmlReviewer += `
                 <div class="comment__body-list">`;
                 if (data.reviewers.length == 0) {
@@ -773,8 +751,10 @@ function setDataReviewer(data) {
                                     <img src="/img/${element.sImageProfile}" alt="" class="comment__user-img">
                                     <p class="comment__username">${element.sUserName}</p>
                                     <p class="comment__at">2 tuần trước</p>
-                                </div>
-                                <div class="comment__more">
+                                </div>`;
+                                if (data.userInfo.length != 0 && element.fK_iUserID == data.userInfo[0].fK_iUserID) {
+                                    htmlReviewer += 
+                                `<div class="comment__more">
                                     <i class="uil uil-ellipsis-v comment__more-icon"></i>
                                     <div class="comment__more-container">
                                         <div class="comment__more-item">
@@ -786,7 +766,9 @@ function setDataReviewer(data) {
                                             <span>Xoá</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>`;
+                                }
+                                htmlReviewer += `
                                 <div class="comment__controls">
                                     <div class="comment__like">
                                         <i class="uil uil-thumbs-up comment__like-icon"></i>

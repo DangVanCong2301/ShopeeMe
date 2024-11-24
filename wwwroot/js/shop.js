@@ -181,7 +181,7 @@ function getShopInfo(data) {
         });
     }
 
-    if (data.makeFriends.length != 0) {
+    if (data.makeFriends.length != 0 && data.makeFriends[0].iMakeStatusCode == 1) {
         document.querySelector(".shop__header-store-btn-chat").addEventListener("click", () => {
             displayChat();
         });
