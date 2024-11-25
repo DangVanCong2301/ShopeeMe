@@ -20,4 +20,9 @@ public interface IProductResponsitory {
     IEnumerable<TransportPrice> getTransportPrice();
     // Reviewer
     IEnumerable<Reviewer> getReviewerByProductID(int productID);
+    // Favorite
+    IEnumerable<Favorite> getFavoritesByProductID(int productID);
+    IEnumerable<Favorite> getFavoritesByProductIDAndUserID(int productID, int userID);
+    bool insertFavorite(int userID, int productID);
+    bool deleteFavorite(int userID, int productID);
 }

@@ -58,7 +58,7 @@ function getCartItemsDestop(data) {
                         <div class="cart__purchase-voucher">
                             <div class="cart__purchase-voucher-title">
                                 <i class="uil uil-store cart__body-discount-icon"></i>
-                                <div class="cart__purchase-voucher-sub">Shopee Voucher</div>
+                                <div class="cart__purchase-voucher-sub">SMe Voucher</div>
                             </div>
                             <a href="#" class="cart__purchase-voucher-link">Chọn hoặc nhập mã</a>
                         </div>

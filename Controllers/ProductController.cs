@@ -98,14 +98,18 @@ public class ProductController : Controller {
     [HttpPost]
     [Route("/product/get-data-detail")]
     public IActionResult GetDetail() {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        var sessionCurrentProductID = _accessor?.HttpContext?.Session.GetInt32("CurrentProductID");
-        var product = _productResponsitory.getProductByID(Convert.ToInt32(sessionCurrentProductID));
-        List<Store> store = _shopResponsitory.getShopByProductID(Convert.ToInt32(sessionCurrentProductID)).ToList();
-        IEnumerable<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(Convert.ToInt32(sessionUserID));
-        IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(Convert.ToInt32(sessionCurrentProductID));
+        int userID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
+        int productID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentProductID"));
+        var product = _productResponsitory.getProductByID(productID);
+        IEnumerable<Favorite> favorites = _productResponsitory.getFavoritesByProductID(productID);
+        IEnumerable<Favorite> favorite = _productResponsitory.getFavoritesByProductIDAndUserID(productID, userID);
+        List<Store> store = _shopResponsitory.getShopByProductID(productID).ToList();
+        IEnumerable<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(userID);
+        IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(productID);
         ProductViewModel model = new ProductViewModel {
             Product = product,
+            Favorites = favorites,
+            Favorite = favorite,
             Store = store,
             UserInfo = userInfo,
             Reviewers = reviewers
@@ -162,6 +166,48 @@ public class ProductController : Controller {
             TotalPage = totalPage,
             PageSize = pageSize,
             CurrentPage = currentPage
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/product/add-favorite")]
+    public IActionResult AddFavorite(int userID = 0, int productID = 0) {
+        Status status;
+        if (_productResponsitory.insertFavorite(userID, productID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Thêm yêu thích thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Thêm yêu thích thất bại!"
+            };
+        }
+        ProductViewModel model = new ProductViewModel {
+            Status = status
+        };
+        return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/product/delete-favorite")]
+    public IActionResult DeleteFavorite(int userID = 0, int productID = 0) {
+        Status status;
+        if (_productResponsitory.deleteFavorite(userID, productID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Bỏ yêu thích thành công!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Bỏ yêu thích thất bại!"
+            };
+        }
+        ProductViewModel model = new ProductViewModel {
+            Status = status
         };
         return Ok(model);
     }

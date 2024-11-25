@@ -174,4 +174,33 @@ public class ProductResponsitory : IProductResponsitory {
         SqlParameter productIDParam = new SqlParameter("@FK_iProductID", productID);
         return _context.Reviewers.FromSqlRaw("EXEC sp_GetReviewerByProductID @FK_iProductID", productIDParam);
     }
+
+    public IEnumerable<Favorite> getFavoritesByProductID(int productID)
+    {
+        SqlParameter productIDParam = new SqlParameter("@FK_iProductID", productID);
+        return _context.Favorites.FromSqlRaw("EXEC sp_GetFavoritesByProductID @FK_iProductID", productIDParam);
+    }
+
+    public IEnumerable<Favorite> getFavoritesByProductIDAndUserID(int productID, int userID)
+    {
+        SqlParameter productIDParam = new SqlParameter("@FK_iProductID", productID);
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        return _context.Favorites.FromSqlRaw("EXEC sp_GetFavoritesByProductIDAndUserID @FK_iProductID, @FK_iUserID", productIDParam, userIDParam);
+    }
+
+    public bool insertFavorite(int userID, int productID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        SqlParameter productIDParam = new SqlParameter("@FK_iProductID", productID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_InsertFavorite @FK_iUserID, @FK_iProductID", userIDParam, productIDParam);
+        return true;
+    }
+
+    public bool deleteFavorite(int userID, int productID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        SqlParameter productIDParam = new SqlParameter("@FK_iProductID", productID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_DeleteFavorite @FK_iUserID, @FK_iProductID", userIDParam, productIDParam);
+        return true;
+    }
 }

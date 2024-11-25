@@ -1211,7 +1211,7 @@ i.home-product-item__like-icon-empty {
 }
 
     .pagination-item--active .pagination-item__link:hover { 
-        background-color: #ed5c3f;
+        opacity: .9;
     }
 
 /* Chat */

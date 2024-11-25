@@ -867,18 +867,15 @@ function changePaymentType() {
 
             let htmlPayment = "";
             htmlPayment +=
-                `
-            <div class="transport-form">
+            `<div class="transport-form">
                 <div class="transport-form__header">
                     <div class="transport-form__header-title">Cập nhật phương thức thanh toán</div>
                 </div>
                 <div class="transport-form__body">
-                    <div class="transport-form__body-list">
-    `;
+                    <div class="transport-form__body-list">`;
             if (data.paymentTypes[0].pK_iPaymentID == 1) {
-                htmlPayment +=
-                    `
-                        <div class="transport-form__body-item payment-form__body-item active">
+                        htmlPayment +=
+                        `<div class="transport-form__body-item payment-form__body-item active">
                             <div class="transport-form__body-item-left">
                                 <div class="transport-form__body-item-name">
                                     <div class="checkout__payment-header-cod-btn">Thanh toán khi nhận hàng (COD)</div>
@@ -887,12 +884,10 @@ function changePaymentType() {
                             <div class="transport-form__body-item-right">
                                 <i class="uil uil-check"></i>
                             </div>
-                        </div>
-        `;
+                        </div>`;
             } else {
-                htmlPayment +=
-                    `
-                        <div class="transport-form__body-item payment-form__body-item">
+                        htmlPayment +=
+                        `<div class="transport-form__body-item payment-form__body-item">
                             <div class="transport-form__body-item-left">
                                 <div class="transport-form__body-item-name">
                                     <div class="checkout__payment-header-cod-btn">Thanh toán khi nhận hàng (COD)</div>
@@ -901,13 +896,11 @@ function changePaymentType() {
                             <div class="transport-form__body-item-right">
                                 <i class="uil uil-check"></i>
                             </div>
-                        </div>
-        `;
+                        </div>`;
             }
             if (data.paymentTypes[0].pK_iPaymentID == 4) {
-                htmlPayment +=
-                    `
-                        <div class="transport-form__body-item payment-form__body-item active">
+                        htmlPayment +=
+                        `<div class="transport-form__body-item payment-form__body-item active">
                             <div class="transport-form__body-item-left">
                                 <div class="transport-form__body-item-name">
                                     <div class="checkout__payment-header-momo-btn">
@@ -918,12 +911,10 @@ function changePaymentType() {
                             <div class="transport-form__body-item-right">
                                 <i class="uil uil-check"></i>
                             </div>
-                        </div>
-        `;
+                        </div>`;
             } else {
-                htmlPayment +=
-                    `
-                        <div class="transport-form__body-item payment-form__body-item">
+                        htmlPayment +=
+                        `<div class="transport-form__body-item payment-form__body-item">
                             <div class="transport-form__body-item-left">
                                 <div class="transport-form__body-item-name">
                                     <div class="checkout__payment-header-momo-btn">
@@ -934,19 +925,16 @@ function changePaymentType() {
                             <div class="transport-form__body-item-right">
                                 <i class="uil uil-check"></i>
                             </div>
-                        </div>
-        `;
+                        </div>`;
             }
-            htmlPayment +=
-                `
-                    </div>
+                    htmlPayment +=
+                    `</div>
                 </div>
                 <div class="transport-form__footer">
                     <div class="transport-form__btn btn" onclick="closeModal()">TRỞ LẠI</div>
                     <div class="transport-form__btn btn btn--primary">HOÀN THÀNH</div>
                 </div>
-            </div>
-    `;
+            </div>`;
             document.querySelector(".modal__body").innerHTML = htmlPayment;
             const paymentItems = document.querySelectorAll(".payment-form__body-item");
             for (let i = 0; i < paymentItems.length; i++) {
@@ -1117,48 +1105,61 @@ function setTotalPrice(data) {
 // Add To Order
 function addToOrder(totalPrice) {
     document.querySelector(".checkout__payment-order-btn-submit").addEventListener("click", () => {
-        if (data.paymentTypes.length == 0) {
-            console.log("Chưa có phương thức thanh toán");
-            openModal();
-            document.querySelector(".modal__body").innerHTML = 
-            `
-                <div class="modal__confirm">
-                    <div class="modal__confirm-header">
-                        <div class="modal__confirm-title">Thông báo</div>
-                        <i class="uil uil-multiply modal__confirm-close" onclick="closeModal()"></i>
-                    </div>
-                    <div class="modal__confirm-desc">
-                        Bạn chưa chọn phương thức thanh toán!
-                    </div>
-                    <div class="modal__confirm-btns">
-                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
-                        <div class="modal__confirm-btn-send"onclick="choosePaymentsType()">Chọn phương thức thanh toán</div>
-                    </div>
-                </div>
-            `;
-        } else {
-            var formData = new FormData();
-            formData.append("totalPrice", totalPrice);
-            formData.append("paymentTypeID", data.paymentTypes[0].pK_iPaymentTypeID);
-            formData.append("orderStatusID", 2);
-    
-            var xhr = new XMLHttpRequest();
-            xhr.open('post', '/checkout/add-to-order', true);
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    const result = JSON.parse(xhr.responseText);
-                    console.log(result);
-                    toast({title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000});
-                    if (data.paymentTypes[0].pK_iPaymentID == 4) {
-                        window.location.assign("/payment/momo");
-                    } else {
-                        window.location.assign("/user/purchase");
-                    }
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/checkout/get-data', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+                if (data.paymentTypes.length == 0) {
+                    console.log("Chưa có phương thức thanh toán");
+                    openModal();
+                    document.querySelector(".modal__body").innerHTML = 
+                        `<div class="modal__confirm">
+                            <div class="modal__confirm-header">
+                                <div class="modal__confirm-title">Thông báo</div>
+                                <i class="uil uil-multiply modal__confirm-close" onclick="closeModal()"></i>
+                            </div>
+                            <div class="modal__confirm-desc">
+                                Bạn chưa chọn phương thức thanh toán!
+                            </div>
+                            <div class="modal__confirm-btns">
+                                <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                                <div class="modal__confirm-btn-send"onclick="choosePaymentsType()">Chọn phương thức thanh toán</div>
+                            </div>
+                        </div>`;
+                } else {
+                    const paymentTypeID = data.paymentTypes[0].pK_iPaymentTypeID;
+                    const paymentID = data.paymentTypes[0].pK_iPaymentID;
+                    addOrder(totalPrice, paymentTypeID, paymentID);
                 }
-            };
-            xhr.send(formData);
-        }
+            }
+        };
+        xhr.send(null);
     });
+}
+
+function addOrder(totalPrice, paymentTypeID, paymentID) {
+    var formData = new FormData();
+    formData.append("totalPrice", totalPrice);
+    formData.append("paymentTypeID", paymentTypeID);
+    formData.append("paymentID", paymentID);
+    formData.append("orderStatusID", 2);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/checkout/add-to-order', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const result = JSON.parse(xhr.responseText);
+            console.log(result);
+            toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
+            if (data.paymentTypes[0].pK_iPaymentID == 4) {
+                window.location.assign("/payment/momo");
+            } else {
+                window.location.assign("/user/purchase");
+            }
+        }
+    };
+    xhr.send(formData);
 }
 
 // Modal

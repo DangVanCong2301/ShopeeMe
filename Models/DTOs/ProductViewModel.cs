@@ -13,6 +13,8 @@ public class ProductViewModel {
     public IEnumerable<Reviewer> Reviewers { get; set; }
     public IEnumerable<Product> Product { get; set; }
     public IEnumerable<Store> Store { get; set; }
+    public IEnumerable<Favorite> Favorites { get; set; }
+    public IEnumerable<Favorite> Favorite { get; set; }
     public int UserID { get; set; }
     public int TotalPage { get; set; }
     public int CurrentPage { get; set; }

@@ -200,13 +200,21 @@ function loadDetailInfo(data) {
                                             <a class="detail__social-link" href="#">
                                                 <i class="fab fa-pinterest"></i>
                                             </a>
-                                        </div>
+                                        </div>`;
+                                        if (data.userInfo.length != 0 && data.favorite.length != 0 && data.userInfo[0].fK_iUserID == data.favorite[0].fK_iUserID) {
+                                        htmlProductDetail += 
+                                        `<div class="detail__favorite" title="Bỏ yêu thích">
+                                            <i class="fas fa-heart detail__favorite-icon detail__favorite-icon-remove"></i>
+                                            <div class="detail__favorite-text">Đã thích (${data.favorites.length})</div>
+                                        </div>`;
+                                        } else {
+                                        htmlProductDetail += `
                                         <div class="detail__favorite" title="Yêu thích">
-                                            <i class="uil uil-heart-alt detail__favorite-icon"></i>
-                                        </div>
-                                        <!-- <div class="detail__favorite" title="Bỏ yêu thích">
-                                            <i class="fas fa-heart detail__favorite-icon"></i>
-                                        </div> -->
+                                            <i class="uil uil-heart-alt detail__favorite-icon detail__favorite-icon-add"></i>
+                                            <div class="detail__favorite-text">Đã thích (${data.favorites.length})</div>
+                                        </div>`;
+                                        }
+                                    htmlProductDetail += `    
                                     </div>
                                     <div class="detail__right-loading">
                                         <div class="detail__right-loading-product-name"></div>
@@ -395,9 +403,88 @@ function loadDetailInfo(data) {
     document.querySelector(".detail").innerHTML = htmlProductDetail;
     loadingProductDetail();
 
+    if (data.userInfo.length != 0 && data.favorite.length != 0 && data.userInfo[0].fK_iUserID == data.favorite[0].fK_iUserID) {
+        document.querySelector(".detail__favorite-icon-remove").addEventListener('click', () => {
+            removeFavorite(data);
+        });
+    } else {
+        document.querySelector(".detail__favorite-icon-add").addEventListener('click', () => {
+            addFavorite(data);
+        });
+    }
+    
+
     document.querySelector(".detail__shop-info-btn-chat").addEventListener("click", () => {
         showChat(data);
     });
+}
+
+function addFavorite(data) {
+    if (data.userInfo.length == 0) {
+        window.location.assign("/user/login");
+    } else {
+        openModal();
+        document.querySelector(".modal__body").innerHTML = 
+        `<div class="spinner"></div>`;
+        var formData = new FormData();
+        formData.append("userID", data.userInfo[0].fK_iUserID);
+        formData.append("productID", data.product[0].pK_iProductID);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/product/add-favorite', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+
+                console.log(data);
+
+                if (data.status.statusCode == 1) {
+                    setTimeout(() => {
+                        closeModal();
+                        toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                        document.querySelector(".modal__body").innerHTML = "";
+                        setTimeout(() => {
+                            getDataDetail();
+                        }, 1000)
+                    }, 2000);
+                }
+                
+            }
+        };
+        xhr.send(formData);
+    }
+}
+
+function removeFavorite(data) {
+    openModal();
+    document.querySelector(".modal__body").innerHTML =
+        `<div class="spinner"></div>`;
+    var formData = new FormData();
+    formData.append("userID", data.userInfo[0].fK_iUserID);
+    formData.append("productID", data.product[0].pK_iProductID);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/product/delete-favorite', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            if (data.status.statusCode == 1) {
+                setTimeout(() => {
+                    closeModal();
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        getDataDetail();
+                    }, 1000)
+                }, 2000);
+            }
+
+        }
+    };
+    xhr.send(formData);
 }
 
 function showChat(data) {
@@ -777,9 +864,6 @@ function setDataReviewer(data) {
                                     <div class="comment__dislike">
                                         <i class="uil uil-thumbs-down comment__dislike-icon"></i>
                                         <div class="comment__dislike-quantity">12</div>
-                                    </div>
-                                    <div class="comment__reply">
-                                        Phản hồi
                                     </div>
                                 </div>
                                 <div class="comment__text">
