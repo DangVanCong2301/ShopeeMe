@@ -969,6 +969,7 @@ i.home-product-item__like-icon-empty {
     column-gap: 16px;
     align-items: center;
     padding: 8px 16px;
+    cursor: pointer;
 }
 
 .comment__more-item:hover {

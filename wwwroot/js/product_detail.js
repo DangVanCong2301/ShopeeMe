@@ -844,11 +844,11 @@ function setDataReviewer(data) {
                                 `<div class="comment__more">
                                     <i class="uil uil-ellipsis-v comment__more-icon"></i>
                                     <div class="comment__more-container">
-                                        <div class="comment__more-item">
+                                        <div class="comment__more-item" onclick="openUpdateReviewer(${element.pK_iReviewID})">
                                             <i class="uil uil-pen comment__more-item-icon"></i>
                                             <span>Chỉnh sửa</span>
                                         </div>
-                                        <div class="comment__more-item">
+                                        <div class="comment__more-item" onclick="openDeleteReviewer(${element.pK_iReviewID}, ${element.fK_iUserID}, ${element.fK_iProductID})">
                                             <i class="uil uil-trash comment__more-item-icon"></i>
                                             <span>Xoá</span>
                                         </div>
@@ -899,20 +899,275 @@ function setDataReviewer(data) {
     document.querySelector(".comment").innerHTML = htmlReviewer;
 }
 
-function showCommentAddBtn() {
-    document.querySelector(".comment__add-btns").classList.add("show");
+function openUpdateReviewer(reviewerID) {
+    openModal();
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/product/reviewer-detail/' + reviewerID + '', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            let htmlReviewerUpdateForm = "";
+            htmlReviewerUpdateForm += 
+            `
+            <div class="reviewer-form">
+                <div class="reviewer-form__header">
+                    <div class="reviewer-form__header-title">Cập nhật đánh giá sản phẩm</div>
+                </div>
+                <div class="reviewer-form__body">
+                    <div class="reviewer-form__div">
+                        <div class="reviewer-form__div-title">Sản phẩm</div>
+                        <ul class="purchase__body-list">
+                            <li class="purchase__body-item">
+                                <a class="purchase__body-item-link">
+                                    <div class="purchase__body-item-img">
+                                        <img src="/img/${data.product[0].sImageUrl}" alt="">
+                                    </div>
+                                    <div class="purchase__body-item-info">
+                                        <div class="purchase__body-item-info-left">
+                                            <div class="purchase__body-item-title">
+                                                ${data.product[0].sProductName}
+                                            </div>
+                                            <div class="purchase__body-item-sub">
+                                                <div class="purchase__body-item-desc">Phân loại hàng: ${data.product[0].sCategoryName}</div>
+                                                <span class="purchase__body-item-return">Trả hàng miễn phí 15 ngày</span>
+                                            </div>
+                                        </div>`;
+                                        if (data.product[0].dPerDiscount != 1) {
+                                            htmlReviewerUpdateForm += 
+                                        `<div class="purchase__body-item-info-right">
+                                            <div class="purchase__body-item-old-price">${money_2(data.product[0].dPrice)}</div>
+                                            <div class="purchase__body-item-price">${money(data.product[0].dPrice * (1 - data.product[0].dPerDiscount))} đ</div>
+                                        </div>`;
+                                        } else {
+                                            htmlReviewerUpdateForm += 
+                                        `<div class="purchase__body-item-info-right">
+                                            <div class="purchase__body-item-price">${money(data.product[0].dPrice)} đ</div>
+                                        </div>`;
+                                        }
+                                        htmlReviewerUpdateForm += `
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="reviewer-form__div">
+                        <div class="reviewer-form__div-title">Chất lượng sản phẩm</div>
+                        <div class="reviewer-form__quality">
+                            <div class="reviewer-form__quality-stars">
+                                <input type="radio" name="rate" value="5" id="rate-5">
+                                <label for="rate-5" class="uis uis-star"></label>
+                                <input type="radio" name="rate" value="4" id="rate-4">
+                                <label for="rate-4" class="uis uis-star"></label>
+                                <input type="radio" name="rate" value="3" id="rate-3">
+                                <label for="rate-3" class="uis uis-star"></label>
+                                <input type="radio" name="rate" value="2" id="rate-2">
+                                <label for="rate-2" class="uis uis-star"></label>
+                                <input type="radio" name="rate" value="1" id="rate-1">
+                                <label for="rate-1" class="uis uis-star"></label>
+                            </div>
+                            <div class="reviewer-form__quality-text hide-on-destop">Tuyệt vời</div>
+                        </div>
+                        <div class="reviewer-form__msg-err reviewer-form__msg-err-rate hide-on-destop">Bạn chưa chọn đánh giá!</div>
+                    </div>
+                    <div class="reviewer-form__div">
+                        <div class="reviewer-form__div-title">Mô tả sản phẩm</div>
+                        <div class="reviewer-form__comment">
+                            <textarea name="" id="" class="reviewer-form__textarea">${data.reviewer[0].sComment}</textarea>
+                            <div class="reviewer-form__msg-err reviewer-form__msg-err-comment hide-on-destop">Bạn chưa nhập bình luận!</div>
+                        </div>
+                        <div class="reviewer-form__thumb">
+                            <img src="/img/tai_nghe_5.jpg" class="reviewer-form__thumb-img-value" alt="">
+                            <label for="input-file" class="reviewer-form__thumb-img reviewer-form__thumb-img-add">
+                                <div class="reviewer-form__thumb-img-container">
+                                    <i class="uil uil-image-plus reviewer-form__thumb-img-icon"></i>
+                                    <div class="reviewer-form__thumb-img-sub">
+                                        Thêm hình ảnh (Nếu có)
+                                    </div>
+                                </div>
+                                <input type="file" accept="image/jpeg, image/png, image/jpg" class="reviewer-form__thumb-img-file" id="input-file">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviewer-form__footer">
+                    <div class="reviewer-form__btn btn" onclick="closeModal()">TRỞ LẠI</div>
+                    <div class="reviewer-form__btn btn btn--primary reviewer-form__btn-add">HOÀN THÀNH</div>
+                </div>
+            </div>
+            `;
+
+            document.querySelector(".modal__body").innerHTML = htmlReviewerUpdateForm;
+
+            // Upload Image
+            let productImgAdd = document.querySelector(".reviewer-form__thumb-img-value");
+            let inputImageAdd = document.getElementById("input-file");
+
+            let imageUrl = "no_img.jpg";
+            inputImageAdd.onchange = () => {
+                productImgAdd.src = URL.createObjectURL(inputImageAdd.files[0]);
+                productImgAdd.classList.add("show");
+                document.querySelector(".reviewer-form__thumb-img-add").classList.add("hide");
+                imageUrl = inputImageAdd.files[0].name;
+            };
+
+            // rate
+            const rate = document.getElementsByName("rate");
+            
+            let rateCheck = "";
+            for (let i = 0; i < rate.length; i++) {
+                if (rate.item(i).checked) {
+                    rateCheck = rate.item(i).value;
+                }
+                rate.item(i).onchange = () => {
+                    if (rate.item(i).value == 5) {
+                        document.querySelector(".reviewer-form__quality-text").classList.remove("hide-on-destop");
+                    } else {
+                        document.querySelector(".reviewer-form__quality-text").classList.add("hide-on-destop");
+                    }
+                    rateCheck = rate.item(i).value;
+                    rateValidate(rateCheck);
+                }
+            }
+
+            document.querySelector(".reviewer-form__textarea").addEventListener('blur', () => {
+                commentValidate();
+            });
+            
+            document.querySelector(".reviewer-form__btn-add").addEventListener('click', () => {
+                const comment = document.querySelector(".reviewer-form__textarea").value; // Nó nằm ngoài sự kiện diễn ra thì sẽ không lấy được giá trị
+                
+                if (imageUrl == "no_img.jpg") {
+                    imageUrl = "no_img.jpg";
+                } else {
+                    imageUrl = data.product[0].sImageUrl;
+                }
+                rateValidate(rateCheck);
+                commentValidate();
+                if (rateValidate(rateCheck) && commentValidate()) {
+                    updateReviewer(data.reviewer[0].pK_iReviewID, data.reviewer[0].fK_iUserID, data.reviewer[0].fK_iProductID, rateCheck, comment, imageUrl);
+                }
+            });
+            
+        }
+    };
+    xhr.send(null);
 }
 
-function hideCommentAddBtn() {
-    document.querySelector(".comment__add-btns").classList.remove("show");
-}
+function rateValidate(rate) {
+    const rateMsg = document.querySelector(".reviewer-form__msg-err-rate");
 
-function changeCommentAddBtn(input) {
-    if (input.value != "") {
-        document.querySelector(".comment__add-btn-reply").classList.add("active");
+    if (rate === "") {
+        rateMsg.classList.remove("hide-on-destop");
+        rateMsg.innerHTML = "Bạn chưa chọn đánh giá!";
+        isValidate = false;
     } else {
-        document.querySelector(".comment__add-btn-reply").classList.remove("active");
+        rateMsg.classList.add("hide-on-destop");
+        rateMsg.innerHTML = "";
+        isValidate = true;
     }
+    return isValidate;
+}
+
+function commentValidate() {
+    const commentInput = document.querySelector(".reviewer-form__textarea");
+    const commentMsg = document.querySelector(".reviewer-form__msg-err-comment");
+    const comment = commentInput.value;
+
+    if (comment === "") {
+        showErrStyles(commentInput, commentMsg);
+        commentMsg.innerHTML = "Bạn chưa nhập bình luận!";
+        isValidate = false;
+    } else {
+        removeErrStyles(commentInput, commentMsg);
+        commentMsg.innerHTML = "";
+        isValidate = true;
+    }
+    return isValidate;
+}
+
+function updateReviewer(reviewerID, userID, productID, rateCheck, comment, image) {
+    document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;  
+    var formData = new FormData();
+    formData.append("reviewerID", reviewerID);
+    formData.append("userID", userID);
+    formData.append("productID", productID);
+    formData.append("star", rateCheck);
+    formData.append("comment", comment);
+    formData.append("image", image);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('put', '/product/reviewer-update', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            if (data.status.statusCode == 1) {
+                setTimeout(() => {
+                    closeModal();
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        setDataReviewer(data);
+                    }, 1000)
+                }, 2000);
+            }
+            
+        }
+    };
+    xhr.send(formData);
+}
+
+function openDeleteReviewer(reviewerID, userID, productID) {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = 
+                `<div class="modal__confirm">
+                    <div class="modal__confirm-header">
+                        <div class="modal__confirm-title">Thông báo</div>
+                    </div>
+                    <div class="modal__confirm-desc">
+                        Bạn có chắc muốn xoá đánh giá này?
+                    </div>
+                    <div class="modal__confirm-btns">
+                        <div class="modal__confirm-btn-destroy" onclick="closeModal()">Huỷ</div>
+                        <div class="modal__confirm-btn-send"onclick="deleteReviewer(${reviewerID}, ${userID}, ${productID})">Đồng ý</div>
+                    </div>
+                </div>`;
+}
+
+function deleteReviewer(reviewerID, userID, productID) {
+    document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
+    var formData = new FormData();
+    formData.append("reviewerID", reviewerID);
+    formData.append("userID", userID);
+    formData.append("productID", productID);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('delete', '/product/reviewer-delete', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            if (data.status.statusCode == 1) {
+                setTimeout(() => {
+                    closeModal();
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        setDataReviewer(data);
+                    }, 1000)
+                }, 2000);
+            }
+            
+        }
+    };
+    xhr.send(formData);
 }
 
 // Reply Input

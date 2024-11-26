@@ -92,6 +92,25 @@ public class ProductController : Controller {
     public IActionResult Detail(int id)
     {
         _accessor?.HttpContext?.Session.SetInt32("CurrentProductID", id);
+        // Lấy Cookies trên trình duyệt
+        var userID = Request.Cookies["UserID"];
+        if (userID != null)
+        {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        } else {
+            return View();
+        }
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        if (sessionUserID != null)
+        {
+            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
+            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
+            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
+        }
+        else
+        {
+            _accessor?.HttpContext?.Session.SetString("UserName", "");
+        }
         return View();
     }
 
@@ -113,6 +132,69 @@ public class ProductController : Controller {
             Store = store,
             UserInfo = userInfo,
             Reviewers = reviewers
+        };
+        return Ok(model);
+    }
+
+    [HttpGet]
+    [Route("/product/reviewer-detail/{reviewerID?}")]
+    public IActionResult ReviewerDetail(int reviewerID = 0) {
+        int productID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentProductID"));
+        IEnumerable<Product> product = _productResponsitory.getProductByID(productID);
+        IEnumerable<Reviewer> reviewer = _productResponsitory.getReviewerByID(reviewerID);
+        ProductViewModel model = new ProductViewModel {
+            Product = product,
+            Reviewer = reviewer
+        };
+        return Ok(model);
+    }
+
+    [HttpPut]
+    [Route("/product/reviewer-update")]
+    public IActionResult UpdateReviewer(int reviewerID = 0, int userID = 0, int productID = 0, int star = 0, string comment = "", string image = "") {
+        Status status;
+        if (_productResponsitory.updateReviewer(reviewerID, userID, productID, star, comment, image)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Cập nhật đánh giá thành công"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Cập nhật đánh giá thành công"
+            };
+        }
+        IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(productID);
+        IEnumerable<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(userID);
+        ProductViewModel model = new ProductViewModel {
+            Status = status,
+            Reviewers = reviewers,
+            UserInfo = userInfo
+        };
+        return Ok(model);
+    }
+
+    [HttpDelete]
+    [Route("/product/reviewer-delete")]
+    public IActionResult DeleteReviewer(int reviewerID = 0, int userID = 0, int productID = 0) {
+        Status status;
+        if (_productResponsitory.deleteReviewer(reviewerID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Xoá đánh giá thành công"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Xoá đánh giá thành công"
+            };
+        }
+        IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(productID);
+        IEnumerable<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(userID);
+        ProductViewModel model = new ProductViewModel {
+            Status = status,
+            Reviewers = reviewers,
+            UserInfo = userInfo
         };
         return Ok(model);
     }

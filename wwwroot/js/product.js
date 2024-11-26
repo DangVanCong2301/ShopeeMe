@@ -159,7 +159,7 @@ function getProducts(data) {
         if (data.products[i].dPerDiscount != 1) {
             htmlProduct +=
                 `<span class="home-product-item__price-old">
-                                ${data.products[i].dPrice} đ
+                                ${money_2(data.products[i].dPrice)}
                                 <div class="home-product-item__price-old-loading"></div>
                             </span>
                             <span class="home-product-item__price-current">
