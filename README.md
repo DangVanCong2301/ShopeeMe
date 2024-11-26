@@ -32,7 +32,7 @@
 ![ShopeeMe-SequenceDiagram-Class_Diagram drawio](https://github.com/user-attachments/assets/c75c3751-11ea-4107-ad2b-768d7b38ce1f)
 ## Kết quả thực hiện
 ### Trang chủ
-![image](https://github.com/user-attachments/assets/30fe421d-378d-4e08-8a2c-ecc58ec0202a)
+![image](https://github.com/user-attachments/assets/e6b35f79-cd0d-4932-85b3-906df3287009)
 ![image](https://github.com/user-attachments/assets/a4f05401-3c55-432e-9a8d-73b5bf4f9772)
 ![image](https://github.com/user-attachments/assets/c6a6d62b-1f22-4b19-8a66-a65dcd49a1cf)
 ![image](https://github.com/user-attachments/assets/e2c3a6bc-199c-4f90-ab33-6f8711133895)
