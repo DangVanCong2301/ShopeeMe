@@ -259,7 +259,7 @@ public class UserController : Controller {
 
     [HttpPost]
     [Route("/user/purchase")]
-    public IActionResult GetDataPurchase() {
+    public IActionResult GetDataPurchase(int currentPage = 1) {
         var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getProductsOrderByUserID(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrdersByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
@@ -270,6 +270,10 @@ public class UserController : Controller {
         IEnumerable<OrderDetail> orderDetailsDelivering = _orderResponsitory.getProductsOrderByUserIDDelivering(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersDelivered = _orderResponsitory.getOrderByUserIDDeliverd(Convert.ToInt32(sessionUserID));
         IEnumerable<OrderDetail> orderDetailsDelivered = _orderResponsitory.getProductsOrderByUserIDDelivered(Convert.ToInt32(sessionUserID));
+        int totalRecord = orderDetails.Count();
+        int pageSize = 4;
+        int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
+        orderDetails = orderDetails.Skip((currentPage - 1) * pageSize).Take(pageSize);
         OrderViewModel model = new OrderViewModel {
             OrderDetails = orderDetails,
             OrdersWaitSettlement = ordersWaitSettlement,
@@ -279,7 +283,10 @@ public class UserController : Controller {
             OrdersDelivering = ordersDelivering,
             OrderDetailsDelivering = orderDetailsDelivering,
             OrdersDelivered = ordersDelivered,
-            OrderDetailsDelivered = orderDetailsDelivered
+            OrderDetailsDelivered = orderDetailsDelivered,
+            TotalPage = totalPage,
+            PageSize = pageSize,
+            CurrentPage = currentPage
         };
         return Ok(model);
     }

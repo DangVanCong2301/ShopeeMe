@@ -157,8 +157,8 @@ function getProducts(data) {
                         </h4>
                         <div class="home-product-item__price">`;
         if (data.products[i].dPerDiscount != 1) {
-            htmlProduct +=
-                `<span class="home-product-item__price-old">
+                            htmlProduct +=
+                            `<span class="home-product-item__price-old">
                                 ${money_2(data.products[i].dPrice)}
                                 <div class="home-product-item__price-old-loading"></div>
                             </span>
@@ -167,14 +167,14 @@ function getProducts(data) {
                                 <div class="home-product-item__price-current-loading"></div>
                             </span>`;
         } else {
-            htmlProduct +=
-                `<span class="home-product-item__price-current">
+                            htmlProduct +=
+                            `<span class="home-product-item__price-current">
                                 ${money(data.products[i].dPrice)} đ
                                 <div class="home-product-item__price-current-loading"></div>
                             </span>`;
         }
-        htmlProduct +=
-            `</div>
+                        htmlProduct +=
+                        `</div>
                         <div class="home-product-item__action">
                             <span class="home-product-item__like home-product-item__like--liked">
                                 <i class="home-product-item__like-icon-empty far fa-heart"></i>
@@ -210,7 +210,7 @@ function getProducts(data) {
                         </div>`;
         if (data.products[i].dPerDiscount != 1) {
             htmlProduct +=
-                `<div class="home-product-item__sale-off">
+                        `<div class="home-product-item__sale-off">
                                 <span class="home-product-item__sale-off-percent">${Math.floor(data.products[i].dPerDiscount * 100)}%</span>
                                 <span class="home-product-item__sale-off-label">GIẢM</span>
                             </div>`;

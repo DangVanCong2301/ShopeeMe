@@ -247,43 +247,57 @@ function setProductsOrderAll(data) {
     });
     document.querySelector(".purchase__all-list").innerHTML = htmlProductOrderAll;
 
-    if(data.orderDetails.length > 3) {
-        let htmlPagination = "";
-        htmlPagination += 
-        `
-                                <ul class="pagination home-product__pagination">
-                                    <li class="pagination-item">
-                                        <a href="" class="pagination-item__link">
-                                            <i class="pagination-item__icon fas fa-angle-left"></i>
-                                        </a>
-                                    </li>
-                                    <li class="pagination-item pagination-item--active">
-                                        <a href="" class="pagination-item__link">1</a>
-                                    </li>
-                                    <li class="pagination-item">
-                                        <a href="" class="pagination-item__link">2</a>
-                                    </li>
-                                    <li class="pagination-item">
-                                        <a href="" class="pagination-item__link">4</a>
-                                    </li>
-                                    <li class="pagination-item">
-                                        <a href="" class="pagination-item__link">5</a>
-                                    </li>
-                                    <li class="pagination-item">
-                                        <a href="" class="pagination-item__link">...</a>
-                                    </li>
-                                    <li class="pagination-item">
-                                        <a href="" class="pagination-item__link">14</a>
-                                    </li>
-                                    <li class="pagination-item">
-                                        <a href="" class="pagination-item__link">
-                                            <i class="pagination-item__icon fas fa-angle-right"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-        `;
-        document.querySelector(".purchase__all-pagination").innerHTML = htmlPagination;
+    let htmlPagination = "";
+    if (data.currentPage > 1) {
+        htmlPagination += `
+                    <li class="pagination-item">
+                        <a href="javascript:pageNumber(${data.currentPage - 1})" class="pagination-item__link">
+                            <i class="pagination-item__icon fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                `;
     }
+    for (let i = 1; i <= data.totalPage; i++) {
+        if (i == data.currentPage) {
+            htmlPagination += `
+                        <li class="pagination-item pagination-item--active">
+                            <a href="javascript:pageNumber(${i})" class="pagination-item__link">${i}</a>
+                        </li>
+                    `;
+        } else {
+            htmlPagination += `
+                        <li class="pagination-item">
+                            <a href="javascript:pageNumber(${i})" class="pagination-item__link">${i}</a>
+                        </li>
+                    `;
+        }
+    }
+    if (data.currentPage < data.totalPage) {
+        htmlPagination += `
+                    <li class="pagination-item">
+                        <a href="javascript:pageNumber(${data.currentPage + 1})" class="pagination-item__link">
+                            <i class="pagination-item__icon fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                `;
+    }
+    document.querySelector(".pagination").innerHTML = htmlPagination;
+}
+
+function pageNumber(currentPage) {
+    var xhr = new XMLHttpRequest();
+    var formData = new FormData();
+    formData.append("currentPage", currentPage);
+    xhr.open('post', '/user/purchase', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(data);
+
+            setProductsOrderAll(data);
+        }
+    };
+    xhr.send(formData);
 }
 
 function setProductsOrderWaitSettlement(data) {

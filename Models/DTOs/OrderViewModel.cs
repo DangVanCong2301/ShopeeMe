@@ -12,4 +12,7 @@ public class OrderViewModel {
     public IEnumerable<OrderDetail> OrderDetailsTransiting { get; set; }
     public int CartCount { get; set; }
     public Status Status { get; set; }
+    public int TotalPage { get; set; }
+    public int PageSize { get; set; }
+    public int CurrentPage { get; set; }
 }
