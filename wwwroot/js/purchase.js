@@ -230,8 +230,14 @@ function setProductsOrderAll(data) {
                                     htmlProductOrderAll += `
                                     <a href="#"class="btn purchase__bottom-link purchase__bottom-link-wait hide-on-mobile">Chờ</a>
                                     <a href="" class="btn purchase__bottom-link hide-on-mobile">Liên hệ người bán</a>
-                                    <a href="" class="btn purchase__bottom-link hide-on-mobile">Huỷ đơn hàng</a>
+                                    <a href="javascript:openDestroyOrder(${e.pK_iOrderID})" class="btn purchase__bottom-link hide-on-mobile">Huỷ đơn hàng</a>
                                     <a href="#" class="btn btn--primary hide-on-destop">Liên hệ Shop</a>`;
+                                } else if (e.iOrderStatusCode == -1) {
+                                    htmlProductOrderAll += 
+                                    `
+                                    <a href="/product/detail?id=${e.pK_iProductID}" class="btn btn--primary purchase__bottom-btn hide-on-mobile">Mua lại</a>
+                                    <a href="#" class="btn purchase__bottom-link hide-on-mobile">Đã huỷ</a>
+                                    `;
                                 } else {
                                     htmlProductOrderAll += 
                                     `
@@ -300,6 +306,139 @@ function pageNumber(currentPage) {
     xhr.send(formData);
 }
 
+
+function openDestroyOrder(orderID) {
+    openModal();
+    let htmlDestroyOrder = "";
+    htmlDestroyOrder += 
+            `<div class="reviewer-form">
+                <div class="reviewer-form__header">
+                    <div class="reviewer-form__header-title">Chọn lý do huỷ</div>
+                </div>
+                <div class="reviewer-form__body">
+                    <div class="address-form__new-please">
+                        <i class="uil uil-exclamation-octagon address-form__new-please-icon"></i>
+                        <div class="address-form__new-please-desc">
+                            <div class="destroy-form__new-please-desc-title">Vui lòng chọn lý do huỷ đơn hàng. Lưu ý: thao tác huỷ bỏ, huỷ tất cả các sản phẩm có trong đơn hàng và không thể hoàn tác</div>
+                        </div>
+                    </div>
+                    <li class="destroy-form__item">
+                        <div class="destroy-form__item-box">
+                            <input type="radio" name="destroy-order" class="destroy-form__item-input">
+                        </div>
+                        <div class="destroy-form__item-content">
+                            Muốn thay đổi địa chỉ giao hàng
+                        </div>
+                    </li>
+                    <li class="destroy-form__item">
+                        <div class="destroy-form__item-box">
+                            <input type="radio" name="destroy-order" class="destroy-form__item-input">
+                        </div>
+                        <div class="destroy-form__item-content">
+                            Muốn nhập/thay đổi mã Voucher
+                        </div>
+                    </li>
+                    <li class="destroy-form__item">
+                        <div class="destroy-form__item-box">
+                            <input type="radio" name="destroy-order" class="destroy-form__item-input">
+                        </div>
+                        <div class="destroy-form__item-content">
+                            Muốn thay đổi sản phẩm trong đơn hàng (size, màu sắc, số lượng ...)
+                        </div>
+                    </li>
+                    <li class="destroy-form__item">
+                        <div class="destroy-form__item-box">
+                            <input type="radio" value="1" name="destroy-order" class="destroy-form__item-input">
+                        </div>
+                        <div class="destroy-form__item-content">
+                            Thủ tục thanh toán rắc rối 
+                        </div>
+                    </li>
+                    <li class="destroy-form__item">
+                        <div class="destroy-form__item-box">
+                            <input type="radio" value="1" name="destroy-order" class="destroy-form__item-input">
+                        </div>
+                        <div class="destroy-form__item-content">
+                            Tìm thấy giá rẻ hơn ở chỗ khác 
+                        </div>
+                    </li>
+                    <li class="destroy-form__item">
+                        <div class="destroy-form__item-box">
+                            <input type="radio" value="1" name="destroy-order" class="destroy-form__item-input">
+                        </div>
+                        <div class="destroy-form__item-content">
+                            Đổi ý, không muốn mua nữa
+                        </div>
+                    </li>
+                    <div class="reviewer-form__msg-err destroy-form__msg-err hide-on-destop">Bạn chưa chọn lý do huỷ!</div>
+                </div>
+                <div class="reviewer-form__footer">
+                    <div class="reviewer-form__btn btn" onclick="closeModal()">HUỶ</div>
+                    <div class="reviewer-form__btn destroy-form__btn-agree btn btn--primary">ĐỒNG Ý</div>
+                </div>
+            </div>`;
+    document.querySelector(".modal__body").innerHTML = htmlDestroyOrder; 
+
+    const destroyChoose = document.getElementsByName("destroy-order");
+    let destroyCheck = "";
+    for (let i = 0; i < destroyChoose.length; i++) {
+        destroyChoose.item(i).onchange = () => {
+            destroyCheck = destroyChoose.item(i).value;
+        }
+    }
+
+    document.querySelector(".destroy-form__btn-agree").addEventListener('click', () => {
+        destroyChooseValidate(destroyCheck);
+        if (destroyChooseValidate(destroyCheck)) {
+            destroyOrder(orderID);
+        }
+    });
+}
+
+function destroyChooseValidate(destroyCheck) {
+    const destroyMsg = document.querySelector(".destroy-form__msg-err");
+
+    if (destroyCheck === "") {
+        destroyMsg.classList.remove("hide-on-destop");
+        destroyMsg.innerHTML = "Bạn chưa chọn lý do huỷ!";
+        isValidate = false;
+    } else {
+        destroyMsg.classList.add("hide-on-destop");
+        destroyMsg.innerHTML = "";
+        isValidate = true;
+    }
+    return isValidate;
+}
+
+function destroyOrder(orderID) {
+    document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
+    var formData = new FormData();
+    formData.append("orderID", orderID);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('put', '/order/confirm-destroy', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            if (data.status.statusCode == 1) {
+                setTimeout(() => {
+                    closeModal();
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        getAPIPerchase();
+                    }, 1000)
+                }, 2000);
+            }
+            
+        }
+    };
+    xhr.send(formData);
+}
+// -----------------------------------------------
 function setProductsOrderWaitSettlement(data) {
     document.querySelector(".purchase__header-item-wait-settlement-count").innerText = `(${data.ordersWaitSettlement.length})`;
     let htmlProductOrderWaitSettlement = "";

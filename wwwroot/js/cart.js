@@ -782,7 +782,11 @@ function addToCheckout(productID, shopID, event) {
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
+
             console.log(data);
+
+            document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán (${data.productCount} sản phẩm):<span>${money_2(data.totalPrice)}</span>`
+
         }
     };
     xhr.send(formData);

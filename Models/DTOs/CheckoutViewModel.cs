@@ -13,4 +13,6 @@ public class CheckoutViewModel
     public Status Status { get; set;}
     public Order Order { get; set; }
     public int SessionShopID { get; set; }
+    public int ProductCount { get; set; }
+    public double TotalPrice { get; set; }
 }

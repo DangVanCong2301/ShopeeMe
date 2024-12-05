@@ -207,4 +207,11 @@ public class OrderResponsitory : IOrderResponsitory
         SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
         return _context.Orders.FromSqlRaw("EXEC sp_GetOrderByOrderID @PK_iOrderID", orderIDParam);
     }
+
+    public bool confirmOrderAboutDestroy(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@PK_iOrderID", orderID);
+        _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmOrderAboutDestroy @PK_iOrderID", orderIDParam);
+        return true;
+    }
 }

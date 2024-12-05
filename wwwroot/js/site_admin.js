@@ -690,8 +690,8 @@ function showIndustryAdd(data) {
                                 </div>
                             </div>
                             <div class="admin__add-product-footer">
-                                <div class="admin__add-product-btn">Huỷ</div>
-                                <div class="admin__add-product-btn">Lưu & Ẩn</div>
+                                <div class="admin__add-product-btn" onclick="noticeIncompleteFunc();">Huỷ</div>
+                                <div class="admin__add-product-btn" onclick="noticeIncompleteFunc();">Lưu & Ẩn</div>
                                 <div class="admin__add-product-btn-save-show">Lưu & Hiển thị</div>
                             </div>
                         </div>
@@ -708,7 +708,7 @@ function showIndustryAdd(data) {
         industryImage = inputImageAdd.files[0].name;
     };
 
-    addEvent();
+    // addEvent();
 
     document.querySelector(".admin__add-product-btn-save-show").addEventListener("click", () => {
         industryImageAddValidation(industryImage);

@@ -154,7 +154,9 @@ public class CheckoutController : Controller {
         HttpContext.Session.Set("cart_key", cartsCheckout);
         CheckoutViewModel model = new CheckoutViewModel {
             Checkouts = checkouts,
-            SessionShopID = Convert.ToInt32(sessionShopID)
+            SessionShopID = Convert.ToInt32(sessionShopID),
+            ProductCount = checkouts.Count(),
+            TotalPrice = checkouts.Sum(p => p.dMoney)
         };
         return Ok(model);
     }

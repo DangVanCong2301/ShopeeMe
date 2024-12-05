@@ -80,4 +80,25 @@ public class OrderController : Controller {
         };
         return Ok(model);
     }
+
+    [HttpPut]
+    [Route("/order/confirm-destroy")]
+    public IActionResult Destroy(int orderID) {
+        Status status;
+        if (_orderResponsitory.confirmOrderAboutDestroy(orderID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Huỷ đơn hàng thành công!"
+            }; 
+        } else {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Huỷ đơn hàng thất bại!"
+            }; 
+        }
+        OrderViewModel model = new OrderViewModel {
+            Status = status  
+        };
+        return Ok(model);
+    }
 }

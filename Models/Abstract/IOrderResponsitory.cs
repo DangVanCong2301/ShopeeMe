@@ -27,6 +27,7 @@ public interface IOrderResponsitory
     bool confirmOrderAboutDelivered(int orderID);
     bool confirmOrderAboutReceived(int orderID);
     bool confirmOrderAboutWaitDelivering(int orderID);
+    bool confirmOrderAboutDestroy(int orderID);
     bool inserOrder(int userID, int shopID, double totalPrice, int orderStatusID, int paymentID);
     bool inserOrderDetail(int orderID, int productID, int quantity, double unitPrice, double money);
 }
