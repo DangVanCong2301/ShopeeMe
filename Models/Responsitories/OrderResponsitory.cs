@@ -214,4 +214,16 @@ public class OrderResponsitory : IOrderResponsitory
         _context.Database.ExecuteSqlRaw("EXEC sp_ConfirmOrderAboutDestroy @PK_iOrderID", orderIDParam);
         return true;
     }
+
+    public IEnumerable<Order> getOrderByUserIDDestroy(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@FK_iUserID", userID);
+        return _context.Orders.FromSqlRaw("EXEC sp_GetOrderByUserIDDestroy @FK_iUserID", userIDParam);
+    }
+
+    public IEnumerable<OrderDetail> getProductsOrderByUserIDDestroy(int userID)
+    {
+        SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
+        return _context.OrderDetails.FromSqlRaw("EXEC sp_GetProductsOrderByUserIDDestroy @PK_iUserID", userIDParam);
+    }
 }

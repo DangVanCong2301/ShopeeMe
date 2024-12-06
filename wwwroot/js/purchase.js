@@ -18,6 +18,8 @@ function getAPIPerchase() {
 
             setProductsOrderDelivered(data);
 
+            setProductsOrderDestroy(data);
+
         }
     };
     xhr.send(null);
@@ -43,6 +45,9 @@ function setAll(data) {
             } else if (i == 4) {
                 // Đã giao hàng
                 showOrderDeliveredTab(i, data);
+            } else if (i == 5) {
+                // Đơn huỷ
+                showOrderDestroy(i, data);
             }
         });
     }
@@ -55,6 +60,8 @@ function showOrderAllTab(i, data) {
     headerItem[1].classList.remove("active");
     headerItem[3].classList.remove("active");
     headerItem[4].classList.remove("active");
+    headerItem[5].classList.remove("active");
+
     document.querySelector(".purchase__all").classList.remove("hide-on-destop");
     document.querySelector(".purchase__wait").classList.add("hide-on-destop");
     document.querySelector(".purchase__transport").classList.add("hide-on-destop");
@@ -74,6 +81,8 @@ function showOrderWaitPaymentTab(i, data) {
     headerItem[2].classList.remove("active");
     headerItem[3].classList.remove("active");
     headerItem[4].classList.remove("active");
+    headerItem[5].classList.remove("active");
+
     document.querySelector(".purchase__all").classList.add("hide-on-destop");
     document.querySelector(".purchase__wait").classList.remove("hide-on-destop");
     document.querySelector(".purchase__transport").classList.add("hide-on-destop");
@@ -93,6 +102,8 @@ function showOrderTransportTab(i, data) {
     headerItem[1].classList.remove("active");
     headerItem[3].classList.remove("active");
     headerItem[4].classList.remove("active");
+    headerItem[5].classList.remove("active");
+
     document.querySelector(".purchase__all").classList.add("hide-on-destop");
     document.querySelector(".purchase__wait").classList.add("hide-on-destop");
     document.querySelector(".purchase__transport").classList.remove("hide-on-destop");
@@ -112,6 +123,8 @@ function showOrderWaitDeliveryTab(i, data) {
     headerItem[1].classList.remove("active");
     headerItem[2].classList.remove("active");
     headerItem[4].classList.remove("active");
+    headerItem[5].classList.remove("active");
+
     document.querySelector(".purchase__all").classList.add("hide-on-destop");
     document.querySelector(".purchase__wait").classList.add("hide-on-destop");
     document.querySelector(".purchase__transport").classList.add("hide-on-destop");
@@ -132,6 +145,8 @@ function showOrderDeliveredTab(i, data) {
     headerItem[1].classList.remove("active");
     headerItem[2].classList.remove("active");
     headerItem[3].classList.remove("active");
+    headerItem[5].classList.remove("active");
+
     document.querySelector(".purchase__all").classList.add("hide-on-destop");
     document.querySelector(".purchase__wait").classList.add("hide-on-destop");
     document.querySelector(".purchase__transport").classList.add("hide-on-destop");
@@ -147,6 +162,26 @@ function showOrderDeliveredTab(i, data) {
 
     // set data
     setProductsOrderDelivered(data);
+}
+
+function showOrderDestroy(i, data) {
+    const headerItem = document.querySelectorAll(".purchase__header-item");
+    headerItem[i].classList.add("active");
+    headerItem[0].classList.remove("active");
+    headerItem[1].classList.remove("active");
+    headerItem[2].classList.remove("active");
+    headerItem[3].classList.remove("active");
+    headerItem[4].classList.remove("active");
+
+    document.querySelector(".purchase__all").classList.add("hide-on-destop");
+    document.querySelector(".purchase__wait").classList.add("hide-on-destop");
+    document.querySelector(".purchase__transport").classList.add("hide-on-destop");
+    document.querySelector(".purchase__wait-delivery").classList.add("hide-on-destop");
+    document.querySelector(".purchase__wait-delivered").classList.add("hide-on-destop");
+    document.querySelector(".purchase__destroy").classList.remove("hide-on-destop");
+
+    // set data
+    setProductsOrderDestroy(data);
 }
 
 function setProductsOrderAll(data) {
@@ -191,7 +226,7 @@ function setProductsOrderAll(data) {
                                                     if (e.dPerDiscount != 1) {
                                         htmlProductOrderAll += 
                                                     `<div class="purchase__body-item-info-right">
-                                                        <div class="purchase__body-item-old-price">${e.dUnitPrice} đ</div>
+                                                        <div class="purchase__body-item-old-price">${money_2(e.dUnitPrice)}</div>
                                                         <div class="purchase__body-item-price">${money(e.dUnitPrice * (1 - e.dPerDiscount))} đ</div>
                                                     </div>`;
                                                     } else {
@@ -216,8 +251,15 @@ function setProductsOrderAll(data) {
                                     <div class="purchase__bottom-head-sub-price">
                                         <i class="uil uil-shield-check"></i>
                                         <span>Thành tiền:</span>
-                                    </div>
-                                    <div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>
+                                    </div>`;
+                                    if (e.dPerDiscount != 1) {
+                                        htmlProductOrderAll += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * (1 - e.dPerDiscount) * e.iQuantity)} đ</div>`;
+                                    } else {
+                                        htmlProductOrderAll += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>`;
+                                    }
+                                    htmlProductOrderAll += `
                                 </div>
                                 <div class="purchase__bottom-btns">`;
                                 if (e.iOrderStatusCode == 14) {
@@ -440,7 +482,11 @@ function destroyOrder(orderID) {
 }
 // -----------------------------------------------
 function setProductsOrderWaitSettlement(data) {
-    document.querySelector(".purchase__header-item-wait-settlement-count").innerText = `(${data.ordersWaitSettlement.length})`;
+    if (data.ordersWaitSettlement.length != 0) {
+        document.querySelector(".purchase__header-item-wait-settlement-count").innerText = `(${data.ordersWaitSettlement.length})`;
+    } else {
+        document.querySelector(".purchase__header-item-wait-settlement-count").innerText = ``;
+    }
     let htmlProductOrderWaitSettlement = "";
     data.orderDetailsWaitSettlement.forEach(e => {
         htmlProductOrderWaitSettlement += 
@@ -482,7 +528,7 @@ function setProductsOrderWaitSettlement(data) {
                                                     if (e.dPerDiscount != 1) {
                                                         htmlProductOrderWaitSettlement += 
                                                     `<div class="purchase__body-item-info-right">
-                                                        <div class="purchase__body-item-old-price">${e.dUnitPrice} đ</div>
+                                                        <div class="purchase__body-item-old-price">${money_2(e.dUnitPrice)}</div>
                                                         <div class="purchase__body-item-price">${money(e.dUnitPrice * (1 - e.dPerDiscount))} đ</div>
                                                     </div>`;
                                                     } else {
@@ -507,8 +553,15 @@ function setProductsOrderWaitSettlement(data) {
                                     <div class="purchase__bottom-head-sub-price">
                                         <i class="uil uil-shield-check"></i>
                                         <span>Thành tiền:</span>
-                                    </div>
-                                    <div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>
+                                    </div>`;
+                                    if (e.dPerDiscount != 1) {
+                                        htmlProductOrderWaitSettlement += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * (1 - e.dPerDiscount) * e.iQuantity)} đ</div>`;
+                                    } else {
+                                        htmlProductOrderWaitSettlement += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>`;
+                                    }
+                                    htmlProductOrderWaitSettlement += `
                                 </div>
                                 <div class="purchase__bottom-btns">
                                     <a href="#"
@@ -584,7 +637,7 @@ function setProductsOrderTransiting(data) {
                                                     if (e.dPerDiscount != 1) {
                                                         htmlProductOrder += 
                                                     `<div class="purchase__body-item-info-right">
-                                                        <div class="purchase__body-item-old-price">${e.dUnitPrice} đ</div>
+                                                        <div class="purchase__body-item-old-price">${money_2(e.dUnitPrice)}</div>
                                                         <div class="purchase__body-item-price">${money(e.dUnitPrice * (1 - e.dPerDiscount))} đ</div>
                                                     </div>`;
                                                     } else {
@@ -609,8 +662,15 @@ function setProductsOrderTransiting(data) {
                                     <div class="purchase__bottom-head-sub-price">
                                         <i class="uil uil-shield-check"></i>
                                         <span>Thành tiền:</span>
-                                    </div>
-                                    <div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>
+                                    </div>`;
+                                    if (e.dPerDiscount != 1) {
+                                        htmlProductOrder += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * (1 - e.dPerDiscount) * e.iQuantity)} đ</div>`;
+                                    } else {
+                                        htmlProductOrder += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>`;
+                                    }
+                                    htmlProductOrder += `
                                 </div>
                                 <div class="purchase__bottom-btns">
                                     <a href="#" class="btn btn--primary purchase__bottom-btn hide-on-mobile">Liên hệ người bán</a>
@@ -683,7 +743,7 @@ function setProductsOrderWaitDelivery(data) {
                                                     if (e.dPerDiscount != 1) {
                                                         htmlProductOrder += 
                                                     `<div class="purchase__body-item-info-right">
-                                                        <div class="purchase__body-item-old-price">${e.dUnitPrice} đ</div>
+                                                        <div class="purchase__body-item-old-price">${money_2(e.dUnitPrice)}</div>
                                                         <div class="purchase__body-item-price">${money(e.dUnitPrice * (1 - e.dPerDiscount))} đ</div>
                                                     </div>`;
                                                     } else {
@@ -708,8 +768,15 @@ function setProductsOrderWaitDelivery(data) {
                                     <div class="purchase__bottom-head-sub-price">
                                         <i class="uil uil-shield-check"></i>
                                         <span>Thành tiền:</span>
-                                    </div>
-                                    <div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>
+                                    </div>`;
+                                    if (e.dPerDiscount != 1) {
+                                        htmlProductOrder += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * (1 - e.dPerDiscount) * e.iQuantity)} đ</div>`;
+                                    } else {
+                                        htmlProductOrder += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>`;
+                                    }
+                                    htmlProductOrder += `
                                 </div>
                                 <div class="purchase__bottom-btns">
                                     <a href="#" class="btn btn--primary purchase__bottom-btn hide-on-mobile">Liên hệ người bán</a>
@@ -782,7 +849,7 @@ function setProductsOrderDelivered(data) {
                                                     if (e.dPerDiscount != 1) {
                                                         htmlProductOrder += 
                                                     `<div class="purchase__body-item-info-right">
-                                                        <div class="purchase__body-item-old-price">${e.dUnitPrice} đ</div>
+                                                        <div class="purchase__body-item-old-price">${money_2(e.dUnitPrice)}</div>
                                                         <div class="purchase__body-item-price">${money(e.dUnitPrice * (1 - e.dPerDiscount))} đ</div>
                                                     </div>`;
                                                     } else {
@@ -807,8 +874,15 @@ function setProductsOrderDelivered(data) {
                                     <div class="purchase__bottom-head-sub-price">
                                         <i class="uil uil-shield-check"></i>
                                         <span>Thành tiền:</span>
-                                    </div>
-                                    <div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>
+                                    </div>`;
+                                    if (e.dPerDiscount != 1) {
+                                        htmlProductOrder += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * (1 - e.dPerDiscount) * e.iQuantity)} đ</div>`;
+                                    } else {
+                                        htmlProductOrder += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>`;
+                                    }
+                                    htmlProductOrder += `
                                 </div>
                                 <div class="purchase__bottom-btns">`;
                                 if (e.iOrderStatusCode == 3) {
@@ -837,6 +911,110 @@ function setProductsOrderDelivered(data) {
         `;
     } else {
         document.querySelector(".purchase__wait-delivered").innerHTML = htmlProductOrder;
+    }
+}
+
+function setProductsOrderDestroy(data) {
+    if (data.ordersDestroy.length != 0) {
+        document.querySelector(".purchase__header-item-destroy-count").innerText = `(${data.ordersDestroy.length})`;
+    } else {
+        document.querySelector(".purchase__header-item-destroy-count").innerHTML = "";
+    }
+    let htmlProductOrder = "";
+    data.orderDetailsDestroy.forEach(e => {
+    htmlProductOrder += 
+                        `<div class="purchase__item">
+                            <div class="purchase__body">
+                                <div class="purchase__body-header-wait">
+                                    <div class="purchase__body-header-btns">
+                                        <div class="purchase__body-header-shop">${e.sStoreName}</div>
+                                        <button class="purchase__body-header-btn"><i
+                                                class="uil uil-chat"></i><span>Chat</span></button>
+                                        <a class="purchase__body-header-btn-link"><i class="uil uil-shop"></i><span>Xem
+                                                Shop</span></a>
+                                    </div>
+                                    <div class="purchase__body-title">
+                                        <div class="purchase__body-header-subwait">Chờ thanh toán</div>
+                                    </div>
+                                </div>
+                                <div class="purchase__body-container">
+                                    <ul class="purchase__body-list">
+                                        <li class="purchase__body-item">
+                                            <a class="purchase__body-item-link">
+                                                <div class="purchase__body-item-img">
+                                                    <img src="/img/${e.sImageUrl}" alt="">
+                                                </div>
+                                                <div class="purchase__body-item-info">
+                                                    <div class="purchase__body-item-info-left">
+                                                        <div class="purchase__body-item-title">
+                                                            ${e.sProductName}
+                                                        </div>
+                                                        <div class="purchase__body-item-sub">
+                                                            <div class="purchase__body-item-desc">Phân loại hàng: Bạc
+                                                            </div>
+                                                            <span class="purchase__body-item-qnt">x ${e.iQuantity}</span> <br>
+                                                            <span class="purchase__body-item-return">Trả hàng miễn phí
+                                                                15 ngày</span>
+                                                        </div>
+                                                    </div>`;
+                                                    if (e.dPerDiscount != 1) {
+                                                        htmlProductOrder += 
+                                                    `<div class="purchase__body-item-info-right">
+                                                        <div class="purchase__body-item-old-price">${money_2(e.dUnitPrice)}</div>
+                                                        <div class="purchase__body-item-price">${money(e.dUnitPrice * (1 - e.dPerDiscount))} đ</div>
+                                                    </div>`;
+                                                    } else {
+                                                        htmlProductOrder += 
+                                                    `<div class="purchase__body-item-info-right">
+                                                        <div class="purchase__body-item-price">${money(e.dUnitPrice)} đ</div>
+                                                    </div>`;
+                                                    }
+                                                    htmlProductOrder +=
+                                                `</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="purchase__prevent">
+                                <div class="purchase__prevent-box purchase__prevent-box-left"></div>
+                                <div class="purchase__prevent-box purchase__prevent-box-right"></div>
+                            </div>
+                            <div class="purchase__bottom">
+                                <div class="purchase__bottom-head">
+                                    <div class="purchase__bottom-head-sub-price">
+                                        <i class="uil uil-shield-check"></i>
+                                        <span>Thành tiền:</span>
+                                    </div>`;
+                                    if (e.dPerDiscount != 1) {
+                                        htmlProductOrder += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * (1 - e.dPerDiscount) * e.iQuantity)} đ</div>`;
+                                    } else {
+                                        htmlProductOrder += 
+                                    `<div class="purchase__bottom-head-price">${money(e.dUnitPrice * e.iQuantity)} đ</div>`;
+                                    }
+                                    htmlProductOrder += `
+                                </div>
+                                <div class="purchase__bottom-btns">
+                                    <a href="/product/detail?id=${e.pK_iProductID}" class="btn btn--primary purchase__bottom-btn hide-on-mobile">Mua lại</a>
+                                    <a href="#" class="btn purchase__bottom-link hide-on-mobile">Đã huỷ</a>
+                                </div>
+                            </div>
+                        </div>`;
+    });
+
+    if (data.ordersDestroy.length == 0 && data.orderDetailsDestroy.length == 0) {
+        document.querySelector(".purchase__destroy").innerHTML = 
+        `
+                        <div class="purchase__wait-settlement">
+                            <div class="purchase__wait-settlement-no-orders">
+                                <i class="uil uil-clipboard-notes purchase__wait-settlement-no-orders-icon"></i>
+                                <div class="purchase__wait-settlement-no-orders-sub">Chưa có đơn hàng</div>
+                            </div>
+                        </div>
+        `;
+    } else {
+        document.querySelector(".purchase__destroy").innerHTML = htmlProductOrder;
     }
 }
 

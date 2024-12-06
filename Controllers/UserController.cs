@@ -270,6 +270,8 @@ public class UserController : Controller {
         IEnumerable<OrderDetail> orderDetailsDelivering = _orderResponsitory.getProductsOrderByUserIDDelivering(Convert.ToInt32(sessionUserID));
         IEnumerable<Order> ordersDelivered = _orderResponsitory.getOrderByUserIDDeliverd(Convert.ToInt32(sessionUserID));
         IEnumerable<OrderDetail> orderDetailsDelivered = _orderResponsitory.getProductsOrderByUserIDDelivered(Convert.ToInt32(sessionUserID));
+        IEnumerable<Order> ordersDestroy = _orderResponsitory.getOrderByUserIDDestroy(Convert.ToInt32(sessionUserID));
+        IEnumerable<OrderDetail> orderDetailsDestroy = _orderResponsitory.getProductsOrderByUserIDDestroy(Convert.ToInt32(sessionUserID));
         int totalRecord = orderDetails.Count();
         int pageSize = 4;
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
@@ -284,6 +286,8 @@ public class UserController : Controller {
             OrderDetailsDelivering = orderDetailsDelivering,
             OrdersDelivered = ordersDelivered,
             OrderDetailsDelivered = orderDetailsDelivered,
+            OrdersDestroy = ordersDestroy,
+            OrderDetailsDestroy = orderDetailsDestroy,
             TotalPage = totalPage,
             PageSize = pageSize,
             CurrentPage = currentPage
