@@ -237,4 +237,28 @@ public class ProductResponsitory : IProductResponsitory {
         _context.Database.ExecuteSqlRaw("EXEC sp_DeleteReviewer @PK_iReviewerID", reviewerIDParam);
         return true;
     }
+
+    public IEnumerable<Product> getProductsByIndustryIDAndSortIncre(int industryID)
+    {
+        SqlParameter industryIDParam = new SqlParameter("@FK_iIndustryID", industryID);
+        return _context.Products.FromSqlRaw("EXEC sp_GetProductsByIndustryIDAndSortIncre @FK_iIndustryID", industryIDParam);
+    }
+
+    public IEnumerable<Product> getProductsByIndutryIDAndSortReduce(int industryID)
+    {
+        SqlParameter industryIDParam = new SqlParameter("@FK_iIndustryID", industryID);
+        return _context.Products.FromSqlRaw("EXEC sp_GetProductsByIndutryIDAndSortReduce @FK_iIndustryID", industryIDParam);
+    }
+
+    public IEnumerable<Product> getProductsByShopIDAndSortIncre(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@FK_iShopID", shopID);
+        return _context.Products.FromSqlRaw("EXEC sp_GetProductsByShopIDAndSortIncre @FK_iShopID", shopIDParam);
+    }
+
+    public IEnumerable<Product> getProductsByShopIDAndSortReduce(int shopID)
+    {
+        SqlParameter shopIDParam = new SqlParameter("@FK_iShopID", shopID);
+        return _context.Products.FromSqlRaw("EXEC sp_GetProductsByShopIDAndSortReduce @FK_iShopID", shopIDParam);
+    }
 }

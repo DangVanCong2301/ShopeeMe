@@ -755,6 +755,22 @@ function pageNumber(currentPage) {
     xhr.send(formData);
 }
 
+function sortPrice(sortType) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/shop/sort-price?sortType=' + sortType + '', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            getProducts(data);
+            
+        }
+    };
+    xhr.send(null);
+}
+
 function getCategoriesTab(data) {
     let htmlCategories = "";
     htmlCategories += `<div class="shop__mobile-category-list">`;

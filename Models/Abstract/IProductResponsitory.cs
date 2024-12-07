@@ -11,6 +11,10 @@ public interface IProductResponsitory {
     IEnumerable<Product> searchProductByKeyword(string keyword);
     IEnumerable<Product> checkProductInCart(int productID);
     IEnumerable<Product> checkProductInOrder(int productID);
+    IEnumerable<Product> getProductsByIndustryIDAndSortIncre(int industryID);
+    IEnumerable<Product> getProductsByIndutryIDAndSortReduce(int industryID);
+    IEnumerable<Product> getProductsByShopIDAndSortIncre(int shopID);
+    IEnumerable<Product> getProductsByShopIDAndSortReduce(int shopID);
     bool insertProduct(int storeID, int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price);
     bool updateProduct(int productID, int storeID, int categoryID, int discountID, int transportID, string productName, int quantity, string productDescription, string imageUrl, double price);
     bool deleteProductByID(int productID);

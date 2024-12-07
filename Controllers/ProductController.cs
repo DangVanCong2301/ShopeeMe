@@ -199,25 +199,27 @@ public class ProductController : Controller {
         return Ok(model);
     }
 
-    [Route("sort/{categoryID?}/{sortType?}")]
-    public IActionResult Sort(int categoryID, string sortType = "") {
+    [HttpGet]
+    [Route("/product/sort/{sortType?}")]
+    public IActionResult Sort(string sortType = "", int currentPage = 1) {
+        int industryID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentParentCategoryID"));
         IEnumerable<Product> products;
-        var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");
         if (sortType == "asc") {
-            products = _productResponsitory.getProductsByCategoryIDAndSortIncre(categoryID); // Gọi đúng phương thức sắp xếp tăng dần nhé
+            products = _productResponsitory.getProductsByIndustryIDAndSortIncre(industryID); // Gọi đúng phương thức sắp xếp tăng dần nhé
         } else {
-            products = _productResponsitory.getProductsByCategoryIDAndSortReduce(categoryID); // Gọi đúng phương thức sắp xếp giảm dần nhé
+            products = _productResponsitory.getProductsByIndutryIDAndSortReduce(industryID); // Gọi đúng phương thức sắp xếp giảm dần nhé
         }
-        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(userID));
-        IEnumerable<Category> categories = _homeResponsitory.getCategories();
+        int totalRecord = products.Count();
+        int pageSize = 10;
+        int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
+        products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
         ProductViewModel model = new ProductViewModel {
             Products = products,
-            CartDetails = cartDetails,
-            Categories = categories,
-            CurrentCategoryID = categoryID
+            TotalPage = totalPage,
+            PageSize = pageSize,
+            CurrentPage = currentPage
         };
-        //return Json(model);
-        return View("Index", model);
+        return Ok(model);
     }
 
     [HttpGet]

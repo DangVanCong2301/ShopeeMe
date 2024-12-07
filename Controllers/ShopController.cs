@@ -109,6 +109,29 @@ public class ShopController : Controller
         return Ok(model);
     }
 
+    [HttpGet]
+    [Route("/shop/sort-price/{sortType?}")]
+    public IActionResult SortPrice(string sortType = "", int currentPage = 1) {
+        int shopID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentShopID"));
+        IEnumerable<Product> products;
+        if (sortType == "asc") {
+            products = _productResponsitory.getProductsByShopIDAndSortIncre(shopID);
+        } else {
+            products = _productResponsitory.getProductsByShopIDAndSortReduce(shopID);
+        }
+        int totalRecord = products.Count();
+        int pageSize = 10;
+        int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
+        products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
+        ShopViewModel model = new ShopViewModel {
+            Products = products,
+            TotalPage = totalPage,
+            PageSize = pageSize,
+            CurrentPage = currentPage
+        };
+        return Ok(model);
+    }
+
     [HttpPost]
     [Route("/shop/send-make-friend")]
     public IActionResult SendFriend(int sellerID = 0) {

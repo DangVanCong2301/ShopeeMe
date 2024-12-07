@@ -181,7 +181,10 @@ public class SellerController : Controller
             Products = products,
             HtmlProductItem = htmlProductItem,
             MakeFriends = makeFriends,
-            Chats = chats
+            Chats = chats,
+            CurrentTime = DateTime.Now,
+            TotalOrderAmount = shippingOrders.Sum(p => p.fTotalPrice),
+            TotalPaymentRefund = 0
         };
         return Ok(model);
     }

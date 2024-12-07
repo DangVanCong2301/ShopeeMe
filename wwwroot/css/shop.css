@@ -734,6 +734,7 @@
 
 .home-filter__page-icon {
     margin: auto;
+    color: #939393;
 }
 
 .home-filter__page-btn--disabled {
@@ -865,7 +866,7 @@
 }
 
 .shop__header-row span {
-    color: var(--second-color);
+    color: var(--primary-color);
 }
 
 .shop__info {

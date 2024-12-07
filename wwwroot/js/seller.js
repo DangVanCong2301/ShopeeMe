@@ -33,8 +33,8 @@ function showAll(data) {
                                             </div>
                                             <div class="admin__main-middle">
                                                 <div class="admin__main-middle-left">
-                                                    <div class="admin__main-middle-title">Tổng bán hàng</div>
-                                                    <div class="admin__main-middle-price">1.500.000đ</div>
+                                                    <div class="admin__main-middle-title">Tổng đặt hàng</div>
+                                                    <div class="admin__main-middle-price">${money_2(data.totalOrderAmount)}</div>
                                                 </div>
                                                 <div class="admin__main-progress">
                                                     <svg class="admin__main-progress-img">
@@ -54,8 +54,8 @@ function showAll(data) {
                                             </div>
                                             <div class="admin__main-middle">
                                                 <div class="admin__main-middle-left">
-                                                    <div class="admin__main-middle-title">Tổng bán hàng</div>
-                                                    <div class="admin__main-middle-price">1.500.000đ</div>
+                                                    <div class="admin__main-middle-title">Tổng trả/hoàn</div>
+                                                    <div class="admin__main-middle-price">${money_2(data.totalPaymentRefund)}</div>
                                                 </div>
                                                 <div class="admin__main-progress">
                                                     <svg class="admin__main-progress-img">
@@ -76,7 +76,7 @@ function showAll(data) {
                                             <div class="admin__main-middle">
                                                 <div class="admin__main-middle-left">
                                                     <div class="admin__main-middle-title">Tổng thu</div>
-                                                    <div class="admin__main-middle-price">1.500.000đ</div>
+                                                    <div class="admin__main-middle-price">${money_2(data.totalOrderAmount - data.totalPaymentRefund)}</div>
                                                 </div>
                                                 <div class="admin__main-progress">
                                                     <svg class="admin__main-progress-img">
@@ -261,6 +261,7 @@ function showAll(data) {
                     </div>
     `;
     document.querySelector(".admin__container").innerHTML = htmlAll;
+
     document.querySelector(".admin__main-to-do-list-item-wait-settlment").addEventListener('click', () => {
         showWaitingSettlment(data);
     });
@@ -272,6 +273,23 @@ function showAll(data) {
     document.querySelector(".admin__main-to-do-list-item-processed").addEventListener("click", () => {
         showProcessed(data);
     });
+
+    setDate();
+}
+
+function setDate() {
+    var day = new Date();
+    var yyyy = day.getFullYear();
+    var MM = day.getMonth() + 1;
+    if (MM < 10) {
+        MM = '0' + MM;
+    }
+    var dd = day.getDate();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+    var currDay = yyyy + '-' + MM + '-' + dd;
+    document.querySelector('.admin__main-date-input').value = currDay;
 }
 
 function openAceptFriendModal(makeFriendID, sellerID, username, image) {

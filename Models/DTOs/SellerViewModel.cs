@@ -24,4 +24,7 @@ public class SellerViewModel
     public IEnumerable<MakeFriend> MakeFriends { get; set; }
     public IEnumerable<Chat> Chats { get; set; }
     public int NewCreatedProductID { get; set; }
+    public DateTime CurrentTime { get; set; }
+    public double TotalOrderAmount { get; set; }
+    public double TotalPaymentRefund { get; set; }
 }
