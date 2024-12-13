@@ -294,4 +294,10 @@ public class UserController : Controller {
         };
         return Ok(model);
     }
+
+    [HttpGet]
+    [Route("/user/purchase/order/{orderID?}")]
+    public IActionResult Order() {
+        return View();
+    }
 }

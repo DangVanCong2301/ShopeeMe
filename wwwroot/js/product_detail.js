@@ -599,6 +599,10 @@ function addToCart(productID, price) {
                 }
                 else if (data.status.statusCode == -1) {
                     window.location.assign("/user/login")
+                } else if (data.status.statusCode == -2) {
+                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
+                } else if (data.status.statusCode == -3) {
+                    toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
                 } else {
                     toast({title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000});
                 htmlCartDetail +=
@@ -837,7 +841,7 @@ function setDataReviewer(data) {
                                 <div class="comment__user">
                                     <img src="/img/${element.sImageProfile}" alt="" class="comment__user-img">
                                     <p class="comment__username">${element.sUserName}</p>
-                                    <p class="comment__at">2 tuần trước</p>
+                                    <p class="comment__at">Vừa xong</p>
                                 </div>`;
                                 if (data.userInfo.length != 0 && element.fK_iUserID == data.userInfo[0].fK_iUserID) {
                                     htmlReviewer += 

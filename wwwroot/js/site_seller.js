@@ -1113,7 +1113,7 @@ function showAddProduct(data) {
             } else if (data.sellerID == 3) {
                 imageUrl = "shop/laneige/product/no_img.jpg";
             } else if (data.sellerID == 4) {
-                imageUrl = "shop/cocolux/product/no_img.jpg";
+                imageUrl = "shop/cocolux/product/cham_soc_da_mat/cham_soc_da_mat_2.png";
             } else if (data.sellerID == 6) {
                 imageUrl = "shop/legendary/product/no_img.jpg";
             } else {

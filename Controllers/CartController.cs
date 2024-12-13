@@ -7,12 +7,14 @@ using Project.Models;
 public class CartController : Controller {
     private readonly IHttpContextAccessor _accessor;
     private readonly IHomeResponsitory _homeResponsitory;
+    private readonly IProductResponsitory _productResponsitory;
     private readonly ICartReponsitory _cartResponsitory;
     private readonly IUserResponsitory _userResponsitory;
-    public CartController(IHttpContextAccessor accessor, DatabaseContext context, ICartReponsitory cartReponsitoty, IUserResponsitory userResponsitory, IHomeResponsitory homeResponsitory)
+    public CartController(IHttpContextAccessor accessor, DatabaseContext context, ICartReponsitory cartReponsitoty, IUserResponsitory userResponsitory, IHomeResponsitory homeResponsitory, IProductResponsitory productResponsitory)
     {
         _accessor = accessor;
         _homeResponsitory = homeResponsitory;
+        _productResponsitory = productResponsitory;
         _cartResponsitory = cartReponsitoty;
         _userResponsitory = userResponsitory;
     }
@@ -76,12 +78,23 @@ public class CartController : Controller {
         } 
         List<User> user = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
         List<CartDetail> checkProduct = _cartResponsitory.checkProduct(Convert.ToInt32(sessionUserID), productID).ToList();
+        List<Product> product = _productResponsitory.getProductByID(productID).ToList();
         Status status;
         if (user.Count() == 0)
         {
             status = new Status {
                 StatusCode = -1,
                 Message = "Bạn phải đăng nhập mới được thêm vào giỏ hàng!"
+            };
+        } else if (product[0].iQuantity == 0) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Sản phẩm đã hết hàng!"
+            };
+        } else if (product[0].iQuantity < quantity) {
+            status = new Status {
+                StatusCode = -3,
+                Message = "Số lượng sản phẩm hiện có không đủ số lượng bạn cần!"
             };
         } else if (checkProduct.Count() != 0) // Kiểm tra sản phẩm bị trùng trong giỏ hàng
         {

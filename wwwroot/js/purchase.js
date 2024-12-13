@@ -200,7 +200,7 @@ function setProductsOrderAll(data) {
                                                 Shop</span></a>
                                     </div>
                                     <div class="purchase__body-title">
-                                        <div class="purchase__body-header-subwait">${e.sOrderStatusName}</div>
+                                        <a href="/user/purchase/order?orderID=${e.pK_iOrderID}" class="purchase__body-header-subwait">${e.sOrderStatusName}</a>
                                     </div>
                                 </div>
                                 <div class="purchase__body-container">
