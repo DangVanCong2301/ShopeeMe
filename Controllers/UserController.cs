@@ -13,13 +13,22 @@ public class UserController : Controller {
     private readonly IUserResponsitory _userResponsitory;
     private readonly ICartReponsitory _cartResponsitory;
     private readonly IOrderResponsitory _orderResponsitory;
-    public UserController(DatabaseContext context, IHttpContextAccessor accessor, IUserResponsitory userResponsitory, ICartReponsitory cartReponsitory, IOrderResponsitory orderResponsitory)
+    private readonly IShopResponsitory _shopResponsitory;
+    public UserController(
+        DatabaseContext context, 
+        IHttpContextAccessor accessor, 
+        IUserResponsitory userResponsitory, 
+        ICartReponsitory cartReponsitory, 
+        IOrderResponsitory orderResponsitory,
+        IShopResponsitory shopResponsitory
+    )
     {
         _context = context;
         _accessor = accessor;
         _userResponsitory = userResponsitory;
         _cartResponsitory = cartReponsitory;
         _orderResponsitory = orderResponsitory;
+        _shopResponsitory = shopResponsitory;
     }
 
     [Route("/user/login")]
@@ -297,7 +306,41 @@ public class UserController : Controller {
 
     [HttpGet]
     [Route("/user/purchase/order/{orderID?}")]
-    public IActionResult Order() {
-        return View();
+    public IActionResult Order(int orderID = 0) {
+        // Lấy Cookies trên trình duyệt
+        var userID = Request.Cookies["UserID"];
+        if (userID != null)
+        {
+            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
+        } else {
+            return Redirect("/user/login");
+        }
+        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+        if (sessionUserID != null)
+        {
+            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
+            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
+            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
+        }
+        else
+        {
+            _accessor?.HttpContext?.Session.SetString("UserName", "");
+        }
+        ShopeeViewModel model = new ShopeeViewModel {
+            OrderID = orderID
+        };
+        return View(model);
+    }
+
+    [HttpGet]
+    [Route("/user/purchase/order-data/{orderID?}")]
+    public IActionResult OrderData(int orderID = 0) {
+        IEnumerable<Order> order = _orderResponsitory.getOrderByOrderID(orderID);
+        IEnumerable<Store> store = _shopResponsitory.getShopByOrderID(orderID);
+        ShopeeViewModel model = new ShopeeViewModel {
+            Order = order,
+            Store = store
+        };
+        return Ok(model);
     }
 }

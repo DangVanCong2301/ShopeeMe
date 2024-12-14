@@ -218,12 +218,24 @@
     left: 336px;
 }
 
+.order__stage-line.line-2.active {
+    background-color: #2dc258;
+}
+
 .order__stage-line.line-3 {
     right: 337px;
 }
 
+.order__stage-line.line-3.active {
+    background-color: #2dc258;
+}
+
 .order__stage-line.line-4 {
     right: 149px;
+}
+
+.order__stage-line.line-4.active {
+    background-color: #2dc258;
 }
 
 .order__stage-rounder-icon {

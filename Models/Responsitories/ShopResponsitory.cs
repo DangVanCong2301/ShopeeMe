@@ -82,4 +82,10 @@ public class ShopResponsitory : IShopResponsitory
         SqlParameter sellerIDParam = new SqlParameter("@FK_iSellerID", sellerID);
         return _context.Stores.FromSqlRaw("EXEC sp_GetShopBySellerID @FK_iSellerID", sellerIDParam);
     }
+
+    public IEnumerable<Store> getShopByOrderID(int orderID)
+    {
+        SqlParameter orderIDParam = new SqlParameter("@FK_iOrderID", orderID);
+        return _context.Stores.FromSqlRaw("EXEC sp_GetShopByOrderID @FK_iOrderID", orderIDParam);
+    }
 }
