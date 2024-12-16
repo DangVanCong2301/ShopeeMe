@@ -10,6 +10,8 @@ function getAPIUserOrder() {
             console.log(data);
             
             setOrderStatus(data);
+
+            setOrderAddress(data);
         }
    };
    xhr.send(null);
@@ -188,4 +190,136 @@ function setOrderStatus(data) {
                     </div>
     `;
     document.querySelector(".order__status").innerHTML = htmlOrderStatus;
+}
+
+function setOrderAddress(data) {
+    let htmlOrderAddress = "";
+    htmlOrderAddress += 
+    `
+                                <div class="order__label">
+                                    <div class="order__label-box"></div>
+                                </div>
+                                <div class="order__body">
+                                    <div class="order__body-header">
+                                        <div class="order__body-address-title">Địa chỉ nhận hàng</div>
+                                        <div class="order__body-address-transport">
+                                            <div class="order__body-address-transport-name">SPX Express</div>
+                                            <div class="order__body-address-transport-code">VN0${data.shippingOrder[0].pK_iShippingOrderID}</div>
+                                        </div>
+                                    </div>
+                                    <div class="order__body-main">
+                                        <div class="order__body-address">
+                                            <div class="order__body-customer-name">${data.address[0].sFullName}</div>
+                                            <div class="order__body-customer-phone">(+84) ${data.address[0].sPhone}</div>
+                                            <div class="order__body-customer-info">${data.address[0].sAddress}</div>
+                                        </div>
+                                        <ul class="order__body-list">
+                                            <li class="order__body-item">
+                                                <div class="order__body-item-time">
+                                                    <div class="order__body-item-datetime">
+                                                        26 Tháng 2
+                                                    </div>
+                                                    <div class="order__body-item-hour">
+                                                        13:15
+                                                    </div>
+                                                </div>
+                                                <div class="order__body-line">
+    
+                                                    <div class="order__item-rounder">
+                                                        <i class="uil uil-check"></i>
+                                                    </div>
+                                                    <div class="order__item-line"></div>
+                                                </div>
+                                                <div class="order__item-desc">
+                                                    <div class="order__item-desc-status">Đã giao</div>
+                                                    <p class="order__item-desc-text">Đơn hàng đã được giao thành công</p>
+                                                    <p class="order__item-desc-text">Người nhận hàng: Đặng Văn Công</p>
+                                                    <a href="" class="order__item-desc-link">Xem hình ảnh giao hàng</a>
+                                                </div>
+                                            </li>
+                                            <li class="order__body-item order__body-item--blur order__body-item--stage">
+                                                <div class="order__body-item-time">
+                                                    <div class="order__body-item-datetime">
+                                                        25 Tháng 2
+                                                    </div>
+                                                    <div class="order__body-item-hour">
+                                                        10:30
+                                                    </div>
+                                                </div>
+                                                <div class="order__body-line">
+    
+                                                    <div class="order__item-rounder">
+                    
+                                                    </div>
+                                                    <div class="order__item-line"></div>
+                                                </div>
+                                                <div class="order__item-desc">
+                                                    <p class="order__item-desc-text">Đơn hàng đang được trung chuyển đến 20 HoangMai Hub</p>
+                                                </div>
+                                            </li>
+                                            <li class="order__body-item order__body-item--blur">
+                                                <div class="order__body-item-time">
+                                                    <div class="order__body-item-datetime">
+                                                        26 Tháng 2
+                                                    </div>
+                                                    <div class="order__body-item-hour">
+                                                        13:15
+                                                    </div>
+                                                </div>
+                                                <div class="order__body-line">
+    
+                                                    <div class="order__item-rounder">
+                                                        <i class="uil uil-truck"></i>
+                                                    </div>
+                                                    <div class="order__item-line"></div>
+                                                </div>
+                                                <div class="order__item-desc">
+                                                    <div class="order__item-desc-status">Đơn hàng đã được giao cho ĐVVC</div>
+                                                    <p class="order__item-desc-text">Đơn hàng đang trên đường giao đến bạn</p>
+                                                </div>
+                                            </li>
+                                            <li class="order__body-item order__body-item--blur">
+                                                <div class="order__body-item-time">
+                                                    <div class="order__body-item-datetime">
+                                                        20 Tháng 2
+                                                    </div>
+                                                    <div class="order__body-item-hour">
+                                                        18:13
+                                                    </div>
+                                                </div>
+                                                <div class="order__body-line">
+                                                    <div class="order__item-rounder">
+                                                        <i class="uil uil-bill"></i>
+                                                    </div>
+                                                    <div class="order__item-line"></div>
+                                                </div>
+                                                <div class="order__item-desc">
+                                                    <div class="order__item-desc-status">Đã xác nhận thanh toán</div>
+                                                    <p class="order__item-desc-text">Đơn hàng đã được thanh toán</p>
+                                                </div>
+                                            </li>
+                                            <li class="order__body-item order__body-item--blur">
+                                                <div class="order__body-item-time">
+                                                    <div class="order__body-item-datetime">
+                                                        20 Tháng 2
+                                                    </div>
+                                                    <div class="order__body-item-hour">
+                                                        18:13
+                                                    </div>
+                                                </div>
+                                                <div class="order__body-line">
+                                                    <div class="order__item-rounder">
+                                                        <i class="uil uil-clipboard-alt"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="order__item-desc">
+                                                    <div class="order__item-desc-status">Đơn hàng đã được đặt</div>
+                                                    <p class="order__item-desc-text">Đơn hàng đã được đặt</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+    `;
+    document.querySelector(".order__address").innerHTML = htmlOrderAddress;
 }

@@ -15,6 +15,8 @@ public class ShopeeViewModel
     public IEnumerable<UserInfo> UserInfos { get; set; }
     public IEnumerable<Checkout> Checkouts { get; set; }
     public IEnumerable<Chat> Chats { get; set; }
+    public IEnumerable<Address> Address { get; set; }
+    public IEnumerable<ShippingOrder> ShippingOrder { get; set; }
     public int UserID { get; set; }
     public string Username { get; set; }
     public int TotalPage { get; set; }

@@ -14,13 +14,17 @@ public class UserController : Controller {
     private readonly ICartReponsitory _cartResponsitory;
     private readonly IOrderResponsitory _orderResponsitory;
     private readonly IShopResponsitory _shopResponsitory;
+    private readonly ICheckoutResponsitory _checkoutResponsitory;
+    private readonly IShippingOrderRepository _shippingOrderRepository;
     public UserController(
         DatabaseContext context, 
         IHttpContextAccessor accessor, 
         IUserResponsitory userResponsitory, 
         ICartReponsitory cartReponsitory, 
         IOrderResponsitory orderResponsitory,
-        IShopResponsitory shopResponsitory
+        IShopResponsitory shopResponsitory,
+        ICheckoutResponsitory checkoutResponsitory,
+        IShippingOrderRepository shippingOrderRepository
     )
     {
         _context = context;
@@ -29,6 +33,8 @@ public class UserController : Controller {
         _cartResponsitory = cartReponsitory;
         _orderResponsitory = orderResponsitory;
         _shopResponsitory = shopResponsitory;
+        _checkoutResponsitory = checkoutResponsitory;
+        _shippingOrderRepository = shippingOrderRepository;
     }
 
     [Route("/user/login")]
@@ -335,11 +341,16 @@ public class UserController : Controller {
     [HttpGet]
     [Route("/user/purchase/order-data/{orderID?}")]
     public IActionResult OrderData(int orderID = 0) {
+        int userID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
         IEnumerable<Order> order = _orderResponsitory.getOrderByOrderID(orderID);
         IEnumerable<Store> store = _shopResponsitory.getShopByOrderID(orderID);
+        List<Address> address = _checkoutResponsitory.checkAddressAccount(userID).ToList();
+        List<ShippingOrder> shippingOrder = _shippingOrderRepository.getShippingOrderByOrderID(orderID).ToList();
         ShopeeViewModel model = new ShopeeViewModel {
             Order = order,
-            Store = store
+            Store = store,
+            Address = address,
+            ShippingOrder = shippingOrder
         };
         return Ok(model);
     }
