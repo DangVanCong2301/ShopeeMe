@@ -1,6 +1,7 @@
 function getAPISeller() {
+    const sellerID = getCookies("sellerID");
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/seller', true);
+    xhr.open('get', '/seller-data?sellerID=' + sellerID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -692,4 +693,15 @@ function confirmShippingOrder(data, orderID, userID) {
         }
     };
     xhr.send(formData);
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
 }

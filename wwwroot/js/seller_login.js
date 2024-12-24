@@ -88,6 +88,7 @@ const addEvent = (() => {
             xhr.onreadystatechange = () => {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     const result = JSON.parse(xhr.responseText);
+
                     console.log(result);
 
                     if (result.status.statusCode == -1) {
@@ -106,6 +107,7 @@ const addEvent = (() => {
                         setTimeout(() => {
                             closeModal();
                             toast({ title: "Thông báo", msg: `${result.status.message}`, type: "err", duration: 5000 });
+                            // setCookies("sellerID", )
                             document.querySelector(".modal__body").innerHTML = "";
                             setTimeout(() => {
                                 window.location.assign("/seller/portal");
@@ -117,6 +119,8 @@ const addEvent = (() => {
                         setTimeout(() => {
                             closeModal();
                             toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
+                            setCookies("sellerID", result.seller[0].pK_iSellerID, 1);
+                            sessionStorage.setItem("seller", JSON.stringify(result.seller[0]))
                             document.querySelector(".modal__body").innerHTML = "";
                             setTimeout(() => {
                                 window.location.assign('/seller');

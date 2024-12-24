@@ -1,6 +1,7 @@
 function getAPISiteSeller() {
+    const sellerID = getCookies("sellerID");
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/seller', true);
+    xhr.open('get', '/seller-data?sellerID=' + sellerID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -54,24 +55,15 @@ function logoutSellerAccount() {
         `
                 <div class="spinner"></div>
         `;
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', '/seller/logout', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            const result = JSON.parse(xhr.responseText);
-            if (result.statusCode == 1) {
-                setTimeout(() => {
-                    closeModal();
-                    toast({ title: "Thông báo", msg: `${result.message}`, type: "success", duration: 5000 });
-                    document.querySelector(".modal__body").innerHTML = "";
-                    setTimeout(() => {
-                        window.location.assign('/seller/login');
-                    }, 1000)
-                }, 2000);
-            }
-        }
-    };
-    xhr.send(null);
+    document.cookie = "sellerID=;expires=2024-07-11T01:45:13.000Z;path=/";
+    setTimeout(() => {
+        closeModal();
+        toast({ title: "Thông báo", msg: `Đăng xuất thành công!`, type: "success", duration: 5000 });
+        document.querySelector(".modal__body").innerHTML = "";
+        setTimeout(() => {
+            window.location.assign('/seller/login');
+        }, 1000)
+    }, 2000);
 }
 
 function setSidebar(data) {
@@ -1769,4 +1761,15 @@ function getTime(time) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var current_time = hours + ":" + minutes;
     return current_time;
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
 }

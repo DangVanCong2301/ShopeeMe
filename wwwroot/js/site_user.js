@@ -68,3 +68,10 @@ function noticeIncompleteFunc() {
                 </div>
             `;
 }
+
+function setCookies(userID, value, expDays) {
+    let date = new Date();
+    date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = userID + "=" + value + ";" + expires + ";path=/";
+}

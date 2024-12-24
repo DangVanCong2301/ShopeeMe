@@ -1,27 +1,25 @@
 function getAPIUserOrder() {
-    
     const url = window.location.href;
     const params = new URL(url).searchParams;
     const entries = new URLSearchParams(params).values();
     const array = Array.from(entries)
     console.log(array[0]);
     const orderID = array[0];
-    
    
-   var xhr = new XMLHttpRequest();
-   xhr.open('get', '/user/purchase/order-data?orderID=' + orderID + '', true);
-   xhr.onreadystatechange = () => {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/user/purchase/order-data?orderID=' + orderID + '', true);
+    xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
 
             console.log(data);
-            
+
             setOrderStatus(data);
 
             setOrderAddress(data);
         }
-   };
-   xhr.send(null);
+    };
+    xhr.send(null);
     
 }
 getAPIUserOrder();

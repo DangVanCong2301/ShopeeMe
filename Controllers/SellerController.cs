@@ -41,38 +41,24 @@ public class SellerController : Controller
     [HttpGet]
     [Route("/seller")]
     public IActionResult Index() {
-        // Lấy Cookie trên trình duyệt
-        var sellerID = Request.Cookies["SellerID"];
-        List<Store> store = _shopResponsitory.getShopBySellerID(Convert.ToInt32(sellerID)).ToList();
-        List<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoBySellerID(Convert.ToInt32(sellerID)).ToList();
-        if (sellerID != null && sellerInfos.Count() != 0) {
-            _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
-            _accessor?.HttpContext?.Session.SetInt32("SellerShopID", store[0].PK_iStoreID);
-        } else {
-            return Redirect("/seller/portal");
-        }
-        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
-        List<Seller> seller = _sellerResponsitory.getSellerAccountByID(Convert.ToInt32(sessionSellerID)).ToList();
-        _accessor?.HttpContext?.Session.SetString("SellerUsername", seller[0].sSellerUsername);
         return View();
     }
 
-    [HttpPost]
-    [Route("/seller")]
-    public IActionResult GetData() {
-        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
-        var sessionSellerUsername = _accessor?.HttpContext?.Session.GetString("SellerUsername");
-        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
-        IEnumerable<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoBySellerID(Convert.ToInt32(sessionSellerID));
-        IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrderWaitSettlementByShopID(Convert.ToInt32(sessionShopID));
-        IEnumerable<Order> ordersWaitPickup = _orderResponsitory.getOrderWaitPickupByShopID(Convert.ToInt32(sessionShopID));
-        IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByShopID(Convert.ToInt32(sessionShopID));
-        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategoriesByShopID(Convert.ToInt32(sessionShopID));
+    [HttpGet]
+    [Route("/seller-data/{sellerID?}")]
+    public IActionResult GetData(int sellerID = 0) {
+        System.Console.WriteLine(sellerID);
+        List<Store> store = _shopResponsitory.getShopBySellerID(sellerID).ToList();
+        List<SellerInfo> sellerInfo = _sellerResponsitory.getSellerInfoBySellerID(sellerID).ToList();
+        IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrderWaitSettlementByShopID(store[0].PK_iStoreID);
+        IEnumerable<Order> ordersWaitPickup = _orderResponsitory.getOrderWaitPickupByShopID(Convert.ToInt32(store[0].PK_iStoreID));
+        IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByShopID(store[0].PK_iStoreID);
+        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategoriesByShopID(store[0].PK_iStoreID);
         IEnumerable<Discount> discounts = _productResponsitory.getDiscounts();
         IEnumerable<TransportPrice> transportPrices = _productResponsitory.getTransportPrice();
-        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionShopID));
-        IEnumerable<MakeFriend> makeFriends = _chatRepository.getMakeFriendBySellerID(Convert.ToInt32(sessionSellerID));
-        IEnumerable<Chat> chats = _chatRepository.getChatBySellerID(Convert.ToInt32(sessionSellerID));
+        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(store[0].PK_iStoreID);
+        IEnumerable<MakeFriend> makeFriends = _chatRepository.getMakeFriendBySellerID(store[0].PK_iStoreID);
+        IEnumerable<Chat> chats = _chatRepository.getChatBySellerID(store[0].PK_iStoreID);
         string htmlOrdersWaitSettlmentItem = "";
         string htmlOrdersWaitPickupItem = "";
         foreach (var item in ordersWaitSettlement) {
@@ -165,9 +151,9 @@ public class SellerController : Controller
         }
 
         SellerViewModel model = new SellerViewModel {
-            SellerID = Convert.ToInt32(sessionSellerID),
-            SellerUsername = sessionSellerUsername,
-            SellerInfos = sellerInfos,
+            SellerID = sellerID,
+            SellerUsername = sellerInfo[0].sSellerUsername,
+            SellerInfo = sellerInfo,
             OrdersWaitSettlement = ordersWaitSettlement,
             OrdersWaitPickup = ordersWaitPickup,
             OrdersProcessed = shippingOrders,
@@ -414,12 +400,6 @@ public class SellerController : Controller
     [HttpGet]
     [Route("/seller/login")]
     public IActionResult Login() {
-        // Lấy Cookie trên trình duyệt
-        var sellerID = Request.Cookies["SellerID"];
-        if (sellerID != null) {
-            _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
-            return Redirect("/seller");
-        }
         return View();
     }
 
@@ -440,42 +420,15 @@ public class SellerController : Controller
                 StatusCode = -2,
                 Message = "Tài khoản người bán chưa đầy đủ thông tin!"
             };
-            string sellerUsername = sellerLogin[0].sSellerUsername;
-            string value = sellerLogin[0].PK_iSellerID.ToString();
-            // Tạo cookies cho tài khoản người bán
-            CookieOptions options = new CookieOptions
-            {
-                Expires = DateTime.Now.AddDays(1),
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-                Path = "/",
-                IsEssential = true
-            };
-            Response.Cookies.Append("SellerID", value, options);
-            _accessor?.HttpContext?.Session.SetString("SellerUsername", sellerUsername);
         } else {
             status = new Status {
                 StatusCode = 1,
                 Message = "Đăng nhập thành công!"
             };
-            string sellerUsername = sellerLogin[0].sSellerUsername;
-            string value = sellerLogin[0].PK_iSellerID.ToString();
-            // Tạo cookies cho tài khoản người bán
-            CookieOptions options = new CookieOptions
-            {
-                Expires = DateTime.Now.AddDays(1),
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-                Path = "/",
-                IsEssential = true
-            };
-            Response.Cookies.Append("SellerID", value, options);
-            _accessor?.HttpContext?.Session.SetString("SellerUsername", sellerUsername);
         }
         SellerViewModel model = new SellerViewModel {
-            Status = status
+            Status = status,
+            Seller = sellerLogin
         };
         return Ok(model);
     }
