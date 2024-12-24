@@ -312,7 +312,7 @@ public class UserController : Controller {
 
     [HttpGet]
     [Route("/user/purchase/order/{orderID?}")]
-    public IActionResult Order(int orderID = 0) {
+    public IActionResult Order() {
         // Lấy Cookies trên trình duyệt
         var userID = Request.Cookies["UserID"];
         if (userID != null)
@@ -333,7 +333,7 @@ public class UserController : Controller {
             _accessor?.HttpContext?.Session.SetString("UserName", "");
         }
         ShopeeViewModel model = new ShopeeViewModel {
-            OrderID = orderID
+
         };
         return View(model);
     }

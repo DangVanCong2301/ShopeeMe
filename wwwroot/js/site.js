@@ -967,6 +967,14 @@ function getDate(date) {
 
 }
 
+function setDateMonth(date) {
+    var day = new Date(date);
+    var MM = day.getMonth() + 1;
+    var dd = day.getDate();
+    var currDay = dd + ' Tháng ' + MM 
+    return currDay;
+}
+
 function getTime(time) {
     var date = new Date(time);
     var hours = date.getHours();
