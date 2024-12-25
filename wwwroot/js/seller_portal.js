@@ -55,24 +55,15 @@ function logoutSellerAccount() {
         `
                 <div class="spinner"></div>
         `;
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', '/seller/logout', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            const result = JSON.parse(xhr.responseText);
-            if (result.statusCode == 1) {
-                setTimeout(() => {
-                    closeModal();
-                    toast({ title: "Thông báo", msg: `${result.message}`, type: "success", duration: 5000 });
-                    document.querySelector(".modal__body").innerHTML = "";
-                    setTimeout(() => {
-                        window.location.assign('/seller/login');
-                    }, 1000)
-                }, 2000);
-            }
-        }
-    };
-    xhr.send(null);
+    deleteCookies("sellerID");
+    setTimeout(() => {
+        closeModal();
+        toast({ title: "Thông báo", msg: `Đăng xuất thành công!`, type: "success", duration: 5000 });
+        document.querySelector(".modal__body").innerHTML = "";
+        setTimeout(() => {
+            window.location.assign('/seller/login');
+        }, 1000)
+    }, 2000);
 }
 
 function showStart() {
@@ -163,4 +154,8 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
         `;
         main.appendChild(toast);
     }
+}
+
+function deleteCookies(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

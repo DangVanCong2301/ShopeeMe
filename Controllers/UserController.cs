@@ -42,7 +42,7 @@ public class UserController : Controller {
     public IActionResult Login() {
         string password = "1";
         string encrypted = _userResponsitory.encrypt(password);
-        string decryted = _userResponsitory.decrypt(encrypted);
+        string decryted = _userResponsitory.decrypt("Zt5vN8IGHVA=");
         System.Console.WriteLine("Mat khau ma hoa: " + encrypted);
         System.Console.WriteLine("Mat khau giai ma: " + decryted);
         return View();

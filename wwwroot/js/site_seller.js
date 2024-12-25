@@ -1,18 +1,28 @@
 function getAPISiteSeller() {
     const sellerID = getCookies("sellerID");
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', '/seller-data?sellerID=' + sellerID + '', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            const data = JSON.parse(xhr.responseText);
-            console.log(data);
-            
-            setSellerAccount(data);
+    if (sellerID == undefined) {
+        window.location.replace("/seller/login");
+    } else {
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', '/seller-data?sellerID=' + sellerID + '', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
 
-            setSidebar(data);
-        }
-    };
-    xhr.send(null);
+                console.log(data);
+
+                if (data.status.statusCode == -1) {
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "err", duration: 5000 });
+                    window.location.replace("/seller/portal");
+                }
+
+                setSellerAccount(data);
+
+                setSidebar(data);
+            }
+        };
+        xhr.send(null);
+    }
 }
 getAPISiteSeller();
 
@@ -55,7 +65,7 @@ function logoutSellerAccount() {
         `
                 <div class="spinner"></div>
         `;
-    document.cookie = "sellerID=;expires=2024-07-11T01:45:13.000Z;path=/";
+    deleteCookies("sellerID");
     setTimeout(() => {
         closeModal();
         toast({ title: "Thông báo", msg: `Đăng xuất thành công!`, type: "success", duration: 5000 });
@@ -1772,4 +1782,8 @@ function getCookies(userID) {
         if (val.indexOf(id) === 0) res = val.substring(id.length);
     });
     return res;
+}
+
+function deleteCookies(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

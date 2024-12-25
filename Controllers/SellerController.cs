@@ -50,15 +50,30 @@ public class SellerController : Controller
         System.Console.WriteLine(sellerID);
         List<Store> store = _shopResponsitory.getShopBySellerID(sellerID).ToList();
         List<SellerInfo> sellerInfo = _sellerResponsitory.getSellerInfoBySellerID(sellerID).ToList();
-        IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrderWaitSettlementByShopID(store[0].PK_iStoreID);
-        IEnumerable<Order> ordersWaitPickup = _orderResponsitory.getOrderWaitPickupByShopID(Convert.ToInt32(store[0].PK_iStoreID));
-        IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByShopID(store[0].PK_iStoreID);
-        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategoriesByShopID(store[0].PK_iStoreID);
+        Status status;
+        int storeID = 0;
+        if (store.Count() == 0 && sellerInfo.Count() == 0) {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Tài khoản chưa đầy đủ thông tin!"
+            };
+            storeID = 0;
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Tài khoảnđầy đủ thông tin!"
+            };
+            storeID = store[0].PK_iStoreID;
+        }
+        IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrderWaitSettlementByShopID(storeID);
+        IEnumerable<Order> ordersWaitPickup = _orderResponsitory.getOrderWaitPickupByShopID(storeID);
+        IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByShopID(storeID);
+        IEnumerable<CategoryModel> categories = _categoryResponsitory.getAllCategoriesByShopID(storeID);
         IEnumerable<Discount> discounts = _productResponsitory.getDiscounts();
         IEnumerable<TransportPrice> transportPrices = _productResponsitory.getTransportPrice();
-        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(store[0].PK_iStoreID);
-        IEnumerable<MakeFriend> makeFriends = _chatRepository.getMakeFriendBySellerID(store[0].PK_iStoreID);
-        IEnumerable<Chat> chats = _chatRepository.getChatBySellerID(store[0].PK_iStoreID);
+        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(storeID);
+        IEnumerable<MakeFriend> makeFriends = _chatRepository.getMakeFriendBySellerID(storeID);
+        IEnumerable<Chat> chats = _chatRepository.getChatBySellerID(storeID);
         string htmlOrdersWaitSettlmentItem = "";
         string htmlOrdersWaitPickupItem = "";
         foreach (var item in ordersWaitSettlement) {
@@ -151,8 +166,8 @@ public class SellerController : Controller
         }
 
         SellerViewModel model = new SellerViewModel {
+            Status = status,
             SellerID = sellerID,
-            SellerUsername = sellerInfo[0].sSellerUsername,
             SellerInfo = sellerInfo,
             OrdersWaitSettlement = ordersWaitSettlement,
             OrdersWaitPickup = ordersWaitPickup,
