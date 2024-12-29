@@ -65,73 +65,7 @@
     </div>
 </div>
 <div class="app__container">
-    <div class="auth hide-on-mobile">
-        <div class="auth__content grid wide">
-            <div class="auth__left">
-                <div class="auth__left-img">
-                    <img src="~/img/sme_logo_second_white.png" class="auth__content-logo" alt="">
-                </div>
-                <div class="auth__left-sub">Nền tảng thương mại trực tuyến</div>
-            </div>
-            <div class="auth__right">
-                <div class="auth-form">
-                    <form action="/User/Login" method="post" class="auth-form__container">
-                        <div class="auth-form__header">
-                            <h3 class="auth-form__heading">@ViewData["Title"]</h3>
-                            @* <span class="auth-form__switch-btn"><i class="fa-solid fa-xmark
-                            auth-form__close"></i></span> *@
-                        </div>
-                        <div class="auth-form__form">
-                            <div class="auth-form__group">
-                                <input type="text" id="" asp-for="sEmail" class="auth-form__input"
-                                    placeholder="Email của bạn" />
-                                <span asp-validation-for="sEmail" class="auth-msg auth-msg__err"></span>
-                            </div>
-                            <div class="auth-form__group">
-                                <input type="password" asp-for="sPassword" id="" class="auth-form__input"
-                                    placeholder="Mật khẩu của bạn" />
-                                <span asp-validation-for="sPassword" class="auth-msg auth-msg__err"></span>
-                            </div>
-                        </div>
-                        <div class="auth-form__aside">
-                            <div class="auth-form__help">
-                                <a href="/user/forgot" class="auth-form__help-link auth-form__help-link">Quên mật
-                                    khẩu</a>
-                                <span class="auth-form__help-separate"></span>
-                                <a href="" class="auth-form__help-link">Cần trợ giúp</a>
-                            </div>
-                        </div>
-                        <div class="auth-form__result">
-                            @if (TempData["msg"] != null)
-                            {
-                                @TempData["msg"]
-                            }
-                        </div>
-                        <div class="auth-form__controls">
-                            <button id="" class="btn auth-form__controls-back btn--normal js-login-form-close">TRỞ
-                                LẠI</button>
-                            <button type="submit" class="btn btn--primary">ĐĂNG NHẬP</button>
-                        </div>
-                    </form>
-                    <div class="auth-form__socials">
-                        <a href="javascript:loginWithFacebook()" class="auth-form__socials--facebook btn btn--size-s btn--size-color btn--with-icon">
-                            <i class="auth-form__socials-icon fab fa-facebook-square"></i>
-                            <span class="auth-form__socials-title">
-                                Facebook
-                            </span>
-                        </a>
-                        <a href="javascript:loginWithGoogle()" class="auth-form__socials--google btn btn--size-s btn--with-icon">
-                            <i class="auth-form__socials-icon fab fa-google"></i>
-                            <span class="auth-form__socials-title">
-                                Google
-                            </span>
-                        </a>
-                    </div>
-                    <div class="auth-form__footer">Bạn mới biết đến SMe? <a href="/user/register" class="auth-form__footer-link">Đăng ký</a></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
-<script src="~/js/user.js"></script>
+<script src="~/js/user_login.js"></script>
 

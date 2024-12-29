@@ -12,6 +12,7 @@ public interface IUserResponsitory
     IEnumerable<User> getPassswordAccountByEmail(string email);
     IEnumerable<User> getUserIDAccountByEmail(string email);
     IEnumerable<User> getUserByIDAndPassword(int userID, string password);
+    IEnumerable<User> getUserByID(int userID);
     IEnumerable<UserInfo> getUsersInfo();
     IEnumerable<UserInfo> getUserInfoByEmailAndPassword(string email, string password);
     bool changePasswordByUserID(int userID, string password);

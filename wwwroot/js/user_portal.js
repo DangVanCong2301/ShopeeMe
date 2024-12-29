@@ -1,6 +1,10 @@
 function getAPIUserPotal() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/user/get-data-portal', true);
+    xhr.open('get', '/user/get-data-portal?userID=' + userID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -30,7 +34,7 @@ function openUserPortal(data) {
                                 <div class="portal__shop-col-1">Tên đăng nhập</div>
                                 <div class="portal__shop-col-2 l-6">
                                     <div class="portal__shop-box">
-                                        <input type="text" value="${data.users[0].sUserName}" readonly class="portal__shop-input-name">
+                                        <input type="text" value="${data.user[0].sUserName}" readonly class="portal__shop-input-name">
                                         <span>10/30</span>
                                     </div>
                                 </div>
@@ -201,6 +205,7 @@ function addUserInfo() {
     const birth = document.querySelector(".user-portal__input-birth").value;
     
     var formData = new FormData();
+    formData.append("userID", getCookies("userID"));
     formData.append("fullName", fullName);
     formData.append("gender", gender);
     formData.append("birth", birth);
@@ -210,11 +215,13 @@ function addUserInfo() {
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const result = JSON.parse(xhr.responseText);
+
             console.log(result);
 
             document.querySelector(".user-portal__btn-save-spinner").classList.remove("hide-on-destop");
             setTimeout(() => {
-                toast({ title: "Thông báo", msg: `${result.message}`, type: "success", duration: 5000 });
+                toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
+                setCookies("userID", result.userInfo[0].fK_iUserID, 1);
                 setTimeout(() => {
                     document.querySelector(".user-portal__btn-save-spinner").classList.remove("hide-on-destop");
                     document.querySelector(".portal__step-line-1").classList.add("active");
@@ -226,5 +233,15 @@ function addUserInfo() {
         }
     }
     xhr.send(formData);
+}
 
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
 }

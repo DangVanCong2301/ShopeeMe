@@ -4,8 +4,12 @@
 // Write your JavaScript code.
 
 function getDataSite() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/home/get-data', true);
+    xhr.open('get', '/home/get-data?userID=' + userID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -41,14 +45,16 @@ function setAccount(data) {
                                 <a class="header__navbar-item-link" href="/user/login">Đăng nhập</a>
                             </li>
             `;
+    } else if (data.userID != 0 && data.userInfo.length == 0) {
+        window.location.assign("/user/portal");
     } else {
-        if (data.roleID == 2) {
+        if (data.user[0].fK_iRoleID == 2) {
             htmlAccount +=
                 `
                 <div class="header__navbar-item">
                     <div class="header__navbar-user">
                         <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">${data.username}</span>
+                        <span class="header__navbar-user-name">${data.user[0].sUserName}</span>
                         <div class="header__navbar-user-manager">
                             <ul class="header__navbar-user-menu">
                                 <li class="header__navbar-user-item">
@@ -67,20 +73,20 @@ function setAccount(data) {
                                     <a href="/user/change">Đổi mật khẩu</a>
                                 </li>
                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                    <a href="/user/logout">Đăng xuất</a>
+                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 `;
-        } else if (data.roleID == 3) {
+        } else if (data.user[0].fK_iRoleID == 3) {
             htmlAccount +=
                 `
                 <div class="header__navbar-item">
                     <div class="header__navbar-user">
                         <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">${data.username}</span>
+                        <span class="header__navbar-user-name">${data.user[0].sUserName}</span>
                         <div class="header__navbar-user-manager">
                             <ul class="header__navbar-user-menu">
                                 <li class="header__navbar-user-item">
@@ -96,20 +102,20 @@ function setAccount(data) {
                                     <a href="/picker">Kênh lấy hàng</a>
                                 </li>
                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                    <a href="/User/Logout">Đăng xuất</a>
+                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 `;
-        } else if (data.roleID == 4) {
+        } else if (data.user[0].fK_iRoleID == 4) {
             htmlAccount +=
                 `
                                 <div class="header__navbar-item">
                                     <div class="header__navbar-user">
                                         <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                                        <span class="header__navbar-user-name">${data.username}</span>
+                                        <span class="header__navbar-user-name">${data.user[0].sUserName}</span>
                                         <div class="header__navbar-user-manager">
                                             <ul class="header__navbar-user-menu">
                                                 <li class="header__navbar-user-item">
@@ -125,7 +131,7 @@ function setAccount(data) {
                                                     <a href="/delivery">Kênh giao hàng</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -138,7 +144,7 @@ function setAccount(data) {
                                 <div class="header__navbar-item">
                                     <div class="header__navbar-user">
                                         <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                                        <span class="header__navbar-user-name">${data.username}</span>
+                                        <span class="header__navbar-user-name">${data.user[0].sUserName}</span>
                                         <div class="header__navbar-user-manager">
                                             <ul class="header__navbar-user-menu">
                                                 <li class="header__navbar-user-item">
@@ -154,7 +160,7 @@ function setAccount(data) {
                                                     <a href="/user/change">Đổi mật khẩu</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -167,7 +173,7 @@ function setAccount(data) {
 }
 
 function setAccountMobile(data) {
-    htmlAccountMobile = "";
+    let htmlAccountMobile = "";
     if (data.userID == 0) {
         htmlAccountMobile +=
             `
@@ -199,7 +205,7 @@ function setAccountMobile(data) {
                                                     <a href="#">Quản trị</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -226,7 +232,7 @@ function setAccountMobile(data) {
                                                     <a href="">Đơn mua</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -250,7 +256,7 @@ function setAccountMobile(data) {
                                                     <a href="">Đơn mua</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -261,6 +267,20 @@ function setAccountMobile(data) {
     if (document.querySelector(".header__mobile-user") != null) {
         document.querySelector(".header__mobile-user").innerHTML = htmlAccountMobile;
     }
+}
+
+function logoutUserAccount() {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
+    deleteCookies("userID");
+    setTimeout(() => {
+        closeModal();
+        toast({ title: "Thông báo", msg: `Đăng xuất thành công!`, type: "success", duration: 5000 });
+        document.querySelector(".modal__body").innerHTML = "";
+        setTimeout(() => {
+            window.location.assign('/');
+        }, 1000)
+    }, 2000);
 }
 
 function getCartsItem(data) {
@@ -983,4 +1003,19 @@ function getTime(time) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var current_time = hours + ":" + minutes;
     return current_time;
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}
+
+function deleteCookies(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

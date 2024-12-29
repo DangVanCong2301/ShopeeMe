@@ -1,4 +1,5 @@
 using System.Reflection.Metadata;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -50,45 +51,66 @@ public class UserController : Controller {
 
     [HttpPost]
     [Route("/user/login")]
-    public IActionResult Login(LoginModel user) {
-        if (!ModelState.IsValid) {
-            return View(user);
+    public IActionResult Login(string email = "", string password = "") {
+        string regexEmail = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$";
+        Status status;
+        List<User> userLogin = null;
+        if (!Regex.IsMatch(email, regexEmail)) {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Email phải chứa @.com/@.net/@.org"
+            };
+        } else if (!Regex.IsMatch(password, "^.{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải lớn hơn 8 ký tự"
+            };
+        } else if (!Regex.IsMatch(password, "^(?=.*?[A-Z]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ cái tiếng Anh viết hoa!"
+            };
+        } else if (!Regex.IsMatch(password, "^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ cái tiếng Anh viết thường!"
+            };
+        } else if (!Regex.IsMatch(password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ số!"
+            };
+        } else if (!Regex.IsMatch(password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt!"
+            };
+        } else {
+            string passwordEncrypted = _userResponsitory.encrypt(password);
+            userLogin = _userResponsitory.login(email, passwordEncrypted).ToList();
+            IEnumerable<UserInfo> userInfo = _userResponsitory.getUserInfoByEmailAndPassword(email, password);
+            if (userLogin.Count() != 0 && userInfo.Count() != 0) {
+                status = new Status {
+                    StatusCode = 1,
+                    Message = "Đăng nhập thành công!"
+                };
+            } else if (userInfo.Count() == 0) {
+                status = new Status {
+                    StatusCode = -4,
+                    Message = "Tài khoản người bán chưa đầy đủ thông tin!"
+                };
+            } else {
+                status = new Status {
+                    StatusCode = -3,
+                    Message = "Tên đăng nhập hoặc mật khẩu không chính xác!"
+                };
+            }
         }
-        string passwordEncrypted = _userResponsitory.encrypt(user.sPassword);
-        List<User> userLogin = _userResponsitory.login(user.sEmail, passwordEncrypted).ToList();
-        if (userLogin.Count() == 0) {
-            TempData["msg"] = "Tài khoản hoặc mật khẩu không chính xác!";
-            return Redirect("/user/login");
-        }
-        string nameUser = userLogin[0].sUserName;
-        int value = userLogin[0].PK_iUserID;
-        // Tạo Cookies
-        CookieOptions options = new CookieOptions {
-            Expires = DateTime.Now.AddDays(1),
-            Secure = true, // Khi Hacker lấy cookies sẽ không thể lấy
-            HttpOnly = true,       
-            SameSite = SameSiteMode.None, // Đọc thêm về SameSite (cùng trang): https://developers.google.com/search/blog/2020/01/get-ready-for-new-samesitenone-secure?hl=vi
-            Path = "/",
-            IsEssential = true
+        UserViewModel model = new UserViewModel {
+            Status = status,
+            User = userLogin
         };
-        Response.Cookies.Append("UserID", value.ToString(), options);
-        _accessor?.HttpContext?.Session.SetString("UserName", nameUser);
-        //_accessor?.HttpContext?.Session.SetInt32("UserID", userLogin[0].PK_iUserID);
-
-        // Lấy số lượng giỏ hàng
-        // var userID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        // var userID = Request.Cookies["UserID"];
-        // IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(userID));
-        // int cartCount = carts.Count();
-        // _accessor?.HttpContext?.Session.SetInt32("CartCount", cartCount);
-
-        // return Json(user);
-        List<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(userLogin[0].PK_iUserID).ToList();
-        if (userInfo.Count == 0) {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", userLogin[0].PK_iUserID);
-            return Redirect("/user/portal");
-        }
-        return Redirect("/");
+        return Ok(model);
     }
 
     [HttpGet]
@@ -97,27 +119,38 @@ public class UserController : Controller {
         return View();
     }
 
-    [HttpPost]
-    [Route("/user/get-data-portal")]
-    public IActionResult GetDataPortal() {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        IEnumerable<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID));
+    [HttpGet]
+    [Route("/user/get-data-portal/{userID?}")]
+    public IActionResult GetDataPortal(int userID = 0) {
+        IEnumerable<User> user = _userResponsitory.checkUserLogin(userID);
         ShopeeViewModel model = new ShopeeViewModel {
-            Users = users
+            User = user
         };
         return Ok(model);
     }
 
     [HttpPost]
     [Route("/user/add-user-portal")]
-    public IActionResult AddUserPort(string fullName = "", int gender = 0, string birth = "", string image = "") {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        _userResponsitory.insertUserInfo(Convert.ToInt32(sessionUserID), fullName, gender, birth, image);
-        Status status = new Status {
-            StatusCode = 1,
-            Message = "Cập nhật thành công"
+    public IActionResult AddUserPort(int userID = 0, string fullName = "", int gender = 0, string birth = "", string image = "") {
+        Status status;
+        IEnumerable<UserInfo> userInfo = null;
+        if (_userResponsitory.insertUserInfo(userID, fullName, gender, birth, image)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Cập nhật thành công"
+            };
+            userInfo = _userResponsitory.getUserInfoByID(userID);
+        } else {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Cập nhật thất bại"
+            };
+        }
+        UserViewModel model = new UserViewModel {
+            Status = status,
+            UserInfo = userInfo
         };
-        return Ok(status);
+        return Ok(model);
     }
 
     [HttpGet]

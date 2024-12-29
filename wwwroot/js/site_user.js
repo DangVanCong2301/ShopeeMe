@@ -1,3 +1,32 @@
+// Validate Login Account
+function showErrStyles(input, msg) {
+    input.classList.add("err");
+    msg.classList.remove("hide-on-destop");
+}
+
+function removeErrStyles(input, msg) {
+    input.classList.remove("err");
+    msg.classList.add("hide-on-destop");
+}
+
+function backHistory() {
+    window.history.back();
+}
+
+function showHiddenPass() {
+    const input = document.querySelector(".auth__mobile-form-input-password"),
+    iconEye = document.querySelector(".auth__mobile-form-password-show-icon");
+    if (input.type == "password") {
+        input.type = "text";
+        iconEye.classList.add("uil-eye");
+        iconEye.classList.remove("uil-eye-slash");
+    } else {
+        input.type = "password";
+        iconEye.classList.add("uil-eye-slash");
+        iconEye.classList.remove("uil-eye");
+    }
+}
+
 // Toast
 function toast({ title = "", msg = "", type = "", duration = 3000}) {
     const main = document.getElementById('toast');

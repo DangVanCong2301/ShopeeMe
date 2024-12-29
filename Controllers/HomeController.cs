@@ -55,48 +55,33 @@ namespace Project.Controllers
         /// <param name="currentPage"></param>
         /// <returns></returns>
 
-        public IActionResult Index(int currentPage = 1)
+        public IActionResult Index()
         {
-            // Lấy Cookies trên trình duyệt
-            var userID = Request.Cookies["UserID"];
-            if (userID != null) {
-                _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
-            }
-            var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-            if (sessionUserID == null) {
-                _accessor?.HttpContext?.Session.SetInt32("UserID", 0);
-            }
-            System.Console.WriteLine("sessionUserID: " + sessionUserID);
-            if (userID != null) {
-                List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-                _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
-                _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
-            } else {
-                _accessor?.HttpContext?.Session.SetString("UserName", "");
-            }
             return View();
         }
 
-        [HttpPost]
-        [Route("/home/get-data")]
-        public IActionResult GetData(int currentPage = 1) {
-            var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-            var sessionRoleID = _accessor?.HttpContext?.Session.GetInt32("RoleID");
-            var sessionUsername = _accessor?.HttpContext?.Session.GetString("UserName");
+        [HttpGet]
+        [Route("/home/get-data/{userID?}")]
+        public IActionResult GetData(int userID = 0, int currentPage = 1) {
             IEnumerable<Product> products = _homeResponsitory.getProducts().ToList();
             int totalRecord = products.Count();
             int pageSize = 12;
             int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
             products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
+            IEnumerable<User> user = _userResponsitory.getUserByID(userID);
+            IEnumerable<UserInfo> userInfo = _userResponsitory.getUserInfoByID(userID);
             IEnumerable<Store> stores = _homeResponsitory.getStores();
             IEnumerable<ParentCategory> parentCategories = _homeResponsitory.getParentCategories();
             IEnumerable<Category> categories = _homeResponsitory.getCategories().ToList();
-            IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(Convert.ToInt32(sessionUserID));
-            IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
-            IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID));
-            IEnumerable<Chat> chats = _chatRepository.getChatByUserID(Convert.ToInt32(sessionUserID));
+            IEnumerable<Favorite> favorites = _homeResponsitory.getFavorites(userID);
+            IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(userID).ToList();
+            IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(userID);
+            IEnumerable<Chat> chats = _chatRepository.getChatByUserID(userID);
             int cartCount = carts.Count();
             ShopeeViewModel model = new ShopeeViewModel { // https://shareprogramming.net/dto-la-gi-dung-dto-trong-nhung-truong-hop-nao/
+                UserID = userID,
+                User = user,
+                UserInfo = userInfo,
                 Stores = stores,
                 Products = products,
                 ParentCategories = parentCategories,
@@ -106,9 +91,6 @@ namespace Project.Controllers
                 TotalPage = totalPage,
                 PageSize = pageSize,
                 CurrentPage = currentPage,
-                RoleID = Convert.ToInt32(sessionRoleID),
-                UserID = Convert.ToInt32(sessionUserID),
-                Username = sessionUsername,
                 CartCount = cartCount,
                 Chats = chats
             };

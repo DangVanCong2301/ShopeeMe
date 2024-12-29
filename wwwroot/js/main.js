@@ -80,8 +80,12 @@ btnLeftTwo.addEventListener('click', () => {
 
 // Lấy dữ liệu (API)
 function getDataHome() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/home/get-data', true);
+    xhr.open('get', '/home/get-data?userID=' + userID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -461,3 +465,14 @@ window.addEventListener('scroll', () => {
         document.querySelector(".suggest__header").classList.remove("scroll");
     }
 });
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}

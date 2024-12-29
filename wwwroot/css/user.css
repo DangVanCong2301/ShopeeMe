@@ -115,7 +115,13 @@
     font-family: var(--body-font);
 }
 
-.auth-msg__err {
+.auth-form__input-email.err,
+.auth-form__input-password.err {
+    border: 1px solid var(--primary-color);
+}
+
+.auth-msg__err-email,
+.auth-msg__err-password {
     color: var(--primary-color);
     font-size: 12px;
     margin-top: 10px;

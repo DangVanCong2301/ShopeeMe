@@ -13,6 +13,7 @@ public class ShopeeViewModel
     public IEnumerable<User> User { get; set; }
     public IEnumerable<Order> Order { get; set; }
     public IEnumerable<UserInfo> UserInfos { get; set; }
+    public IEnumerable<UserInfo> UserInfo { get; set; }
     public IEnumerable<Checkout> Checkouts { get; set; }
     public IEnumerable<Chat> Chats { get; set; }
     public IEnumerable<Address> Address { get; set; }
