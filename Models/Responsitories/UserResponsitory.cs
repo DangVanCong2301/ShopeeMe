@@ -88,10 +88,10 @@ public class UserResponsitory : IUserResponsitory
         return _context.Users.FromSqlRaw("EXEC sp_GetUserByIDAndPassword @PK_iUserID, @sPassword", userIDParam, passwordParam);
     }
 
-    public IEnumerable<User> getUserIDAccountByEmail(string email)
+    public IEnumerable<User> getUserByEmail(string email)
     {
         SqlParameter emailParam = new SqlParameter("@sEmail", email);
-        return _context.Users.FromSqlRaw("EXEC sp_GetUserIDAccountByEmail @sEmail", emailParam);
+        return _context.Users.FromSqlRaw("EXEC sp_GetUserByEmail @sEmail", emailParam);
     }
 
     public IEnumerable<UserInfo> getUserInfoByEmailAndPassword(string email, string password)
@@ -140,14 +140,14 @@ public class UserResponsitory : IUserResponsitory
         return _context.Users.FromSqlRaw("EXEC sp_LoginEmailAndPassword @sEmail, @sPassword", emailParam, passwordParam);
     }
 
-    public bool register(RegistrastionModel user)
+    public bool register(string username, string email, string password)
     {
         // Phải đặt enctype="multipart/form-data" thì IFromFile mới có giá trị
         SqlParameter roleIdParam = new SqlParameter("@FK_iRoleID", 1);
-        SqlParameter nameParam = new SqlParameter("@sUserName", user.sUserName);
-        SqlParameter emailParam = new SqlParameter("@sEmail", user.sEmail);
+        SqlParameter nameParam = new SqlParameter("@sUserName", username);
+        SqlParameter emailParam = new SqlParameter("@sEmail", email);
         SqlParameter createTimeParam = new SqlParameter("@dCreateTime", DateTime.Now);
-        SqlParameter passwordParam = new SqlParameter("@sPassword", user.sPassword);
+        SqlParameter passwordParam = new SqlParameter("@sPassword", password);
         _context.Database.ExecuteSqlRaw(
             "EXEC sp_InsertUser @FK_iRoleID, @sUserName, @sEmail, @dCreateTime, @sPassword", 
             roleIdParam, nameParam, emailParam, createTimeParam, passwordParam

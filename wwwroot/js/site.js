@@ -53,7 +53,7 @@ function setAccount(data) {
                 `
                 <div class="header__navbar-item">
                     <div class="header__navbar-user">
-                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                        <img src="/img/${data.userInfo[0].sImageProfile}" alt="" class="header__navbar-user-img">
                         <span class="header__navbar-user-name">${data.user[0].sUserName}</span>
                         <div class="header__navbar-user-manager">
                             <ul class="header__navbar-user-menu">
@@ -85,7 +85,7 @@ function setAccount(data) {
                 `
                 <div class="header__navbar-item">
                     <div class="header__navbar-user">
-                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                        <img src="/img/${data.userInfo[0].sImageProfile}" alt="" class="header__navbar-user-img">
                         <span class="header__navbar-user-name">${data.user[0].sUserName}</span>
                         <div class="header__navbar-user-manager">
                             <ul class="header__navbar-user-menu">
@@ -114,7 +114,7 @@ function setAccount(data) {
                 `
                                 <div class="header__navbar-item">
                                     <div class="header__navbar-user">
-                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                                        <img src="/img/${data.userInfo[0].sImageProfile}" alt="" class="header__navbar-user-img">
                                         <span class="header__navbar-user-name">${data.user[0].sUserName}</span>
                                         <div class="header__navbar-user-manager">
                                             <ul class="header__navbar-user-menu">
@@ -143,7 +143,7 @@ function setAccount(data) {
                 `
                                 <div class="header__navbar-item">
                                     <div class="header__navbar-user">
-                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
+                                        <img src="/img/${data.userInfo[0].sImageProfile}" alt="" class="header__navbar-user-img">
                                         <span class="header__navbar-user-name">${data.user[0].sUserName}</span>
                                         <div class="header__navbar-user-manager">
                                             <ul class="header__navbar-user-menu">

@@ -4,10 +4,6 @@
     box-sizing: border-box;
 }
 
-.app.hight {
-    height: 100vh;
-}
-
 /* Header */
 header {
     display: flex;

@@ -3,10 +3,6 @@
     background-color: var(--primary-color);
 }
 
-.app.hight {
-    height: 100vh;
-}
-
 /* Login */
 .auth {
     display: grid;

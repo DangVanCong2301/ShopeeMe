@@ -161,18 +161,25 @@ public class UserController : Controller {
 
     [Route("/user/forgot")]
     [HttpPost]
-    public IActionResult Forgot(ForgotViewModel forgotViewModel) {
-        if (!ModelState.IsValid) {
-            return View(forgotViewModel);
-        }
-        List<User> user = _userResponsitory.getPassswordAccountByEmail(forgotViewModel.sEmail).ToList();
+    public IActionResult Forgot(string email = "") {
+        List<User> user = _userResponsitory.getPassswordAccountByEmail(email).ToList();
+        Status status;
         if (user.Count() == 0) {
-            TempData["result"] = "Không có Email này, vui lòng nhập lại";
+            status = new Status {
+                StatusCode = -1,
+                Message = "Không có email này, vui lòng nhập lại!"
+            };
         } else {
             string passwordDecrypted = _userResponsitory.decrypt(user[0].sPassword);
-            TempData["result"] = $"Mật khẩu của bạn là: {passwordDecrypted}";
+            status = new Status {
+                StatusCode = 1,
+                Message = $"Mật khẩu của bạn là: {passwordDecrypted}"
+            };
         }
-        return RedirectToAction("Forgot");
+        UserViewModel model = new UserViewModel {
+            Status = status
+        };
+        return Ok(model);
     }
 
     [Route("/user/change")]
@@ -181,50 +188,81 @@ public class UserController : Controller {
     }
 
     [Route("/user/change")]
-    [HttpPost]
-    public IActionResult Change(ChangePasswordModel model) {
-        if (!ModelState.IsValid) {
-            return View(model);
-        }
-        System.Console.WriteLine("Old password: " + model.sOldPassword);
-        int userID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
-        List<User> user = _userResponsitory.getUserByIDAndPassword(userID, model.sOldPassword).ToList();
+    [HttpPut]
+    public IActionResult Change(int userID = 0, string oldPassword = "", string newPassword = "", string rePassword = "") {
+        List<User> user = _userResponsitory.getUserByIDAndPassword(userID, oldPassword).ToList();
+        Status status;
         if (user.Count() == 0) {
-            TempData["result"] = "Mật khẩu cũ không chính xác";
+            status = new Status {
+                StatusCode = -1,
+                Message = "Mật khẩu cũ không chính xác!"
+            };
+        } else if (!Regex.IsMatch(newPassword, "^.{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải lớn hơn 8 ký tự!"
+            };
+        } else if (!Regex.IsMatch(newPassword, "^(?=.*?[A-Z]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ cái tiếng Anh viết hoa!"
+            };
+        } else if (!Regex.IsMatch(newPassword, "^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ cái tiếng Anh viết thường!"
+            };
+        } else if (!Regex.IsMatch(newPassword, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ số!"
+            };
+        } else if (!Regex.IsMatch(newPassword, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt!"
+            };
+        } else if (rePassword != newPassword) {
+            status = new Status {
+                StatusCode = -3,
+                Message = "Xác nhận mật khẩu không chính xác!"
+            };
         } else {
-            string passwordEncrypted = _userResponsitory.encrypt(model.sNewPassword);
+            string passwordEncrypted = _userResponsitory.encrypt(newPassword);
             _userResponsitory.changePasswordByUserID(userID, passwordEncrypted);
-            TempData["result"] = "Đổi mật khẩu thành công";
+            status = new Status {
+                StatusCode = 1,
+                Message = "Đổi mật khẩu thành công"
+            };
         }
-        return RedirectToAction("Change");
+        UserViewModel model = new UserViewModel {
+            Status = status
+        };
+        return Ok(model);
     }
 
     [Route("/user/profile")]
     [HttpGet]
     public IActionResult Profile() {
-        // Lấy Cookies trên trình duyệt
-        var userID = Request.Cookies["UserID"];
-        if (userID != null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
-        }
-        // Phải Refresh lại trang chủ thì mới lấy được sessionUserID
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        System.Console.WriteLine("sessionUserID: " + sessionUserID);
-        IEnumerable<UserInfo> userInfos = _userResponsitory.getUserInfoByID(Convert.ToInt32(sessionUserID));
+        return View();
+    }
+
+    [Route("/user/profile-data/{userID?}")]
+    [HttpGet]
+    public IActionResult Profile(int userID = 0) {
+        IEnumerable<UserInfo> userInfo = _userResponsitory.getUserInfoByID(userID);
         ShopeeViewModel model = new ShopeeViewModel
         {
-            UserID = Convert.ToInt32(sessionUserID),
-            UserInfos = userInfos
+            UserID = userID,
+            UserInfo = userInfo
         };
-        return View(model);
+        return Ok(model);
     }
 
     [Route("/user/update-profile")]
-    [HttpPost] 
-    public IActionResult UpdateProfile(string fullName = "", int gender = 0, string birth = "", string image = "") {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        _userResponsitory.updateUserInfoByID(Convert.ToInt32(sessionUserID), fullName, gender, birth, image);
+    [HttpPut] 
+    public IActionResult UpdateProfile(int userID = 0, string fullName = "", int gender = 0, string birth = "", string image = "") {
+        _userResponsitory.updateUserInfoByID(userID, fullName, gender, birth, image);
         Status status = new Status {
             StatusCode = 1,
             Message = "Cập nhật thành công"
@@ -258,20 +296,58 @@ public class UserController : Controller {
 
     [Route("/user/register")]
     [HttpPost]
-    public IActionResult Register(RegistrastionModel user) {
-        System.Console.WriteLine("Password Confirm: " + user.sPasswordConfirm);
-        if (!ModelState.IsValid) {
-            return View("Register", user);
-        }
-        List<User> userCheck = _userResponsitory.checkEmailUserIsRegis(user.sEmail).ToList();
+    public IActionResult Register(string username = "", string email = "", string password = "", string rePassword = "") {
+        List<User> userCheck = _userResponsitory.checkEmailUserIsRegis(email).ToList();
+        Status status;
         if (userCheck.Count() != 0 && userCheck[0].sEmail != null) {
-            TempData["msg"] = "Email này đã tồn tại!";
-            return RedirectToAction("Register");
+            status = new Status {
+                StatusCode = -1,
+                Message = "Email này đã được đăng ký!"
+            };
+        } else if (!Regex.IsMatch(password, "^.{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải lớn hơn 8 ký tự"
+            };
+        } else if (!Regex.IsMatch(password, "^(?=.*?[A-Z]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ cái tiếng Anh viết hoa!"
+            };
+        } else if (!Regex.IsMatch(password, "^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ cái tiếng Anh viết thường!"
+            };
+        } else if (!Regex.IsMatch(password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một chữ số!"
+            };
+        } else if (!Regex.IsMatch(password, "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")) {
+            status = new Status {
+                StatusCode = -2,
+                Message = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt!"
+            };
+        } else if (rePassword != password) {
+            status = new Status {
+                StatusCode = -3,
+                Message = "Xác nhận mật khẩu không chính xác!"
+            };
+        } else {
+            password = _userResponsitory.encrypt(password);
+            _userResponsitory.register(username, email, password);
+            status = new Status {
+                StatusCode = 1,
+                Message = "Đăng ký tài khoản thành công!"
+            };
         }
-        user.sPassword = _userResponsitory.encrypt(user.sPassword);
-        _userResponsitory.register(user);
-        TempData["msg"] = "Đăng ký tài khoản thành công!";
-        return RedirectToAction("Register");
+        List<User> user = _userResponsitory.getUserByEmail(email).ToList();
+        UserViewModel model = new UserViewModel {
+            Status = status,
+            User = user
+        };
+        return Ok(model);
     }
 
     [HttpPost]
@@ -283,43 +359,23 @@ public class UserController : Controller {
     [HttpGet]
     [Route("/user/purchase")]
     public IActionResult Purchase() {
-        // Lấy Cookies trên trình duyệt
-        var userID = Request.Cookies["UserID"];
-        if (userID != null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
-        } else {
-            return Redirect("/user/login");
-        }
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        if (sessionUserID != null)
-        {
-            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
-            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
-        }
-        else
-        {
-            _accessor?.HttpContext?.Session.SetString("UserName", "");
-        }
         return View();
     }
 
-    [HttpPost]
-    [Route("/user/purchase")]
-    public IActionResult GetDataPurchase(int currentPage = 1) {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getProductsOrderByUserID(Convert.ToInt32(sessionUserID));
-        IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrdersByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
-        IEnumerable<OrderDetail> orderDetailsWaitSettlement = _orderResponsitory.getProductsOrderByUserIDWaitSettlement(Convert.ToInt32(sessionUserID));
-        IEnumerable<Order> ordersTransiting = _orderResponsitory.getOrderByUserIDTransiting(Convert.ToInt32(sessionUserID));
-        IEnumerable<OrderDetail> orderDetailsTransiting = _orderResponsitory.getProductsOrderByUserIDTransiting(Convert.ToInt32(sessionUserID));
-        IEnumerable<Order> ordersDelivering = _orderResponsitory.getOrderByUserIDWaitDelivery(Convert.ToInt32(sessionUserID));
-        IEnumerable<OrderDetail> orderDetailsDelivering = _orderResponsitory.getProductsOrderByUserIDDelivering(Convert.ToInt32(sessionUserID));
-        IEnumerable<Order> ordersDelivered = _orderResponsitory.getOrderByUserIDDeliverd(Convert.ToInt32(sessionUserID));
-        IEnumerable<OrderDetail> orderDetailsDelivered = _orderResponsitory.getProductsOrderByUserIDDelivered(Convert.ToInt32(sessionUserID));
-        IEnumerable<Order> ordersDestroy = _orderResponsitory.getOrderByUserIDDestroy(Convert.ToInt32(sessionUserID));
-        IEnumerable<OrderDetail> orderDetailsDestroy = _orderResponsitory.getProductsOrderByUserIDDestroy(Convert.ToInt32(sessionUserID));
+    [HttpGet]
+    [Route("/user/purchase-data/{userID?}")]
+    public IActionResult Purchase(int userID = 0, int currentPage = 1) {
+        IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getProductsOrderByUserID(userID);
+        IEnumerable<Order> ordersWaitSettlement = _orderResponsitory.getOrdersByUserIDWaitSettlement(userID);
+        IEnumerable<OrderDetail> orderDetailsWaitSettlement = _orderResponsitory.getProductsOrderByUserIDWaitSettlement(userID);
+        IEnumerable<Order> ordersTransiting = _orderResponsitory.getOrderByUserIDTransiting(userID);
+        IEnumerable<OrderDetail> orderDetailsTransiting = _orderResponsitory.getProductsOrderByUserIDTransiting(userID);
+        IEnumerable<Order> ordersDelivering = _orderResponsitory.getOrderByUserIDWaitDelivery(userID);
+        IEnumerable<OrderDetail> orderDetailsDelivering = _orderResponsitory.getProductsOrderByUserIDDelivering(userID);
+        IEnumerable<Order> ordersDelivered = _orderResponsitory.getOrderByUserIDDeliverd(userID);
+        IEnumerable<OrderDetail> orderDetailsDelivered = _orderResponsitory.getProductsOrderByUserIDDelivered(userID);
+        IEnumerable<Order> ordersDestroy = _orderResponsitory.getOrderByUserIDDestroy(userID);
+        IEnumerable<OrderDetail> orderDetailsDestroy = _orderResponsitory.getProductsOrderByUserIDDestroy(userID);
         int totalRecord = orderDetails.Count();
         int pageSize = 4;
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
