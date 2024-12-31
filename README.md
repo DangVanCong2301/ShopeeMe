@@ -1,8 +1,8 @@
 # Sàn TMĐT SMe(ShopeeMe) (Đồ án tốt nghiệp) (v2.0.2)
 # Công nghệ: 
-- Frontend: HTMS, CSS, JAVASCRIPT
-- Backend: ASP.NET Core MVC  8.0
-- Database: TSQL (SQL Server)  
+### Frontend: HTMS, CSS, JAVASCRIPT
+### Backend: ASP.NET Core MVC  8.0
+### Database: TSQL (SQL Server)  
 # Kiến trúc phần mềm
 ![ShopeeMe-SequenceDiagram-Software_Architecture drawio](https://github.com/user-attachments/assets/fd93c90b-e2d6-4118-b80e-6d50222115ce)
 ## Thành phần chính
