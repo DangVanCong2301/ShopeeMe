@@ -1,6 +1,9 @@
 # Sàn TMĐT SMe(ShopeeMe) (Đồ án tốt nghiệp) (v2.0.2)
-# Công nghệ: ASP.NET Core MVC  8.0
-- Luồng sử lý dữ liệu cơ bản: 
+# Công nghệ: 
+- Frontend: HTMS, CSS, JAVASCRIPT
+- Backend: ASP.NET Core MVC  8.0
+- Database: TSQL (SQL Server)  
+# Kiến trúc phần mềm
 ![ShopeeMe-SequenceDiagram-Software_Architecture drawio](https://github.com/user-attachments/assets/fd93c90b-e2d6-4118-b80e-6d50222115ce)
 ## Thành phần chính
 ### Routing
@@ -28,7 +31,7 @@
  - Tên bảng: tbl_ (Ví dụ tbl_Categories)
  - Tên thủ tục: sp_ (Ví dụL sp_GetCategories)
  - ...
-## Kiến trúc phần mềm
+## Biểu đồ lớp
 ![ShopeeMe-SequenceDiagram-Class_Diagram drawio](https://github.com/user-attachments/assets/c75c3751-11ea-4107-ad2b-768d7b38ce1f)
 ## Kết quả thực hiện
 ### Trang chủ
