@@ -108,7 +108,7 @@ function getStores(data) {
     htmlStores += data.stores.map((obj, index) => 
     `
                         <div class="col l-2 c-6 m-4">
-                            <a href="/shop/${obj.sStoreUsername}" class="store__item" id="store-item-${index}">
+                            <a href="/shop?name=${obj.sStoreUsername}" class="store__item" id="store-item-${index}">
                                 <div class="store__item-img" style="background-image: url(/img/${obj.sImageAvatar});">
                                     <div class="store__item-img-blur-bottom">
                                     </div>
@@ -145,7 +145,7 @@ function getStores(data) {
     htmlStoresMobile += data.stores.map((obj, index) => 
     `
                         <div class="store__mobile-item" id="store-mobile-item-${index}">
-                            <a href="/shop/${obj.sStoreUsername}" class="store__mobile-item-link">
+                            <a href="/shop?name=${obj.sStoreUsername}" class="store__mobile-item-link">
                                 <div class="store__mobile-item-img"
                                     style="background-image: url(/img/${obj.sImageAvatar});">
                                     <div class="store__mobile-item-img-blur-bottom">
@@ -198,7 +198,7 @@ function getParentCategories(data) {
     let htmlParentCategory = "";
     htmlParentCategory += data.parentCategories.map(obj => `
         <li class="category-item-home">
-            <a href="/product/${obj.pK_iParentCategoryID}" class="category-item-link">
+            <a href="/product?industryID=${obj.pK_iParentCategoryID}" class="category-item-link">
                 <div class="category-item__img" style="background-image: url(/img/${obj.sParentCategoryImage});">
                     <div class="category-item__img-loading">
                         <i class="uil uil-shopping-bag category-item__img-loading-icon"></i>
@@ -221,7 +221,7 @@ function getParentCategories(data) {
     htmlParentCategoiesMobile += data.parentCategories.map((obj, index) => 
     `
                         <div class="category__mobile-item" id="category-mobile-item-${index}">
-                            <a href="/product/${obj.pK_iParentCategoryID}" class="category__mobile-item-link">
+                            <a href="/product?industryID=${obj.pK_iParentCategoryID}" class="category__mobile-item-link">
                                 <div class="category__mobile-item-img"
                                     style="background-image: url(/img/${obj.sParentCategoryImage});">
                                     <div class="store__item-img-blur-bottom">
@@ -325,7 +325,7 @@ function getProducts(data) {
                                     </a>
                                     <div class="home-product-item__find-similar">
                                     </div>
-                                    <a href="/product/similar/${data.products[i].pK_iProductID}/${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
+                                    <a href="/product/similar?productID=${data.products[i].pK_iProductID}&categoryID=${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
                                 </div>
                             </div>
             `;
@@ -395,7 +395,7 @@ function getProducts(data) {
                                             <span class="home-product-item__sale-off-label">GIẢM</span>
                                         </div>
                                     </a>
-                                    <a href="/product/similar/${data.products[i].pK_iProductID}/${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
+                                    <a href="/product/similar?productID=${data.products[i].pK_iProductID}&categoryID=${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
                                 </div>
                             </div>
             `;

@@ -1254,11 +1254,14 @@ function commentValidate() {
 }
 
 function addReviewer(productID, rateCheck, comment, image) {
-    document.querySelector(".modal__body").innerHTML =
-            `
-                <div class="spinner"></div>
-            `;
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
+    document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
     var formData = new FormData();
+    formData.append("userID", userID);
     formData.append("productID", productID);
     formData.append("star", rateCheck);
     formData.append("comment", comment);

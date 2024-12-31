@@ -1,6 +1,11 @@
 function getDataDetail() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/product/get-data-detail', true);
+    xhr.open('get', '/product/get-data-detail?userID=' + userID + '&id=' + getQueryStr() + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -537,12 +542,18 @@ function reduceProduct(event) {
 
 //AddToCart
 function addToCart(productID, price) {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var quantity = document.getElementById("qnt").value;
     if (parseInt(quantity) == 0) {
         toast({title: "Thông báo", msg: "Bạn chưa nhập số lượng sản phẩm!", type: "success", duration: 5000});
         // alert('Bạn chưa nhập số lượng sản phẩm!');
     } else {
         var formData = new FormData();
+        formData.append("userID", userID);
         formData.append('productID', productID);
         formData.append('unitPrice', price);
         formData.append('quantity', quantity);
@@ -906,7 +917,7 @@ function setDataReviewer(data) {
 function openUpdateReviewer(reviewerID) {
     openModal();
     var xhr = new XMLHttpRequest();
-    xhr.open('get', '/product/reviewer-detail/' + reviewerID + '', true);
+    xhr.open('get', '/product/reviewer-detail?productID=' + getQueryStr() + '&reviewerID=' + reviewerID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -1194,4 +1205,23 @@ function changeReplyBtn(input) {
 function showReplyDesc() {
     document.querySelector(".comment__replies").classList.toggle("show");
     document.querySelector(".comment__reply-quantity-icon").classList.toggle("rotate");
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}
+
+function getQueryStr() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    return array[0];
 }

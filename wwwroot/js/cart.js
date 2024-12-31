@@ -1,7 +1,12 @@
 // lấy số lượng sản phẩm giỏ hàng, khi khai báo window.onload ở site.js thì ở file này ta không khai báo nữa
 function getCartInfo() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/cart', true);
+    xhr.open('get', '/cart-data?userID=' + userID +'', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -585,11 +590,12 @@ function cong(event, productID, unitPrice) {
         input.value = parseInt(cong) + 1;
         console.log(input.value);
         var formData = new FormData(); // Gửi dữ liệu dạng formData
+        formData.append("userID", getCookies("userID"));
         formData.append('quantity', input.value);
         formData.append('productID', productID);
         formData.append('unitPrice', unitPrice)
         var xhr = new XMLHttpRequest();
-        xhr.open('post', '/cart/quantity', true);
+        xhr.open('put', '/cart/quantity', true);
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
@@ -610,11 +616,12 @@ function tru(event, productID, unitPrice) {
     if (parseInt(tru) > 1) {
         input.value = parseInt(tru) - 1;
         var formData = new FormData();
+        formData.append("userID", getCookies("userID"));
         formData.append('quantity', input.value);
         formData.append('productID', productID);
         formData.append('unitPrice', unitPrice);
         var xhr = new XMLHttpRequest();
-        xhr.open('post', '/cart/quantity', true);
+        xhr.open('put', '/cart/quantity', true);
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
@@ -638,16 +645,21 @@ function exitModal() {
 
 function deleteProductModal(productID) {
     var formData = new FormData();
+    formData.append("userID", getCookies("userID"));
     formData.append('productID', productID);
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/cart/delete-item', true);
+    xhr.open('delete', '/cart/delete-item', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
+
             console.log(data);
+
             exitModal();
-            document.getElementById("product__" + productID).style.display = 'none';
-            toast({ title: "Thông báo", msg: `${data.message}`, type: "success", duration: 5000 });
+            if (data.status.statusCode == 1) {
+                document.getElementById("product__" + productID).style.display = 'none';
+                toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+            }
         }
     };
     xhr.send(formData);
@@ -705,8 +717,13 @@ function checkAllProduct(input) {
 }
 
 function deleteAllProductModal() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Cart/GetCartInfo', true);
+    xhr.open('get', '/cart-data?userID=' + userID +'', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -724,7 +741,7 @@ function deleteAllProductModal() {
                             <p class="auth-form__msg">Bạn muốn bỏ ${data.cartCount} sản phẩm?</p>
                             <div class="auth-form__controls">
                                 <button onclick="exitModal()" class="btn btn--primary">HUỶ</button>
-                                <button onclick="deleteAllProduct()" class="btn">ĐỒNG Ý</button>
+                                <button onclick="deleteAllProduct(${userID})" class="btn">ĐỒNG Ý</button>
                             </div>
                         </div>
                     </div>
@@ -738,13 +755,17 @@ function deleteAllProductModal() {
     xhr.send(null);
 }
 
-function deleteAllProduct() {
+function deleteAllProduct(userID) {
+    var formData = new FormData();
+    formData.append("userID", userID);
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/Cart/DeleteAllProduct', true);
+    xhr.open('delete', '/cart/delete-all', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
+
             console.log(data);
+
             document.querySelector('.modal').classList.remove('open');
             document.querySelector(".cart__delete-loading .modal").style.display = 'flex';
             setTimeout(() => {
@@ -765,7 +786,7 @@ function deleteAllProduct() {
             }, 2000);
         }
     };
-    xhr.send(null);
+    xhr.send(formData);
 }
 
 function addToCheckout(productID, shopID, event) {
@@ -930,4 +951,15 @@ function openDeleteAllModal() {
     </div>
     `;
     document.querySelector(".modal__body").innerHTML = html;
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
 }

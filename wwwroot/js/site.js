@@ -8,6 +8,8 @@ function getDataSite() {
     if (userID == undefined) {
         userID = 0;
     }
+    console.log(userID);
+    
     var xhr = new XMLHttpRequest();
     xhr.open('get', '/home/get-data?userID=' + userID + '', true);
     xhr.onreadystatechange = () => {

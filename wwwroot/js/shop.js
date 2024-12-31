@@ -53,8 +53,13 @@ btnPrevSliderShop.addEventListener('click', () => {
 });
 
 function getAPIShop() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/shop/get-data', true);
+    xhr.open('get', '/shop/get-data?name=' + getQueryStr() + '&userID=' + userID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -565,10 +570,13 @@ function setCategories(data) {
 
 // Lọc sản phẩm theo mã danh mục con
 function filterProductByCategoryID(categoryID) {
-    var formData = new FormData();
-    formData.append("categoryID", categoryID);
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open("post", "/shop/get-data", true);
+    xhr.open('get', '/shop/get-data?name=' + getQueryStr() + '&userID=' + userID + '&categoryID=' + categoryID +'', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -581,7 +589,7 @@ function filterProductByCategoryID(categoryID) {
             getPagination(data);
         }
     };
-    xhr.send(formData);
+    xhr.send();
 }
 
 function setActiveCategories(data) {
@@ -738,10 +746,13 @@ function getPagination(data) {
 }
 
 function pageNumber(currentPage) {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+    
     var xhr = new XMLHttpRequest();
-    var formData = new FormData();
-    formData.append("currentPage", currentPage);
-    xhr.open('post', '/shop/get-data', true);
+    xhr.open('get', '/shop/get-data?name=' + getQueryStr() + '&userID=' + userID + '&currentPage=' + currentPage + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -752,12 +763,12 @@ function pageNumber(currentPage) {
             getPagination(data);
         }
     };
-    xhr.send(formData);
+    xhr.send(null);
 }
 
 function sortPrice(sortType) {
     var xhr = new XMLHttpRequest();
-    xhr.open('get', '/shop/sort-price?sortType=' + sortType + '', true);
+    xhr.open('get', '/shop/sort-price?name=' + getQueryStr() + '&sortType=' + sortType + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -1323,4 +1334,23 @@ function getTime(time) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var current_time = hours + ":" + minutes;
     return current_time;
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}
+
+function getQueryStr() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    return array[0];
 }

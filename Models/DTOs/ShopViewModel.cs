@@ -11,6 +11,7 @@ public class ShopViewModel
     public IEnumerable<Product> Top10GoodPriceProducts { get; set; }
     public IEnumerable<Product> Top10SuggestProducts { get; set; }
     public IEnumerable<Chat> Chats { get; set; }
+    public IEnumerable<UserInfo> UserInfo { get; set; }
     public int TotalPage { get; set; }
     public int PageSize { get; set; }
     public int CurrentPage { get; set; }

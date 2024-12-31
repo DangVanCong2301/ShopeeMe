@@ -641,7 +641,7 @@
 }
 
     .header__cart-btn:hover {
-        background-color: #f05d41;
+        opacity: .9;
         cursor: pointer;
     }
 

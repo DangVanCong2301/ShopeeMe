@@ -1,6 +1,11 @@
 function getAPIProduct() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/product/get-data', true);
+    xhr.open('get', '/product/get-data?userID=' + userID + '&industryID=' + getQueryStr() + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -55,7 +60,7 @@ setInterval(productSliderAuto, 3000);
 // Sắp xếp các sản phẩm trong trang sản phẩm theo giá tăng dần
 function sortPrice(sortType) {
     var xhr = new XMLHttpRequest();
-    xhr.open('get', '/product/sort/' + sortType + '', true);
+    xhr.open('get', '/product/sort?industryID=' + getQueryStr() + '&sortType=' + sortType + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -101,7 +106,7 @@ function getProducts(data) {
         htmlProduct +=
             `
                 <div class="col l-2-4 c-6 m-4">
-                    <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
+                    <a class="home-product-item" href="/product/detail?id=${data.products[i].pK_iProductID}">
                         <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl})">
                             <div class="home-product-item__img-loading">
                                 <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
@@ -246,13 +251,12 @@ function pageNumber(currentPage) {
 
 // Lọc sản phẩm theo mã danh mục con
 function filterProductByCategoryID(categoryID) {
-    var formData = new FormData();
-    formData.append("categoryID", categoryID);
     var xhr = new XMLHttpRequest();
-    xhr.open("post", "/product/get-data", true);
+    xhr.open("get", "/product/get-data?categoryID=" + categoryID + "&industryID=" + getQueryStr() + "", true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
+
             console.log(data);
 
             setActiveCategories(data);
@@ -262,7 +266,7 @@ function filterProductByCategoryID(categoryID) {
             setPagination(data);
         }
     };
-    xhr.send(formData);
+    xhr.send(null);
 }
 
 function setActiveCategories(data) {
@@ -285,4 +289,23 @@ function setActiveCategories(data) {
         }
     });
     document.querySelector(".category-list").innerHTML = htmlCategory;
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}
+
+function getQueryStr() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    return array[0];
 }

@@ -1,9 +1,10 @@
 function getAPIProductSimilar() {
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/product/similar/get-data', true);
+    xhr.open('get', '/product/similar/get-data?productID=' + getQueryStr() + '&categoryID=' + getQueryStr_2() + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
+
             console.log(data);
 
             setProductDetailSimilar(data);
@@ -275,4 +276,20 @@ function pageNumber(currentPage) {
         }
     };
     xhr.send(formData);
+}
+
+function getQueryStr() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    return array[0];
+}
+
+function getQueryStr_2() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    return array[1];
 }

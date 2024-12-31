@@ -1,13 +1,11 @@
 function getAPIUserOrder() {
-    const url = window.location.href;
-    const params = new URL(url).searchParams;
-    const entries = new URLSearchParams(params).values();
-    const array = Array.from(entries)
-    console.log(array[0]);
-    const orderID = array[0];
-   
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('get', '/user/purchase/order-data?orderID=' + orderID + '', true);
+    xhr.open('get', '/user/purchase/order-data?userID=' + userID + '&orderID=' + getQueryStr() + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -332,4 +330,23 @@ function setOrderAddress(data) {
         `;
         document.querySelector(".order__address").innerHTML = htmlOrderAddress;
     }
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}
+
+function getQueryStr() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    return array[0];
 }

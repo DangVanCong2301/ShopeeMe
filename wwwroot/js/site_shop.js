@@ -1,7 +1,18 @@
 // Get API Site Shop
 function getAPISiteMall() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    const shopName = array[0];
+
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/shop/get-data', true);
+    xhr.open('get', '/shop/get-data?name=' + shopName + '&userID=' + userID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -30,14 +41,16 @@ function setAccount(data) {
                                 <a class="header__navbar-item-link" href="/user/login">Đăng nhập</a>
                             </li>
             `;
+    } else if (data.userID != 0 && data.userInfo.length == 0) {
+        window.location.assign("/user/portal");
     } else {
         if (data.roleID == 2) {
             htmlAccount +=
                 `
                 <div class="header__navbar-item">
                     <div class="header__navbar-user">
-                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">${data.username}</span>
+                        <img src="/img/${data.userInfo[0].sImageProfile}" alt="" class="header__navbar-user-img">
+                        <span class="header__navbar-user-name">${data.userInfo[0].sUserName}</span>
                         <div class="header__navbar-user-manager">
                             <ul class="header__navbar-user-menu">
                                 <li class="header__navbar-user-item">
@@ -53,7 +66,7 @@ function setAccount(data) {
                                     <a href="/admin">Quản trị</a>
                                 </li>
                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                    <a href="/user/logout">Đăng xuất</a>
+                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                 </li>
                             </ul>
                         </div>
@@ -65,8 +78,8 @@ function setAccount(data) {
                 `
                 <div class="header__navbar-item">
                     <div class="header__navbar-user">
-                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">${data.username}</span>
+                        <img src="/img/${data.userInfo[0].sImageProfile}" alt="" class="header__navbar-user-img">
+                        <span class="header__navbar-user-name">${data.userInfo[0].sUserName}</span>
                         <div class="header__navbar-user-manager">
                             <ul class="header__navbar-user-menu">
                                 <li class="header__navbar-user-item">
@@ -82,7 +95,7 @@ function setAccount(data) {
                                     <a href="/picker">Kênh lấy hàng</a>
                                 </li>
                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                    <a href="/User/Logout">Đăng xuất</a>
+                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                 </li>
                             </ul>
                         </div>
@@ -94,8 +107,8 @@ function setAccount(data) {
                 `
                                 <div class="header__navbar-item">
                                     <div class="header__navbar-user">
-                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                                        <span class="header__navbar-user-name">${data.username}</span>
+                                        <img src="/img/${data.userInfo[0].sImageProfile}" alt="" class="header__navbar-user-img">
+                                        <span class="header__navbar-user-name">${data.userInfo[0].sUserName}</span>
                                         <div class="header__navbar-user-manager">
                                             <ul class="header__navbar-user-menu">
                                                 <li class="header__navbar-user-item">
@@ -111,7 +124,7 @@ function setAccount(data) {
                                                     <a href="/delivery">Kênh giao hàng</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -123,8 +136,8 @@ function setAccount(data) {
                 `
                                 <div class="header__navbar-item">
                                     <div class="header__navbar-user">
-                                        <img src="/img/no_user.jpg" alt="" class="header__navbar-user-img">
-                                        <span class="header__navbar-user-name">${data.username}</span>
+                                        <img src="/img/${data.userInfo[0].sImageProfile}" alt="" class="header__navbar-user-img">
+                                        <span class="header__navbar-user-name">${data.userInfo[0].sUserName}</span>
                                         <div class="header__navbar-user-manager">
                                             <ul class="header__navbar-user-menu">
                                                 <li class="header__navbar-user-item">
@@ -137,7 +150,7 @@ function setAccount(data) {
                                                     <a href="/user/purchase">Đơn mua</a>
                                                 </li>
                                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                    <a href="javascript:logoutUserAccount()">Đăng xuất</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -147,6 +160,20 @@ function setAccount(data) {
         }
     }
     document.querySelector(".header__navbar-auth").innerHTML = htmlAccount;
+}
+
+function logoutUserAccount() {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
+    deleteCookies("userID");
+    setTimeout(() => {
+        closeModal();
+        toast({ title: "Thông báo", msg: `Đăng xuất thành công!`, type: "success", duration: 5000 });
+        document.querySelector(".modal__body").innerHTML = "";
+        setTimeout(() => {
+            window.location.assign('/');
+        }, 1000)
+    }, 2000);
 }
 
 function setCartItems(data) {
@@ -357,4 +384,27 @@ function money_2(number) {
         currency: 'VND',
     }).format(number);
     return formattedAmount;
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}
+
+function deleteCookies(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function getQueryStr() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    return array[0];
 }

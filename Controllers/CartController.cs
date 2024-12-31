@@ -19,65 +19,35 @@ public class CartController : Controller {
         _userResponsitory = userResponsitory;
     }
 
-    [Route("cart")]
+    [Route("/cart")]
     [HttpGet]
     public IActionResult Index() {
-        // Lấy Cookies trên trình duyệt
-        var userID = Request.Cookies["UserID"];
-        if (userID != null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
-        } else {
-            return View();
-        }
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        if (sessionUserID != null)
-        {
-            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
-            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
-        }
-        else
-        {
-            _accessor?.HttpContext?.Session.SetString("UserName", "");
-        }
-        System.Console.WriteLine("UserID: " + userID);
-        if (sessionUserID == 0) {
-            return Redirect("/user/login");
-        }
         return View(); 
     }
 
-    [HttpPost]
-    [Route("/cart")]
-    public IActionResult GetCartInfo() {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        var sessionUsername = _accessor?.HttpContext?.Session.GetString("UserName");  
-        var sessionRoleID = _accessor?.HttpContext?.Session.GetInt32("RoleID");
-        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)); 
+    [HttpGet]
+    [Route("/cart-data/{userID?}")]
+    public IActionResult GetCartInfo(int userID = 0) {
+        IEnumerable<UserInfo> userInfo = _userResponsitory.getUserInfoByID(userID);
+        IEnumerable<CartDetail> carts = _cartResponsitory.getCartInfo(userID); 
         IEnumerable<Product> get12ProductsAndSortAsc = _cartResponsitory.get12ProductsAndSortAsc(); 
         int cartCount = carts.Count();
         CartViewModel model = new CartViewModel {
             CartDetails = carts,
             Get12ProductsAndSortAsc = get12ProductsAndSortAsc,
             CartCount = cartCount,
-            RoleID = Convert.ToInt32(sessionRoleID),
-            UserID = Convert.ToInt32(sessionUserID),
-            Username = sessionUsername
+            UserInfo = userInfo,
+            UserID = userID
         };
-        return Json(model);  
+        return Ok(model);  
     }
 
     [HttpPost]
     [Route("/cart/add-to-cart")]
-    public IActionResult AddToCart(int productID, double unitPrice, int quantity)
+    public IActionResult AddToCart(int userID = 0, int productID = 0, double unitPrice = 0, int quantity = 0)
     {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        if (sessionUserID == null) {
-            sessionUserID = 0;
-        } 
-        List<User> user = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-        List<CartDetail> checkProduct = _cartResponsitory.checkProduct(Convert.ToInt32(sessionUserID), productID).ToList();
+        List<User> user = _userResponsitory.checkUserLogin(userID).ToList();
+        List<CartDetail> checkProduct = _cartResponsitory.checkProduct(userID, productID).ToList();
         List<Product> product = _productResponsitory.getProductByID(productID).ToList();
         Status status;
         if (user.Count() == 0)
@@ -100,7 +70,7 @@ public class CartController : Controller {
         {
             quantity = checkProduct[0].iQuantity + quantity;
             double money = quantity * unitPrice;
-            _cartResponsitory.changeQuantity(Convert.ToInt32(sessionUserID), productID, quantity, money);
+            _cartResponsitory.changeQuantity(Convert.ToInt32(userID), productID, quantity, money);
             status = new Status {
                 StatusCode = 0,
                 Message = "Thêm sản phẩm thành công!"
@@ -120,13 +90,13 @@ public class CartController : Controller {
                 cartID = newCart[0].PK_iCartID;
             }
             // Thêm vào chi tiết giỏ hàng
-            _cartResponsitory.insertCartDetail(Convert.ToInt32(sessionUserID), productID, cartID, quantity, unitPrice);
+            _cartResponsitory.insertCartDetail(userID, productID, cartID, quantity, unitPrice);
             status = new Status {
                 StatusCode = 1,
                 Message = "Thêm vào giỏ hàng thành công!"
             };
         }
-        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
+        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(userID).ToList();
         int cartCount = cartDetails.Count();
         ProductViewModel model = new ProductViewModel
         {
@@ -138,33 +108,41 @@ public class CartController : Controller {
     }
 
     // Hàm lấy số lượng sản phẩm trong giỏ hàng
-    [HttpPost]
+    [HttpPut]
     [Route("/cart/quantity")]
-    public IActionResult Quantity(int productID, int quantity, double unitPrice) {
+    public IActionResult Quantity(int userID = 0, int productID = 0, int quantity = 0, double unitPrice = 0) {
         double money = quantity * unitPrice;
-        int userID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
         _cartResponsitory.changeQuantity(userID, productID, quantity, money);
         return Json(new {money});
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("/cart/delete-item")]
-    public IActionResult DeleteItem(int productID) {
-        int userID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
-        _cartResponsitory.deleteProductInCart(productID, userID);
-        string msg = "Sản phẩm đã được xoá khỏi giỏ hàng!";
+    public IActionResult DeleteItem(int userID = 0, int productID = 0) {
+        Status status;
+        if (_cartResponsitory.deleteProductInCart(productID, userID)) {
+            status = new Status {
+                StatusCode = 1,
+                Message = "Sản phẩm đã được xoá khỏi giỏ hàng!"
+            };
+        } else {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Xoá sản phẩm thất bại!"
+            };
+        }
         IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(userID);
         int cartCount = cartDetails.Count();
         CartViewModel model = new CartViewModel {
             CartCount = cartCount,
-            Message = msg
+            Status = status
         };
         return Ok(model);
     }
 
-    [HttpPost]
-    public IActionResult DeleteAllProduct() {
-        int userID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
+    [HttpDelete]
+    [Route("/cart/delete-all")]
+    public IActionResult DeleteAllProduct(int userID = 0) {
         List<CartDetail> cartDetails = _cartResponsitory.getCartInfo(userID).ToList(); // Phải sử dụng list thì mới lấy ra được các id
         foreach (var item in cartDetails) {
             _cartResponsitory.deleteProductInCart(item.PK_iProductID, userID);

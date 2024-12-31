@@ -30,57 +30,49 @@ public class ProductController : Controller {
         _chatRepository = chatRepository;
     }
 
-    [Route("{parentCategoryID?}/{categoryID?}")]
+    [Route("{industryID?}/{categoryID?}")]
     [HttpGet]
-    public IActionResult Index(int parentCategoryID = 0, int categoryID = 0) {
-        _accessor?.HttpContext?.Session.SetInt32("CurrentParentCategoryID", parentCategoryID);
-        _accessor?.HttpContext?.Session.SetInt32("CurrentCategoryID", categoryID);
-        // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
+    public IActionResult Index() {
         return View();
     }
 
-    [HttpPost("get-data")]
-    [Route("get-data")]
-    public IActionResult GetData(int categoryID = 0, int currentPage = 1) {
+    [HttpGet("get-data/{industryID?}/{categoryID?}")]
+    [Route("get-data/{industryID?}/{categoryID?}")]
+    public IActionResult GetData(int userID = 0, int industryID = 0, int categoryID = 0, int currentPage = 1) {
         IEnumerable<Product> products;
         IEnumerable<Product> productsByCategoryID;
-        int currentCategory = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentCategoryID"));
-        System.Console.WriteLine("currentCategory: " + currentCategory);
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        var sessionParentCategoryID = _accessor?.HttpContext?.Session.GetInt32("CurrentParentCategoryID");
-        List<User> user = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-        if (user.Count() == 0 && currentCategory == 0 && categoryID == 0) {
-            products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        } else if (user.Count() != 0 && user[0].FK_iRoleID == 2 && currentCategory == 0 && categoryID == 0) {
-            products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        } else if (user.Count() != 0 && user[0].FK_iRoleID == 1 && currentCategory == 0 && categoryID == 0) {
-            products = _productResponsitory.getProductsByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
+        List<User> user = _userResponsitory.checkUserLogin(userID).ToList();
+        if (user.Count() == 0 && categoryID == 0) {
+            products = _productResponsitory.getProductsByParentCategoryID(industryID);
+        } else if (user.Count() != 0 && user[0].FK_iRoleID == 2 && categoryID == 0) {
+            products = _productResponsitory.getProductsByParentCategoryID(industryID);
+        } else if (user.Count() != 0 && user[0].FK_iRoleID == 1 && categoryID == 0) {
+            products = _productResponsitory.getProductsByParentCategoryID(industryID);
         } else if (categoryID != 0) {
-            currentCategory = categoryID;
-            products = _productResponsitory.getProductsByCategoryID(currentCategory);
+            products = _productResponsitory.getProductsByCategoryID(categoryID);
         } else {
-            products = _productResponsitory.getProductsByCategoryID(currentCategory);
+            products = _productResponsitory.getProductsByCategoryID(categoryID);
         }
         int totalRecord = products.Count();
         int pageSize = 10;
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
         products = products.Skip((currentPage - 1) * pageSize).Take(pageSize);
-        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(Convert.ToInt32(sessionUserID)).ToList();
-        IEnumerable<Store> stores = _shopResponsitory.getShopByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
-        IEnumerable<Category> categories = _homeResponsitory.getCategoriesByParentCategoryID(Convert.ToInt32(sessionParentCategoryID));
+        IEnumerable<CartDetail> cartDetails = _cartResponsitory.getCartInfo(userID).ToList();
+        IEnumerable<Store> stores = _shopResponsitory.getShopByParentCategoryID(industryID);
+        IEnumerable<Category> categories = _homeResponsitory.getCategoriesByParentCategoryID(industryID);
         // Vì mình lấy layout của _Layout của kiểu là @model ProducdViewModel nó sẽ chung cho tất cả các trang, ta lấy riêng nó sẽ lỗi
         ShopeeViewModel model = new ShopeeViewModel {
             Products = products,
             Stores = stores,
             Categories = categories,
             CartDetails = cartDetails,
-            CurrentCategoryID = currentCategory,
+            CurrentCategoryID = categoryID,
             TotalPage = totalPage,
             PageSize = pageSize,
             CurrentPage = currentPage,
             CartCount = cartDetails.Count(),
             User = user,
-            UserID = Convert.ToInt32(sessionUserID)
+            UserID = userID
         };
         return Ok(model);
     }
@@ -89,42 +81,20 @@ public class ProductController : Controller {
     /// Nguồn: https://xuanthulab.net/asp-net-core-mvc-chi-tiet-ve-route-trong-asp-net-mvc.html
     /// </summary>
     [Route("detail/{id?}")]
-    public IActionResult Detail(int id)
+    public IActionResult Detail()
     {
-        _accessor?.HttpContext?.Session.SetInt32("CurrentProductID", id);
-        // Lấy Cookies trên trình duyệt
-        var userID = Request.Cookies["UserID"];
-        if (userID != null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
-        } else {
-            return View();
-        }
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        if (sessionUserID != null)
-        {
-            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
-            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
-        }
-        else
-        {
-            _accessor?.HttpContext?.Session.SetString("UserName", "");
-        }
         return View();
     }
 
-    [HttpPost]
-    [Route("/product/get-data-detail")]
-    public IActionResult GetDetail() {
-        int userID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("UserID"));
-        int productID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentProductID"));
-        var product = _productResponsitory.getProductByID(productID);
-        IEnumerable<Favorite> favorites = _productResponsitory.getFavoritesByProductID(productID);
-        IEnumerable<Favorite> favorite = _productResponsitory.getFavoritesByProductIDAndUserID(productID, userID);
-        List<Store> store = _shopResponsitory.getShopByProductID(productID).ToList();
+    [HttpGet]
+    [Route("/product/get-data-detail/{userID?}/{id?}")]
+    public IActionResult GetDetail(int userID = 0, int id = 0) {
+        var product = _productResponsitory.getProductByID(id);
+        IEnumerable<Favorite> favorites = _productResponsitory.getFavoritesByProductID(id);
+        IEnumerable<Favorite> favorite = _productResponsitory.getFavoritesByProductIDAndUserID(id, userID);
+        List<Store> store = _shopResponsitory.getShopByProductID(id).ToList();
         IEnumerable<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(userID);
-        IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(productID);
+        IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(id);
         ProductViewModel model = new ProductViewModel {
             Product = product,
             Favorites = favorites,
@@ -137,9 +107,8 @@ public class ProductController : Controller {
     }
 
     [HttpGet]
-    [Route("/product/reviewer-detail/{reviewerID?}")]
-    public IActionResult ReviewerDetail(int reviewerID = 0) {
-        int productID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentProductID"));
+    [Route("/product/reviewer-detail/{productID?}/{reviewerID?}")]
+    public IActionResult ReviewerDetail(int productID = 0, int reviewerID = 0) {
         IEnumerable<Product> product = _productResponsitory.getProductByID(productID);
         IEnumerable<Reviewer> reviewer = _productResponsitory.getReviewerByID(reviewerID);
         ProductViewModel model = new ProductViewModel {
@@ -200,9 +169,8 @@ public class ProductController : Controller {
     }
 
     [HttpGet]
-    [Route("/product/sort/{sortType?}")]
-    public IActionResult Sort(string sortType = "", int currentPage = 1) {
-        int industryID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("CurrentParentCategoryID"));
+    [Route("/product/sort/{industryID?}/{sortType?}")]
+    public IActionResult Sort(int industryID = 0, string sortType = "", int currentPage = 1) {
         IEnumerable<Product> products;
         if (sortType == "asc") {
             products = _productResponsitory.getProductsByIndustryIDAndSortIncre(industryID); // Gọi đúng phương thức sắp xếp tăng dần nhé
@@ -223,22 +191,18 @@ public class ProductController : Controller {
     }
 
     [HttpGet]
-    [Route("/product/similar/{productSimilarID?}/{categorySimilar?}")]
-    public IActionResult Similar(int productSimilarID, int categorySimilar)
+    [Route("/product/similar/{productID?}/{categoryID?}")]
+    public IActionResult Similar()
     {
-        _accessor?.HttpContext?.Session.SetInt32("ProductSimilarID", productSimilarID);
-        _accessor?.HttpContext?.Session.SetInt32("CategorySimilarID", categorySimilar);
         return View();
     }
 
-    [HttpPost]
-    [Route("/product/similar/get-data")]
-    public IActionResult Similar(int currentPage = 1) {
-        var sessionProductSimilarID = _accessor?.HttpContext?.Session.GetInt32("ProductSimilarID");
-        var sessionCategorySimilarID = _accessor?.HttpContext?.Session.GetInt32("CategorySimilarID");
-        List<Product> product = _productResponsitory.getProductByID(Convert.ToInt32(sessionProductSimilarID)).ToList();
-        List<Store> store = _shopResponsitory.getShopByProductID(Convert.ToInt32(sessionProductSimilarID)).ToList();
-        IEnumerable<Product> products = _productResponsitory.getProductsByCategoryID(Convert.ToInt32(sessionCategorySimilarID));
+    [HttpGet]
+    [Route("/product/similar/get-data/{productID?}/{categoryID?}")]
+    public IActionResult Similar(int productID = 0, int categoryID = 0, int currentPage = 1) {
+        List<Product> product = _productResponsitory.getProductByID(productID).ToList();
+        List<Store> store = _shopResponsitory.getShopByProductID(Convert.ToInt32(productID)).ToList();
+        IEnumerable<Product> products = _productResponsitory.getProductsByCategoryID(categoryID);
         int totalRecord = products.Count();
         int pageSize = 6;
         int totalPage = (int) Math.Ceiling(totalRecord / (double) pageSize);
@@ -298,10 +262,9 @@ public class ProductController : Controller {
 
     [HttpPost]
     [Route("/product/reviewer")]
-    public IActionResult Reviewer(int productID = 0, string comment = "", int star = 0, string image = "") {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
+    public IActionResult Reviewer(int userID = 0, int productID = 0, string comment = "", int star = 0, string image = "") {
         Status status;
-        if (_productResponsitory.insertProductReviewer(Convert.ToInt32(sessionUserID), productID, star, comment, image)) {
+        if (_productResponsitory.insertProductReviewer(userID, productID, star, comment, image)) {
             status = new Status {
                 StatusCode = 1,
                 Message = "Thêm đánh giá thành công!"
