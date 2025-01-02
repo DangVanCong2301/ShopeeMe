@@ -82,7 +82,7 @@ function getCartItemsDestop(data) {
                                     <div class="cart__purchase-payment-total-sub">Tổng thanh toán (0 sản phẩm):
                                         <span>0 đ</span>
                                     </div>
-                                    <a href="javascript:checkout()" class="btn btn--primary">Mua hàng</a>
+                                    <a href="javascript:checkoutOrder()" class="btn btn--primary">Mua hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -192,38 +192,31 @@ function getCartItemsDestop(data) {
     loadingCartItems();
 }
 
-function checkout() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('post', '/checkout/get-data', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            const result = JSON.parse(xhr.responseText);
-            if (result.checkouts.length == 0) {
-                openModal();
-                let htmlConfirm = "";
-                htmlConfirm += 
-                `
-                    <div class="modal__confirm">
-                        <div class="modal__confirm-header">
-                            <div class="modal__confirm-title">Thông báo</div>
-                            <i class="uil uil-multiply modal__confirm-close" onclick="exitModal()"></i>
-                        </div>
-                        <div class="modal__confirm-desc">
-                            Bạn chưa chọn sản phẩm để mua!
-                        </div>
-                        <div class="modal__confirm-btns">
-                            <div class="modal__confirm-btn-destroy" onclick="exitModal()">Huỷ</div>
-                            <div class="modal__confirm-btn-send">Trở lại</div>
-                        </div>
-                    </div>
-                `;
-                document.querySelector(".modal__body").innerHTML = htmlConfirm;
-            } else {
-                window.location.assign("/checkout");
-            }
-        }
-    };
-    xhr.send(null);
+var checkout = new Array();
+function checkoutOrder() {
+    if (checkout.length == 0) {
+        openModal();
+        let htmlConfirm = "";
+        htmlConfirm += 
+        `
+            <div class="modal__confirm">
+                <div class="modal__confirm-header">
+                    <div class="modal__confirm-title">Thông báo</div>
+                    <i class="uil uil-multiply modal__confirm-close" onclick="exitModal()"></i>
+                </div>
+                <div class="modal__confirm-desc">
+                    Bạn chưa chọn sản phẩm để mua!
+                </div>
+                <div class="modal__confirm-btns">
+                    <div class="modal__confirm-btn-destroy" onclick="exitModal()">Huỷ</div>
+                    <div class="modal__confirm-btn-send">Trở lại</div>
+                </div>
+            </div>
+        `;
+        document.querySelector(".modal__body").innerHTML = htmlConfirm;
+    } else {
+        window.location.assign("/checkout");
+    }
 }
 
 function loadingCartItems() {
@@ -452,7 +445,7 @@ function getProductsLike(data) {
         htmlProducts += 
         `
                 <div class="col l-2 c-6 m-4">
-                    <a class="home-product-item" href="/product/detail/${data.get12ProductsAndSortAsc[i].pK_iProductID}">
+                    <a class="home-product-item" href="/product/detail?id=${data.get12ProductsAndSortAsc[i].pK_iProductID}">
                         <div class="home-product-item__img" style="background-image: url(/img/${data.get12ProductsAndSortAsc[i].sImageUrl})">
                             <div class="home-product-item__img-loading">
                                 <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
@@ -806,7 +799,30 @@ function addToCheckout(productID, shopID, event) {
 
             console.log(data);
 
-            document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán (${data.productCount} sản phẩm):<span>${money_2(data.totalPrice)}</span>`
+            sessionStorage.setItem("shopID", data.shopID);
+
+            var money = (data.product[0].dPerDiscount == 1) ? (data.product[0].dPrice * data.quantity) + data.product[0].dTransportPrice : data.product[0].dPrice * data.quantity * (1 - data.product[0].dPerDiscount) + data.product[0].dTransportPrice;
+            var ck = new Array(data.product[0].pK_iProductID, data.product[0].sProductName, data.product[0].sImageUrl, data.product[0].dPrice, data.quantity, money, data.product[0].dTransportPrice, data.product[0].dPerDiscount);
+            var kt = 0;
+            for (let i = 0; i < checkout.length; i++) {
+                if (checkout[i][0] == data.product[0].pK_iProductID) {
+                    kt = 1;
+                    data.quantity += parseInt(checkout[i][4]);
+                    checkout[i][4] = data.quantity;
+                    break;
+                }
+            }
+            if (kt == 0) {
+                checkout.push(ck);
+            }
+
+            sessionStorage.setItem("checkout", JSON.stringify(checkout));
+            var gh = JSON.parse(sessionStorage.getItem("checkout"));
+
+            console.log(gh);
+            
+            
+            document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán (${gh.length} sản phẩm):<span>${money_2(gh.reduce((totalMoney, a) => totalMoney + a[5], 0))}</span>`
 
         }
     };

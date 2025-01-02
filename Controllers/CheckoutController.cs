@@ -126,37 +126,11 @@ public class CheckoutController : Controller {
     [HttpPost]
     [Route("/checkout/add-to-checkout")]
     public IActionResult AddToCheckout(int productID, int shopID, int quantity) {
-        _accessor?.HttpContext?.Session.SetInt32("ShopID", shopID);
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("ShopID");
-        System.Console.WriteLine("Session ShopID: " + sessionShopID);
-        var cartsCheckout = checkouts;
-        var item = cartsCheckout.SingleOrDefault(p => p.PK_iProductID == productID);
-        if (item == null) {
-            List<CartDetail> product = _cartResponsitory.getProductCartByID(Convert.ToInt32(sessionUserID), productID).ToList();
-            if (product == null) {
-                System.Console.WriteLine($"Không tìm thấy hàng hoá có mã {productID}");
-            }
-            item = new Checkout {
-                PK_iProductID = product[0].PK_iProductID,
-                sProductName = product[0].sProductName,
-                sImageUrl = product[0].sImageUrl,
-                dUnitPrice = product[0].dUnitPrice, // https://www.phanxuanchanh.com/2021/10/26/dinh-dang-tien-te-trong-c/
-                iQuantity = quantity,
-                // Toán tử if else rút gọn trong c#: https://laptrinhvb.net/bai-viet/chuyen-de-csharp/---Csharp----Huong-dan-su-dung-Ternary-Operator-(rut-gon-cau-truc-re-nhanh-if-else)/23b78c4150dae226.html
-                dMoney = (product[0].dDiscount == 1) ? (product[0].dUnitPrice * quantity) + product[0].dTransportPrice : product[0].dUnitPrice * quantity * (1 - product[0].dDiscount) + product[0].dTransportPrice,
-                dTransportPrice = product[0].dTransportPrice,
-                dDiscount = product[0].dDiscount
-            };
-            cartsCheckout.Add(item);
-        }
-        // Đặt lại danh sách session sản phẩm thanh toán 
-        HttpContext.Session.Set("cart_key", cartsCheckout);
+        IEnumerable<Product> product = _productResponsitory.getProductByID(productID);
         CheckoutViewModel model = new CheckoutViewModel {
-            Checkouts = checkouts,
-            SessionShopID = Convert.ToInt32(sessionShopID),
-            ProductCount = checkouts.Count(),
-            TotalPrice = checkouts.Sum(p => p.dMoney)
+            Product = product,
+            ShopID = shopID,
+            Quantity = quantity
         };
         return Ok(model);
     }

@@ -23,7 +23,7 @@ function getProducts(data) {
             `
                             <div class="col l-2 c-6 m-4">
                                 <div class="home-item">
-                                    <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
+                                    <a class="home-product-item" href="/product/detail?id=${data.products[i].pK_iProductID}">
                                         <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl});">
                                             <div class="home-product-item__img-loading">
                                                 <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
@@ -78,7 +78,7 @@ function getProducts(data) {
                                     </a>
                                     <div class="home-product-item__find-similar">
                                     </div>
-                                    <a href="/product/similar/${data.products[i].pK_iProductID}/${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
+                                    <a href="/product/similar?productID=${data.products[i].pK_iProductID}&categoryID=${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
                                 </div>
                             </div>
             `;
@@ -87,7 +87,7 @@ function getProducts(data) {
             `
                             <div class="col l-2 c-6 m-4">
                                 <div class="home-item">
-                                    <a class="home-product-item" href="/product/detail/${data.products[i].pK_iProductID}">
+                                    <a class="home-product-item" href="/product/detail?id=${data.products[i].pK_iProductID}">
                                         <div class="home-product-item__img" style="background-image: url(/img/${data.products[i].sImageUrl});">
                                             <div class="home-product-item__img-loading">
                                                 <i class="uil uil-shopping-bag home-product-item__img-loading-icon"></i>
@@ -148,7 +148,7 @@ function getProducts(data) {
                                             <span class="home-product-item__sale-off-label">GIẢM</span>
                                         </div>
                                     </a>
-                                    <a href="/product/similar/${data.products[i].pK_iProductID}/${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
+                                    <a href="/product/similar?productID=${data.products[i].pK_iProductID}&categoryID=${data.products[i].fK_iCategoryID}" class="home-product-item__find-similar-link">Tìm sản phẩm tương tự</a>
                                 </div>
                             </div>
             `;

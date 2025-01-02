@@ -10,9 +10,11 @@ public class CheckoutViewModel
     public List<User> Users { get; set; }
     public List<UserInfo> UserInfos { get; set; }
     public List<Payment> PaymentTypes { get; set; }
+    public IEnumerable<Product> Product { get; set; }
     public Status Status { get; set;}
     public Order Order { get; set; }
-    public int SessionShopID { get; set; }
+    public int ShopID { get; set; }
     public int ProductCount { get; set; }
     public double TotalPrice { get; set; }
+    public int Quantity { get; set; }
 }

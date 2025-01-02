@@ -5,10 +5,10 @@
 
 function getDataSite() {
     let userID = getCookies("userID");
+    console.log(userID);
     if (userID == undefined) {
         userID = 0;
     }
-    console.log(userID);
     
     var xhr = new XMLHttpRequest();
     xhr.open('get', '/home/get-data?userID=' + userID + '', true);
@@ -307,7 +307,7 @@ function getCartsItem(data) {
                     <ul class="header__cart-list-item">
                 `;
         htmlCartDetail += data.cartDetails.map(obj => `
-                    <a href="/product/detail/${obj.pK_iProductID}" class="header__cart-item">
+                    <a href="/product/detail?id=${obj.pK_iProductID}" class="header__cart-item">
                         <div class="header__cart-item-img">
                             <img src="/img/${obj.sImageUrl}" class="header__cart-item-img" alt="">
                         </div>
@@ -322,7 +322,7 @@ function getCartsItem(data) {
                             </div>
                             <div class="header__cart-item-body">
                                 <span class="header__cart-item-description">
-                                    Phân loại hàng:Bạc
+                                    Phân loại hàng: Bạc
                                 </span>
                                 <span class="header__cart-item-remove">Xoá</span>
                             </div>
@@ -385,7 +385,7 @@ function searchProducts(input) {
             htmlSearch +=
                                     `
                                     <li class="header__search-history-item">
-                                        <a href="/product/${element.pK_iParentCategoryID}">${element.sParentCategoryName}</a>
+                                        <a href="/product?industryID=${element.pK_iParentCategoryID}">${element.sParentCategoryName}</a>
                                     </li>
                                     `;
                                     });
@@ -394,7 +394,7 @@ function searchProducts(input) {
             htmlSearch +=
                                     `
                                     <li class="header__search-history-item">
-                                        <a href="/product/${element.fK_iParentCategoryID}/${element.pK_iCategoryID}">${element.sCategoryName}</a>
+                                        <a href="/product?industryID=${element.fK_iParentCategoryID}&categoryID=${element.pK_iCategoryID}">${element.sCategoryName}</a>
                                     </li>
                                     `;
                                     });

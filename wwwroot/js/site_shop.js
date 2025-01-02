@@ -198,7 +198,7 @@ function setCartItems(data) {
         data.cartDetails.forEach(element => {
             htmtCartItem +=
             `
-                        <a href="/product/detail/${element.pK_iProductID}" class="header__cart-item">
+                        <a href="/product/detail?id=${element.pK_iProductID}" class="header__cart-item">
                             <div class="header__cart-item-img">
                                 <img src="/img/${element.sImageUrl}" class="header__cart-item-img" alt="">
                             </div>
@@ -213,7 +213,7 @@ function setCartItems(data) {
                                 </div>
                                 <div class="header__cart-item-body">
                                     <span class="header__cart-item-description">
-                                        Phân loại hàng:Bạc
+                                        Phân loại hàng: Bạc
                                     </span>
                                     <span class="header__cart-item-remove">Xoá</span>
                                 </div>
