@@ -13,6 +13,7 @@ public class CheckoutViewModel
     public IEnumerable<Product> Product { get; set; }
     public Status Status { get; set;}
     public Order Order { get; set; }
+    public int OrderID { get; set; }
     public int ShopID { get; set; }
     public int ProductCount { get; set; }
     public double TotalPrice { get; set; }

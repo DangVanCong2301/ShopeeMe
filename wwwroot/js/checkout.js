@@ -6,8 +6,13 @@ const newAddressForm = document.querySelector(".address-form__new");
 
 var data;
 function getAPICheckout() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/checkout/get-data', true);
+    xhr.open('get', '/checkout/get-data?userID=' + userID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
 
@@ -687,9 +692,12 @@ function addConfirmSuccess() {
 
 // Checkout Items
 function getCheckoutItemsDestop(data) {
+    var checkout = JSON.parse(sessionStorage.getItem("checkout"));
+    console.log(checkout);
     let htmlCheckoutItem = "";
-    htmlCheckoutItem += data.checkouts.map(obj => 
-    `
+    for (let i = 0; i < checkout.length; i++) {
+        htmlCheckoutItem += 
+        `
                     <div class="checkout__product">
                         <div class="checkout__product-header">
                             <div class="checkout__product-header-name">Sản phẩm</div>
@@ -709,18 +717,18 @@ function getCheckoutItemsDestop(data) {
                             <div class="checkout__product-body-item">
                                 <div class="checkout__product-body-item-name">
                                     <div class="checkout__product-body-item-img"
-                                        style="background-image: url(/img/${obj.sImageUrl});"></div>
+                                        style="background-image: url(/img/${checkout[i][2]});"></div>
                                     <div class="checkout__product-body-item-desc">
                                         <div class="checkout__product-body-item-text">
-                                            ${obj.sProductName}
+                                            ${checkout[i][1]}
                                         </div>
                                         <span>Đổi ý miễn phí 15 ngày</span>
                                     </div>
                                 </div>
                                 <div class="checkout__product-body-item-type">Loại: Bạc</div>
-                                <div class="checkout__product-body-item-cost">${money(obj.dUnitPrice)} đ</div>
-                                <div class="checkout__product-body-item-quantity">${obj.iQuantity}</div>
-                                <div class="checkout__product-body-item-money">${money(obj.dMoney)} đ</div>
+                                <div class="checkout__product-body-item-cost">${money(checkout[i][3])} đ</div>
+                                <div class="checkout__product-body-item-quantity">${checkout[i][4]}</div>
+                                <div class="checkout__product-body-item-money">${money(checkout[i][5])} đ</div>
                             </div>
                             <div class="checkout__product-body-promotion">
                                 <div class="checkout__product-body-electronic-invoice">
@@ -756,7 +764,7 @@ function getCheckoutItemsDestop(data) {
                                             <div class="checkout__product-body-transport-type-top">
                                                 <span>Nhanh</span>
                                                 <a href="#" class="checkout__product-body-transport-change">Thay đổi</a>
-                                                <div class="checkout__product-body-transport-cost">${money(obj.dTransportPrice)} đ</div>
+                                                <div class="checkout__product-body-transport-cost">${money(checkout[i][6])} đ</div>
                                             </div>
                                             <div class="checkout__product-body-transport-type-bottom">
                                                 <div class="checkout__product-body-transport-type-bottom-sub">Đảm bảo nhận
@@ -791,14 +799,14 @@ function getCheckoutItemsDestop(data) {
                             </div>
                         </div>
                         <div class="checkout__product-bottom">
-                            <div class="checkout__product-bottom-sub">Tổng số tiền (${obj.iQuantity} sản phẩm): </div>
-                            <span>${money(obj.dMoney)} đ</span>
+                            <div class="checkout__product-bottom-sub">Tổng số tiền (${checkout[i][4]} sản phẩm): </div>
+                            <span>${money(checkout[i][5])} đ</span>
                         </div>
                     </div>
-    `
-    ).join('');
+        `;
+    }
     document.querySelector(".checkout__list").innerHTML = htmlCheckoutItem;
-    setTotalPrice(data);
+    setTotalPrice(checkout);
 }
 
 // Set Payment Type
@@ -1085,13 +1093,13 @@ function choosePaymentsType() {
 }
 
 // Set Price
-function setTotalPrice(data) {
-    var totalItemPrice = data.checkouts.reduce((total, item) => {
-        return total + item.dUnitPrice;
-    }, 0)
+function setTotalPrice(checkout) {
+    var totalItemPrice = checkout.reduce((total, item) => {
+        return total + item[5];
+    }, 0);
 
-    var totalTransportPrice = data.checkouts.reduce((total, transport) => {
-        return total + transport.dTransportPrice;
+    var totalTransportPrice = checkout.reduce((total, transport) => {
+        return total + transport[6];
     }, 0);
 
     document.querySelector(".checkout__payment-money-total-item-price").innerText = `${money(totalItemPrice)}`;
@@ -1104,9 +1112,14 @@ function setTotalPrice(data) {
 
 // Add To Order
 function addToOrder(totalPrice) {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     document.querySelector(".checkout__payment-order-btn-submit").addEventListener("click", () => {
         var xhr = new XMLHttpRequest();
-        xhr.open('post', '/checkout/get-data', true);
+        xhr.open('get', '/checkout/get-data?userID=' + userID + '', true);
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
@@ -1140,6 +1153,8 @@ function addToOrder(totalPrice) {
 
 function addOrder(totalPrice, paymentTypeID, paymentID) {
     var formData = new FormData();
+    formData.append("userID", getCookies("userID"));
+    formData.append("shopID", sessionStorage.getItem("shopID"));
     formData.append("totalPrice", totalPrice);
     formData.append("paymentTypeID", paymentTypeID);
     formData.append("paymentID", paymentID);
@@ -1150,16 +1165,37 @@ function addOrder(totalPrice, paymentTypeID, paymentID) {
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const result = JSON.parse(xhr.responseText);
+
             console.log(result);
-            toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
-            if (data.paymentTypes[0].pK_iPaymentID == 4) {
-                window.location.assign("/payment/momo");
-            } else {
-                window.location.assign("/user/purchase");
-            }
+
+            addToOrderDetail(result.orderID);
         }
     };
     xhr.send(formData);
+}
+
+function addToOrderDetail(orderID) {
+    var checkout = JSON.parse(sessionStorage.getItem("checkout"));
+    for (let i = 0; i < checkout.length; i++) {
+        var formData = new FormData();
+        formData.append("userID", getCookies("userID"));
+        formData.append("orderID", orderID);
+        formData.append("productID", checkout[i][0]);
+        formData.append("quantity", checkout[i][4]);
+        formData.append("price", checkout[i][3]);
+        formData.append("money", checkout[i][5]);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/checkout/add-to-order-detail', true);
+        xhr.send(formData);
+    }
+    sessionStorage.removeItem("checkout");
+    toast({ title: "Thông báo", msg: `Đặt hàng thành công!`, type: "success", duration: 5000 });
+    // if (data.paymentTypes[0].pK_iPaymentID == 4) {
+    //     window.location.assign("/payment/momo");
+    // } else {
+    //     window.location.assign("/user/purchase");
+    // }
 }
 
 // Modal
@@ -1169,4 +1205,15 @@ function openModal() {
 
 function closeModal() {
     document.querySelector(".modal").classList.remove("open");
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
 }

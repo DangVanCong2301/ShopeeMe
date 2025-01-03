@@ -25,45 +25,20 @@ public class CheckoutController : Controller {
     [HttpGet]
     [Route("/checkout")]
     public IActionResult Index() {
-        // Lấy Cookies trên trình duyệt
-        var userID = Request.Cookies["UserID"];
-        if (userID != null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
-        } else {
-            return View();
-        }
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        if (sessionUserID != null)
-        {
-            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
-            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
-        }
-        else
-        {
-            _accessor?.HttpContext?.Session.SetString("UserName", "");
-        }
-        System.Console.WriteLine("UserID: " + userID);
-        if (sessionUserID == 0) {
-            return Redirect("/user/login");
-        }
         return View(); 
     }
 
-    [HttpPost]
-    [Route("/checkout/get-data")]
-    public IActionResult GetData() {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        List<UserInfo> userInfos = _userResponsitory.getUserInfoByID(Convert.ToInt32(sessionUserID)).ToList();
-        List<Address> addresses = _checkoutResponsitory.checkAddressAccount(Convert.ToInt32(sessionUserID)).ToList();
+    [HttpGet]
+    [Route("/checkout/get-data/{userID?}")]
+    public IActionResult GetData(int userID = 0) {
+        List<UserInfo> userInfos = _userResponsitory.getUserInfoByID(userID).ToList();
+        List<Address> addresses = _checkoutResponsitory.checkAddressAccount(userID).ToList();
         List<City> cities = _checkoutResponsitory.getCities().ToList();
         List<District> districts = _checkoutResponsitory.getDistricts().ToList();
         List<AddressChoose> addressChooses = _checkoutResponsitory.getAddressChoose().ToList();
-        List<Payment> paymentTypes = _checkoutResponsitory.checkPaymentsTypeByUserID(Convert.ToInt32(sessionUserID)).ToList();
+        List<Payment> paymentTypes = _checkoutResponsitory.checkPaymentsTypeByUserID(userID).ToList();
         CheckoutViewModel model = new CheckoutViewModel {
             UserInfos = userInfos,
-            Checkouts = checkouts,
             Addresses = addresses,
             Cities = cities,
             Districts = districts,
@@ -171,38 +146,34 @@ public class CheckoutController : Controller {
 
     [HttpPost]
     [Route("/checkout/add-to-order")]
-    public IActionResult AddToOrder(double totalPrice = 0, int paymentTypeID = 0, int paymentID = 0, int orderStatusID = 0) {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("ShopID");
-        List<Order> order = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionShopID)).ToList();
+    public IActionResult AddToOrder(int userID = 0, int shopID = 0, double totalPrice = 0, int paymentTypeID = 0, int paymentID = 0, int orderStatusID = 0) {
+        List<Order> order = _orderResponsitory.getOrderByID(userID, shopID).ToList();
         // Kiểm tra đơn hàng trong ngày của tài khoản đã đăng ký chưa
-        int orderID;
-        if (order.Count() != 0) {
-            orderID = order[0].PK_iOrderID;
-        } else {
-            if (paymentID == 4) {
-                _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionShopID), totalPrice, 6, paymentTypeID);
-            } else {
-                _orderResponsitory.inserOrder(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionShopID), totalPrice, orderStatusID, paymentTypeID);
-            }
-            List<Order> newOrder = _orderResponsitory.getOrderByID(Convert.ToInt32(sessionUserID), Convert.ToInt32(sessionShopID)).ToList();
-            orderID = newOrder[0].PK_iOrderID;
-        }
-        foreach (var item in checkouts) {
-            // Thêm vào chi tiết đơn hàng
-            _orderResponsitory.inserOrderDetail(orderID, item.PK_iProductID, item.iQuantity, item.dUnitPrice, item.dMoney);
-            // Xoá sản phẩm trong giỏ hàng
-            _cartResponsitory.deleteProductInCart(item.PK_iProductID, Convert.ToInt32(sessionUserID));
-        } 
-        // Đặt lại checkouts
-        HttpContext.Session.Set("cart_key", "");
-        Status status = new Status {
-            StatusCode = 1,
-            Message = "Đặt hàng thành công!"
-        };
+        int orderID = 0;
+        // if (order.Count() != 0) {
+        //     orderID = order[0].PK_iOrderID;
+        // } else {
+        //     if (paymentID == 4) {
+        //         _orderResponsitory.inserOrder(userID, shopID, totalPrice, 6, paymentTypeID);
+        //     } else {
+        //         _orderResponsitory.inserOrder(userID, shopID, totalPrice, orderStatusID, paymentTypeID);
+        //     }
+        //     List<Order> newOrder = _orderResponsitory.getOrderByID(userID, shopID).ToList();
+        //     orderID = newOrder[0].PK_iOrderID;
+        // }
         CheckoutViewModel model = new CheckoutViewModel {
-            Status = status
+            OrderID = orderID
         };
         return Ok(model);
+    }
+
+    [HttpPost]
+    [Route("/checkout/add-to-order-detail")]
+    public IActionResult AddToOrderDetail(int userID = 0, int orderID = 0, int productID = 0, int quantity = 0, double price = 0, double money = 0) {
+        // Thêm vào chi tiết đơn hàng
+        // _orderResponsitory.inserOrderDetail(orderID, productID, quantity, price, money);
+        // Xoá sản phẩm trong giỏ hàng
+        // _cartResponsitory.deleteProductInCart(productID, userID);
+        return Ok();
     }
 }
