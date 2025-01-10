@@ -9,7 +9,10 @@ function getAPIProduct() {
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
+
             console.log(data);
+
+            setHeaderMobileProduct(data);
 
             getShopMalls(data);
 
@@ -73,13 +76,115 @@ function sortPrice(sortType) {
     xhr.send(null);
 }
 
+function setHeaderMobileProduct(data) {
+    let htmlHeaderMobile = "";
+    htmlHeaderMobile += 
+                `<div class="header__mobile-container">
+                    <div class="header__mobile-left">
+                        <div class="header__mobile-menu" onclick="showNavProductMenu()">
+                            <i class="uil uil-bars header__mobile-menu-icon"></i>
+                        </div>
+                        <div class="header__mobile-menu-nav hide-on-destop">
+                            <div class="header__mobile-product-menu-container">
+                                <div class="header__mobile-menu-close" onclick="closeNavProductMenu()">
+                                    <i class="uil uil-multiply header__mobile-menu-close-icon"></i>
+                                </div>
+                                <div class="header__mobile-menu-list">
+                                    <div class="header__mobile-menu-item">
+                                        <a href="javascript:openShopProductMenu()" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-item-name">Cửa hàng</span>
+                                            <i class="uil uil-angle-down header__mobile-menu-item-dropdown-icon"></i>
+                                        </a>
+                                    </div>
+                                    <div class="header__mobile-menu-item">
+                                        <a href="javascript:openCategoryMenu()" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-item-name">Thể loại</span>
+                                            <i class="uil uil-angle-down header__mobile-menu-item-dropdown-icon"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="header__mobile-product-menu-container-shop">
+                                <div class="header__mobile-menu-close" onclick="closeNavProductMenu()">
+                                    <i class="uil uil-multiply header__mobile-menu-close-icon"></i>
+                                </div>
+                                <div class="header__mobile-menu-list">
+                                    <div class="header__mobile-menu-back">
+                                        <a href="javascript:showNavProductMenu()" class="header__mobile-menu-back-link">
+                                            <div class="header__mobile-menu-back-icon-symb">
+                                                <i class="header__mobile-back-item-icon uil uil-arrow-left"></i>
+                                            </div>
+                                            <span class="header__mobile-menu-back-name">Quay lại</span>
+                                        </a>
+                                    </div>
+                                    <div class="header__mobile-menu-back">
+                                        <span class="header__mobile-menu-back-all">Xem tất cả cửa hàng</span>
+                                    </div>`;
+                                    data.stores.forEach(element => {
+                                        htmlHeaderMobile += 
+                                    `<div class="header__mobile-menu-item">
+                                        <a href="/shop?name=${element.sStoreUsername}" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-tab-name">${element.sStoreName}</span>
+                                        </a>
+                                    </div>`;
+                                    });
+                                    htmlHeaderMobile += `
+                                </div>
+                            </div>
+                            <div class="header__mobile-product-menu-container-category">
+                                <div class="header__mobile-menu-close" onclick="closeNavProductMenu()">
+                                    <i class="uil uil-multiply header__mobile-menu-close-icon"></i>
+                                </div>
+                                <div class="header__mobile-menu-list">
+                                    <div class="header__mobile-menu-back">
+                                        <a href="javascript:showNavProductMenu()" class="header__mobile-menu-back-link">
+                                            <div class="header__mobile-menu-back-icon-symb">
+                                                <i class="header__mobile-back-item-icon uil uil-arrow-left"></i>
+                                            </div>
+                                            <span class="header__mobile-menu-back-name">Quay lại</span>
+                                        </a>
+                                    </div>
+                                    <div class="header__mobile-menu-back">
+                                        <span class="header__mobile-menu-back-all">Xem tất cả danh mục</span>
+                                    </div>`;
+                                    data.categories.forEach(element => {
+                                        htmlHeaderMobile += 
+                                    `<div class="header__mobile-menu-item">
+                                        <a href="javascript:filterProductByCategoryID(${element.pK_iCategoryID})" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-tab-name">${element.sCategoryName}</span>
+                                        </a>
+                                    </div>`;
+                                    });
+                                    htmlHeaderMobile += 
+                                `</div>
+                            </div>
+                            <div class="header__mobile-product-menu-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="header__mobile-logo">
+                        <a href="/" class="header__logo-link">
+                            <img class="header__logo-img" src="/img/sme_logo_white.png" alt="SMe Logo">
+                        </a>
+                    </div>
+                    <div class="header__mobile-right">
+                        <div class="header__mobile-user-symbol">
+                            <a href="login.html" class="header__mobile-user-link">  
+                                <i class="uil uil-user header__mobile-user-icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>     
+    `;
+    document.querySelector(".header__mobile-product").innerHTML = htmlHeaderMobile;
+}
+
 // Get Shop Malls
 function getShopMalls(data) {
     let htmlShopMall = "";
     htmlShopMall += data.stores.map(obj =>
         `
                     <div class="l-2">
-                        <a href="/shop/${obj.sStoreUsername}" class="product__mall-item">
+                        <a href="/shop?name=${obj.sStoreUsername}" class="product__mall-item">
                             <img src="/img/${obj.sImageMall}" class="product__mall-item-img" alt="">
                         </a>
                     </div>
@@ -258,6 +363,8 @@ function filterProductByCategoryID(categoryID) {
             const data = JSON.parse(xhr.responseText);
 
             console.log(data);
+
+            closeNavProductMenu();
 
             setActiveCategories(data);
 

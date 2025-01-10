@@ -43,43 +43,13 @@ public class AdminController : Controller {
 
     [Route("/admin")]
     public IActionResult Index() {
-        // Lấy Cookies trên trình duyệt
-        var userID = Request.Cookies["UserID"];
-        if (userID != null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("UserID", Convert.ToInt32(userID));
-        } else {
-            return Redirect("/user/login");
-        }
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        if (sessionUserID != null)
-        {
-            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionUserID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("UserName", users[0].sUserName);
-            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
-        }
-        else
-        {
-            _accessor?.HttpContext?.Session.SetString("UserName", "");
-        }
         return View();
     }
 
-    [HttpPost]
-    public IActionResult Index(Category category) {
-        if (!ModelState.IsValid) {
-            return View(category);
-        }
-        TempData["msg"] = "Thêm thể loại thành công!";
-        return RedirectToAction("Index");
-    }
-
-    [HttpPost]
-    [Route("/admin/get-data")]
-    public IActionResult GetData() {
-        var sessionUserID = _accessor?.HttpContext?.Session.GetInt32("UserID");
-        var sellerUsername = _accessor?.HttpContext?.Session.GetString("UserName");
-        var sessionRoleID = _accessor?.HttpContext?.Session.GetInt32("RoleID");
+    [HttpGet]
+    [Route("/admin/get-data/{userID?}")]
+    public IActionResult GetData(int userID = 0) {
+        IEnumerable<User> user = _userResponsitory.getUserByID(userID);
         IEnumerable<Order> ordersWaitSettlment = _adminResponsitory.getOrdersWaitSettlment().ToList();
         IEnumerable<Order> ordersWaitPickup = _adminResponsitory.getOrderWaitPickup();
         IEnumerable<Order> ordersPicking = _adminResponsitory.getOrdersPicking();
@@ -101,7 +71,7 @@ public class AdminController : Controller {
             htmlWaitSettlmentItem += $"            <div class='admin__order-table-body-col-payment-name'>{item.sPaymentName}</div>";
             htmlWaitSettlmentItem += $"     </div>";
             htmlWaitSettlmentItem += $"     <div class='admin__order-table-body-col primary'>";
-            htmlWaitSettlmentItem += $"         <a href='/admin/order/{item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
+            htmlWaitSettlmentItem += $"         <a href='/admin/order?orderID={item.PK_iOrderID}' class='admin__order-table-body-col-link'>Chi tiết</a>";
             htmlWaitSettlmentItem += $"     </div>";
             htmlWaitSettlmentItem += $" </div>";
         }
@@ -183,9 +153,8 @@ public class AdminController : Controller {
             Categories = categories,
             UserInfos = userInfos,
             HtmlUsersInfoItem = htmlUsersInfoItem,
-            RoleID = Convert.ToInt32(sessionRoleID),
-            UserID = Convert.ToInt32(sessionUserID),
-            Username = sellerUsername
+            UserID = userID,
+            User = user
         };
         return Ok(model);
     }
@@ -347,18 +316,16 @@ public class AdminController : Controller {
     }
 
     [HttpGet]
-    [Route("/admin/order/{id?}")]
-    public IActionResult Order(int id) {
-        _accessor?.HttpContext?.Session.SetInt32("CurrentOrderID", id);
+    [Route("/admin/order/{orderID?}")]
+    public IActionResult Order() {
         return View();
     }
 
-    [HttpPost]
-    [Route("/admin/order")]
-    public IActionResult Order() {
-        var sessionOrderID = _accessor?.HttpContext?.Session.GetInt32("CurrentOrderID");
-        IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getOrderDetailByOrderID(Convert.ToInt32(sessionOrderID));
-        List<Order> order = _orderResponsitory.getOrderByOrderID(Convert.ToInt32(sessionOrderID)).ToList();
+    [HttpGet]
+    [Route("/admin/order-data/{orderID?}")]
+    public IActionResult Order(int orderID = 0) {
+        IEnumerable<OrderDetail> orderDetails = _orderResponsitory.getOrderDetailByOrderID(orderID);
+        List<Order> order = _orderResponsitory.getOrderByOrderID(orderID).ToList();
         List<Address> addresses = _checkoutResponsitory.checkAddressAccount(order[0].FK_iUserID).ToList();
         List<Payment> payments = _checkoutResponsitory.checkPaymentsTypeByUserID(Convert.ToInt32(order[0].FK_iUserID)).ToList();
         AdminViewModel model = new AdminViewModel {
@@ -370,13 +337,12 @@ public class AdminController : Controller {
         return Ok(model);
     }
 
-    [HttpGet]
-    [Route("/admin/confirm-order")]
-    public IActionResult ConfirmOrder() {
-        var sessionOrderID = _accessor?.HttpContext?.Session.GetInt32("CurrentOrderID");
+    [HttpPut]
+    [Route("/admin/confirm-order/{orderID?}")]
+    public IActionResult ConfirmOrder(int orderID = 0) {
         Status status;
-        List<Order> order = _orderResponsitory.getOrderWaitSettlementByOrderID(Convert.ToInt32(sessionOrderID)).ToList();
-        if (_orderResponsitory.confirmOrderAboutWaitPickup(Convert.ToInt32(sessionOrderID), order[0].FK_iUserID)) {
+        List<Order> order = _orderResponsitory.getOrderWaitSettlementByOrderID(orderID).ToList();
+        if (_orderResponsitory.confirmOrderAboutWaitPickup(orderID, order[0].FK_iUserID)) {
             status = new Status {
                 StatusCode = 1,
                 Message = "Xác nhận đơn hàng thành công!"

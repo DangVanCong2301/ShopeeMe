@@ -1,3 +1,5 @@
+using Project.Models;
+
 public class AdminViewModel
 {
     public IEnumerable<Order> OrdersWaitSettlment { get; set; }
@@ -21,6 +23,7 @@ public class AdminViewModel
     public IEnumerable<CategoryModel> Categories { get; set; }
     public IEnumerable<CategoryModel> Category { get; set; }
     public IEnumerable<UserInfo> UserInfos { get; set; }
+    public IEnumerable<User> User { get; set; }
     public int RoleID { get; set; }
     public int UserID { get; set; }
     public string Username { get; set; }

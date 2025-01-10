@@ -129,7 +129,7 @@ const addEvent = (() => {
                             closeModal();
                             toast({ title: "Thông báo", msg: `${result.status.message}`, type: "success", duration: 5000 });
                             setCookies("sellerID", result.seller[0].pK_iSellerID, 1);
-                            sessionStorage.setItem("seller", JSON.stringify(result.seller[0]))
+                            sessionStorage.setItem("sellerInfo", JSON.stringify(result.sellerInfo[0]))
                             document.querySelector(".modal__body").innerHTML = "";
                             setTimeout(() => {
                                 window.location.assign('/seller');

@@ -438,8 +438,12 @@ input, textarea, button {
     justify-content: center;
 }
 
-.rate__stars i {
+.rate__star-icon {
     font-size: 30px;
+    color: #d5d5d5;
+}
+
+.rate__star-icon--gold {
     color: var(--star-gold-color);
 }
 
@@ -641,6 +645,9 @@ input, textarea, button {
     position: relative;
     font-size: 16px;
     padding: 2px;
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
 }
 
 i.home-product-item__like-icon-fill,
@@ -657,6 +664,11 @@ i.home-product-item__like-icon-empty {
 .home-product-item__like--liked .home-product-item__like-icon-empty {
     /* display: none; */
     display: inline-block;
+}
+
+.home-product-item__like-count {
+    font-size: 12px;
+    color: var(--primary-color);
 }
 
 .home-product-item__rating {

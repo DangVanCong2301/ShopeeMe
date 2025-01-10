@@ -1,6 +1,11 @@
 function getAPISiteAdmin() {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        userID = 0;
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/admin/get-data', true);
+    xhr.open('get', '/admin/get-data?userID=' + userID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -25,7 +30,7 @@ function setAccount(data) {
                             <img src="/img/no_user.jpg" class="header__account-avatar-img" alt="">
                         </div>
                         <div class="header__account-info">
-                            <span class="header__account-info-name">${data.username}</span>
+                            <span class="header__account-info-name">${data.user[0].sUserName}</span>
                             <div class="header__account-info-down">
                                 <i class="uil uil-angle-down header__account-info-icon"></i>
                             </div>
@@ -35,11 +40,11 @@ function setAccount(data) {
                                 <li class="header__navbar-user-item">
                                     <div class="header__account-manager-info">
                                         <img src="/img/no_user.jpg" alt="" class="header__account-manager-img">
-                                        <div class="header__account-manager-name">${data.username}</div>
+                                        <div class="header__account-manager-name">${data.user[0].sUserName}</div>
                                     </div>
                                 </li>
                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
-                                    <a href="/user/logout">
+                                    <a href="javascript:logoutUserAccount()">
                                         <i class="uil uil-signout header__account-manager-icon"></i>
                                         Đăng xuất
                                     </a>
@@ -48,6 +53,20 @@ function setAccount(data) {
                         </div>
     `;
     document.querySelector(".header__account").innerHTML = htmlAccount;
+}
+
+function logoutUserAccount() {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
+    deleteCookies("userID");
+    setTimeout(() => {
+        closeModal();
+        toast({ title: "Thông báo", msg: `Đăng xuất thành công!`, type: "success", duration: 5000 });
+        document.querySelector(".modal__body").innerHTML = "";
+        setTimeout(() => {
+            window.location.assign('/');
+        }, 1000)
+    }, 2000);
 }
 
 function setSidebar(data) {
@@ -1631,4 +1650,19 @@ function money_2(number) {
 function formatDate(date) {
     const dateFormat = new Date(date);
     return dateFormat.toLocaleDateString('en-GB'); // 24/04/2023
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}
+
+function deleteCookies(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

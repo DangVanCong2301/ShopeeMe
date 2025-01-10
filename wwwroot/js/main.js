@@ -293,6 +293,7 @@ function getProducts(data) {
                                             <span class="home-product-item__like home-product-item__like--liked">
                                                 <i class="home-product-item__like-icon-empty far fa-heart"></i>
                                                 <i class="home-product-item__like-icon-fill fas fa-heart"></i>
+                                                <span class="home-product-item__like-count">10</span>
                                                 <div class="home-product-item__like-loading"></div>
                                             </span>
                                             <div class="home-product-item__rating">
@@ -361,6 +362,7 @@ function getProducts(data) {
                                             <span class="home-product-item__like home-product-item__like--liked">
                                                 <i class="home-product-item__like-icon-empty far fa-heart"></i>
                                                 <i class="home-product-item__like-icon-fill fas fa-heart"></i>
+                                                <span class="home-product-item__like-count">10</span>
                                                 <div class="home-product-item__like-loading"></div>
                                             </span>
                                             <div class="home-product-item__rating">

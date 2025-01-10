@@ -10,7 +10,7 @@
     background-color: var(--primary-color);
 }
 
-.header__navbar {
+.header__navbar-container {
     display: flex;
     justify-content: space-between;
 }

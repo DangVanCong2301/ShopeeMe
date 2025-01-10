@@ -18,7 +18,13 @@
 @model ShopeeViewModel 
 <body>
     <div class="app">
-        <header class="header hide-on-table">
+        <header class="header hide-on-table header-mobile-detail">
+            <div class="header__mobile hide-on-destop hide-on-product hide-on-detail">
+                
+            </div>
+            <div class="header__mobile-product hide-on-destop hide-on-home hide-on-detail">
+                
+            </div>
             <div class="grid wide">
                 <nav class="header__navbar hide-on-mobile-table">
                     <ul class="header__navbar-list">
@@ -127,24 +133,23 @@
                         </a>
                     </div>
 
-                    <div class="header__mobile-back hide-on-home hide-on-destop">
+                    <div class="header__mobile-back hide-on-home hide-on-product hide-on-destop">
                         <a href="javascript:backHistory()" class="header__mobile-back-link">
                             <i class="uil uil-arrow-left header__mobile-back-icon"></i>
                         </a>
                     </div>
 
-                    <div class="header__mobile-title hide-on-destop hide-on-home hide-on-product-detail hide-on-shop hide-on-detail">
+                    <div class="header__mobile-title hide-on-destop hide-on-home hide-on-product hide-on-product-detail hide-on-shop hide-on-detail">
                         Giỏ hàng
                     </div>
 
-                    <div class="header__mobile-fix hide-on-destop hide-on-home hide-on-product-detail hide-on-shop hide-on-detail" onclick="changeBottomCheckout(this)">Sửa</div>
-                    @if (ViewData["Title"] == "Chi tiết") {
-                        <div class="header__mobile-product-name">Sạc dự phòng E893</div>
-                    }
+                    <div class="header__mobile-fix hide-on-destop hide-on-home hide-on-product hide-on-product-detail hide-on-shop hide-on-detail" onclick="changeBottomCheckout(this)">Sửa</div>
 
+                    <div class="header__mobile-product-name hide-on-home hide-on-destop hide-on-product">Sạc dự phòng E893</div>
+                    
                     <div class="header__search hide-on-cart hide-on-detail">
                         <div class="header__search-input-wrap">
-                            <i class="uil uil-search header__search-input-icon hide-on-destop"></i>
+                            <i class="uil uil-search header__search-input-icon hide-on-destop hide-on-mobile"></i>
                             <input type="text" class="header__search-input" onkeyup="searchProducts(this)"
                                 placeholder="Tìm kiếm SMe">
 
@@ -167,7 +172,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <button class="header__search-btn hide-on-mobile">
+                        <button class="header__search-btn">
                             <i class="header__search-btn-icon uil uil-search"></i>
                         </button>
                     </div>
@@ -178,59 +183,53 @@
                                 <i class="header__cart-icon fa-solid fa-cart-shopping"></i>
                                 <span class="header__cart-notice">0</span>
                             </a>
-                            <div class="header__cart-container">
+                            <div class="header__cart-container hide-on-mobile">
                                 <!--No cart: header__cart-list--no-cart-->
 
                             </div>
                         </div>
                     </div>
+                    <!-- User  -->
+                    <div class="header__mobile-user hide-on-mobile">
 
-                    @if (ViewData["Title"] == "Trang chủ") {
-                        <!-- User  -->
-                        <div class="header__mobile-user">
-                            
+                    </div>
+                    <div class="header__mobile-more hide-on-home hide-on-product hide-on-detail">
+                        <a href="javascript:openModalOrderMe()" class="header__mobile-more-link">
+                            <i class="uil uil-ellipsis-h header__mobile-more-icon"></i>
+                        </a>
+                    </div>
+                    <div class="header__mobile-more-modal hide-on-destop hide-on-home hide-on-product hide-on-detail">
+                        <div class="header__mobile-more-modal-container">
+                            <a href="#" class="header__mobile-more-modal-order-me">
+                                <i class="uil uil-clipboard-alt header__mobile-more-modal-order-me-icon"></i>
+                                <span>Đơn hàng của tôi</span>
+                            </a>
+                            <a href="/" class="header__mobile-more-modal-order-me">
+                                <i class="uil uil-shopping-bag header__mobile-more-modal-order-me-icon"></i>
+                                <span>Trở về trang chủ</span>
+                            </a>
+                            <a href="#" class="header__mobile-more-modal-order-me">
+                                <i class="uil uil-question-circle header__mobile-more-modal-order-me-icon"></i>
+                                <span>Bạn cần trợ giúp</span>
+                            </a>
                         </div>
-                    }
+                    </div>
 
-                    @if (ViewData["Title"] == "Chi tiết") {
-                        <div class="header__mobile-more">
+                    <div class="header__mobile-more hide-on-destop hide-on-home hide-on-product hide-on-detail">
+                        <div class="header__mobile-more-container">
                             <a href="javascript:openModalOrderMe()" class="header__mobile-more-link">
                                 <i class="uil uil-ellipsis-h header__mobile-more-icon"></i>
                             </a>
                         </div>
-                        <div class="header__mobile-more-modal hide-on-destop">
-                            <div class="header__mobile-more-modal-container">
-                                <a href="#" class="header__mobile-more-modal-order-me">
-                                    <i class="uil uil-clipboard-alt header__mobile-more-modal-order-me-icon"></i>
-                                    <span>Đơn hàng của tôi</span>
-                                </a>
-                                <a href="/" class="header__mobile-more-modal-order-me">
-                                    <i class="uil uil-shopping-bag header__mobile-more-modal-order-me-icon"></i>
-                                    <span>Trở về trang chủ</span>
-                                </a>
-                                <a href="#" class="header__mobile-more-modal-order-me">
-                                    <i class="uil uil-question-circle header__mobile-more-modal-order-me-icon"></i>
-                                    <span>Bạn cần trợ giúp</span>
-                                </a>
-                            </div>
-                        </div>
-                    }
-
-                    @if (ViewData["Title"] == "Shop") {
-                        <div class="header__mobile-more hide-on-destop">
-                            <a href="javascript:openModalOrderMe()" class="header__mobile-more-link">
-                                <i class="uil uil-ellipsis-h header__mobile-more-icon"></i>
+                    </div>
+                    <div class="header__mobile-more-modal hide-on-destop hide-on-home hide-on-product hide-on-detail">
+                        <div class="header__mobile-more-modal-container">
+                            <a href="#" class="header__mobile-more-modal-order-me">
+                                <i class="uil uil-clipboard-alt header__mobile-more-modal-order-me-icon"></i>
+                                <span>Đơn hàng của tôi</span>
                             </a>
                         </div>
-                        <div class="header__mobile-more-modal hide-on-destop">
-                            <div class="header__mobile-more-modal-container">
-                                <a href="#" class="header__mobile-more-modal-order-me">
-                                    <i class="uil uil-clipboard-alt header__mobile-more-modal-order-me-icon"></i>
-                                    <span>Đơn hàng của tôi</span>
-                                </a>
-                            </div>
-                        </div>
-                    }
+                    </div>
                 </div>
             </div>
         </header>

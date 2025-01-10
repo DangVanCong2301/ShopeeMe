@@ -18,6 +18,8 @@ function getDataSite() {
 
             console.log(data);
 
+            setHeaderMobile(data);
+
             setAccount(data);
 
             setAccountMobile(data);
@@ -34,6 +36,108 @@ function getDataSite() {
     xhr.send(null);
 }
 getDataSite();
+
+function setHeaderMobile(data) {
+    let htmlNavbar = "";
+    htmlNavbar +=
+                `<div class="header__mobile-container">
+                    <div class="header__mobile-left">
+                        <div class="header__mobile-menu" onclick="showNavMenu()">
+                            <i class="uil uil-bars header__mobile-menu-icon"></i>
+                        </div>
+                        <div class="header__mobile-menu-nav hide-on-destop">
+                            <div class="header__mobile-menu-container">
+                                <div class="header__mobile-menu-close" onclick="closeNavMenu()">
+                                    <i class="uil uil-multiply header__mobile-menu-close-icon"></i>
+                                </div>
+                                <div class="header__mobile-menu-list">
+                                    <div class="header__mobile-menu-item">
+                                        <a href="javascript:openShopMenu()" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-item-name">Cửa hàng</span>
+                                            <i class="uil uil-angle-down header__mobile-menu-item-dropdown-icon"></i>
+                                        </a>
+                                    </div>
+                                    <div class="header__mobile-menu-item">
+                                        <a href="javascript:openIndustryMenu()" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-item-name">Danh mục</span>
+                                            <i class="uil uil-angle-down header__mobile-menu-item-dropdown-icon"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="header__mobile-menu-container-shop">
+                                <div class="header__mobile-menu-close" onclick="closeNavMenu()">
+                                    <i class="uil uil-multiply header__mobile-menu-close-icon"></i>
+                                </div>
+                                <div class="header__mobile-menu-list">
+                                    <div class="header__mobile-menu-back">
+                                        <a href="javascript:showNavMenu()" class="header__mobile-menu-back-link">
+                                            <div class="header__mobile-menu-back-icon-symb">
+                                                <i class="header__mobile-back-item-icon uil uil-arrow-left"></i>
+                                            </div>
+                                            <span class="header__mobile-menu-back-name">Quay lại</span>
+                                        </a>
+                                    </div>
+                                    <div class="header__mobile-menu-back">
+                                        <span class="header__mobile-menu-back-all">Xem tất cả cửa hàng</span>
+                                    </div>`;
+                                    data.stores.forEach(element => {
+                                        htmlNavbar += 
+                                    `<div class="header__mobile-menu-item">
+                                        <a href="/shop?name=${element.sStoreUsername}" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-tab-name">${element.sStoreName}</span>
+                                        </a>
+                                    </div>
+                                        `;
+                                    });
+                                    htmlNavbar += `
+                                </div>
+                            </div>
+                            <div class="header__mobile-menu-container-industry">
+                                <div class="header__mobile-menu-close" onclick="closeNavMenu()">
+                                    <i class="uil uil-multiply header__mobile-menu-close-icon"></i>
+                                </div>
+                                <div class="header__mobile-menu-list">
+                                    <div class="header__mobile-menu-back">
+                                        <a href="javascript:showNavMenu()" class="header__mobile-menu-back-link">
+                                            <div class="header__mobile-menu-back-icon-symb">
+                                                <i class="header__mobile-back-item-icon uil uil-arrow-left"></i>
+                                            </div>
+                                            <span class="header__mobile-menu-back-name">Quay lại</span>
+                                        </a>
+                                    </div>
+                                    <div class="header__mobile-menu-back">
+                                        <span class="header__mobile-menu-back-all">Xem tất cả danh mục</span>
+                                    </div>`;
+                                    data.parentCategories.forEach(element => {
+                                        htmlNavbar += 
+                                    `<div class="header__mobile-menu-item">
+                                        <a href="/product?industryID=${element.pK_iParentCategoryID}" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-tab-name">${element.sParentCategoryName}</span>
+                                        </a>
+                                    </div>`;
+                                    });
+                                    htmlNavbar += `
+                                </div>
+                            </div>
+                            <div class="header__mobile-menu-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="header__mobile-logo">
+                        <a href="/" class="header__logo-link">
+                            <img class="header__logo-img" src="/img/sme_logo_white.png" alt="SMe Logo">
+                        </a>
+                    </div>
+                    <div class="header__mobile-right">
+                        <div class="header__mobile-user-symbol">
+                            <a href="login.html" class="header__mobile-user-link">  
+                                <i class="uil uil-user header__mobile-user-icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>`;
+    document.querySelector(".header__mobile").innerHTML = htmlNavbar;
+}
 
 function setAccount(data) {
     let htmlAccount = "";
@@ -322,7 +426,7 @@ function getCartsItem(data) {
                             </div>
                             <div class="header__cart-item-body">
                                 <span class="header__cart-item-description">
-                                    Phân loại hàng: Bạc
+                                    Phân loại hàng: ${obj.sCategoryName}
                                 </span>
                                 <span class="header__cart-item-remove">Xoá</span>
                             </div>
@@ -822,8 +926,57 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
     }
 }
 
-// Chat JS
+// Show Navbar Menu
+function showNavMenu() {
+    document.querySelector(".header__mobile-menu-overlay").classList.add("open");
+    document.querySelector(".header__mobile-menu-container").classList.add("open");
+    document.querySelector(".header__mobile-menu-container-shop").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container-industry").classList.remove("open");
+}
 
+function closeNavMenu() {
+    document.querySelector(".header__mobile-menu-overlay").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container-shop").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container-industry").classList.remove("open");
+}
+
+function openShopMenu() {
+    document.querySelector(".header__mobile-menu-container").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container-shop").classList.add("open");
+}
+
+function openIndustryMenu() {
+    document.querySelector(".header__mobile-menu-container").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container-industry").classList.add("open");
+}
+
+// Show Navbar Menu Product
+function showNavProductMenu() {
+    document.querySelector(".header__mobile-product-menu-overlay").classList.add("open");
+    document.querySelector(".header__mobile-product-menu-container").classList.add("open");
+    document.querySelector(".header__mobile-product-menu-container-shop").classList.remove("open");
+    document.querySelector(".header__mobile-product-menu-container-category").classList.remove("open");
+}
+
+function closeNavProductMenu() {
+    document.querySelector(".header__mobile-product-menu-overlay").classList.remove("open");
+    document.querySelector(".header__mobile-product-menu-container").classList.remove("open");
+    document.querySelector(".header__mobile-product-menu-container-shop").classList.remove("open");
+    document.querySelector(".header__mobile-product-menu-container-category").classList.remove("open");
+}
+
+function openShopProductMenu() {
+    document.querySelector(".header__mobile-product-menu-container").classList.remove("open");
+    document.querySelector(".header__mobile-product-menu-container-shop").classList.add("open");
+}
+
+function openCategoryMenu() {
+    document.querySelector(".header__mobile-product-menu-container").classList.remove("open");
+    document.querySelector(".header__mobile-product-menu-container-category").classList.add("open");
+}
+
+// Chat JS
 function hideChatWindow() {
     document.querySelector(".chat__container").classList.toggle("hide-chat-window");
     document.querySelector(".chat__body-right").classList.toggle("hide-chat-window");

@@ -50,14 +50,15 @@
         border-radius: 50%;
     }
 
-    .shop__mobile-info-avatar-favorite span{
+    .shop__mobile-info-avatar-favorite p {
         position: relative;
         padding: 2px 4px;
         background-color: var(--primary-color);
         border-radius: 2px;
         bottom: 10px;
-        left: 5px;
+        left: -10px;
         text-align: center;
+        width: 80px;
     }
 
     .shop__mobile-info-shop {

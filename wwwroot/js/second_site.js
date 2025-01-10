@@ -252,6 +252,11 @@ function money(number) {
     return result;
 }
 
+// Back History
+function backHistory() {
+    window.history.back();
+}
+
 function money_2(number) {
     const formattedAmount = new Intl.NumberFormat('vi-VI', {
         style: 'currency',

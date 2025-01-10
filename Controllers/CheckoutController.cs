@@ -149,18 +149,18 @@ public class CheckoutController : Controller {
     public IActionResult AddToOrder(int userID = 0, int shopID = 0, double totalPrice = 0, int paymentTypeID = 0, int paymentID = 0, int orderStatusID = 0) {
         List<Order> order = _orderResponsitory.getOrderByID(userID, shopID).ToList();
         // Kiểm tra đơn hàng trong ngày của tài khoản đã đăng ký chưa
-        int orderID = 0;
-        // if (order.Count() != 0) {
-        //     orderID = order[0].PK_iOrderID;
-        // } else {
-        //     if (paymentID == 4) {
-        //         _orderResponsitory.inserOrder(userID, shopID, totalPrice, 6, paymentTypeID);
-        //     } else {
-        //         _orderResponsitory.inserOrder(userID, shopID, totalPrice, orderStatusID, paymentTypeID);
-        //     }
-        //     List<Order> newOrder = _orderResponsitory.getOrderByID(userID, shopID).ToList();
-        //     orderID = newOrder[0].PK_iOrderID;
-        // }
+        int orderID;
+        if (order.Count() != 0) {
+            orderID = order[0].PK_iOrderID;
+        } else {
+            if (paymentID == 4) {
+                _orderResponsitory.inserOrder(userID, shopID, totalPrice, 6, paymentTypeID);
+            } else {
+                _orderResponsitory.inserOrder(userID, shopID, totalPrice, orderStatusID, paymentTypeID);
+            }
+            List<Order> newOrder = _orderResponsitory.getOrderByID(userID, shopID).ToList();
+            orderID = newOrder[0].PK_iOrderID;
+        }
         CheckoutViewModel model = new CheckoutViewModel {
             OrderID = orderID
         };
@@ -171,9 +171,9 @@ public class CheckoutController : Controller {
     [Route("/checkout/add-to-order-detail")]
     public IActionResult AddToOrderDetail(int userID = 0, int orderID = 0, int productID = 0, int quantity = 0, double price = 0, double money = 0) {
         // Thêm vào chi tiết đơn hàng
-        // _orderResponsitory.inserOrderDetail(orderID, productID, quantity, price, money);
+        _orderResponsitory.inserOrderDetail(orderID, productID, quantity, price, money);
         // Xoá sản phẩm trong giỏ hàng
-        // _cartResponsitory.deleteProductInCart(productID, userID);
+        _cartResponsitory.deleteProductInCart(productID, userID);
         return Ok();
     }
 }

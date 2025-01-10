@@ -4,6 +4,7 @@ public class CartDetail {
     public string sImageUrl { get; set; }
     public string sProductName { get; set; }
     public string sStoreName { get; set; }
+    public string sCategoryName { get; set; }
     public int iQuantity { get; set; }
     public double dUnitPrice { get; set; }
     public double dDiscount { get; set; }

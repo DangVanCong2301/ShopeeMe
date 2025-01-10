@@ -1191,11 +1191,11 @@ function addToOrderDetail(orderID) {
     }
     sessionStorage.removeItem("checkout");
     toast({ title: "Thông báo", msg: `Đặt hàng thành công!`, type: "success", duration: 5000 });
-    // if (data.paymentTypes[0].pK_iPaymentID == 4) {
-    //     window.location.assign("/payment/momo");
-    // } else {
-    //     window.location.assign("/user/purchase");
-    // }
+    if (data.paymentTypes[0].pK_iPaymentID == 4) {
+        window.location.assign("/payment/momo");
+    } else {
+        window.location.assign("/user/purchase");
+    }
 }
 
 // Modal

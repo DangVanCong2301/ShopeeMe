@@ -1,6 +1,11 @@
 function getAPISellerPortal() {
+    let sellerID = getCookies("userID");
+    if (sellerID == undefined) {
+        window.location.replace("/seller/login");
+    }
+
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/seller/portal-api', true);
+    xhr.open('get', '/seller/portal-api?sellerID' + sellerID + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -24,7 +29,7 @@ function setSellerAccount(data) {
                             <img src="/img/no_user.jpg" class="header__account-avatar-img" alt="">
                         </div>
                         <div class="header__account-info">
-                            <span class="header__account-info-name">${data.sellerUsername}</span>
+                            <span class="header__account-info-name">${data.sellerInfo[0].sSellerUsername}</span>
                             <div class="header__account-info-down">
                                 <i class="uil uil-angle-down header__account-info-icon"></i>
                             </div>
@@ -34,7 +39,7 @@ function setSellerAccount(data) {
                                 <li class="header__navbar-user-item">
                                     <div class="header__account-manager-info">
                                         <img src="/img/no_user.jpg" alt="" class="header__account-manager-img">
-                                        <div class="header__account-manager-name">${data.sellerUsername}</div>
+                                        <div class="header__account-manager-name">${data.sellerInfo[0].sSellerUsername}</div>
                                     </div>
                                 </li>
                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
@@ -154,6 +159,17 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
         `;
         main.appendChild(toast);
     }
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
 }
 
 function deleteCookies(name) {

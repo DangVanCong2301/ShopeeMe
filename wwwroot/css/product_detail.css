@@ -1229,6 +1229,14 @@ https://viblo.asia/p/ban-da-biet-flex-grow-va-flex-shrink-hoat-dong-the-nao-chua
 }
 
 @media screen and (max-width: 768px) {
+    .hide-on-detail {
+        display: none;
+    }
+
+    .header-mobile-detail {
+        background-color: var(--white-color);
+    }
+
     .header__product-detail {
         padding: 8px 8px 8px 8px;
     }
@@ -1264,7 +1272,7 @@ https://viblo.asia/p/ban-da-biet-flex-grow-va-flex-shrink-hoat-dong-the-nao-chua
         color: var(--primary-color);
     }
 
-    .header__mobile-more {
+    .header__mobile-more-container {
         margin-left: 12px;
         display: flex;
         justify-content: center;
@@ -1273,6 +1281,10 @@ https://viblo.asia/p/ban-da-biet-flex-grow-va-flex-shrink-hoat-dong-the-nao-chua
         width: 36px;
         border-radius: 50%;
         background-color: #d7d7d7;
+    }
+
+    .header-with-search {
+        margin: 0 0 0 0;
     }
 
     .header__mobile-more-icon {
@@ -1331,6 +1343,9 @@ https://viblo.asia/p/ban-da-biet-flex-grow-va-flex-shrink-hoat-dong-the-nao-chua
 
     .detail__number {
         padding: 16px 16px 0 16px;
+        flex-direction: column;
+        row-gap: 16px;
+        align-items: flex-start;
     }
 
     .detail__policy-destop-mobile-container {

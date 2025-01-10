@@ -27,6 +27,7 @@ function getAPISiteSeller() {
 getAPISiteSeller();
 
 function setSellerAccount(data) {
+    var sellerInfo = JSON.parse(sessionStorage.getItem("sellerInfo"));
     let htmlSellerAccount = "";
     htmlSellerAccount += 
     `
@@ -34,7 +35,7 @@ function setSellerAccount(data) {
                             <img src="/img/no_user.jpg" class="header__account-avatar-img" alt="">
                         </div>
                         <div class="header__account-info">
-                            <span class="header__account-info-name">${data.sellerUsername}</span>
+                            <span class="header__account-info-name">${sellerInfo.sSellerUsername}</span>
                             <div class="header__account-info-down">
                                 <i class="uil uil-angle-down header__account-info-icon"></i>
                             </div>
@@ -44,7 +45,7 @@ function setSellerAccount(data) {
                                 <li class="header__navbar-user-item">
                                     <div class="header__account-manager-info">
                                         <img src="/img/no_user.jpg" alt="" class="header__account-manager-img">
-                                        <div class="header__account-manager-name">${data.sellerUsername}</div>
+                                        <div class="header__account-manager-name">${sellerInfo.sSellerUsername}</div>
                                     </div>
                                 </li>
                                 <li class="header__navbar-user-item header__navbar-user-item--separate">
@@ -770,6 +771,8 @@ function setProductDetail(data) {
                 <div class="spinner"></div>
             `;
         var formData = new FormData();
+        var sellerInfo = JSON.parse(sessionStorage.getItem("sellerInfo"));
+        formData.append("shopID", sellerInfo.pK_iStoreID);
         formData.append("productID", productID);
         formData.append("categoryID", categoryID);
         formData.append("discountID", discountID);
@@ -1580,6 +1583,7 @@ function showChatMessage(chatID) {
             document.querySelector(".admin__chat-msg-footer-reply-send").addEventListener('click', () => {
                 let chat = document.querySelector(".admin__chat-msg-footer-reply-input").value;
                 var formData = new FormData();
+                formData.append("sellerID", getCookies("sellerID"));
                 formData.append("chatID", data.chat[0].pK_iChatID);
                 formData.append("msg", chat);
 

@@ -60,8 +60,8 @@ public class SellerController : Controller
             storeID = 0;
         } else {
             status = new Status {
-                StatusCode = -1,
-                Message = "Tài khoảnđầy đủ thông tin!"
+                StatusCode = 1,
+                Message = "Tài khoản đầy đủ thông tin!"
             };
             storeID = store[0].PK_iStoreID;
         }
@@ -209,14 +209,13 @@ public class SellerController : Controller
 
     [HttpPost]
     [Route("/seller/update-product")]
-    public IActionResult UpdateProduct(int productID = 0, int categoryID = 0, int discountID = 0, int transportID = 0, string productName = "", int quantity = 0, string productDesc = "", string imageUrl = "", double price = 0) {
-        var sessionShopID = _accessor?.HttpContext?.Session.GetInt32("SellerShopID");
-        _productResponsitory.updateProduct(productID, Convert.ToInt32(sessionShopID), categoryID, discountID, transportID, productName, quantity, productDesc, imageUrl, price);
+    public IActionResult UpdateProduct(int shopID = 0, int productID = 0, int categoryID = 0, int discountID = 0, int transportID = 0, string productName = "", int quantity = 0, string productDesc = "", string imageUrl = "", double price = 0) {
+        _productResponsitory.updateProduct(productID, shopID, categoryID, discountID, transportID, productName, quantity, productDesc, imageUrl, price);
         Status status = new Status {
             StatusCode = 1,
             Message = "Cập nhật sản phẩm thành công"
         };
-        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(Convert.ToInt32(sessionShopID));
+        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(shopID);
         string htmlProductItem = "";
         foreach (var item in products) {
             htmlProductItem += $"    <div class='admin__product-item'>";
@@ -392,8 +391,8 @@ public class SellerController : Controller
 
     [HttpPost]
     [Route("/seller/add-chat")]
-    public IActionResult AddChat(int chatID = 0, string msg = "") {
-        int personID = Convert.ToInt32(_accessor?.HttpContext?.Session.GetInt32("SellerID"));
+    public IActionResult AddChat(int sellerID = 0, int chatID = 0, string msg = "") {
+        int personID = sellerID;
         Status status;
         if (_chatRepository.insertChatDetail(chatID, personID, msg)) {
             status = new Status {
@@ -423,14 +422,14 @@ public class SellerController : Controller
     public IActionResult Login(string phone = "", string password = "") {
         password = _userResponsitory.encrypt(password);
         List<Seller> sellerLogin = _sellerResponsitory.loginAccount(phone, password).ToList();
-        List<SellerInfo> sellerInfos = _sellerResponsitory.getSellerInfoByPhone(phone).ToList();
+        List<SellerInfo> sellerInfo = _sellerResponsitory.getSellerInfoByPhone(phone).ToList();
         Status status;
         if (sellerLogin.Count() == 0) {
             status = new Status {
                 StatusCode = -1,
                 Message = "Tên đăng nhập hoặc mật khẩu không chính xác!"
             };
-        } else if (sellerInfos.Count() == 0) {
+        } else if (sellerInfo.Count() == 0) {
             status = new Status {
                 StatusCode = -2,
                 Message = "Tài khoản người bán chưa đầy đủ thông tin!"
@@ -443,7 +442,8 @@ public class SellerController : Controller
         }
         SellerViewModel model = new SellerViewModel {
             Status = status,
-            Seller = sellerLogin
+            Seller = sellerLogin,
+            SellerInfo = sellerInfo
         };
         return Ok(model);
     }
@@ -511,27 +511,15 @@ public class SellerController : Controller
     [HttpGet]
     [Route("/seller/portal")]
     public IActionResult Portal() {
-        // Lấy Cookie trên trình duyệt
-        var sellerID = Request.Cookies["SellerID"];
-        if (sellerID != null) {
-            _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
-        } else {
-            return Redirect("/seller/login");
-        }
-        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
-        List<Seller> seller = _sellerResponsitory.getSellerAccountByID(Convert.ToInt32(sessionSellerID)).ToList();
-        _accessor?.HttpContext?.Session.SetString("SellerUsername", seller[0].sSellerUsername);
         return View();
     }
 
-    [HttpPost]
-    [Route("/seller/portal-api")]
-    public IActionResult PortalAPI() {
-        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
-        var sessionSellerUsername = _accessor?.HttpContext?.Session.GetString("SellerUsername");
+    [HttpGet]
+    [Route("/seller/portal-api/{sellerID?}")]
+    public IActionResult PortalAPI(int sellerID = 0) {
+        List<SellerInfo> sellerInfo = _sellerResponsitory.getSellerInfoBySellerID(sellerID).ToList();
         SellerViewModel model = new SellerViewModel {
-            SellerID = Convert.ToInt32(sessionSellerID),
-            SellerUsername = sessionSellerUsername
+            SellerInfo = sellerInfo
         };
         return Ok(model);
     }
@@ -568,18 +556,6 @@ public class SellerController : Controller
     [HttpGet]
     [Route("/seller/change")]
     public IActionResult Change() {
-        // Lấy Cookies trên trình duyệt
-        var sellerID = Request.Cookies["SellerID"];
-        if (sellerID != null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("SellerID", Convert.ToInt32(sellerID));
-        }
-        var sessionSellerID = _accessor?.HttpContext?.Session.GetInt32("SellerID");
-        if (sessionSellerID == null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("SellerID", 0);
-        }
-        System.Console.WriteLine("sessionSellerID: " + sellerID);
         return View();
     }
 

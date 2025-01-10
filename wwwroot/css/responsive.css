@@ -115,8 +115,18 @@
     }
 
     .header {
-        background-image: linear-gradient(#fff, #fff);
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .header__mobile-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header__mobile-left {
+        display: flex;
+        align-items: center;
     }
 
     .header__cart-list--no-cart {
@@ -170,10 +180,14 @@
         display: block;
     }
 
-    .header__mobile-menu-icon,
     .header__mobile-more-icon {
         font-size: 2.4rem;
         color: var(--primary-color);
+    }
+
+    .header__mobile-menu-icon  {
+        font-size: 30px;
+        color: var(--white-color);
     }
 
     .app__container {
@@ -181,7 +195,7 @@
     }
 
     .app__container {
-        margin-top: calc(20px + var(--header-height));
+        margin-top: calc(80px + var(--header-height));
     }
 
     .banner {
@@ -492,14 +506,12 @@
 
     .header-with-search {
         justify-content: space-between;
-        margin: 0;
+        margin: 16px 0 0 0;
     }
 
     .header__search-input-wrap {
         display: flex;
-        padding-left: 10px;
         align-items: center;
-        background-color: #f3f3f3;
         border-radius: 2px;
     }
     
@@ -510,11 +522,14 @@
 
     .header__search-input {
         padding-left: 10px;
-        background-color: #f3f3f3;
     }
 
     .header__search-input::placeholder {
         color: var(--primary-color);
+    }
+
+    .header__search-btn {
+        height: 38px;
     }
 
     .header__cart,
@@ -538,13 +553,9 @@
     .header__search-history {
         position: fixed;
         width: 100%;
-        top: calc(var(--header-height) + var(--header-sort-bar-height));
+        top: calc(22px + var(--header-height) + var(--header-sort-bar-height));
         left: 0;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .header__mobile-user {
-        display: block;
     }
 
     .header__mobile-user-link {
@@ -553,13 +564,13 @@
     }
 
     .header__mobile-user-icon {
-        font-size: 2.4rem;
-        color: var(--primary-color);
+        font-size: 30px;
+        color: var(--white-color);
         margin-top: 6px;
     }
 
     .header__cart-icon {
-        color: var(--primary-color);
+        color: var(--white-color);
     }
 
     .header__cart-btn {

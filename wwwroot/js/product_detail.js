@@ -380,7 +380,7 @@ function loadDetailInfo(data) {
                                 <div class="detail__shop-right">
                                     <div class="detail__shop-item">
                                         <div class="detail__shop-item-name">Đánh giá</div>
-                                        <div class="detail__shop-item-numb">25,9k</div>
+                                        <div class="detail__shop-item-numb">${data.reviewers.length}</div>
                                     </div>
                                     <div class="detail__shop-item">
                                         <div class="detail__shop-item-name">Tỉ lệ phản hồi</div>
@@ -392,7 +392,7 @@ function loadDetailInfo(data) {
                                     </div>
                                     <div class="detail__shop-item">
                                         <div class="detail__shop-item-name">Sản phẩm</div>
-                                        <div class="detail__shop-item-numb">142</div>
+                                        <div class="detail__shop-item-numb">${data.products.length}</div>
                                     </div>
                                     <div class="detail__shop-item">
                                         <div class="detail__shop-item-name hide-on-mobile">Thời gian phản hồi</div>
@@ -722,17 +722,68 @@ function setDataReviewer(data) {
             <div class="rate">
                 <div class="rate__header">
                     <div class="rate__title">
-                        <div class="rate__title-point">4.8</div>
+                        <div class="rate__title-point">${data.reviewers.reduce((total, a) => total + a.iStars, 0) / data.reviewers.length}</div>
                         <div class="rate__title-total">/5</div>
                     </div>
-                    <div class="rate__stars">
-                        <i class="uis uis-star"></i>
-                        <i class="uis uis-star"></i>
-                        <i class="uis uis-star"></i>
-                        <i class="uis uis-star"></i>
-                        <i class="uis uis-star-half-alt"></i>
+                    <div class="rate__stars">`;
+                    if (data.reviewers.reduce((total, a) => total + a.iStars, 0) / data.reviewers.length <= 1) {
+                        htmlReviewer += 
+                        `
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        `;
+                    } else if (data.reviewers.reduce((total, a) => total + a.iStars, 0) / data.reviewers.length <= 2) {
+                        htmlReviewer += 
+                        `
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        `;
+                    } else if (data.reviewers.reduce((total, a) => total + a.iStars, 0) / data.reviewers.length <= 3) {
+                        htmlReviewer += 
+                        `
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        `;
+                    } else if (data.reviewers.reduce((total, a) => total + a.iStars, 0) / data.reviewers.length <= 4 || data.reviewers.reduce((total, a) => total + a.iStars, 0) / data.reviewers.length < 4.5) {
+                        htmlReviewer += 
+                        `
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        `;
+                    } else if (data.reviewers.reduce((total, a) => total + a.iStars, 0) / data.reviewers.length <= 5) {
+                        htmlReviewer += 
+                        `
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        <i class="uis uis-star rate__star-icon rate__star-icon--gold"></i>
+                        `;
+                    } else {
+                        htmlReviewer += 
+                        `
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star rate__star-icon "></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star rate__star-icon"></i>
+                        <i class="uis uis-star-half-alt rate__star-icon"></i>
+                        `;
+                    }
+                    htmlReviewer += `
                     </div>
-                    <div class="rate__evaluate">300 đánh giá</div>
+                    <div class="rate__evaluate">${data.reviewers.length} đánh giá</div>
                 </div>
                 <div class="rate__body">
                     <div class="rate__star">
@@ -745,9 +796,9 @@ function setDataReviewer(data) {
                         </div>
                         <div class="rate__num-5-percent">
                             <div class="rate__bar">
-                                <span class="rate__percent-box"></span>
+                                <span class="rate__percent-box" style="width: ${(data.reviewers.filter(a => a.iStars == 5).length / data.reviewers.length) * 100}px"></span>
                             </div>
-                            <div class="rate__percent-count">226</div>
+                            <div class="rate__percent-count">${data.reviewers.filter(a => a.iStars == 5).length}</div>
                         </div>
                     </div>
                     <div class="rate__star">
@@ -760,9 +811,9 @@ function setDataReviewer(data) {
                         </div>
                         <div class="rate__num-4-percent">
                             <div class="rate__bar">
-                                <span class="rate__percent-box"></span>
+                                <span class="rate__percent-box" style="width: ${(data.reviewers.filter(a => a.iStars == 4).length / data.reviewers.length) * 100}px"></span>
                             </div>
-                            <div class="rate__percent-count">226</div>
+                            <div class="rate__percent-count">${data.reviewers.filter(a => a.iStars == 4).length}</div>
                         </div>
                     </div>
                     <div class="rate__star">
@@ -775,9 +826,9 @@ function setDataReviewer(data) {
                         </div>
                         <div class="rate__num-3-percent">
                             <div class="rate__bar">
-                                <span class="rate__percent-box"></span>
+                                <span class="rate__percent-box" style="width: ${(data.reviewers.filter(a => a.iStars == 3).length / data.reviewers.length) * 100}px"></span>
                             </div>
-                            <div class="rate__percent-count">226</div>
+                            <div class="rate__percent-count">${data.reviewers.filter(a => a.iStars == 4).length}</div>
                         </div>
                     </div>
                     <div class="rate__star">
@@ -790,9 +841,9 @@ function setDataReviewer(data) {
                         </div>
                         <div class="rate__num-2-percent">
                             <div class="rate__bar">
-                                <span class="rate__percent-box"></span>
+                                <span class="rate__percent-box" style="width: ${(data.reviewers.filter(a => a.iStars == 2).length / data.reviewers.length) * 100}px"></span>
                             </div>
-                            <div class="rate__percent-count">226</div>
+                            <div class="rate__percent-count">${data.reviewers.filter(a => a.iStars == 2).length}</div>
                         </div>
                     </div>
                     <div class="rate__star">
@@ -805,9 +856,9 @@ function setDataReviewer(data) {
                         </div>
                         <div class="rate__num-1-percent">
                             <div class="rate__bar">
-                                <span class="rate__percent-box"></span>
+                                <span class="rate__percent-box" style="width: ${(data.reviewers.filter(a => a.iStars == 1).length / data.reviewers.length) * 100}px"></span>
                             </div>
-                            <div class="rate__percent-count">226</div>
+                            <div class="rate__percent-count">${data.reviewers.filter(a => a.iStars == 1).length}</div>
                         </div>
                     </div>
                 </div>

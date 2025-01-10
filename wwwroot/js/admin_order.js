@@ -1,6 +1,6 @@
 function getAPIAdminOrder() {
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/admin/order', true);
+    xhr.open('get', '/admin/order-data?orderID=' + getQueryStr() + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -214,7 +214,7 @@ function setConfirmOrderBtn(data) {
 // Confirm Order
 function confirmOrder() {
     var xhr = new XMLHttpRequest();
-    xhr.open('get', '/admin/confirm-order', true);
+    xhr.open('put', '/admin/confirm-order?orderID=' + getQueryStr() + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const result = JSON.parse(xhr.responseText);
@@ -230,5 +230,13 @@ function confirmOrder() {
         }
     };
     xhr.send(null);
+}
+
+function getQueryStr() {
+    const url = window.location.href;
+    const params = new URL(url).searchParams;
+    const entries = new URLSearchParams(params).values();
+    const array = Array.from(entries)
+    return array[0];
 }
 

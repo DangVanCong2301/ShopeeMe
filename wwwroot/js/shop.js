@@ -101,7 +101,7 @@ function getShopInfo(data) {
                 <div class="shop__mobile-info-avatar">
                     <div class="shop__mobile-info-avatar-img" style="background-image: url(/img/${data.stores[0].sImageAvatar});"></div>
                     <div class="shop__mobile-info-avatar-favorite">
-                        <span>Yêu thích</span>
+                        <p>Yêu thích</p>
                     </div>
                 </div>
                 <div class="shop__mobile-info-shop">

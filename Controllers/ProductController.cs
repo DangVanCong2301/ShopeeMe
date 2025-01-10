@@ -93,10 +93,12 @@ public class ProductController : Controller {
         IEnumerable<Favorite> favorites = _productResponsitory.getFavoritesByProductID(id);
         IEnumerable<Favorite> favorite = _productResponsitory.getFavoritesByProductIDAndUserID(id, userID);
         List<Store> store = _shopResponsitory.getShopByProductID(id).ToList();
+        IEnumerable<Product> products = _shopResponsitory.getProductsByShopID(store[0].PK_iStoreID);
         IEnumerable<UserInfo> userInfo = _userResponsitory.checkUserInfoByUserID(userID);
         IEnumerable<Reviewer> reviewers = _productResponsitory.getReviewerByProductID(id);
         ProductViewModel model = new ProductViewModel {
             Product = product,
+            Products = products,
             Favorites = favorites,
             Favorite = favorite,
             Store = store,
