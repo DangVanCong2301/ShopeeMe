@@ -26,13 +26,12 @@ getCartInfo();
 
 function getCartItemsDestop(data) {
     if (data.cartCount == 0) {
-        let noCartHtml = `
-        <div class="cart__no">
+        let noCartHtml = 
+        `<div class="cart__no">
             <div style="background-image: url(/img/no-cart.png);" class="cart__no-img"></div>
             <div class="cart__no-sub">Giỏ hàng của bạn còn trống</div>
             <a href="/" class="btn btn--primary">Mua ngay</a>
-        </div>
-        `;
+        </div>`;
         document.querySelector(".cart__destop").innerHTML = noCartHtml;
     } else {
         let haveCartHtml = "";
@@ -100,96 +99,96 @@ function getCartItemsDestop(data) {
         </div>
         `;
         document.querySelector(".cart__destop").innerHTML = haveCartHtml;
-    }
-    let html = "";
-    html += data.cartDetails.map((obj, index) => `
-    <div class="cart__body" id="product__${obj.pK_iProductID}">
-        <div class="cart__body-header">
-            <div class="cart__input">
-                <input type="checkbox" class="cart__checkout-input" name="" id="">
-            </div>
-            <span>Yêu thích</span>
-            <div class="cart__body-header-text">${obj.sStoreName}</div>
-            <a href="#" class="cart__body-header-chat">
-                <i class="uil uil-chat cart__body-header-chat-icon"></i>
-            </a>
-        </div>
-        <div class="cart__body-product">
-            <div class="cart__input">
-                <input type="checkbox" class="cart__checkout-input" onchange="addToCheckout(${obj.pK_iProductID}, ${obj.pK_iStoreID}, event)" name="" id="">
-            </div>
-            <div class="cart__body-product-info">
-                <div class="cart__body-product-img" style="background-image: url(/img/${obj.sImageUrl});">
-                    
+        let html = "";
+        html += data.cartDetails.map((obj, index) => `
+        <div class="cart__body" id="product__${obj.pK_iProductID}">
+            <div class="cart__body-header">
+                <div class="cart__input">
+                    <input type="checkbox" class="cart__checkout-input" name="" id="">
                 </div>
-                <div class="cart__body-prduct-desc">
-                    <div class="cart__body-product-name">
-                        ${obj.sProductName}
-                        <div class="cart__body-product-name-progress">
-                            <div class="cart__body-product-name-progress-line"></div>
-                            <div class="cart__body-product-name-progress-line"></div>
+                <span>Yêu thích</span>
+                <div class="cart__body-header-text">${obj.sStoreName}</div>
+                <a href="#" class="cart__body-header-chat">
+                    <i class="uil uil-chat cart__body-header-chat-icon"></i>
+                </a>
+            </div>
+            <div class="cart__body-product">
+                <div class="cart__input">
+                    <input type="checkbox" class="cart__checkout-input" onchange="addToCheckout(${obj.pK_iProductID}, ${obj.pK_iStoreID}, event)" name="" id="">
+                </div>
+                <div class="cart__body-product-info">
+                    <div class="cart__body-product-img" style="background-image: url(/img/${obj.sImageUrl});">
+                        
+                    </div>
+                    <div class="cart__body-prduct-desc">
+                        <div class="cart__body-product-name">
+                            ${obj.sProductName}
+                            <div class="cart__body-product-name-progress">
+                                <div class="cart__body-product-name-progress-line"></div>
+                                <div class="cart__body-product-name-progress-line"></div>
+                            </div>
+                        </div>
+                        <img src="/img/voucher.png" class="cart__body-product-voucher" alt="">
+                    </div>
+                </div>
+                <div class="cart__body-product-type">Phân loại hàng: Bạc</div>
+                <div class="cart__body-product-cost">
+                    <div class="cart__body-product-cost-old">189.000 đ</div>
+                    <div class="cart__body-product-cost-new">${money_2(obj.dUnitPrice)}</div>
+                </div>
+                <div class="cart__body-product-quantity">
+                    <div class="cart__count-btns">
+                        <button type="button" class="cart__btn-add" onclick="tru(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">-</button>
+                        <input name="qnt" type="text" id="qnt" value="${obj.iQuantity}" class="cart__count-input" />
+                        <button type="button" class="cart__btn-sub" onclick="cong(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">+</button>
+                    </div>
+                </div>
+                <div class="cart__body-product-money">${money_2(obj.dMoney)}</div>
+                <div class="cart__body-product-operation">
+                    <div class='btn-tools'>
+                        <a class='btn-tool btn-tool__del' href='javascript:deleteProduct(${obj.pK_iProductID})' title='Xoá sản phẩm'><i class='uil uil-trash'></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="cart__body-discount">
+                <i class="uil uil-store cart__body-discount-icon"></i>
+                <div class="cart__body-discount-sub">Mua thêm 91.000đ để được mức giảm 3kđ</div>
+                <a href="#" class="cart__body-discount-link">Thêm mã giảm giá của Shop</a>
+            </div>
+            <div class="cart__body-transport">
+                <img src="./img/free_ship.png" alt="" class="cart__body-transport-img">
+                <div class="cart__body-transport-sub">Giảm 300.000đ phí vận chuyển đơn tối thiểu 0đ</div>
+                <a href="#" class="cart__body-transport-more">Tìm hiểu thêm</a>
+            </div>
+            <div class="cart__body-loading">
+                <div class="cart__body-header-loading">
+                    <div class="cart__body-header-input-loading"></div>
+                    <div class="cart__body-header-sub-loading"></div>
+                </div>
+                <div class="cart__body-product-loading">
+                    <div class="cart__body-header-input-loading"></div>
+                    <div class="cart__body-product-info-loading">
+                        <div class="cart__body-product-img-loading">
+                            <i class="uil uil-shopping-bag cart__body-product-img-icon-loading"></i>
+                        </div>
+                        <div class="cart__body-product-desc-loading">
+                            <div class="cart__body-product-desc-line-loading"></div>
+                            <div class="cart__body-product-desc-line-loading"></div>
                         </div>
                     </div>
-                    <img src="/img/voucher.png" class="cart__body-product-voucher" alt="">
                 </div>
-            </div>
-            <div class="cart__body-product-type">Phân loại hàng: Bạc</div>
-            <div class="cart__body-product-cost">
-                <div class="cart__body-product-cost-old">189.000 đ</div>
-                <div class="cart__body-product-cost-new">${money_2(obj.dUnitPrice)}</div>
-            </div>
-            <div class="cart__body-product-quantity">
-                <div class="cart__count-btns">
-                    <button type="button" class="cart__btn-add" onclick="tru(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">-</button>
-                    <input name="qnt" type="text" id="qnt" value="${obj.iQuantity}" class="cart__count-input" />
-                    <button type="button" class="cart__btn-sub" onclick="cong(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">+</button>
+                <div class="cart__body-discount-loading">
+                    <div class="cart__body-discount-line-loading"></div>
                 </div>
-            </div>
-            <div class="cart__body-product-money">${money_2(obj.dMoney)}</div>
-            <div class="cart__body-product-operation">
-                <div class='btn-tools'>
-                    <a class='btn-tool btn-tool__del' href='javascript:deleteProduct(${obj.pK_iProductID})' title='Xoá sản phẩm'><i class='uil uil-trash'></i></a>
+                <div class="cart__body-transport-loading">
+                    <div class="cart__body-transport-line-loading"></div>
                 </div>
-            </div>
+            </div>              
         </div>
-        <div class="cart__body-discount">
-            <i class="uil uil-store cart__body-discount-icon"></i>
-            <div class="cart__body-discount-sub">Mua thêm 91.000đ để được mức giảm 3kđ</div>
-            <a href="#" class="cart__body-discount-link">Thêm mã giảm giá của Shop</a>
-        </div>
-        <div class="cart__body-transport">
-            <img src="./img/free_ship.png" alt="" class="cart__body-transport-img">
-            <div class="cart__body-transport-sub">Giảm 300.000đ phí vận chuyển đơn tối thiểu 0đ</div>
-            <a href="#" class="cart__body-transport-more">Tìm hiểu thêm</a>
-        </div>
-        <div class="cart__body-loading">
-            <div class="cart__body-header-loading">
-                <div class="cart__body-header-input-loading"></div>
-                <div class="cart__body-header-sub-loading"></div>
-            </div>
-            <div class="cart__body-product-loading">
-                <div class="cart__body-header-input-loading"></div>
-                <div class="cart__body-product-info-loading">
-                    <div class="cart__body-product-img-loading">
-                        <i class="uil uil-shopping-bag cart__body-product-img-icon-loading"></i>
-                    </div>
-                    <div class="cart__body-product-desc-loading">
-                        <div class="cart__body-product-desc-line-loading"></div>
-                        <div class="cart__body-product-desc-line-loading"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="cart__body-discount-loading">
-                <div class="cart__body-discount-line-loading"></div>
-            </div>
-            <div class="cart__body-transport-loading">
-                <div class="cart__body-transport-line-loading"></div>
-            </div>
-        </div>              
-    </div>
-    `).join('');
-    document.querySelector(".cart__product-list").innerHTML = html;
-    loadingCartItems();
+        `).join('');
+        document.querySelector(".cart__product-list").innerHTML = html;
+        loadingCartItems();
+    }
 }
 
 var checkout = new Array();
@@ -229,7 +228,49 @@ function loadingCartItems() {
     }, 1000);
 }
 
+function loadingCartItemsMobile() {
+    const loadingCartItemMobile = document.querySelectorAll(".cart__mobile-item-loading");
+
+    setTimeout(() => {
+        for (let i = 0; i < loadingCartItemMobile.length; i++) {
+            loadingCartItemMobile[i].style.display = 'none';
+        }
+    }, 1000);
+}
+
 function getCartItemsMobile(data) {
+    if (data.cartCount != 0) {
+        let htmlCheckoutMobile = 
+                    `<div class="cart__mobile-checkout-container">
+                        <div class="cart__mobile-checkout-voucher">
+                            <div class="cart__mobile-checkout-voucher-title">
+                                <i class="uil uil-ellipsis-v cart__mobile-checkout-voucher-icon-more"></i>
+                                <span>Thêm Shop Voucher</span>
+                            </div>
+                            <div class="cart__mobile-checkout-voucher-code">
+                                <span>Chọn hoặc nhập mã</span>
+                                <i class="uil uil-angle-right-b cart__mobile-checkout-voucher-icon-arrow"></i>
+                            </div>
+                        </div>
+                        <div class="cart__mobile-checkout-money">
+                            <div class="cart__mobile-checkout-money-left">
+                                <div class="cart__mobile-item-box">
+                                    <input type="checkbox" class="cart__mobile-item-input" name="" id="">
+                                </div>
+                                <span>Chọn tất cả</span>
+                            </div>
+                            <div class="cart__mobile-checkout-money-right">
+                                <div class="cart__mobile-checkout-money-text">
+                                    Tổng số tiền: <span>0đ</span>
+                                </div>
+                                <div class="cart__mobile-checkout-money-btn">Thanh toán</div>
+                                <div class="cart__mobile-checkout-money-btn-delete" onclick="openDeleteAllModal()">Xoá
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+        document.querySelector(".cart__mobile-checkout").innerHTML = htmlCheckoutMobile;
+    }
     let htmlCartItems = "";
     htmlCartItems += data.cartDetails.map((obj, index) => 
     `
@@ -424,6 +465,7 @@ function getCartItemsMobile(data) {
                     </div>
     `).join('');
     document.querySelector(".cart__mobile-list").innerHTML = htmlCartItems;
+    loadingCartItemsMobile();
     const headerFix = document.querySelectorAll(".cart__mobile-item-header-fix");
     headerFix.forEach(e => {
         e.addEventListener('click', () => {

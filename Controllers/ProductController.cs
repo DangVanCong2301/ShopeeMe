@@ -42,6 +42,7 @@ public class ProductController : Controller {
         IEnumerable<Product> products;
         IEnumerable<Product> productsByCategoryID;
         List<User> user = _userResponsitory.checkUserLogin(userID).ToList();
+        IEnumerable<UserInfo> userInfo = _userResponsitory.getUserInfoByID(userID);
         if (user.Count() == 0 && categoryID == 0) {
             products = _productResponsitory.getProductsByParentCategoryID(industryID);
         } else if (user.Count() != 0 && user[0].FK_iRoleID == 2 && categoryID == 0) {
@@ -72,6 +73,7 @@ public class ProductController : Controller {
             CurrentPage = currentPage,
             CartCount = cartDetails.Count(),
             User = user,
+            UserInfo = userInfo,
             UserID = userID
         };
         return Ok(model);

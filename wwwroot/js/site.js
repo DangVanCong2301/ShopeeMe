@@ -62,7 +62,17 @@ function setHeaderMobile(data) {
                                             <span class="header__mobile-menu-item-name">Danh mục</span>
                                             <i class="uil uil-angle-down header__mobile-menu-item-dropdown-icon"></i>
                                         </a>
-                                    </div>
+                                    </div>`;
+                                    if (data.userID != 0) {
+                                        htmlNavbar += 
+                                    `<div class="header__mobile-menu-logout">
+                                        <a href="javascript:logoutUserAccount()" class="header__mobile-menu-logout-link">
+                                            <span class="header__mobile-menu-logout-name">Đăng xuất</span>
+                                            <i class="uil uil-signout header__mobile-menu-logout-icon"></i>
+                                        </a>
+                                    </div>`;
+                                    }
+                                    htmlNavbar += `
                                 </div>
                             </div>
                             <div class="header__mobile-menu-container-shop">
@@ -128,12 +138,21 @@ function setHeaderMobile(data) {
                             <img class="header__logo-img" src="/img/sme_logo_white.png" alt="SMe Logo">
                         </a>
                     </div>
-                    <div class="header__mobile-right">
-                        <div class="header__mobile-user-symbol">
-                            <a href="login.html" class="header__mobile-user-link">  
+                    <div class="header__mobile-right">`;
+                    if (data.userID == 0) {
+                        htmlNavbar += 
+                        `<div class="header__mobile-user-symbol">
+                            <a href="/user/login" class="header__mobile-user-link">  
                                 <i class="uil uil-user header__mobile-user-icon"></i>
                             </a>
-                        </div>
+                        </div>`;
+                    } else {
+                        htmlNavbar += 
+                        `<div class="header__mobile-user-avatar">
+                            <div class="header__mobile-user-avatar-img" style="background-image: url(/img/${data.userInfo[0].sImageProfile});"></div>
+                        </div>`;
+                    }
+                    htmlNavbar += `
                     </div>
                 </div>`;
     document.querySelector(".header__mobile").innerHTML = htmlNavbar;
@@ -434,13 +453,11 @@ function getCartsItem(data) {
                     </a>
                 `).join('');
         htmlCartDetail +=
-            `
-                    </ul>
+                    `</ul>
                     <a href="/cart" class="header__cart-btn btn--primary">
                         Xem giỏ hàng
                     </a>
-                </div>
-                `;
+                </div>`;
     }
     document.querySelector(".header__cart-container").innerHTML = htmlCartDetail;
     document.querySelector(".header__cart-notice").innerText = data.cartCount;
@@ -524,8 +541,10 @@ searchInput.onclick = () => {
 function setChatBtn(data) {
     if (data.userID == 0) {
         document.querySelector(".chat__btn").classList.add("hide-on-destop");
+        document.querySelector(".chat__btn").classList.add("hide-on-mobile");
     } else {
         document.querySelector(".chat__btn").classList.remove("hide-on-destop");
+        document.querySelector(".chat__btn").classList.remove("hide-on-mobile");
     }
 }
 

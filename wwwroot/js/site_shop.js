@@ -19,6 +19,8 @@ function getAPISiteMall() {
             
             console.log(data);
 
+            setHeaderMobile(data);
+
             setAccount(data);
 
             setCartItems(data);
@@ -28,6 +30,111 @@ function getAPISiteMall() {
     xhr.send(null);
 }
 getAPISiteMall();
+
+function setHeaderMobile(data) {
+    let htmlHeaderMobile = "";
+    htmlHeaderMobile += 
+                `<div class="header__mobile-container">
+                    <div class="header__mobile-left">
+                        <div class="header__mobile-menu" onclick="showNavMenu()">
+                            <i class="uil uil-bars header__mobile-menu-icon"></i>
+                        </div>
+                        <div class="header__mobile-menu-nav hide-on-destop">
+                            <div class="header__mobile-menu-container">
+                                <div class="header__mobile-menu-close" onclick="closeNavMenu()">
+                                    <i class="uil uil-multiply header__mobile-menu-close-icon"></i>
+                                </div>
+                                <div class="header__mobile-menu-list">
+                                    <div class="header__mobile-menu-item">
+                                        <div class="header__mobile-menu-item-link header__mobile-menu-item-shop">
+                                            <span class="header__mobile-menu-item-name">Thông tin Shop</span>
+                                        </div>
+                                    </div>
+                                    <div class="header__mobile-menu-item">
+                                        <div class="header__mobile-menu-item-link header__mobile-menu-item-product">
+                                            <span class="header__mobile-menu-item-name">Sản phẩm</span>
+                                        </div>
+                                    </div>
+                                    <div class="header__mobile-menu-item">
+                                        <a href="javascript:openCategoryMenu()" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-item-name">Danh mục</span>
+                                            <i class="uil uil-angle-down header__mobile-menu-item-dropdown-icon"></i>
+                                        </a>
+                                    </div>`;
+                                    if (data.userID != 0) {
+                                        htmlHeaderMobile += 
+                                    `<div class="header__mobile-menu-logout">
+                                        <a href="javascript:logoutUserAccount()" class="header__mobile-menu-logout-link">
+                                            <span class="header__mobile-menu-logout-name">Đăng xuất</span>
+                                            <i class="uil uil-signout header__mobile-menu-logout-icon"></i>
+                                        </a>
+                                    </div>`;
+                                    }
+                                    htmlHeaderMobile += `
+                                </div>
+                            </div>
+                            <div class="header__mobile-menu-container-category">
+                                <div class="header__mobile-menu-close" onclick="closeNavMenu()">
+                                    <i class="uil uil-multiply header__mobile-menu-close-icon"></i>
+                                </div>
+                                <div class="header__mobile-menu-list">
+                                    <div class="header__mobile-menu-back">
+                                        <a href="javascript:showNavMenu()" class="header__mobile-menu-back-link">
+                                            <div class="header__mobile-menu-back-icon-symb">
+                                                <i class="header__mobile-back-item-icon uil uil-arrow-left"></i>
+                                            </div>
+                                            <span class="header__mobile-menu-back-name">Quay lại</span>
+                                        </a>
+                                    </div>
+                                    <div class="header__mobile-menu-back">
+                                        <span class="header__mobile-menu-back-all">Xem tất cả thể loại</span>
+                                    </div>`;
+                                    data.categories.forEach(element => {
+                                        htmlHeaderMobile += 
+                                    `<div class="header__mobile-menu-item">
+                                        <a href="javascript:filterProductByCategoryID(${element.pK_iCategoryID})" class="header__mobile-menu-item-link">
+                                            <span class="header__mobile-menu-tab-name">${element.sCategoryName}</span>
+                                        </a>
+                                    </div>`;
+                                    });
+                                    htmlHeaderMobile += `
+                                </div>
+                            </div>
+                            <div class="header__mobile-menu-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="header__mobile-logo">
+                        <a href="/" class="header__logo-link">
+                            <img class="header__logo-img" src="/img/sme_logo_white.png" alt="SMe Logo">
+                        </a>
+                    </div>
+                    <div class="header__mobile-right">`;
+                    if (data.userID == 0) {
+                        htmlHeaderMobile += 
+                        `<div class="header__mobile-user-symbol">
+                            <a href="/user/login" class="header__mobile-user-link">  
+                                <i class="uil uil-user header__mobile-user-icon"></i>
+                            </a>
+                        </div>`;
+                    } else {
+                        htmlHeaderMobile += 
+                        `<div class="header__mobile-user-avatar">
+                            <div class="header__mobile-user-avatar-img" style="background-image: url(/img/${data.userInfo[0].sImageProfile});"></div>
+                        </div>`;
+                    }
+                        htmlHeaderMobile += `
+                    </div>
+                </div>`;
+    document.querySelector(".header__mobile").innerHTML = htmlHeaderMobile;
+
+    document.querySelector(".header__mobile-menu-item-shop").addEventListener('click', () => {
+        addShopMobileShop(0);
+    });
+
+    document.querySelector(".header__mobile-menu-item-product").addEventListener('click', () => {
+        addShopMobileProduct(1);
+    });
+}
 
 function setAccount(data) {
     let htmlAccount = "";
@@ -257,6 +364,24 @@ function noticeIncompleteFunc() {
                     </div>
                 </div>
             `;
+}
+
+// Show Navbar Menu
+function showNavMenu() {
+    document.querySelector(".header__mobile-menu-overlay").classList.add("open");
+    document.querySelector(".header__mobile-menu-container").classList.add("open");
+    document.querySelector(".header__mobile-menu-container-category").classList.remove("open");
+}
+
+function closeNavMenu() {
+    document.querySelector(".header__mobile-menu-overlay").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container-category").classList.remove("open");
+}
+
+function openCategoryMenu() {
+    document.querySelector(".header__mobile-menu-container").classList.remove("open");
+    document.querySelector(".header__mobile-menu-container-category").classList.add("open");
 }
 
 // Load Product

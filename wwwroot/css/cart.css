@@ -1021,6 +1021,10 @@
         --normal-font-size: 16px;
     }
 
+    .app__container {
+        margin-top: calc(20px + var(--header-height));
+    }
+
     .header__cart-mobile {
         background-color: var(--white-color);
         padding-left: 12px;
@@ -1676,7 +1680,7 @@
         opacity: .9;
     }
 
-    .cart__mobile-checkout {
+    .cart__mobile-checkout-container {
         position: fixed;
         bottom: 0;
         right: 0;

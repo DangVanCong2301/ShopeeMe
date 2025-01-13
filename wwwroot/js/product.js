@@ -101,7 +101,17 @@ function setHeaderMobileProduct(data) {
                                             <span class="header__mobile-menu-item-name">Thể loại</span>
                                             <i class="uil uil-angle-down header__mobile-menu-item-dropdown-icon"></i>
                                         </a>
-                                    </div>
+                                    </div>`;
+                                    if (data.userID != 0) {
+                                        htmlHeaderMobile += 
+                                    `<div class="header__mobile-menu-logout">
+                                        <a href="javascript:logoutUserAccount()" class="header__mobile-menu-logout-link">
+                                            <span class="header__mobile-menu-logout-name">Đăng xuất</span>
+                                            <i class="uil uil-signout header__mobile-menu-logout-icon"></i>
+                                        </a>
+                                    </div>`;
+                                    }
+                                    htmlHeaderMobile += `
                                 </div>
                             </div>
                             <div class="header__mobile-product-menu-container-shop">
@@ -165,14 +175,21 @@ function setHeaderMobileProduct(data) {
                         <a href="/" class="header__logo-link">
                             <img class="header__logo-img" src="/img/sme_logo_white.png" alt="SMe Logo">
                         </a>
-                    </div>
-                    <div class="header__mobile-right">
-                        <div class="header__mobile-user-symbol">
-                            <a href="login.html" class="header__mobile-user-link">  
+                    </div>`;
+                    if (data.userID == 0) {
+                        htmlHeaderMobile += 
+                        `<div class="header__mobile-user-symbol">
+                            <a href="/user/login" class="header__mobile-user-link">  
                                 <i class="uil uil-user header__mobile-user-icon"></i>
                             </a>
-                        </div>
-                    </div>
+                        </div>`;
+                    } else {
+                        htmlHeaderMobile += 
+                        `<div class="header__mobile-user-avatar">
+                            <div class="header__mobile-user-avatar-img" style="background-image: url(/img/${data.userInfo[0].sImageProfile});"></div>
+                        </div>`;
+                    }
+                    htmlHeaderMobile += `
                 </div>     
     `;
     document.querySelector(".header__mobile-product").innerHTML = htmlHeaderMobile;

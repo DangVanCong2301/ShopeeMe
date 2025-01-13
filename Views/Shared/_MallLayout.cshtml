@@ -17,6 +17,9 @@
 <body>
     <div class="app">
         <header class="header hide-on-table">
+            <div class="header__mobile hide-on-destop hide-on-product hide-on-detail">
+                
+            </div>
             <div class="grid wide">
                 <nav class="header__navbar hide-on-mobile-table">
                     <div class="header__navbar-container">
@@ -127,14 +130,16 @@
                 <!--Header with search-->
                 <div class="header-with-search">
                     <div class="header__logo hide-on-mobile">
-                        <a href="/" class="header__logo-link">
-                            <img class="header__logo-img" src="~/img/sme_second_icon_white.png" alt="">
-                        </a>
-                        <div class="header__logo-text">SMe Mall</div>
+                        <div class="header__logo-container">
+                            <a href="/" class="header__logo-link">
+                                <img class="header__logo-img" src="~/img/sme_second_icon_white.png" alt="">
+                            </a>
+                            <div class="header__logo-text">SMe Mall</div>
+                        </div>
                     </div>
 
-                    <div class="header__mobile-back hide-on-destop">
-                        <a href="index.html" class="header__mobile-back-link">
+                    <div class="header__mobile-back hide-on-destop hide-on-shop">
+                        <a href="javascript:backHistory()" class="header__mobile-back-link">
                             <i class="uil uil-arrow-left header__mobile-back-icon"></i>
                         </a>
                     </div>
@@ -171,7 +176,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <button class="header__search-btn hide-on-mobile" onclick="searchProducts()">
+                        <button class="header__search-btn" onclick="searchProducts()">
                             <i class="header__search-btn-icon uil uil-search"></i>
                         </button>
                     </div>
@@ -189,7 +194,7 @@
                         </div>
                     </div>
 
-                    <div class="header__mobile-more hide-on-destop">
+                    <div class="header__mobile-more hide-on-destop hide-on-shop">
                         <a href="javascript:openModalOrderMe()" class="header__mobile-more-link">
                             <i class="uil uil-ellipsis-h header__mobile-more-icon"></i>
                         </a>

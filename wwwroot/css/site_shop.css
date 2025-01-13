@@ -408,7 +408,6 @@
     height: var(--header-with-search-height);
     display: flex;
     align-items: center;
-    margin: 0 8px;
 }
 
 .header__mobile-search {
@@ -421,7 +420,7 @@
     color: var(--white-color);
 }
 
-.header__logo {
+.header__logo-container {
     display: flex;
     align-items: center;
     column-gap: 40px;

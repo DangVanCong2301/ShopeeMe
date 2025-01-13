@@ -308,7 +308,7 @@ function getShopTab(data) {
             htmlCategories1 += "             <a href='/product/detail/" + data.products[i].pK_iProductID + "' class='shop__mobile-shop-category-product-item'>";
             htmlCategories1 += "                 <div class='shop__mobile-shop-category-product-item-img' style='background-image: url(/img/" + data.products[i].sImageUrl + ");'></div>";
             htmlCategories1 += "                 <div class='shop__mobile-shop-category-product-item-name'>" + data.products[i].sProductName + "</div>";
-            htmlCategories1 += "                 <div class='shop__mobile-shop-category-product-item-price'>" + data.products[i].dPrice + "đ</div>";
+            htmlCategories1 += "                 <div class='shop__mobile-shop-category-product-item-price'>" + money_2(data.products[i].dPrice) + "</div>";
             htmlCategories1 += "                 <div class='shop__mobile-shop-category-product-item-statistical'>";
             htmlCategories1 += "                     <div class='shop__mobile-shop-category-product-item-stars'>";
             htmlCategories1 += "                         <i class='uis uis-star shop__mobile-shop-category-product-item-star'></i>";
@@ -350,7 +350,7 @@ function getShopTab(data) {
                 htmlCategories2 += "             <a href='/product/detail/" + data.products[i].pK_iProductID + "' class='shop__mobile-shop-category-product-item'>";
                 htmlCategories2 += "                 <div class='shop__mobile-shop-category-product-item-img' style='background-image: url(/img/" + data.products[i].sImageUrl + ");'></div>";
                 htmlCategories2 += "                 <div class='shop__mobile-shop-category-product-item-name'>" + data.products[i].sProductName + "</div>";
-                htmlCategories2 += "                 <div class='shop__mobile-shop-category-product-item-price'>" + data.products[i].dPrice + "đ</div>";
+                htmlCategories2 += "                 <div class='shop__mobile-shop-category-product-item-price'>" + money_2(data.products[i].dPrice) + "</div>";
                 htmlCategories2 += "                 <div class='shop__mobile-shop-category-product-item-statistical'>";
                 htmlCategories2 += "                     <div class='shop__mobile-shop-category-product-item-stars'>";
                 htmlCategories2 += "                         <i class='uis uis-star shop__mobile-shop-category-product-item-star'></i>";
@@ -394,7 +394,7 @@ function getShopTab(data) {
                 htmlCategories3 += "             <a href='/product/detail/" + data.products[i].pK_iProductID + "' class='shop__mobile-shop-category-product-item'>";
                 htmlCategories3 += "                 <div class='shop__mobile-shop-category-product-item-img' style='background-image: url(/img/" + data.products[i].sImageUrl + ");'></div>";
                 htmlCategories3 += "                 <div class='shop__mobile-shop-category-product-item-name'>" + data.products[i].sProductName + "</div>";
-                htmlCategories3 += "                 <div class='shop__mobile-shop-category-product-item-price'>" + data.products[i].dPrice + "đ</div>";
+                htmlCategories3 += "                 <div class='shop__mobile-shop-category-product-item-price'>" + money_2(data.products[i].dPrice) + "</div>";
                 htmlCategories3 += "                 <div class='shop__mobile-shop-category-product-item-statistical'>";
                 htmlCategories3 += "                     <div class='shop__mobile-shop-category-product-item-stars'>";
                 htmlCategories3 += "                         <i class='uis uis-star shop__mobile-shop-category-product-item-star'></i>";
@@ -570,6 +570,7 @@ function setCategories(data) {
 
 // Lọc sản phẩm theo mã danh mục con
 function filterProductByCategoryID(categoryID) {
+    closeNavMenu();
     let userID = getCookies("userID");
     if (userID == undefined) {
         userID = 0;
@@ -1165,6 +1166,7 @@ function showChatWindowMobile() {
 }
 
 function addShopMobileShop(i) {
+    closeNavMenu();
     shopMobileTitle[i].classList.add("active");
     shopMobileTitle[1].classList.remove("active");
     shopMobileTitle[2].classList.remove("active");
@@ -1218,6 +1220,7 @@ function loadingSuggestProducts() {
 }
 
 function addShopMobileProduct(i) {
+    closeNavMenu();
     shopMobileTitle[0].classList.remove("active");
     shopMobileTitle[i].classList.add("active");
     shopMobileTitle[2].classList.remove("active");
