@@ -28,14 +28,14 @@ public class CartResponsitory : ICartReponsitory
         return true;
     }
 
-    public bool insertCartDetail(int userID, int productID, int cartID, int quantity, double unitPrice) {
+    public bool insertCartDetail(int userID, int productID, int cartID, int quantity, double unitPrice, double discount, double money) {
         SqlParameter userIDParam = new SqlParameter("@PK_iUserID", userID);
         SqlParameter productIDParam = new SqlParameter("@PK_iProductID", productID);
         SqlParameter cartIDParam = new SqlParameter("@PK_iCartID", cartID);
         SqlParameter quantityParam = new SqlParameter("@iQuantity", quantity);
         SqlParameter unitPriceParam = new SqlParameter("@dUnitPrice", unitPrice);
-        SqlParameter discountParam = new SqlParameter("@dDiscount", 1);
-        SqlParameter moneyParam = new SqlParameter("@dMonney", unitPrice * quantity);
+        SqlParameter discountParam = new SqlParameter("@dDiscount", discount);
+        SqlParameter moneyParam = new SqlParameter("@dMonney", money);
         _context.Database.ExecuteSqlRaw("sp_InsertProductIntoCartDetail @PK_iUserID, @PK_iProductID, @PK_iCartID, @iQuantity, @dUnitPrice, @dDiscount, @dMonney", userIDParam, productIDParam, cartIDParam, quantityParam, unitPriceParam, discountParam, moneyParam);
         return true;
     }

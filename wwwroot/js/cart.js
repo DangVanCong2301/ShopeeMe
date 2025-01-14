@@ -239,6 +239,7 @@ function loadingCartItemsMobile() {
 }
 
 function getCartItemsMobile(data) {
+    var gh = JSON.parse(sessionStorage.getItem("checkout"));
     if (data.cartCount != 0) {
         let htmlCheckoutMobile = 
                     `<div class="cart__mobile-checkout-container">
@@ -261,7 +262,16 @@ function getCartItemsMobile(data) {
                             </div>
                             <div class="cart__mobile-checkout-money-right">
                                 <div class="cart__mobile-checkout-money-text">
-                                    Tổng số tiền: <span>0đ</span>
+                                    Tổng tiền: `;
+                                    if (gh == undefined) {
+                                        htmlCheckoutMobile += 
+                                    `<span>${money_2(0)}</span>`;
+                                    } else {
+                                        htmlCheckoutMobile += 
+                                        `<span>${money_2(gh.reduce((totalMoney, a) => totalMoney + a[5], 0))}</span>`;
+                                    }
+                                    htmlCheckoutMobile += `
+                                    
                                 </div>
                                 <div class="cart__mobile-checkout-money-btn">Thanh toán</div>
                                 <div class="cart__mobile-checkout-money-btn-delete" onclick="openDeleteAllModal()">Xoá
@@ -272,16 +282,13 @@ function getCartItemsMobile(data) {
         document.querySelector(".cart__mobile-checkout").innerHTML = htmlCheckoutMobile;
     }
     let htmlCartItems = "";
-    htmlCartItems += data.cartDetails.map((obj, index) => 
-    `
-                    <div class="cart__mobile-item">
+    data.cartDetails.forEach(obj => {
+        htmlCartItems += 
+                    `<div class="cart__mobile-item" id="product-mobile__${obj.pK_iProductID}">
                         <div class="cart__mobile-item-header">
-                            <div class="cart__mobile-item-box">
-                                <input type="checkbox" class="cart__mobile-item-input" name="" id="">
-                            </div>
                             <div class="cart__mobile-item-header-shop">
                                 <i class="uil uil-store-alt cart__mobile-item-header-shop-icon-store"></i>
-                                <div class="cart__mobile-item-header-shop-name">Viet Mark</div>
+                                <div class="cart__mobile-item-header-shop-name">${obj.sStoreName}</div>
                                 <i class="uil uil-angle-right-b cart__mobile-item-header-shop-icon-arrow"></i>
                             </div>
                             <div class="cart__mobile-item-header-fix">Sửa</div>
@@ -291,7 +298,7 @@ function getCartItemsMobile(data) {
                                 <div class="cart__mobile-item-body-product">
                                     <div class="cart__mobile-item-body-left">
                                         <div class="cart__mobile-item-box">
-                                            <input type="checkbox" class="cart__mobile-item-input" name="" id="">
+                                            <input type="checkbox" class="cart__mobile-item-input" onchange="addToCheckoutMobile(${obj.pK_iProductID}, ${obj.pK_iStoreID}, event)">
                                         </div>
                                         <div class="cart__mobile-item-product-img"
                                             style="background-image: url(/img/${obj.sImageUrl});"></div>
@@ -301,7 +308,7 @@ function getCartItemsMobile(data) {
                                         ${obj.sProductName}
                                         </div>
                                         <div class="cart__mobile-item-product-type">
-                                            <span>Phân loại hàng: Bạc</span>
+                                            <span>Phân loại hàng: ${obj.sCategoryName}</span>
                                             <i class="uil uil-angle-down cart__mobile-item-product-type-icon"></i>
                                         </div>
                                         <div class="cart__mobile-item-product-change-sub">
@@ -311,21 +318,28 @@ function getCartItemsMobile(data) {
                                             <img src="/img/voucher.png"
                                                 class="cart__mobile-item-product-voucher-img"></img>
                                         </div>
-                                        <div class="cart__mobile-item-product-price">
-                                            <div class="cart__mobile-item-product-price-old">189.000đ</div>
-                                            <div class="cart__mobile-item-product-price-new">${money_2(obj.dMoney)}</div>
+                                        <div class="cart__mobile-item-product-price">`;
+                                        if (obj.dDiscount != 1) {
+                                            htmlCartItems += 
+                                            `<div class="cart__mobile-item-product-price-old">${money_2(obj.dUnitPrice)}</div>
+                                            <div class="cart__mobile-item-product-price-new">${money_2(obj.dMoney)}</div>`;
+                                        } else {
+                                            htmlCartItems += 
+                                            `<div class="cart__mobile-item-product-price-new">${money_2(obj.dMoney)}</div>`;
+                                        }
+                                        htmlCartItems += `
                                         </div>
                                         <div class="cart__mobile-item-product-quantity">
-                                            <div class="cart__mobile-item-product-quantity-btn-plus" onclick="plusMobile(event)">+</div>
+                                            <div class="cart__mobile-item-product-quantity-btn-plus" onclick="plusMobile(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">+</div>
                                             <input type="text" class="cart__mobile-item-product-quantity-input"
-                                                value="1">
-                                            <div class="cart__mobile-item-product-quantity-btn-less" onclick="lessMobile(event)">-</div>
+                                                value="${obj.iQuantity}">
+                                            <div class="cart__mobile-item-product-quantity-btn-less" onclick="lessMobile(event, ${obj.pK_iProductID}, ${obj.dUnitPrice})">-</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="cart__mobile-item-body-tools">
-                                    <div class="cart__mobile-item-body-product-similar">Sản phẩm tương tự</div>
-                                    <div class="cart__mobile-item-body-product-delete" onclick="openDeleteModal()">Xoá
+                                    <a href="/product/similar?productID=${obj.pK_iProductID}&categoryID=${obj.pK_iCategoryID}" class="cart__mobile-item-body-product-similar">Sản phẩm tương tự</a>
+                                    <div class="cart__mobile-item-body-product-delete" onclick="openDeleteModal(${obj.pK_iProductID})">Xoá
                                     </div>
                                 </div>
                             </div>
@@ -462,8 +476,8 @@ function getCartItemsMobile(data) {
                                 </div>
                             </div>
                         </div>
-                    </div>
-    `).join('');
+                    </div>`;
+    });
     document.querySelector(".cart__mobile-list").innerHTML = htmlCartItems;
     loadingCartItemsMobile();
     const headerFix = document.querySelectorAll(".cart__mobile-item-header-fix");
@@ -562,8 +576,7 @@ function getProductsLike(data) {
                         }
         htmlProducts += 
                     `</a>
-                </div>
-        `;
+                </div>`;
     }
     document.querySelectorAll(".cart__like-product-list").forEach(e => {
         e.innerHTML = htmlProducts;
@@ -693,6 +706,7 @@ function deleteProductModal(productID) {
             exitModal();
             if (data.status.statusCode == 1) {
                 document.getElementById("product__" + productID).style.display = 'none';
+                document.getElementById("product-mobile__" + productID).style.display = 'none';
                 toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
             }
         }
@@ -714,7 +728,7 @@ function deleteProduct(productID) {
                     </div>
                     <div class="modal__confirm-btns">
                         <div class="modal__confirm-btn-destroy" onclick="exitModal()">Huỷ</div>
-                        <div class="modal__confirm-btn-send"onclick="deleteProductModal(${productID})"">Đồng ý</div>
+                        <div class="modal__confirm-btn-send" onclick="deleteProductModal(${productID})">Đồng ý</div>
                     </div>
                 </div>
         `;
@@ -864,8 +878,7 @@ function addToCheckout(productID, shopID, event) {
             console.log(gh);
             
             
-            document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán (${gh.length} sản phẩm):<span>${money_2(gh.reduce((totalMoney, a) => totalMoney + a[5], 0))}</span>`
-
+            document.querySelector(".cart__purchase-payment-total-sub").innerHTML = `Tổng thanh toán (${gh.length} sản phẩm):<span>${money_2(gh.reduce((totalMoney, a) => totalMoney + a[5], 0))}</span>`;
         }
     };
     xhr.send(formData);
@@ -914,12 +927,35 @@ function changeBottomCheckout(input) {
     }
 }
 
-function plusMobile(event) {
+function plusMobile(event, productID, unitPrice) {
     const parentElement = event.target.parentNode;
     var plus = parentElement.querySelector(".cart__mobile-item-product-quantity-input").value;
     var input = parentElement.querySelector(".cart__mobile-item-product-quantity-input");
-    if (parseInt(plus) < 10) {
+    if (parseInt(plus) < 100) {
         input.value = parseInt(plus) + 1;
+        var formData = new FormData(); // Gửi dữ liệu dạng formData
+        formData.append("userID", getCookies("userID"));
+        formData.append('quantity', input.value);
+        formData.append('productID', productID);
+        formData.append('unitPrice', unitPrice);
+        var xhr = new XMLHttpRequest();
+        xhr.open('put', '/cart/quantity', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+
+                console.log(data);
+
+                if (data.status.statusCode == -1) {
+                    toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                } else {
+                    const trParent = parentElement.parentNode;
+                    trParent.querySelector(".cart__mobile-item-product-price-new").innerHTML = `${money_2(data.money)}`;
+                }
+
+            }
+        }
+        xhr.send(formData);
     } else {
         document.querySelector(".modal").classList.add("open");
         let html = "";
@@ -935,29 +971,89 @@ function plusMobile(event) {
     }
 }
 
-function lessMobile(event) {
+function lessMobile(event, productID, unitPrice) {
     const parentElement = event.target.parentNode;
     var less = parentElement.querySelector(".cart__mobile-item-product-quantity-input").value;
     var input = parentElement.querySelector(".cart__mobile-item-product-quantity-input");
     if (parseInt(less) > 1) {
         input.value = parseInt(less) - 1;
+        var formData = new FormData();
+        formData.append("userID", getCookies("userID"));
+        formData.append('quantity', input.value);
+        formData.append('productID', productID);
+        formData.append('unitPrice', unitPrice);
+        var xhr = new XMLHttpRequest();
+        xhr.open('put', '/cart/quantity', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+
+                const trParent = parentElement.parentNode;
+                trParent.querySelector(".cart__mobile-item-product-price-new").innerHTML = `${money_2(data.money)}`;
+            }
+        };
+        xhr.send(formData);
     } else {
-        openDeleteModal()
+        openDeleteModal();
     }
 }
 
-function openDeleteModal() {
+function addToCheckoutMobile(productID, shopID, event) {
+    const parentElement = event.target.parentNode;
+    const cartBody = parentElement.parentNode.parentNode;
+    var quantity = cartBody.querySelector(".cart__mobile-item-product-quantity-input").value;
+    
+    var formData = new FormData();
+    formData.append('productID', productID);
+    formData.append('shopID', shopID);
+    formData.append('quantity', quantity);
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/checkout/add-to-checkout', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            sessionStorage.setItem("shopID", data.shopID);
+
+            var money = (data.product[0].dPerDiscount == 1) ? (data.product[0].dPrice * data.quantity) + data.product[0].dTransportPrice : data.product[0].dPrice * data.quantity * (1 - data.product[0].dPerDiscount) + data.product[0].dTransportPrice;
+            var ck = new Array(data.product[0].pK_iProductID, data.product[0].sProductName, data.product[0].sImageUrl, data.product[0].dPrice, data.quantity, money, data.product[0].dTransportPrice, data.product[0].dPerDiscount);
+            var kt = 0;
+            for (let i = 0; i < checkout.length; i++) {
+                if (checkout[i][0] == data.product[0].pK_iProductID) {
+                    kt = 1;
+                    data.quantity += parseInt(checkout[i][4]);
+                    checkout[i][4] = data.quantity;
+                    break;
+                }
+            }
+            if (kt == 0) {
+                checkout.push(ck);
+            }
+
+            sessionStorage.setItem("checkout", JSON.stringify(checkout));
+            var gh = JSON.parse(sessionStorage.getItem("checkout"));
+
+            console.log(gh);
+            
+            document.querySelector(".cart__mobile-checkout-money-text span").innerHTML = `${money_2(gh.reduce((totalMoney, a) => totalMoney + a[5], 0))}`;
+        }
+    };
+    xhr.send(formData);
+}
+
+function openDeleteModal(productID) {
     document.querySelector(".modal").classList.add("open");
     let html = "";
-    html += `
-    <div class="cart__delete">
+    html += 
+    `<div class="cart__delete">
         <div class="cart__delete-msg">Bạn có chắc muốn xoá sản phẩm?</div>
         <div class="cart__delete-btns">
             <div class="cart__delete-btn-no" onclick="exitModal()">Không</div>
-            <div class="cart__delete-btn-agree">Đồng ý</div>
+            <div class="cart__delete-btn-agree" onclick="deleteProductModal(${productID})">Đồng ý</div>
         </div>
-    </div>
-    `;
+    </div>`;
     document.querySelector(".modal__body").innerHTML = html;
 }
 

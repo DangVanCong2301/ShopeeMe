@@ -445,6 +445,10 @@
         padding: 0 10px 10px 10px;
     }
 
+    #toast {
+        right: 12px;
+    }
+
     /* Chat Mobile */
     .chat {
         overflow: hidden;

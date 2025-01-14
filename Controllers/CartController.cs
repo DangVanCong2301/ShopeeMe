@@ -50,6 +50,7 @@ public class CartController : Controller {
         List<CartDetail> checkProduct = _cartResponsitory.checkProduct(userID, productID).ToList();
         List<Product> product = _productResponsitory.getProductByID(productID).ToList();
         Status status;
+        double money = 0;
         if (user.Count() == 0)
         {
             status = new Status {
@@ -69,7 +70,7 @@ public class CartController : Controller {
         } else if (checkProduct.Count() != 0) // Kiểm tra sản phẩm bị trùng trong giỏ hàng
         {
             quantity = checkProduct[0].iQuantity + quantity;
-            double money = quantity * unitPrice;
+            money = (product[0].dPerDiscount == 1) ? quantity * unitPrice : quantity * unitPrice * (1 - product[0].dPerDiscount);
             _cartResponsitory.changeQuantity(Convert.ToInt32(userID), productID, quantity, money);
             status = new Status {
                 StatusCode = 0,
@@ -90,7 +91,8 @@ public class CartController : Controller {
                 cartID = newCart[0].PK_iCartID;
             }
             // Thêm vào chi tiết giỏ hàng
-            _cartResponsitory.insertCartDetail(userID, productID, cartID, quantity, unitPrice);
+            money = (product[0].dPerDiscount == 1) ? quantity * unitPrice : quantity * unitPrice * (1 - product[0].dPerDiscount);
+            _cartResponsitory.insertCartDetail(userID, productID, cartID, quantity, unitPrice, product[0].dPerDiscount, money);
             status = new Status {
                 StatusCode = 1,
                 Message = "Thêm vào giỏ hàng thành công!"
@@ -111,9 +113,27 @@ public class CartController : Controller {
     [HttpPut]
     [Route("/cart/quantity")]
     public IActionResult Quantity(int userID = 0, int productID = 0, int quantity = 0, double unitPrice = 0) {
-        double money = quantity * unitPrice;
-        _cartResponsitory.changeQuantity(userID, productID, quantity, money);
-        return Json(new {money});
+        Status status;
+        double money = 0;
+        List<Product> product = _productResponsitory.getProductByID(productID).ToList();
+        if (product[0].iQuantity < quantity) {
+            status = new Status {
+                StatusCode = -1,
+                Message = "Số lượng trong kho không đủ!"
+            };
+        } else {
+            money = (product[0].dPerDiscount == 1) ? quantity * unitPrice : quantity * unitPrice * (1 - product[0].dPerDiscount);
+            _cartResponsitory.changeQuantity(userID, productID, quantity, money);
+            status = new Status {
+                StatusCode = 1,
+                Message = "Số lượng trong kho đủ!"
+            };
+        }
+        CartViewModel model = new CartViewModel {
+            Status = status,
+            Money = money
+        };
+        return Ok(model);
     }
 
     [HttpDelete]

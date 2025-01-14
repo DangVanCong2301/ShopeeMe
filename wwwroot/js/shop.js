@@ -877,7 +877,7 @@ function setDataChat(data) {
                     data.chats.forEach(element => {
                         htmlChat += 
                         `
-                        <li class="chat__shop-item">
+                        <li class="chat__shop-item" onclick="showChatDetail(${element.pK_iChatID})">
                             <div class="chat__shop-item-img" style="background-image: url(/img/${element.sImageAvatar});"></div>
                             <div class="chat__shop-item-info">
                                 <div class="chat__shop-item-info-top">
@@ -885,7 +885,7 @@ function setDataChat(data) {
                                     <div class="chat__shop-item-time">${getDate(element.dTime)}</div>
                                 </div>
                                 <div class="chat__shop-item-info-bottom">
-                                    ${element.sChat}
+                                    ${element.sLastChat}
                                 </div>
                             </div>
                         </li>
@@ -949,7 +949,7 @@ function setDataChat(data) {
                         data.chats.forEach(element => {
                             htmlChat += 
                             `
-                            <li class="chat__shop-item" onclick=showChatDetail(${element.pK_iChatID})>
+                            <li class="chat__shop-item" onclick="showChatDetail(${element.pK_iChatID})">
                                 <div class="chat__shop-item-img" style="background-image: url(/img/${element.sImageAvatar});"></div>
                                 <div class="chat__shop-item-info">
                                     <div class="chat__shop-item-info-top">
@@ -990,6 +990,7 @@ function setDataChat(data) {
 }
 
 function showChatDetail(chatID) {
+    closeChatWindowMobile();
     var xhr = new XMLHttpRequest();
     xhr.open('get', '/chat/detail?chatID=' + chatID + '', true);
     xhr.onreadystatechange = () => {
@@ -1163,6 +1164,11 @@ function displayChat() {
 function showChatWindowMobile() {
     document.querySelector(".chat__header-menu-bar").classList.toggle("active");
     document.querySelector(".chat__mobile-window").classList.toggle("show");
+}
+
+function closeChatWindowMobile() {
+    document.querySelector(".chat__header-menu-bar").classList.remove("active");
+    document.querySelector(".chat__mobile-window").classList.remove("show");
 }
 
 function addShopMobileShop(i) {

@@ -10,4 +10,5 @@ public class CartViewModel {
     public int UserID { get; set; }
     public string Username { get; set; }
     public Status Status { get; set; }
+    public double Money { get; set; }
 }
