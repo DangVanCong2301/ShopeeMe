@@ -151,7 +151,7 @@
     }
 
     .header__mobile-back-icon {
-        font-size: 3rem;
+        font-size: 30px;
         color: var(--primary-color);
     }
 
@@ -584,6 +584,10 @@
         margin-left: -46px;
     }
 
+    .header__logo-img {
+        height: 40px;
+    }
+
     .header__search {
         height: var(--header-sort-bar-height);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -823,6 +827,87 @@
             opacity: 1;
             top: var(--header-height);
         }
+    }
+
+    /* Address Form Mobile */
+    .address-form-mobile {
+        background-color: #f5f5f5;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1;
+    }
+
+    .address-form-mobile.open {
+        display: block;
+    }
+
+    .address-form-mobile__header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px;
+        height: 60px;
+        background-color: var(--white-color);
+        display: flex;
+        align-items: center;
+        column-gap: 20px;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .address-form-mobile__header-back-icon {
+        font-size: 30px;
+        color: var(--primary-color);
+    }
+
+    .address-form-mobile__header-title {
+        font-size: 18px;
+    }
+
+    .address-form-mobile__search {
+        padding: 68px 16px 4px 16px;
+        background-color: var(--white-color);
+    }
+
+    .address-form-mobile__search-input {
+        height: 50px;
+        border-radius: 4px;
+        padding: 10px;
+        background-color: #f5f5f5;
+        width: 100%;
+    }
+
+    .address-form-mobile__body {
+        padding: 16px 0 16px 0;
+        display: flex;
+        flex-direction: column;
+        row-gap: 16px;
+    }
+
+    .address-form-mobile__body-title {
+        padding: 0 16px 0px 16px;
+        color: #757575;
+    }
+
+    .address-form-mobile__body-list {
+        padding: 0 16px;
+        background-color: var(--white-color);
+    }
+
+    .address-form-mobile__body-add {
+        padding: 16px;
+        display: flex;
+        border-top: 1px solid var(--border-color);
+        background-color: var(--white-color);
+        column-gap: 16px;
+        align-items: center;
+    }
+
+    .address-form-mobile__body-add-sub {
+        flex: 1;
     }
 
     .footer__content {

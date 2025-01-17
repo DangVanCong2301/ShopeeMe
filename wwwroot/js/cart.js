@@ -256,7 +256,7 @@ function getCartItemsMobile(data) {
                         <div class="cart__mobile-checkout-money">
                             <div class="cart__mobile-checkout-money-left">
                                 <div class="cart__mobile-item-box">
-                                    <input type="checkbox" class="cart__mobile-item-input" name="" id="">
+                                    <input type="checkbox" class="cart__mobile-item-input">
                                 </div>
                                 <span>Chọn tất cả</span>
                             </div>
@@ -273,7 +273,7 @@ function getCartItemsMobile(data) {
                                     htmlCheckoutMobile += `
                                     
                                 </div>
-                                <div class="cart__mobile-checkout-money-btn">Thanh toán</div>
+                                <div class="cart__mobile-checkout-money-btn" onclick="checkoutOrder()">Thanh toán</div>
                                 <div class="cart__mobile-checkout-money-btn-delete" onclick="openDeleteAllModal()">Xoá
                                 </div>
                             </div>
