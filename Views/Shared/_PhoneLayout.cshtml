@@ -14,102 +14,109 @@
     <title>SMe - @ViewData["Title"]</title>
 </head>
 <body>
-    <div class="app__phone">
-        <div class="phone">
-            <div class="phone__buttons">
-                <div class="phone__buttons-left">
-                    <div class="phone__buttons-left-button"></div>
-                    <div class="phone__buttons-left-button"></div>
-                    <div class="phone__buttons-left-button"></div>
+    <div class="app">
+        <div class="app__content hide-on-destop">
+            
+        </div>
+        <div class="app__phone hide-on-mobile">
+            <div class="phone">
+                <div class="phone__buttons">
+                    <div class="phone__buttons-left">
+                        <div class="phone__buttons-left-button"></div>
+                        <div class="phone__buttons-left-button"></div>
+                        <div class="phone__buttons-left-button"></div>
+                    </div>
+                    <div class="phone__buttons-right">
+                        <div class="phone__buttons-right-button"></div>
+                    </div>
                 </div>
-                <div class="phone__buttons-right">
-                    <div class="phone__buttons-right-button"></div>
-                </div>
-            </div>
-            <div class="phone__camera"></div>
-            <div class="phone__screen-container">
-                <div class="phone__screen-bg">
-                    <header class="phone-header">
-                        <div class="phone-toolbar">
-                            <div class="phone-toolbar__time">
-                                9:12
-                            </div>
-                            <div class="phone-toolbar__right">
-                                <div class="phone-toolbar__wave">
-                                    <span class="phone-toolbar__wave-1"></span>
-                                    <span class="phone-toolbar__wave-2"></span>
-                                    <span class="phone-toolbar__wave-3"></span>
-                                    <span class="phone-toolbar__wave-4"></span>
+                <div class="phone__camera"></div>
+                <div class="phone__screen-container">
+                    <div class="phone__screen-bg">
+                        <header class="phone-header">
+                            <div class="phone-toolbar">
+                                <div class="phone-toolbar__time">
+                                    9:12
                                 </div>
-                                <div class="phone-toolbar__battery">
-                                    <div class="phone-toolbar__battery-percent"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="phone-header__with-search">
-                            <div class="phone-header__logo">
-                                <img src="~/img/SPX_express_logo.png" class="phone-header__logo-img" alt="">
-                                <div class="phone-header__title">@ViewData["Title"]</div>
-                            </div>
-                            <div class="phone-header__user hide-on-login">
-                                <div class="phone-header__user-avatar">
-                                    <div class="phone-header__mobile-user-avatar-img" style="background-image: url(/img/profile_avatar.jpg);"></div>
-                                    <div class="phone-header__user-avatar-menu">
-                                        <ul class="phone-header__navbar-user-menu">
-                                            <li class="phone-header__navbar-user-item">
-                                                <a href="">Tài khoản của tôi</a>
-                                            </li>
-                                            <li class="phone-header__navbar-user-item">
-                                                <a href="">Địa chỉ của tôi</a>
-                                            </li>
-                                            <li class="phone-header__navbar-user-item">
-                                                <a href="">Đơn mua</a>
-                                            </li>
-                                            <li class="phone-header__navbar-user-item phone-header__navbar-user-item--separate">
-                                                <a href="/User/Logout">Đăng xuất</a>
-                                            </li>
-                                        </ul>
+                                <div class="phone-toolbar__right">
+                                    <div class="phone-toolbar__wave">
+                                        <span class="phone-toolbar__wave-1"></span>
+                                        <span class="phone-toolbar__wave-2"></span>
+                                        <span class="phone-toolbar__wave-3"></span>
+                                        <span class="phone-toolbar__wave-4"></span>
                                     </div>
-                                </div>  
+                                    <div class="phone-toolbar__battery">
+                                        <div class="phone-toolbar__battery-percent"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="phone-header__with-search">
+                                <div class="phone-header__logo">
+                                    <img src="~/img/SPX_express_logo.png" class="phone-header__logo-img" alt="">
+                                    <div class="phone-header__title">@ViewData["Title"]</div>
+                                </div>
+                                <div class="phone-header__user hide-on-login">
+                                    <div class="phone-header__user-avatar">
+                                        <div class="phone-header__mobile-user-avatar-img"
+                                            style="background-image: url(/img/profile_avatar.jpg);"></div>
+                                        <div class="phone-header__user-avatar-menu">
+                                            <ul class="phone-header__navbar-user-menu">
+                                                <li class="phone-header__navbar-user-item">
+                                                    <a href="">Tài khoản của tôi</a>
+                                                </li>
+                                                <li class="phone-header__navbar-user-item">
+                                                    <a href="">Địa chỉ của tôi</a>
+                                                </li>
+                                                <li class="phone-header__navbar-user-item">
+                                                    <a href="">Đơn mua</a>
+                                                </li>
+                                                <li
+                                                    class="phone-header__navbar-user-item phone-header__navbar-user-item--separate">
+                                                    <a href="/User/Logout">Đăng xuất</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+                        <div class="container">
+                            @RenderBody()
+                        </div>
+                        <div class="phone-bottom__navigation hide-on-login">
+                            <div class="phone-bottom__navigation-list">
+                                <div class="phone-bottom__navigation-item">
+                                    <i class="uil uil-clipboard-alt phone-bottom__navigation-item-icon"></i>
+                                    <div class="phone-bottom__navigation-item-text">Đơn hàng</div>
+                                </div>
+                                <div class="phone-bottom__navigation-item">
+                                    <i class="uil uil-list-ol phone-bottom__navigation-item-icon"></i>
+                                    <div class="phone-bottom__navigation-item-text">Đang làm</div>
+                                </div>
+                                <div class="phone-bottom__navigation-item">
+                                    <i class="uil uil-bag phone-bottom__navigation-item-icon"></i>
+                                    <div class="phone-bottom__navigation-item-text">Đã hoàn thành</div>
+                                </div>
+                                <div class="phone-bottom__navigation-item">
+                                    <i class="uil uil-user phone-bottom__navigation-item-icon"></i>
+                                    <div class="phone-bottom__navigation-item-text">Thông tin</div>
+                                </div>
                             </div>
                         </div>
-                    </header>
-                    <div class="container">
-                        @RenderBody()
-                    </div>
-                    <div class="phone-bottom__navigation hide-on-login">
-                        <div class="phone-bottom__navigation-list">
-                            <div class="phone-bottom__navigation-item">
-                                <i class="uil uil-clipboard-alt phone-bottom__navigation-item-icon"></i>
-                                <div class="phone-bottom__navigation-item-text">Đơn hàng</div>
-                            </div>
-                            <div class="phone-bottom__navigation-item">
-                                <i class="uil uil-list-ol phone-bottom__navigation-item-icon"></i>
-                                <div class="phone-bottom__navigation-item-text">Đang làm</div>
-                            </div>
-                            <div class="phone-bottom__navigation-item">
-                                <i class="uil uil-bag phone-bottom__navigation-item-icon"></i>
-                                <div class="phone-bottom__navigation-item-text">Đã hoàn thành</div>
-                            </div>
-                            <div class="phone-bottom__navigation-item">
-                                <i class="uil uil-user phone-bottom__navigation-item-icon"></i>
-                                <div class="phone-bottom__navigation-item-text">Thông tin</div>
+                        <div class="phone-modal">
+                            <div class="phone-modal__overlay"></div>
+                            <div class="phone-modal__body">
+
                             </div>
                         </div>
-                    </div>
-                    <div class="phone-modal">
-                        <div class="phone-modal__overlay"></div>
-                        <div class="phone-modal__body">
-                            
+                        <div class="" id="phone-toast">
+
                         </div>
-                    </div>
-                    <div class="" id="phone-toast">
-                        
                     </div>
                 </div>
-            </div>
-            <div class="phone__notch-container">
-                <div class="phone__notch"></div>
+                <div class="phone__notch-container">
+                    <div class="phone__notch"></div>
+                </div>
             </div>
         </div>
     </div>

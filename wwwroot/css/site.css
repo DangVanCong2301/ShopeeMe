@@ -41,6 +41,11 @@ body {
   height: 50px;
 }
 
+/* Header */
+.header__navbar-transport {
+  display: none;
+}
+
 /**/
 .home-filter {
   background-color: rgba(0,0,0,0.05);

@@ -37,6 +37,14 @@
     position: relative; /*Định vị tuyệt đối cho thành phần*/
 }
 
+.header__navbar-transport {
+    display: none;
+}
+
+.header__navbar-item--has-transport:hover .header__navbar-transport {
+    display: block;
+}
+
 .header__navbar-user {
     display: flex;
     justify-items: center;
@@ -94,7 +102,7 @@
         content: '';
         display: block;
         position: absolute; /*Cầu nối*/
-        width: 46%;
+        width: 68%;
         height: 30px;
         top: -16px;
         right: 0;

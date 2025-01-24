@@ -220,3 +220,38 @@
         display: none;
     }
 }
+
+@media screen and (max-width: 739px) {
+    .app__content {
+        padding-top: calc(20px + var(--header-height));
+        background-color: var(--white-color);
+        font-size: var(--normal-font-size);
+        color: var(--text-color);
+        padding-bottom: 40px;
+    }
+
+    .header__mobile {
+        position: fixed;
+        z-index: 4;
+        top: 0;
+        right: 0;
+        left: 0;
+        padding: 8px 12px 8px 12px;
+        height: 60px;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+        background-color: var(--white-color);
+    }
+
+    .header__mobile-arrow-icon {
+        font-size: 30px;
+        color: var(--primary-color);
+    }
+
+    .header__mobile-title {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        left: 40%;
+    }
+}

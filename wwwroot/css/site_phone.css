@@ -372,3 +372,9 @@
         transform: rotate(360deg);
     }
 }
+
+@media screen and (max-width: 739px) {
+    .hide-on-mobile {
+        display: none;
+    }
+}

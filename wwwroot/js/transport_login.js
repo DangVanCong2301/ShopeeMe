@@ -1,5 +1,6 @@
 function getAPITransportLogin() {
     setForm();
+    setFormMobile();
 }
 getAPITransportLogin();
 
@@ -210,4 +211,75 @@ function addEvent() {
             xhr.send(formData);
         }
     });
+}
+
+// Mobile
+function setFormMobile() {
+    let htmlFormMobile = "";
+    htmlFormMobile += 
+    `<div class="header__mobile hide-on-destop">
+        <div class="grid wide">
+            <div class="header__mobile-container">
+                <div class="header__mobile-arrow" onclick="backHistory()">
+                    <i class="uil uil-arrow-left header__mobile-arrow-icon"></i>
+                </div>
+                <div class="header__mobile-title">Đăng nhập</div>
+                <div class="header__mobile-question">
+                    <i class="uil uil-question-circle header__mobile-question"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app__content-body">
+        <div class="auth__mobile-logo">
+            <img src="/img/sme_icon_primary.png" class="auth__mobile-logo-img" alt="">
+        </div>
+        <form action="/user/login" method="post" class="auth__mobile-form">
+            <div class="auth__mobile-form-div auth__mobile-form-div-email">
+                <i class="uil uil-user auth__mobile-form-icon"></i>
+                <input type="text" class="auth__mobile-form-input auth__mobile-form-input-email" placeholder="Email/Số điện thoại/Tên đăng nhập">
+            </div>
+            <span class="auth__mobile-form-msg auth__mobile-form-msg-email hide-on-mobile"></span>
+            <div class="auth__mobile-form-div auth__mobile-form-div-password">
+                <i class="uil uil-lock-alt auth__mobile-form-icon"></i>
+                <div class="auth__mobile-form-password">
+                    <input type="password" class="auth__mobile-form-input auth__mobile-form-input-password" placeholder="Mật khẩu">
+                    <div class="auth__mobile-form-password-show" onclick="showHiddenPass()">
+                        <i class="uil uil-eye-slash auth__mobile-form-password-show-icon"></i>
+                    </div>
+                    <a href="#" class="auth__mobile-form-password-forgot">Quên tài khoản và mật khẩu</a>
+                </div>
+            </div>
+            <span class="auth__mobile-form-msg auth__mobile-form-msg-password hide-on-mobile"></span>
+            <button type="button" class="auth__mobile-form-btn">Đăng nhập</button>
+            <div class="auth__mobile-form-link">
+                <a href="/user/register" class="auth__mobile-form-link-register">Đăng ký</a>
+                <a href="javascript:loginWithSMS()" class="auth__mobile-form-link-sms">Đăng nhập bằng SMS</a>
+            </div>
+        </form>
+        <div class="auth__mobile-or">
+            <div class="auth__mobile-or-title">
+                <span></span>
+                <div class="auth__mobile-or-title-text">HOẶC</div>
+                <span></span>
+            </div>
+        </div>
+        <div class="auth__mobile-bottom-btns">
+            <a href="javascript:loginWithFacebook()" class="auth__mobile-bottom-btn">
+                <i class="uil uil-facebook auth__mobile-bottom-btn-icon auth__mobile-bottom-btn-facebook-icon"></i>
+                <div class="auth__mobile-bottom-btn-facebook">
+                </div>
+                Đăng nhập với Facebook
+            </a>
+            <a href="javascript:loginWithGoogle()" class="auth__mobile-bottom-btn">
+                <i class="uil uil-google auth__mobile-bottom-btn-icon auth__mobile-bottom-btn-google-icon"></i>
+                Đăng nhập với Google
+            </a>
+            <a href="javascript:loginWithApple()" class="auth__mobile-bottom-btn">
+                <i class="uil uil-apple auth__mobile-bottom-btn-icon auth__mobile-bottom-btn-apple-icon"></i>
+                Đăng nhập với Apple
+            </a>
+        </div>
+    </div>`;
+    document.querySelector(".app__content").innerHTML = htmlFormMobile;
 }
