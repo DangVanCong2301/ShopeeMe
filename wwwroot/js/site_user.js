@@ -9,6 +9,17 @@ function removeErrStyles(input, msg) {
     msg.classList.add("hide-on-destop");
 }
 
+// Validate Login Account Mobile
+function showErrStylesMobile(input, msg) {
+    input.classList.add("err");
+    msg.classList.remove("hide-on-mobile");
+}
+
+function removeErrStylesMobile(input, msg) {
+    input.classList.remove("err");
+    msg.classList.add("hide-on-mobile");
+}
+
 function backHistory() {
     window.history.back();
 }

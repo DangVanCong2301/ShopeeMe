@@ -89,10 +89,16 @@ public class UserController : Controller {
             string passwordEncrypted = _userResponsitory.encrypt(password);
             userLogin = _userResponsitory.login(email, passwordEncrypted).ToList();
             IEnumerable<UserInfo> userInfo = _userResponsitory.getUserInfoByEmailAndPassword(email, password);
-            if (userLogin.Count() != 0 && userInfo.Count() != 0) {
+            if (userLogin.Count() != 0 && userInfo.Count() != 0 && userLogin[0].sRoleName == "user") {
                 status = new Status {
                     StatusCode = 1,
                     Message = "Đăng nhập thành công!"
+                };
+            } else if (userLogin.Count() != 0 && userInfo.Count() != 0 && userLogin[0].sRoleName == "picker") {
+                status = new Status
+                {
+                    StatusCode = 2,
+                    Message = "Đăng nhập tài khoản người lấy hàng!"
                 };
             } else if (userInfo.Count() == 0) {
                 status = new Status {

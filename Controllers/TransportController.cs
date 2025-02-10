@@ -59,40 +59,12 @@ public class TransportController : Controller
                 StatusCode = 1,
                 Message = "Đăng nhập tài khoản người lấy thành công!"
             };
-            string transportUsername = users[0].sUserName;
-            string value = users[0].PK_iUserID.ToString();
-            // Tạo cookies cho tài khoản người bán
-            CookieOptions options = new CookieOptions
-            {
-                Expires = DateTime.Now.AddDays(1),
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-                Path = "/",
-                IsEssential = true
-            };
-            Response.Cookies.Append("TransportPickerID", value, options);
-            _accessor?.HttpContext?.Session.SetString("TransportPickerUsername", transportUsername);
         } else {
             status = new Status
             {
                 StatusCode = 2,
                 Message = "Đăng nhập tài khoản người giao thành công!"
             };
-            string transportUsername = users[0].sUserName;
-            string value = users[0].PK_iUserID.ToString();
-            // Tạo cookies cho tài khoản người bán
-            CookieOptions options = new CookieOptions
-            {
-                Expires = DateTime.Now.AddDays(1),
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-                Path = "/",
-                IsEssential = true
-            };
-            Response.Cookies.Append("TransportDeliveryID", value, options);
-            _accessor?.HttpContext?.Session.SetString("TransportDeliveryUsername", transportUsername);
         }
         TransportViewModel model = new TransportViewModel {
             Status = status
@@ -103,25 +75,6 @@ public class TransportController : Controller
     [Route("/picker")]
     [HttpGet]
     public IActionResult Picker() {
-        // Lấy Cookies Người lấy hàng trên trình duyệt
-        var pickerID = Request.Cookies["TransportPickerID"];
-        if (pickerID != null)
-        {
-            _accessor?.HttpContext?.Session.SetInt32("TransportPickerID", Convert.ToInt32(pickerID));
-        } else {
-            return Redirect("/transport/login");
-        }
-        var sessionPickerID = _accessor?.HttpContext?.Session.GetInt32("TransportPickerID");
-        if (sessionPickerID != null)
-        {
-            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionPickerID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("TransportPickerUsername", users[0].sUserName);
-            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
-        }
-        else
-        {
-            _accessor?.HttpContext?.Session.SetString("TransportPickerUsername", "");
-        }
         return View();
     }  
 

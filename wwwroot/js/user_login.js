@@ -221,7 +221,7 @@ function setLoginFormMobile() {
             <i class="uil uil-user auth__mobile-form-icon"></i>
             <input type="text" class="auth__mobile-form-input auth__mobile-form-input-email" placeholder="Email/Số điện thoại/Tên đăng nhập">
         </div>
-        <span class="auth__mobile-form-msg auth__mobile-form-msg-email"></span>
+        <p class="auth__mobile-form-msg auth__mobile-form-msg-email hide-on-mobile"></p>
         <div class="auth__mobile-form-div auth__mobile-form-div-password">
             <i class="uil uil-lock-alt auth__mobile-form-icon"></i>
             <div class="auth__mobile-form-password">
@@ -232,7 +232,7 @@ function setLoginFormMobile() {
                 <a href="#" class="auth__mobile-form-password-forgot">Quên tài khoản và mật khẩu</a>
             </div>
         </div>
-        <span class="auth__mobile-form-msg auth__mobile-form-msg-password"></span>
+        <p class="auth__mobile-form-msg auth__mobile-form-msg-password hide-on-mobile"></p>
         <button type="button" class="auth__mobile-form-btn">Đăng nhập</button>
         <div class="auth__mobile-form-link">
             <a href="/user/register" class="auth__mobile-form-link-register">Đăng ký</a>
@@ -322,6 +322,18 @@ function addEventMobile() {
                                 window.location.assign("/user/portal");
                             }, 1000)
                         }, 2000);
+                    } else if (data.status.statusCode == 2) {
+                        openModal();
+                        document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
+                        setTimeout(() => {
+                            closeModal();
+                            toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                            setCookies("pickerID", data.user[0].pK_iUserID, 1);
+                            document.querySelector(".modal__body").innerHTML = "";
+                            setTimeout(() => {
+                                window.location.assign('/picker');
+                            }, 1000)
+                        }, 2000);
                     } else {
                         openModal();
                         document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
@@ -349,11 +361,11 @@ function emailAccountValidateMobile() {
     const email = document.querySelector(".auth__mobile-form-input-email").value;
 
     if (email === "") {
-        showErrStyles(emailAccountInput, emailAccountMsg);
+        showErrStylesMobile(emailAccountInput, emailAccountMsg);
         emailAccountMsg.innerHTML = "Email không được trống!";
         isValidate = false;
     } else {
-        removeErrStyles(emailAccountInput, emailAccountMsg);
+        removeErrStylesMobile(emailAccountInput, emailAccountMsg);
         emailAccountMsg.innerHTML = "";
         isValidate = true;
     }
@@ -366,11 +378,11 @@ function passwordAccountValidateMobile() {
     const password = document.querySelector(".auth__mobile-form-input-password").value;
 
     if (password === "") {
-        showErrStyles(passwordAccountInput, passwordAccountMsg);
+        showErrStylesMobile(passwordAccountInput, passwordAccountMsg);
         passwordAccountMsg.innerHTML = "Mật khẩu không được trống!";
         isValidate = false;
     } else {
-        removeErrStyles(passwordAccountInput, passwordAccountMsg);
+        removeErrStylesMobile(passwordAccountInput, passwordAccountMsg);
         passwordAccountMsg.innerHTML = "";
         isValidate = true;
     }
@@ -382,11 +394,11 @@ function checkEmailAccountValidateMobile(message) {
     const emailAccountMsg = document.querySelector(".auth__mobile-form-msg-email");
 
     if (message != "") {
-        showErrStyles(emailAccountInput, emailAccountMsg);
+        showErrStylesMobile(emailAccountInput, emailAccountMsg);
         emailAccountMsg.innerHTML = `${message}`;
         isValidate = false;
     } else {
-        removeErrStyles(emailAccountInput, emailAccountMsg);
+        removeErrStylesMobile(emailAccountInput, emailAccountMsg);
         emailAccountMsg.innerHTML = "";
         isValidate = true;
     }
@@ -398,11 +410,11 @@ function checkPasswordAccountValidateMobile(message) {
     const passwordAccountMsg = document.querySelector(".auth__mobile-form-msg-password");
 
     if (message != "") {
-        showErrStyles(passwordAccountInput, passwordAccountMsg);
+        showErrStylesMobile(passwordAccountInput, passwordAccountMsg);
         passwordAccountMsg.innerHTML = `${message}`;
         isValidate = false;
     } else {
-        removeErrStyles(passwordAccountInput, passwordAccountMsg);
+        removeErrStylesMobile(passwordAccountInput, passwordAccountMsg);
         passwordAccountMsg.innerHTML = "";
         isValidate = true;
     }
