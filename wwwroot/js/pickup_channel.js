@@ -641,15 +641,15 @@ function setDataMobile(data) {
             <div class="pickup">
                 <div class="pickup__title">Danh sách cần làm</div>
                 <div class="pickup__list">
-                    <div class="pickup__item">
+                    <div class="pickup__item pickup__item-wait">
                         <div class="pickup__item-numb">${data.ordersWaitPickup.length}</div>
                         <div class="pickup__item-numb-text">Chờ lấy hàng</div>
                     </div>
-                    <div class="pickup__item">
+                    <div class="pickup__item pickup__item-picking">
                         <div class="pickup__item-numb">${data.ordersPickingUp.length}</div>
                         <div class="pickup__item-numb-text">Đang lấy hàng</div>
                     </div>
-                    <div class="pickup__item">
+                    <div class="pickup__item pickup__item-abouted-warehouse">
                         <div class="pickup__item-numb">${data.ordersAboutedWarehouse.length}</div>
                         <div class="pickup__item-numb-text">Đã hoàn thành</div>
                     </div>
@@ -660,15 +660,206 @@ function setDataMobile(data) {
                 </div>
             </div>
         </div>`;
+    document.querySelector(".pickup__item-wait").addEventListener('click', () => {
+        openOrderListTabMobile(data);
+    });
+
+    document.querySelector(".pickup__item-picking").addEventListener('click', () => {
+        openPickingOrderListTabMobile(data);
+    });
+
+    document.querySelector(".pickup__item-abouted-warehouse").addEventListener('click', () => {
+        openAboutedWarehouseListTabMobile(data);
+    });
+}
+
+function openOrderListTabMobile(data) {
+    let htmlOrderList = "";
+    htmlOrderList += 
+    `<div class="pickup-order hide-on-destop">
+                <div class="pickup-order__header">
+                    <div class="pickup-order__header-container">
+                        <div class="header__pickup-order-arrow">
+                            <i class="uil uil-arrow-left pickup-order__header-arrow-icon"></i>
+                        </div>
+                        <div class="header__pickup-order__title">Chờ lấy hàng</div>
+                    </div>
+                </div>
+                <div class="pickup-order__list-title">${data.ordersWaitPickup.length} đơn hàng</div>
+                <div class="pickup-order__works">`;
+                data.ordersWaitPickup.forEach(element => {
+                    htmlOrderList += 
+                    `<div class="pickup-order__work">
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Mã đơn hàng</div>
+                            <div class="pickup-order__work-col-2">ĐH${element.fK_iOrderID}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Khách hàng</div>
+                            <div class="pickup-order__work-col-2">${element.sFullName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Ngày đặt</div>
+                            <div class="pickup-order__work-col-2">${formatDate(element.dDate)}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Tổng tiền</div>
+                            <div class="pickup-order__work-col-2">${money_2(element.fTotalPrice)}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Trạng thái</div>
+                            <div class="pickup-order__work-col-2">${element.sOrderStatusName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Thanh toán</div>
+                            <div class="pickup-order__work-col-2">${element.sPaymentName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1"></div>
+                            <div class="pickup-order__work-col-2">
+                                <a href="#" class="pickup-order__work-link">Chi tiết đơn</a>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                htmlOrderList += `
+                    <div class="pickup-order__work-blur"></div>
+                </div>
+            </div>`;
+    document.querySelector(".app__body").innerHTML = htmlOrderList;
+
+    document.querySelector(".header__pickup-order-arrow").addEventListener('click', () => {
+        setDataMobile(data);
+    });
+}
+
+function openPickingOrderListTabMobile(data) {
+    let htmlOrderList = "";
+    htmlOrderList += 
+    `<div class="pickup-order hide-on-destop">
+                <div class="pickup-order__header">
+                    <div class="pickup-order__header-container">
+                        <div class="header__pickup-order-arrow">
+                            <i class="uil uil-arrow-left pickup-order__header-arrow-icon"></i>
+                        </div>
+                        <div class="header__pickup-order__title">Đang lấy hàng</div>
+                    </div>
+                </div>
+                <div class="pickup-order__list-title">${data.ordersPickingUp.length} đơn hàng</div>
+                <div class="pickup-order__works">`;
+                data.ordersPickingUp.forEach(element => {
+                    htmlOrderList += 
+                    `<div class="pickup-order__work">
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Mã đơn hàng</div>
+                            <div class="pickup-order__work-col-2">ĐH${element.fK_iOrderID}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Khách hàng</div>
+                            <div class="pickup-order__work-col-2">${element.sFullName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Ngày đặt</div>
+                            <div class="pickup-order__work-col-2">${formatDate(element.dDate)}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Tổng tiền</div>
+                            <div class="pickup-order__work-col-2">${money_2(element.fTotalPrice)}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Trạng thái</div>
+                            <div class="pickup-order__work-col-2">${element.sOrderStatusName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Thanh toán</div>
+                            <div class="pickup-order__work-col-2">${element.sPaymentName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1"></div>
+                            <div class="pickup-order__work-col-2">
+                                <a href="#" class="pickup-order__work-link">Chi tiết đơn</a>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                htmlOrderList += `
+                    <div class="pickup-order__work-blur"></div>
+                </div>
+            </div>`;
+    document.querySelector(".app__body").innerHTML = htmlOrderList;
+
+    document.querySelector(".header__pickup-order-arrow").addEventListener('click', () => {
+        setDataMobile(data);
+    });
+}
+
+function openAboutedWarehouseListTabMobile(data) {
+    let htmlOrderList = "";
+    htmlOrderList += 
+    `<div class="pickup-order hide-on-destop">
+                <div class="pickup-order__header">
+                    <div class="pickup-order__header-container">
+                        <div class="header__pickup-order-arrow">
+                            <i class="uil uil-arrow-left pickup-order__header-arrow-icon"></i>
+                        </div>
+                        <div class="header__pickup-order__title">Đã hoàn thành</div>
+                    </div>
+                </div>
+                <div class="pickup-order__list-title">${data.ordersAboutedWarehouse.length} đơn hàng</div>
+                <div class="pickup-order__works">`;
+                data.ordersAboutedWarehouse.forEach(element => {
+                    htmlOrderList += 
+                    `<div class="pickup-order__work">
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Mã đơn hàng</div>
+                            <div class="pickup-order__work-col-2">ĐH${element.fK_iOrderID}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Khách hàng</div>
+                            <div class="pickup-order__work-col-2">${element.sFullName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Ngày đặt</div>
+                            <div class="pickup-order__work-col-2">${formatDate(element.dDate)}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Tổng tiền</div>
+                            <div class="pickup-order__work-col-2">${money_2(element.fTotalPrice)}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Trạng thái</div>
+                            <div class="pickup-order__work-col-2">${element.sOrderStatusName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1">Thanh toán</div>
+                            <div class="pickup-order__work-col-2">${element.sPaymentName}</div>
+                        </div>
+                        <div class="pickup-order__work-row">
+                            <div class="pickup-order__work-col-1"></div>
+                            <div class="pickup-order__work-col-2">
+                                <a href="#" class="pickup-order__work-link">Chi tiết đơn</a>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                htmlOrderList += `
+                    <div class="pickup-order__work-blur"></div>
+                </div>
+            </div>`;
+    document.querySelector(".app__body").innerHTML = htmlOrderList;
+
+    document.querySelector(".header__pickup-order-arrow").addEventListener('click', () => {
+        setDataMobile(data);
+    });
 }
 
 function logoutPickerAccount() {
-    openModal();
+    openModalMobile();
     document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
     deleteCookies("pickerID");
     setTimeout(() => {
-        closeModal();
-        toast({ title: "Thông báo", msg: `Đăng xuất thành công!`, type: "success", duration: 5000 });
+        closeModalMobile();
+        toastMobile({ title: "Thông báo", msg: `Đăng xuất thành công!`, type: "success", duration: 5000 });
         document.querySelector(".modal__body").innerHTML = "";
         setTimeout(() => {
             window.location.assign('/');
@@ -689,6 +880,57 @@ function getCookies(userID) {
 
 function deleteCookies(name) {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+// Modal
+function openModalMobile() {
+    document.querySelector(".modal").classList.add("open");
+}
+
+function closeModalMobile() {
+    document.querySelector(".modal").classList.remove("open");
+}
+
+// Toast
+function toastMobile({ title = "", msg = "", type = "", duration = 3000}) {
+    const main = document.getElementById('toast');
+    if (main) {
+        const toast = document.createElement("div");
+        const autoRemoveId = setTimeout(() => {
+            main.removeChild(toast);
+        }, duration + 1000);
+
+        toast.onclick = (e) => {
+            if (e.target.closest('.toast__close')) {
+                main.removeChild(toast);
+                clearTimeout(autoRemoveId);
+            }
+        };
+
+        const icons = {
+            success: 'uil uil-check-circle',
+            err: 'uil uil-exclamation-triangle'
+        };
+
+        icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+
+        toast.classList.add('toast', `toast--${type}`);
+        toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+        toast.innerHTML = `
+            <div class="toast__icon">
+                <i class="${icon}"></i>
+            </div>
+            <div class="toast__body">
+                <h3 class="toast__title">${title}</h3>
+                <p class="toast__msg">${msg}</p>
+            </div>
+            <div class="toast__close">
+                <i class="uil uil-times"></i>
+            </div>
+        `;
+        main.appendChild(toast);
+    }
 }
 
 // Show Navbar Menu

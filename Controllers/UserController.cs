@@ -94,6 +94,11 @@ public class UserController : Controller {
                     StatusCode = 1,
                     Message = "Đăng nhập thành công!"
                 };
+            } else if (userLogin.Count() != 0 && userInfo.Count() != 0 && userLogin[0].sRoleName == "admin") {
+                status = new Status {
+                    StatusCode = 1,
+                    Message = "Đăng nhập thành công!"
+                };
             } else if (userLogin.Count() != 0 && userInfo.Count() != 0 && userLogin[0].sRoleName == "picker") {
                 status = new Status
                 {

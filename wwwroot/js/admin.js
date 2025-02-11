@@ -38,8 +38,8 @@ function showAll(data) {
                                             </div>
                                             <div class="admin__main-middle">
                                                 <div class="admin__main-middle-left">
-                                                    <div class="admin__main-middle-title">Tổng bán hàng</div>
-                                                    <div class="admin__main-middle-price">1.500.000đ</div>
+                                                    <div class="admin__main-middle-title">Tổng triết khấu</div>
+                                                    <div class="admin__main-middle-price">${money_2(0)}</div>
                                                 </div>
                                                 <div class="admin__main-progress">
                                                     <svg class="admin__main-progress-img">
@@ -59,8 +59,8 @@ function showAll(data) {
                                             </div>
                                             <div class="admin__main-middle">
                                                 <div class="admin__main-middle-left">
-                                                    <div class="admin__main-middle-title">Tổng bán hàng</div>
-                                                    <div class="admin__main-middle-price">1.500.000đ</div>
+                                                    <div class="admin__main-middle-title">Tổng thuế</div>
+                                                    <div class="admin__main-middle-price">${money_2(0)}</div>
                                                 </div>
                                                 <div class="admin__main-progress">
                                                     <svg class="admin__main-progress-img">
@@ -81,7 +81,7 @@ function showAll(data) {
                                             <div class="admin__main-middle">
                                                 <div class="admin__main-middle-left">
                                                     <div class="admin__main-middle-title">Tổng thu</div>
-                                                    <div class="admin__main-middle-price">1.500.000đ</div>
+                                                    <div class="admin__main-middle-price">${money_2(0)}</div>
                                                 </div>
                                                 <div class="admin__main-progress">
                                                     <svg class="admin__main-progress-img">

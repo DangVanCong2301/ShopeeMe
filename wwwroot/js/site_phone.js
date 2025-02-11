@@ -74,3 +74,9 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
         main.appendChild(toast);
     }
 }
+
+// Format Date
+function formatDate(date) {
+    const dateFormat = new Date(date);
+    return dateFormat.toLocaleDateString('en-GB'); // 24/04/2023
+}

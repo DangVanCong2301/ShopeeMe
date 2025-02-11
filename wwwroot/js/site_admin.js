@@ -1,23 +1,27 @@
 function getAPISiteAdmin() {
     let userID = getCookies("userID");
     if (userID == undefined) {
-        userID = 0;
+        window.location.replace("/user/login")
+    } else {
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', '/admin/get-data?userID=' + userID + '', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+
+                console.log(data);
+
+                if (data.user[0].sRoleName != "admin") {
+                    window.location.replace("/user/login");
+                }
+
+                setAccount(data);
+
+                setSidebar(data);
+            }
+        };
+        xhr.send(null);
     }
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', '/admin/get-data?userID=' + userID + '', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            const data = JSON.parse(xhr.responseText);
-
-            console.log(data);
-            
-            setAccount(data);
-
-            setSidebar(data);
-        }
-    };
-    xhr.send(null);
 }
 
 getAPISiteAdmin();
