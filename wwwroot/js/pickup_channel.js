@@ -320,7 +320,7 @@ function setDataOrderDetail(data) {
                                         </div>
                                     </div>
                                     <div class="phone-pickup__order-payment-type-pay">
-                                        Dùng ShopeePay để tận hưởng nhiều voucer ưu đãi.
+                                        Dùng SMePay để tận hưởng nhiều voucer ưu đãi.
                                     </div>
                                 </div>
                                 <div class="phone-pickup__order-detail">
@@ -347,24 +347,20 @@ function setDataOrderDetail(data) {
     if (data.shippingOrders.length != 0 && data.shippingOrders[0].fK_iOrderStatusID == 6) {
         htmlOrderDetail +=
             `
-                                    <div class="phone-header__pickup-order-footer-btn" onclick="openReceiveOrderModal(${data.shippingOrders[0].pK_iShippingOrderID})">Nhận đơn</div>
-                                    `;
+                                    <div class="phone-header__pickup-order-footer-btn" onclick="openReceiveOrderModal(${data.shippingOrders[0].pK_iShippingOrderID})">Nhận đơn</div>`;
     }
     else if (data.shippingPickers.length != 0 && data.shippingPickers[0].fK_iOrderStatusID == 7) {
         htmlOrderDetail +=
             `
-                                    <div class="phone-header__pickup-order-footer-btn phone-pickup__got-good-btn" onclick="openGotGood(${data.shippingPickers[0].pK_iShippingPickerID}, ${data.shippingPickers[0].fK_iShippingOrderID}, ${data.shippingPickers[0].fK_iOrderID})">Xác nhận đã lấy hàng</div>
-                                    `;
+                                    <div class="phone-header__pickup-order-footer-btn phone-pickup__got-good-btn" onclick="openGotGood(${data.shippingPickers[0].pK_iShippingPickerID}, ${data.shippingPickers[0].fK_iShippingOrderID}, ${data.shippingPickers[0].fK_iOrderID})">Xác nhận đã lấy hàng</div>`;
     } else if (data.shippingPickers.length != 0 && data.shippingPickers[0].fK_iOrderStatusID == 10) {
         htmlOrderDetail +=
             `
-                                    <div class="phone-header__pickup-order-footer-btn phone-pickup__about-warehouse-btn" onclick="openAboutWarehouse(${data.shippingPickers[0].pK_iShippingPickerID}, ${data.shippingPickers[0].fK_iShippingOrderID})">Đang về tổng kho ... </div>
-                                    `;
+                                    <div class="phone-header__pickup-order-footer-btn phone-pickup__about-warehouse-btn" onclick="openAboutWarehouse(${data.shippingPickers[0].pK_iShippingPickerID}, ${data.shippingPickers[0].fK_iShippingOrderID})">Đang về tổng kho ... </div>`;
     } else {
         htmlOrderDetail +=
             `
-                                    <div class="phone-header__pickup-order-footer-btn phone-pickup__about-warehouse-btn">Đã về tổng kho</div>
-                                    `;
+                                    <div class="phone-header__pickup-order-footer-btn phone-pickup__about-warehouse-btn">Đã về tổng kho</div>`;
     }
     htmlOrderDetail += `
                                 </div>
@@ -717,13 +713,12 @@ function openOrderListTabMobile(data) {
                         <div class="pickup-order__work-row">
                             <div class="pickup-order__work-col-1"></div>
                             <div class="pickup-order__work-col-2">
-                                <a href="#" class="pickup-order__work-link">Chi tiết đơn</a>
+                                <a href="javascript:openOrderDetailMobile(${element.fK_iOrderID})" class="pickup-order__work-link">Chi tiết đơn</a>
                             </div>
                         </div>
                     </div>`;
                 });
                 htmlOrderList += `
-                    <div class="pickup-order__work-blur"></div>
                 </div>
             </div>`;
     document.querySelector(".app__body").innerHTML = htmlOrderList;
@@ -777,13 +772,12 @@ function openPickingOrderListTabMobile(data) {
                         <div class="pickup-order__work-row">
                             <div class="pickup-order__work-col-1"></div>
                             <div class="pickup-order__work-col-2">
-                                <a href="#" class="pickup-order__work-link">Chi tiết đơn</a>
+                                <a href="javascript:openOrderDetailMobile(${element.fK_iOrderID})" class="pickup-order__work-link">Chi tiết đơn</a>
                             </div>
                         </div>
                     </div>`;
                 });
                 htmlOrderList += `
-                    <div class="pickup-order__work-blur"></div>
                 </div>
             </div>`;
     document.querySelector(".app__body").innerHTML = htmlOrderList;
@@ -837,13 +831,12 @@ function openAboutedWarehouseListTabMobile(data) {
                         <div class="pickup-order__work-row">
                             <div class="pickup-order__work-col-1"></div>
                             <div class="pickup-order__work-col-2">
-                                <a href="#" class="pickup-order__work-link">Chi tiết đơn</a>
+                                <a href="javascript:openOrderDetailMobile(${element.fK_iOrderID})" class="pickup-order__work-link">Chi tiết đơn</a>
                             </div>
                         </div>
                     </div>`;
                 });
                 htmlOrderList += `
-                    <div class="pickup-order__work-blur"></div>
                 </div>
             </div>`;
     document.querySelector(".app__body").innerHTML = htmlOrderList;
@@ -851,6 +844,183 @@ function openAboutedWarehouseListTabMobile(data) {
     document.querySelector(".header__pickup-order-arrow").addEventListener('click', () => {
         setDataMobile(data);
     });
+}
+
+function openOrderDetailMobile(orderID) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/picker-api/' + orderID + '', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            setDataOrderDetailMobile(data);
+
+        }
+    }
+    xhr.send(null);
+}
+
+function setDataOrderDetailMobile(data) {
+    let htmlOrderDetail = "";
+    htmlOrderDetail += 
+        `<div class="pickup__order-detail hide-on-destop">
+                <div class="pickup__order-detail-header">
+                    <div class="pickup__order-detail-header-container">
+                        <div class="header__pickup-order-detail-arrow">
+                            <i class="uil uil-arrow-left header__pickup-order-detail-arrow-icon"></i>
+                        </div>
+                        <div class="header__pickup-order-detail-title">Đơn hàng 01</div>
+                    </div>
+                </div>
+                <div class="pickup__order-detail-address">
+                    <div class="pickup__order-detail-address-destination">
+                        <i class="uil uil-map-marker pickup__order-detail-address-destination-icon"></i>
+                    </div>
+                    <div class="pickup__order-detail-address-desc">
+                        <div class="pickup__order-detail-address-desc-title">Địa chỉ lấy hàng hàng</div>
+                        <span class="pickup__order-detail-address-desc-name">${data.sellerInfos[0].sStoreName}</span> <span class="pickup__order-detail-address-desc-divide">|</span>
+                        <span class="pickup__order-detail-address-desc-phone">(+84) ${data.sellerInfos[0].sSellerPhone}</span>
+                        <div class="pickup__order-detail-address-desc-direction">${data.sellerInfos[0].sSellerAddress}</div>
+                    </div>
+                </div>
+                <div class="pickup__order-detail-label">
+                    <div class="pickup__order-detail-label-box"></div>
+                </div>
+                <div class="pickup__order-detail-product">
+                    <div class="pickup__order-detail-product-list">`;
+                    data.orderDetails.forEach(element => {
+                        htmlOrderDetail += 
+                        `<div class="pickup__order-detail-product-item">
+                            <div class="pickup__order-detail-product-item-header">
+                                <div class="pickup__order-detail-product-item-header-favorite">Yêu thích</div>
+                                <div class="pickup__order-detail-product-item-header-shop">${element.sStoreName}</div>
+                            </div>
+                            <div class="pickup__order-detail-product-item-body">
+                                <div class="pickup__order-detail-product-item-thumb">
+                                    <img class="pickup__order-detail-product-item-img" src="/img/${element.sImageUrl}">
+                                </div>
+                                <div class="pickup__order-detail-product-item-info">
+                                    <div class="pickup__order-detail-product-item-info-name">
+                                    ${element.sProductName}
+                                    </div>
+                                    <div class="pickup__order-detail-product-item-bottom">
+                                        <div class="pickup__order-detail-product-item-bottom-change">
+                                            <span>Đổi ý miễn phí</span>
+                                        </div>
+                                        <div class="pickup__order-detail-product-item-numb">
+                                            <div class="pickup__order-detail-product-item-numb-quantity">x${element.iQuantity}</div>
+                                            <div class="pickup__order-detail-product-item-numb-price">${money_2(element.dUnitPrice)}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pickup__order-detail-product-item-transport">
+                                <div class="pickup__order-detail-product-item-transport-header">Vận chuyển</div>
+                                <div class="pickup__order-detail-product-item-transport-type">
+                                    <div class="pickup__order-detail-product-item-transport-type-sub">Nhanh</div>
+                                    <div class="pickup__order-detail-product-item-transport-type-price">${money_2(element.dTransportPrice)}</div>
+                                </div>
+                                <div class="pickup__order-detail-product-item-transport-time">Nhận hàng vào 7 Tháng 7 - 8 Tháng 7</div>
+                                <div class="pickup__order-detail-product-item-transport-inspection">
+                                    <span>Được đồng kiểm.</span>
+                                    <i class="uil uil-question-circle pickup__order-detail-product-item-transport-inspection-icon"></i>
+                                </div>
+                            </div>
+                            <div class="pickup__order-detail-product-item-into-money">
+                                <div class="pickup__order-detail-product-item-into-money-sub">Thành tiền (${element.iQuantity} sản phẩm):</div>
+                                <div class="pickup__order-detail-product-item-into-money-price">${money_2(element.dMoney)}</div>
+                            </div>
+                        </div>`;
+                    });
+                    var totalItemPrice = data.orderDetails.reduce((total, item) => {
+                        return total + item.dUnitPrice;
+                    }, 0);
+                
+                    var totalTransportPrice = data.orderDetails.reduce((total, transport) => {
+                        return total + transport.dTransportPrice;
+                    }, 0);
+                    htmlOrderDetail += `
+                    </div>
+                </div>
+                <div class="pickup__order-detail-payment-type">
+                    <div class="pickup__order-detail-payment-type-header">
+                        <div class="pickup__order-detail-payment-type-header-col">
+                            <i class="uil uil-usd-circle pickup__order-detail-payment-type-header-sub-icon"></i>
+                            <div class="pickup__order-detail-payment-type-header-sub">Phương thức thanh toán</div>
+                        </div>
+                        <div class="pickup__order-detail-payment-type-header-col">
+                            <div class="pickup__order-detail-payment-type-header-sub">${data.payments[0].sPaymentName}</div>
+                        </div>
+                    </div>
+                    <div class="pickup__order-detail-payment-type-pay">
+                        Dùng SMePay để tận hưởng nhiều voucer ưu đãi.
+                    </div>
+                </div>
+                <div class="pickup__order-detail-money">
+                    <div class="pickup__order-detail-money-header">
+                        <i class="uil uil-notes pickup__order-detail-money-header-icon"></i>
+                        <div class="pickup__order-detail-header-sub">Chi tiết thanh toán</div>
+                    </div>
+                    <div class="pickup__order-detail-money-body">
+                        <div class="pickup__order-detail-money-total-price-product">
+                            <div class="pickup__order-detail-total-price-product-sub">Tổng tiền hàng</div>
+                            <div class="pickup__order-detail-total-price-product-numb">${money_2(totalItemPrice)}</div>
+                        </div>
+                        <div class="pickup__order-detail-money-transport-price">
+                            <div class="pickup__order-detail-transport-price-sub">Phí vận chuyển</div>
+                            <div class="pickup__order-detail-transport-price-numb">${money_2(totalTransportPrice)}</div>
+                        </div>
+                    </div>
+                    <div class="pickup__order-detail-bottom">
+                        <div class="pickup__order-detail-bottom-sub">Thành tiền</div>
+                        <div class="pickup__order-detail-bottom-price">${money_2(totalItemPrice + totalTransportPrice)}</div>
+                    </div>
+                </div>
+                <div class="pickup__order-detail-footer">`;
+                if (data.shippingOrders.length != 0 && data.shippingOrders[0].fK_iOrderStatusID == 6) {
+                    htmlOrderDetail += 
+                    `<div class="header__pickup-order-footer-btn" onclick="openReceiveOrderModalMobile(${data.shippingOrders[0].pK_iShippingOrderID})">Nhận đơn</div>`;
+                } else if (data.shippingPickers.length != 0 && data.shippingPickers[0].fK_iOrderStatusID == 7) {
+                    htmlOrderDetail += 
+                    `<div class="header__pickup-order-footer-btn">Xác nhận đã lấy hàng</div>`;
+                } else if (data.shippingPickers.length != 0 && data.shippingPickers[0].fK_iOrderStatusID == 10) {
+                    htmlOrderDetail += 
+                    `<div class="header__pickup-order-footer-btn">Đang về tổng kho ...</div>`;
+                } else {
+                    htmlOrderDetail += 
+                    `<div class="header__pickup-order-footer-btn">Đã về tổng kho</div>`;
+                }
+                htmlOrderDetail += `
+                </div>
+            </div>`;
+    document.querySelector(".app__body").innerHTML = htmlOrderDetail;
+    if (data.orderDetails.length != 0 && data.shippingOrders.length != 0) {
+        document.querySelector(".header__pickup-order-detail-arrow").addEventListener('click', () => {
+            openOrderListTabMobile(data);
+        });
+    } else if (data.orderDetails.length != 0 && data.shippingPickers[0].fK_iOrderStatusID == 7) {
+        document.querySelector(".header__pickup-order-detail-arrow").addEventListener('click', () => {
+            openPickingOrderListTabMobile(data)
+        });
+    } else {
+        document.querySelector(".header__pickup-order-detail-arrow").addEventListener("click", () => {
+            openAboutedWarehouseListTabMobile(data);
+        });
+    }
+}
+
+function openReceiveOrderModalMobile(shippingOrderID) {
+    openModalMobile();
+    document.querySelector(".modal__body").innerHTML = 
+                            `<div class="modal__confirm-mobile">
+                                <div class="modal__confirm-mobile-msg">Bạn có chắc muốn nhận đơn hàng này?</div>
+                                <div class="modal__confirm-mobile-btns">
+                                    <div class="modal__confirm-mobile-btn-no" onclick="closeModal()">Không</div>
+                                    <div class="modal__confirm-mobile-btn-agree" onclick="confirmTakeOrderMobile(${shippingOrderID})">Đồng ý</div>
+                                </div>
+                            </div>`;
 }
 
 function logoutPickerAccount() {
