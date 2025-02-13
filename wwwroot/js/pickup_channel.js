@@ -879,7 +879,7 @@ function setDataOrderDetailMobile(data) {
                         <i class="uil uil-map-marker pickup__order-detail-address-destination-icon"></i>
                     </div>
                     <div class="pickup__order-detail-address-desc">
-                        <div class="pickup__order-detail-address-desc-title">Địa chỉ lấy hàng hàng</div>
+                        <div class="pickup__order-detail-address-desc-title">Địa chỉ lấy hàng</div>
                         <span class="pickup__order-detail-address-desc-name">${data.sellerInfos[0].sStoreName}</span> <span class="pickup__order-detail-address-desc-divide">|</span>
                         <span class="pickup__order-detail-address-desc-phone">(+84) ${data.sellerInfos[0].sSellerPhone}</span>
                         <div class="pickup__order-detail-address-desc-direction">${data.sellerInfos[0].sSellerAddress}</div>
@@ -984,7 +984,7 @@ function setDataOrderDetailMobile(data) {
                     `<div class="header__pickup-order-footer-btn" onclick="openReceiveOrderModalMobile(${data.shippingOrders[0].pK_iShippingOrderID})">Nhận đơn</div>`;
                 } else if (data.shippingPickers.length != 0 && data.shippingPickers[0].fK_iOrderStatusID == 7) {
                     htmlOrderDetail += 
-                    `<div class="header__pickup-order-footer-btn">Xác nhận đã lấy hàng</div>`;
+                    `<div class="header__pickup-order-footer-btn" onclick="openGotGoodMobile(${data.shippingPickers[0].pK_iShippingPickerID}, ${data.shippingPickers[0].fK_iShippingOrderID}, ${data.shippingPickers[0].fK_iOrderID})">Xác nhận đã lấy hàng</div>`;
                 } else if (data.shippingPickers.length != 0 && data.shippingPickers[0].fK_iOrderStatusID == 10) {
                     htmlOrderDetail += 
                     `<div class="header__pickup-order-footer-btn">Đang về tổng kho ...</div>`;
@@ -1013,7 +1013,7 @@ function setDataOrderDetailMobile(data) {
 
 function openReceiveOrderModalMobile(shippingOrderID) {
     openModalMobile();
-    document.querySelector(".modal__body").innerHTML = 
+    document.querySelector(".modal__body").innerHTML =
                             `<div class="modal__confirm-mobile">
                                 <div class="modal__confirm-mobile-msg">Bạn có chắc muốn nhận đơn hàng này?</div>
                                 <div class="modal__confirm-mobile-btns">
@@ -1021,6 +1021,131 @@ function openReceiveOrderModalMobile(shippingOrderID) {
                                     <div class="modal__confirm-mobile-btn-agree" onclick="confirmTakeOrderMobile(${shippingOrderID})">Đồng ý</div>
                                 </div>
                             </div>`;
+}
+
+function confirmTakeOrderMobile(shippingOrderID) {
+    document.querySelector(".modal__body").innerHTML = 
+        `<div class="spinner"></div>`;
+    var formData = new FormData();
+    formData.append("shippingOrderID", shippingOrderID);
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/picker-api/take', true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText);
+
+            console.log(data);
+
+            if (data.status.statusCode == 1) {
+                setTimeout(() => {
+                    closeModal();
+                    toastMobile({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                    document.querySelector(".modal__body").innerHTML = "";
+                    setTimeout(() => {
+                        document.querySelector(".header__pickup-order-footer-btn").innerHTML = "Đang lấy hàng...";
+                        setDataMobile(data);
+                    }, 1000)
+                }, 2000);
+            }
+            
+        }
+    };
+    xhr.send(formData);
+}
+
+// Confirmation of receipt of goods
+function openGotGoodMobile(shippingPickerID, shippingOrderID, orderID) {
+    openModal();
+    document.querySelector(".modal__body").innerHTML = 
+    `
+                            <div class="modal__confirm-mobile">
+                                <div class="modal__confirm-mobile-msg">Bạn đã lấy được đơn hàng này?</div>
+                                <div class="modal__confirm-mobile-btns">
+                                    <div class="modal__confirm-mobile-btn-no" onclick="closeModal()">Không</div>
+                                    <div class="modal__confirm-mobile-btn-agree" onclick="openAddImgPickerMobile(${shippingPickerID}, ${shippingOrderID}, ${orderID})">Đồng ý</div>
+                                </div>
+                            </div>
+    `;
+}
+
+function openAddImgPickerMobile(shippingPickerID, shippingOrderID, orderID) {
+    document.querySelector(".modal__body").innerHTML = 
+    `
+                            <div class="modal__add-img-mobile">
+                                <div class="modal__add-img-mobile-title">Thêm ảnh lấy hàng</div>
+                                <div class="modal__add-img-mobile-check">
+                                    <div class="modal__add-img-mobile-rb">
+                                        <input type="radio" name="ratio-img" id="" class="modal__add-img-mobile-input">
+                                        <label for="modal__add-img-mobile-input" class="modal__add-img-mobile-label">Hình ảnh tỉ lệ 1:1</label>
+                                    </div>
+                                    <div class="modal__add-img-mobile-rb">
+                                        <input type="radio" name="ratio-img" id="" class="modal__add-img-mobile-input">
+                                        <label for="modal__add-img-mobile-input" class="modal__add-img-mobile-label">Hình ảnh tỉ lệ 3:4</label>
+                                    </div>
+                                </div>
+                                <div class="modal__add-img-mobile-pic">
+                                    <img src="/img/no_img.jpg" class="modal__add-img-mobile-value" alt="">
+                                    <label class="modal__add-img-mobile-pick">
+                                        <div class="modal__add-img-mobile-pick-container">
+                                            <i class="uil uil-image-plus modal__add-img-mobile-pick-icon"></i>
+                                            <div class="modal__add-img-mobile-pick-sub">
+                                                Thêm hình ảnh (0/9)
+                                            </div>
+                                        </div>
+                                        <input type="file" accept="image/jpeg, image/png, image/jpg" class="modal__add-img-mobile-pick-file" id="input-file">
+                                    </label>
+                                </div>
+                                <div class="modal__add-img-mobile-btn">Xác nhận</div>
+                            </div>
+    `;
+
+    let orderImage = document.querySelector(".phone-modal__add-img-value");
+    let inputImage = document.getElementById("input-file");
+
+    inputImage.onchange = () => {
+        orderImage.src = URL.createObjectURL(inputImage.files[0]);
+    };
+
+    document.querySelector(".phone-modal__add-img-btn").addEventListener('click', () => {
+        document.querySelector(".phone-modal__body").innerHTML = `<div class="phone-spinner"></div>`;
+        
+        let shippingPickerImg = "shipping_img.jpg"
+        var formData = new FormData();
+        formData.append("shippingPickerID", shippingPickerID);
+        formData.append("shippingPickerImg", shippingPickerImg)
+        formData.append("shippingOrderID", shippingOrderID);
+        formData.append("orderID", orderID);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/picker-api/taken', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+
+                console.log(data);
+
+                if (data.status.statusCode == -1) {
+                    setTimeout(() => {
+                        closeModal();
+                        toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                        document.querySelector(".phone-modal__body").innerHTML = "";
+                    }, 2000);
+                }
+
+                if (data.status.statusCode == 1) {
+                    setTimeout(() => {
+                        closeModal();
+                        toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                        document.querySelector(".phone-modal__body").innerHTML = "";
+                        setTimeout(() => {
+                            setDataOrderDetail(data);
+                        }, 1000)
+                    }, 2000);
+                }
+            }
+        };
+        xhr.send(formData);
+    });
 }
 
 function logoutPickerAccount() {
