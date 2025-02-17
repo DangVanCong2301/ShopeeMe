@@ -15,6 +15,15 @@ function closeModal() {
     document.querySelector(".phone-modal").classList.remove("open");
 }
 
+// Modal
+function openModalMobile() {
+    document.querySelector(".modal").classList.add("open");
+}
+
+function closeModalMobile() {
+    document.querySelector(".modal").classList.remove("open");
+}
+
 // Header
 function hideHeader() {
     document.querySelector(".phone-header").classList.add("hide-on-destop");
@@ -31,6 +40,17 @@ function hideBottomNav() {
 
 function showBottomNav() {
     document.querySelector(".phone-bottom__navigation").classList.remove("hide-on-destop");
+}
+
+// Validate Login Account Mobile
+function showErrStylesMobile(input, msg) {
+    input.classList.add("err");
+    msg.classList.remove("hide-on-mobile");
+}
+
+function removeErrStylesMobile(input, msg) {
+    input.classList.remove("err");
+    msg.classList.add("hide-on-mobile");
 }
 
 // Toast
@@ -79,4 +99,11 @@ function toast({ title = "", msg = "", type = "", duration = 3000}) {
 function formatDate(date) {
     const dateFormat = new Date(date);
     return dateFormat.toLocaleDateString('en-GB'); // 24/04/2023
+}
+
+function setCookies(userID, value, expDays) {
+    let date = new Date();
+    date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = userID + "=" + value + ";" + expires + ";path=/";
 }

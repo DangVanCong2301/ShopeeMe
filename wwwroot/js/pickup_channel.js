@@ -1,15 +1,19 @@
 function getAPIPickupChannel() {
-    let pickerID = getCookies("pickerID");
-    if (pickerID == undefined) {
+    let userID = getCookies("userID");
+    if (userID == undefined) {
         window.location.replace("/user/login")
     } else {
         var xhr = new XMLHttpRequest();
-        xhr.open('get', '/picker-api', true);
+        xhr.open('get', '/picker-api?userID=' + userID + '', true);
         xhr.onreadystatechange = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 const data = JSON.parse(xhr.responseText);
 
                 console.log(data);
+
+                if (data.user[0].sRoleName != "picker") {
+                    window.location.replace("/user/login");
+                }
 
                 setData(data);
 
@@ -619,7 +623,7 @@ function setDataMobile(data) {
                     </div>
                 </div>
                 <div class="header__logo">
-                    <img src="/img/SPX_express_logo.png" class="header__logo-img" alt="">
+                    <img src="/img/j&t_express_logo.png" class="header__logo-img" alt="">
                 </div>
                 <div class="header__user">
                     <div class="header__user-symbol hide-on-destop hide-on-mobile">
@@ -1017,7 +1021,7 @@ function openReceiveOrderModalMobile(shippingOrderID) {
                             `<div class="modal__confirm-mobile">
                                 <div class="modal__confirm-mobile-msg">Bạn có chắc muốn nhận đơn hàng này?</div>
                                 <div class="modal__confirm-mobile-btns">
-                                    <div class="modal__confirm-mobile-btn-no" onclick="closeModal()">Không</div>
+                                    <div class="modal__confirm-mobile-btn-no" onclick="closeModalMobile()">Không</div>
                                     <div class="modal__confirm-mobile-btn-agree" onclick="confirmTakeOrderMobile(${shippingOrderID})">Đồng ý</div>
                                 </div>
                             </div>`;
@@ -1175,15 +1179,6 @@ function getCookies(userID) {
 
 function deleteCookies(name) {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
-
-// Modal
-function openModalMobile() {
-    document.querySelector(".modal").classList.add("open");
-}
-
-function closeModalMobile() {
-    document.querySelector(".modal").classList.remove("open");
 }
 
 // Toast

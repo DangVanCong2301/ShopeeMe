@@ -1,17 +1,26 @@
 function getAPIDeliveryChannel() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('post', '/delivery-api', true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            const data = JSON.parse(xhr.responseText);
+    let userID = getCookies("userID");
+    if (userID == undefined) {
+        window.location.replace("/user/login");
+    } else {
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', '/delivery-api?userID=' + userID + '', true);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
 
-            console.log(data);
+                console.log(data);
 
-            setData(data);
-            
-        }
-    };
-    xhr.send(null);
+                if (data.user[0].sRoleName != "delivery") {
+                    window.location.replace("/user/login");
+                }
+
+                setData(data);
+
+            }
+        };
+        xhr.send(null);
+    }
 }
 getAPIDeliveryChannel();
 
@@ -592,4 +601,19 @@ function openDeliveredOrderListTab(data) {
     document.querySelector(".phone-header__pickup-order-list-arrow").addEventListener('click', () => {
         setData(data);
     });
+}
+
+function getCookies(userID) {
+    const id = userID + "=";
+    const cDecoded = decodeURIComponent(document.cookie);
+    const arr = cDecoded.split(";");
+    let res; 
+    arr.forEach(val => {
+        if (val.indexOf(id) === 0) res = val.substring(id.length);
+    });
+    return res;
+}
+
+function deleteCookies(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

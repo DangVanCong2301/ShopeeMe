@@ -328,10 +328,22 @@ function addEventMobile() {
                         setTimeout(() => {
                             closeModal();
                             toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
-                            setCookies("pickerID", data.user[0].pK_iUserID, 1);
+                            setCookies("userID", data.user[0].pK_iUserID, 1);
                             document.querySelector(".modal__body").innerHTML = "";
                             setTimeout(() => {
                                 window.location.assign('/picker');
+                            }, 1000)
+                        }, 2000);
+                    } else if (data.status.statusCode == 3) {
+                        openModal();
+                        document.querySelector(".modal__body").innerHTML = `<div class="spinner"></div>`;
+                        setTimeout(() => {
+                            closeModal();
+                            toast({ title: "Thông báo", msg: `${data.status.message}`, type: "success", duration: 5000 });
+                            setCookies("userID", data.user[0].pK_iUserID, 1);
+                            document.querySelector(".modal__body").innerHTML = "";
+                            setTimeout(() => {
+                                window.location.assign('/delivery');
                             }, 1000)
                         }, 2000);
                     } else {

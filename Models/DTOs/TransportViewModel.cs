@@ -1,5 +1,8 @@
+using Project.Models;
+
 public class TransportViewModel
 {
+    public IEnumerable<User> User { get; set; }
     public IEnumerable<ShippingOrder> OrdersWaitPickup { get; set; }
     public IEnumerable<ShippingPicker> OrdersPickingUp { get; set; }
     public IEnumerable<ShippingPicker> OrdersAboutedWarehouse { get; set; }

@@ -105,6 +105,12 @@ public class UserController : Controller {
                     StatusCode = 2,
                     Message = "Đăng nhập tài khoản người lấy hàng!"
                 };
+            } else if (userLogin.Count() != 0 && userInfo.Count() != 0 && userLogin[0].sRoleName == "delivery") {
+                status = new Status
+                {
+                    StatusCode = 3,
+                    Message = "Đăng nhập tài khoản người giao hàng!"
+                };
             } else if (userInfo.Count() == 0) {
                 status = new Status {
                     StatusCode = -4,

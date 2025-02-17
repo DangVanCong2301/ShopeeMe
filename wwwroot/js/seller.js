@@ -535,7 +535,7 @@ function showProcessed(data) {
 
 function prepareGoodModal(orderID, userID) {
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/seller', true);
+    xhr.open('get', '/seller-data?sellerID=' + getCookies("sellerID") + '', true);
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = JSON.parse(xhr.responseText);
@@ -644,13 +644,13 @@ function openPickupAddressModal(data, orderID, userID) {
                             </div>
                             <div class="checkout__address-desc">
                                 <div class="waiting-form__seller-info">
-                                    <div class="checkout__address-desc-name">Cửa hàng ${data.sellerInfos[0].sStoreName}</div>
-                                    <div class="checkout__address-desc-phone">(+84) ${data.sellerInfos[0].sSellerPhone}</div>
+                                    <div class="checkout__address-desc-name">Cửa hàng ${data.sellerInfo[0].sStoreName}</div>
+                                    <div class="checkout__address-desc-phone">(+84) ${data.sellerInfo[0].sSellerPhone}</div>
                                     <div class="waiting-form__seller-info-pickup">Đến lấy hàng</div>
                                     <div class="waiting-form__seller-info-return">Trả hàng</div>
                                     <a href="javascript:openAddressModal()" class="checkout__address-desc-change">Thay đổi</a>
                                 </div>
-                                <div class="checkout__address-desc-direction">${data.sellerInfos[0].sSellerAddress}</div>
+                                <div class="checkout__address-desc-direction">${data.sellerInfo[0].sSellerAddress}</div>
                             </div>
                         </div>
                     </div>

@@ -79,8 +79,9 @@ public class TransportController : Controller
     }  
 
     [HttpGet]
-    [Route("/picker-api/{orderID?}")]
-    public IActionResult PickerAPI(int orderID = 0) {
+    [Route("/picker-api/{userID?}/{orderID?}")]
+    public IActionResult PickerAPI(int userID = 0, int orderID = 0) {
+        IEnumerable<User> user = _userResponsitory.getUserByID(userID);
         IEnumerable<ShippingOrder> ordersWaitPickup = _transportRepository.getShippingOrdersWaitPickup();
         IEnumerable<ShippingPicker> ordersPickingUp = _transportRepository.getShippingPickerPickingUp();
         IEnumerable<ShippingPicker> ordersAboutedWarehouse = _shippingOrderRepository.getShippingPickerAboutedWarehouse();
@@ -196,6 +197,7 @@ public class TransportController : Controller
         IEnumerable<ShippingOrder> shippingOrders = _shippingOrderRepository.getShippingOrderByOrderID(orderID);
         IEnumerable<ShippingPicker> shippingPickers = _shippingOrderRepository.getShippingPickerByOrderID(orderID);
         TransportViewModel model = new TransportViewModel {
+            User = user,
             OrdersWaitPickup = ordersWaitPickup,
             OrdersPickingUp = ordersPickingUp,
             OrdersAboutedWarehouse = ordersAboutedWarehouse,
@@ -537,31 +539,16 @@ public class TransportController : Controller
     [Route("/delivery")]
     [HttpGet]
     public IActionResult Delivery() {
-        // Lấy cookie người lấy hàng trên trình duyệt
-        var deliveryID = Request.Cookies["TransportDeliveryID"];
-        if (deliveryID != null) {
-            _accessor?.HttpContext?.Session.SetInt32("TransportDeliveryID", Convert.ToInt32(deliveryID));
-        } else {
-            return Redirect("/transport/login");
-        }
-        var sessionDeliveryID = _accessor?.HttpContext?.Session.GetInt32("TransportDeliveryID");
-        if (sessionDeliveryID != null) {
-            List<User> users = _userResponsitory.checkUserLogin(Convert.ToInt32(sessionDeliveryID)).ToList();
-            _accessor?.HttpContext?.Session.SetString("TransportDeliveryUsername", users[0].sUserName);
-            _accessor?.HttpContext?.Session.SetInt32("RoleID", users[0].FK_iRoleID);
-        } else {
-            _accessor?.HttpContext?.Session.SetString("TransportDeliveryUsername", "");
-        }
         return View();
     }
 
-    [HttpPost]
-    [Route("/delivery-api")]
-    public IActionResult DeliveryAPI(int orderID = 0) {
-        var sessionDeliveryID = _accessor?.HttpContext?.Session.GetInt32("TransportDeliveryID");
+    [HttpGet]
+    [Route("/delivery-api/{userID?}")]
+    public IActionResult DeliveryAPI(int userID = 0, int orderID = 0) {
+        IEnumerable<User> user = _userResponsitory.getUserByID(userID);
         IEnumerable<ShippingPicker> ordersWaitDelivery = _shippingOrderRepository.getShippingPickerAboutedWarehouse();
-        IEnumerable<ShippingDelivery> ordersDelivering = _shippingOrderRepository.getShippingDeliveryByDeliverID(Convert.ToInt32(sessionDeliveryID));
-        IEnumerable<ShippingDelivery> ordersDelivered = _shippingOrderRepository.getShippingDeliveryCompleteByDeliverID(Convert.ToInt32(sessionDeliveryID));
+        IEnumerable<ShippingDelivery> ordersDelivering = _shippingOrderRepository.getShippingDeliveryByDeliverID(userID);
+        IEnumerable<ShippingDelivery> ordersDelivered = _shippingOrderRepository.getShippingDeliveryCompleteByDeliverID(userID);
         string htmlOrdersWaitDeliveryItem = "";
         foreach (var item in ordersWaitDelivery) {
             htmlOrdersWaitDeliveryItem += $"  <div class='phone-pickup__work'>";
@@ -676,6 +663,7 @@ public class TransportController : Controller
         IEnumerable<ShippingDelivery> shippingDelivering = _shippingOrderRepository.getShippingDeliveryByOrderID(orderID);
         IEnumerable<ShippingDelivery> shippingDelivered = _shippingOrderRepository.getShippingDeliveredByOrderID(orderID);
         TransportViewModel model = new TransportViewModel {
+            User = user,
             OrdersWaitDelivery = ordersWaitDelivery,
             OrdersDelivering = ordersDelivering,
             OrdersDelivered = ordersDelivered,
