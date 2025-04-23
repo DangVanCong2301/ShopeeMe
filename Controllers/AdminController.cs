@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Project.Models;
 
 public class AdminController : Controller {
-    private readonly DatabaseContext _context;
+    private readonly DatabaseContext _context; 
     private readonly IHomeResponsitory _homeResponsitory;
     private readonly ICategoryResponsitory _categoryResponsitory;
     private readonly IProductResponsitory _productResponsitory;
